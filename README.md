@@ -1,2 +1,135 @@
-# illustrator-scripts
-Some powerfull JSX scripts for extending Adobe Illustrator
+![header](images/header.jpg)
+![illustrator-scripts](images/cover.jpg)
+
+[![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Dribbble](https://img.shields.io/badge/Dribbble-%40creold-DF3A7A.svg)](https://dribbble.com/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/)
+
+# Hi everybody :)
+This is a collection of JSX scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
+
+The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6 (Windows), CC 2017 (Mac OS).   
+
+### Installation 
+
+1. [Download archive] and unzip. All scripts are in the folder `jsx`
+2. Place `<script_name>.jsx` in the Illustrator Scripts folder:
+	- OS X: `/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts`
+	- Windows (32 bit): `C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\`
+	- Windows (64 bit): `C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\`
+3. Restart Illustrator
+
+[Download archive]: http://bit.ly/2M0j95N 
+
+### Donate (optional)
+If you find this script helpful, consider shouting me coffee ☕️ via [PayPal] or [Yandex Money] 🙂  
+
+[PayPal]: https://paypal.me/osokin/2usd
+[Yandex Money]: https://money.yandex.ru/to/410011149615582
+<a href="https://paypal.me/osokin/2usd">
+  <img width="160" height="49" src="images/paypal-badge.png" >
+</a>  
+
+<a href="https://money.yandex.ru/to/410011149615582">
+  <img width="160" height="49" src="images/yandex-badge.png" >
+</a>
+
+## ArtboardsRotateWithObjects 1.1
+
+Script to rotate 90 degrees an document artboards with all the objects on it.   
+*Co-author: [Alexander Ladygin](http://ladygin.pro/)*
+
+### Usage
+
+1. Open Ai file
+2. Run script `File → Scripts → ArtboardsRotateWithObjects `
+3. Select the options in the dialog window & click `Ok` button
+
+![ArtboardsRotateWithObjects](images/demo-ArtboardsRotateWithObjects.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## FileVersionInformer
+
+Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
+*Notice: on large files it works slowly, just wait.*
+
+### Usage
+
+1. Run script `File → Scripts → FileVersionInformer`
+2. Choose folder with .ai or .eps files
+3. Wait for the completion message
+3. Look "FileVersionInformer.txt" in source folder
+ 
+
+![FileVersionInformer](images/demo-FileVersionInformer.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## SplitPath 1.0 (ex-PathSubtract)
+
+Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
+
+### Usage
+
+1. Place the closed filled shape top
+2. Select shape and line
+3. Run script `File → Scripts → SplitPath `
+4. Select cut method in dialog window
+ 
+
+![SplitPath](images/demo-SplitPath.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## Zoom and center
+
+Zooms active view to selection or to all object(s) in a document.   
+*Based on original script by [John Wundes](http://www.wundes.com/).*
+
+### Usage
+
+1. Select object(s) to zoom or deselect all
+2. Run script `File → Scripts → Zoom and center`
+3. If nothing is selected, you will see a dialog with options
+ 
+
+![Zoom-And-Center](images/Zoom-And-Center.png) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## ExtUngroup v.1.1
+This script is сan be easily custom ungrouping to all group items & releasing clipping masks in the document.   
+*Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
+
+### Usage
+
+1. Select object(s) to ungroup or deselect all
+2. Run script `File → Scripts → ExtUngroup`
+3. Select options in dialog window
+ 
+
+![Zoom-And-Center](images/demo-ExtUngroup.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+
+## Contribute
+
+Found a bug? Please [submit a new issues](https://github.com/creold/illustrator-scripts/issues) on GitHub.
+
+### Contact
+Email <hi@sergosokin.ru>  
+
+### License
+
+All scripts is licensed under the MIT licence.  
+See the included LICENSE file for more details.
