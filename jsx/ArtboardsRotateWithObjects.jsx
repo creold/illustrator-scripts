@@ -13,6 +13,11 @@
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > Artboards_Rotate_With_Objects
 // ============================================================================
+// Versions:
+// 0.1 Initial version. Do not rotate locked, hidden items
+// 1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
+// 1.1 Added rotate angle: 90 CW or 90 CCW.
+// ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
 // This script is provided "as is" without warranty of any kind.
@@ -20,11 +25,8 @@
 // ============================================================================
 // Released under the MIT license.
 // http://opensource.org/licenses/mit-license.php
-//
-// Versions:
-// 0.1 Initial version. Do not rotate locked, hidden items
-// 1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
-// 1.1 Added rotate angle: 90 CW or 90 CCW.
+// ============================================================================
+// Check other author's scripts: https://github.com/creold
 
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;

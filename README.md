@@ -39,8 +39,8 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
 
 ### Usage
 
-1. Open Ai file
-2. Run script `File → Scripts → ArtboardsRotateWithObjects `
+1. Open your file
+2. Run script `File → Scripts → ArtboardsRotateWithObjects`
 3. Select the options in the dialog window & click `Ok` button
 
 ![ArtboardsRotateWithObjects](images/demo-ArtboardsRotateWithObjects.gif) 
@@ -49,24 +49,24 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-## FileVersionInformer
+## ConvertToGradient
 
-Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
-*Notice: on large files it works slowly, just wait.*
+Convert a flat process color into a matching gradient.   
+What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items.   
+*Based on original script by [Saurabh Sharma](https://tutsplus.com/authors/saurabh-sharma), 2010.*   
 
 ### Usage
 
-1. Run script `File → Scripts → FileVersionInformer`
-2. Choose folder with .ai or .eps files
-3. Wait for the completion message
-3. Look "FileVersionInformer.txt" in source folder
- 
+1. Select objects
+2. Run script `File → Scripts → ConvertToGradient`
+3. Enter a numeric values in input fields
 
-![FileVersionInformer](images/demo-FileVersionInformer.gif) 
+![ConvertToGradient](images/demo-ConvertToGradient.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
 </a> 
+
 
 ## SplitPath 1.0 (ex-PathSubtract)
 
@@ -116,6 +116,25 @@ This script is сan be easily custom ungrouping to all group items & releasing c
  
 
 ![Zoom-And-Center](images/demo-ExtUngroup.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## FileVersionInformer
+
+Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
+*Notice: on large files it works slowly, just wait.*
+
+### Usage
+
+1. Run script `File → Scripts → FileVersionInformer`
+2. Choose folder with .ai or .eps files
+3. Wait for the completion message
+3. Look "FileVersionInformer.txt" in source folder
+ 
+
+![FileVersionInformer](images/demo-FileVersionInformer.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">

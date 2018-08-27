@@ -2,7 +2,7 @@
 // Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
 // Requirements: Adobe Illustrator CS6 and above
 // Date: August, 2018
-// Authors: Sergey Osokin, email: hi@sergosokin.ru
+// Author: Sergey Osokin, email: hi@sergosokin.ru
 // ============================================================================
 // Installation:
 // 1. Place script in:
@@ -12,6 +12,10 @@
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > Splitpath
 // ============================================================================
+// Versions:
+// 0.1 Initial version (old name 'PathSubtract'). Manual preparation document. 2 separate script files for run.
+// 1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel.
+// ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
 // This script is provided "as is" without warranty of any kind.
@@ -19,11 +23,8 @@
 // ============================================================================
 // Released under the MIT license.
 // http://opensource.org/licenses/mit-license.php
-//
-// Versions:
-// 0.1 Initial version (old name 'PathSubtract'). Manual preparation document. 2 separate script files for run.
-// 1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel.
-
+// ============================================================================
+// Check other author's scripts: https://github.com/creold
 
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
