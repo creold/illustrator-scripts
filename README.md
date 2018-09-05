@@ -86,6 +86,22 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
   <img width="160" height="49" src="images/download.png">
 </a> 
 
+## SelectOnlyPoints
+
+After using the Lasso tool or Direct Selection Tool, both Points and Path segments are selected. 
+
+### Usage
+
+1. Select points on paths with Direct Selection Tool `key: A` or Lasso tool `key: Q`
+2. Run script `File → Scripts → SelectOnlyPoints`
+ 
+
+![SelectOnlyPoints](images/demo-SelectOnlyPoints.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
 ## Zoom and center
 
 Zooms active view to selection or to all object(s) in a document.   
@@ -98,7 +114,7 @@ Zooms active view to selection or to all object(s) in a document.
 3. If nothing is selected, you will see a dialog with options
  
 
-![Zoom-And-Center](images/Zoom-And-Center.png) 
+![Zoom-And-Center](images/Zoom-And-Center.jpg) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">

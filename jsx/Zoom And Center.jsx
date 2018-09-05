@@ -11,6 +11,11 @@
 // Modification by Sergey Osokin ( hi@sergosokin.ru ) https://github.com/creold
 // Description: Zooms active view to all object(s) in a document or to selection.
 // Used code from FitArtboardToArt.jsx by Darryl Zurn ( daz-scripting@zzzurn.com )
+// ============================================================================
+// Donate (optional): If you find this script helpful and want to support me 
+// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
+// ============================================================================
+// Check other author's scripts: https://github.com/creold
 
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
@@ -24,12 +29,12 @@ if (documents.length > 0) {
 
 function main() {
     // Create Main Window
-    var win = new Window('dialog', 'Zoom & center', undefined);
+    var win = new Window('dialog', 'Zoom & Center', undefined);
     win.orientation = 'column';
     win.alignChildren = ['fill', 'fill'];
 
     // Zoom to locked item checkbox
-    var option = win.add('panel', undefined, 'What objects to include?');
+    var option = win.add('panel', undefined, 'What objects to include');
     option.orientation = 'column';
     option.alignChildren = ['fill', 'fill'];
     option.margins = 20;
@@ -53,9 +58,9 @@ function main() {
     var btns = win.add('group');
     btns.alignChildren = 'center';
     btns.margins = [0, 10, 0, 0];
-    var cancel = btns.add('button', undefined, 'Cancel');
+    var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
     cancel.helpTip = 'Press Esc to Close';
-    var ok = btns.add('button', undefined, 'OK');
+    var ok = btns.add('button', undefined, 'OK', {name: 'ok'});
     ok.helpTip = 'Press Enter to Run';
     ok.active = true;
     cancel.onClick = function () { win.close(); }
@@ -200,10 +205,17 @@ function getCountObj(target) {
     return target.pageItems.length;
 }
 
+function showError(err) {
+    if (confirm(scriptName + ': an unknown error has occurred.\n' +
+        'Would you like to see more information?', true, 'Unknown Error')) {
+        alert(err + ': on line ' + err.line, 'Script Error', true);
+    }
+}
+
 try {
     if (documents.length > 0 && activeDocument.pageItems.length > 0) {
         main();
     }
 } catch (e) {
-    alert(e.message, 'Script Alert', true);
+    showError(e);
 }

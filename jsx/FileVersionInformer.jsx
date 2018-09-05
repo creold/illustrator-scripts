@@ -12,6 +12,9 @@
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > FileVersionInformer
 // ============================================================================
+// Donate (optional): If you find this script helpful and want to support me 
+// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
+// ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CS6 (Win), CC 2017 (Mac).
 // This script is provided "as is" without warranty of any kind.

@@ -18,6 +18,9 @@
 // 1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
 // 1.1 Added rotate angle: 90 CW or 90 CCW.
 // ============================================================================
+// Donate (optional): If you find this script helpful and want to support me 
+// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
+// ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
 // This script is provided "as is" without warranty of any kind.
@@ -33,7 +36,7 @@ app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var scriptName = 'ARWO',
     scriptVersion = '1.1',
-    scriptAuthor = '© Alex Ladygin, Serg Osokin',
+    scriptAuthor = '\u00A9 Alex Ladygin, Serg Osokin',
     scriptDonate = 'Donate via PayPal';
 
 try {
@@ -71,9 +74,9 @@ try {
         var btns = dlg.add('group');
         btns.alignChildren = ['fill', 'fill'];
         btns.margins = [0, 10, 0, 0];
-        var cancel = btns.add('button', undefined, 'Cancel');
+        var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
         cancel.helpTip = 'Press Esc to Close';
-        var ok = btns.add('button', undefined, 'OK');
+        var ok = btns.add('button', undefined, 'OK', {name: 'ok'});
         ok.helpTip = 'Press Enter to Run';
         ok.active = true;
         cancel.onClick = function () { dlg.close(); }
@@ -89,19 +92,19 @@ try {
         lblCopyright.text = scriptAuthor;
         var donate = copyright.add('button', undefined, scriptDonate);
 
-        donate.addEventListener('click', (function () {
+        donate.onClick = function () {
             var fname, shortcut;
             fname = '_aiscript_donate.url';
             shortcut = new File('' + Folder.temp + '/' + fname);
             shortcut.open('w');
             shortcut.writeln('[InternetShortcut]');
-            shortcut.writeln('URL=http://www.paypal.me/osokin/usd');
+            shortcut.writeln('URL=https://www.paypal.me/osokin/usd');
             shortcut.writeln();
             shortcut.close();
             shortcut.execute();
             $.sleep(4000);
             return shortcut.remove();
-        }), false);
+        }
 
         dlg.center();
         dlg.show();
@@ -127,7 +130,7 @@ try {
         throw new Error(scriptName + '\nPlease open a document before running this script.');
     }
 } catch (e) {
-    alert(e.message, 'Script Alert', true);
+    showError(e);
 }
 
 // Save information about locked & hidden pageItems
@@ -199,4 +202,11 @@ function rotateArt(board) {
 
 function deselect() {
     activeDocument.selection = null;
+}
+
+function showError(err) {
+    if (confirm(scriptName + ': an unknown error has occurred.\n' +
+        'Would you like to see more information?', true, 'Unknown Error')) {
+        alert(err + ': on line ' + err.line, 'Script Error', true);
+    }
 }

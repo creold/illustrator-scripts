@@ -12,6 +12,9 @@
 //    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > ConvertToGradient
+// ============================================================================
+// Donate (optional): If you find this script helpful and want to support me 
+// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
 // ==========================================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2017 (Mac), CS6 (Win).
@@ -54,13 +57,28 @@ function main() {
     }
 
     // Enter value
-    gShift = Math.round(prompt('Enter a value for gradient shift (0-' + maxValue + ')', '0', 'Gradient Shift'));
-    if (gShift == null || gShift <= 0) gShift = 0;
-    if (gShift >= maxValue) gShift = maxValue;
-    gShiftEnd = maxValue - gShift;
+    gShift = prompt('Enter a value for gradient shift (0-' + maxValue + ')', '0', 'Gradient Shift');
+    if (isNaN(Number(gShift))) {
+        alert('Error: \nPlease enter a numeric value.');
+        return;
+    } else if (gShift === null) {
+        return;
+    } else {
+        gShift = Math.round(gShift);
+        if (gShift <= 0) gShift = 0;
+        if (gShift >= maxValue) gShift = maxValue;
+        gShiftEnd = maxValue - gShift;
+    }
 
     gAngle = prompt('Enter a value for gradient angle', '0.0', 'Gradient Angle');
-    if (gAngle == null) gAngle = 0;
+    if (isNaN(Number(gAngle))) {
+        alert('Error: \nPlease enter a numeric value.');
+        return;
+    } else if (gAngle === null) {
+        return;
+    } else {
+        gAngle = Number(gAngle);
+    }
 
     // Start conversion
     for (var i = 0; i < doc.selection.length; i++) {
@@ -167,9 +185,16 @@ function chkFillType(obj) {
         return true;
 }
 
+function showError(err) {
+    if (confirm(scriptName + ': an unknown error has occurred.\n' +
+        'Would you like to see more information?', true, 'Unknown Error')) {
+        alert(err + ': on line ' + err.line, 'Script Error', true);
+    }
+}
+
 // Run script
 try {
     main();
 } catch (e) {
-    alert('Error: ' + e.message + '\rin line #' + e.line);
+    showError(e);
 }

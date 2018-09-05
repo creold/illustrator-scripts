@@ -16,6 +16,9 @@
 // 0.1 Initial version (old name 'PathSubtract'). Manual preparation document. 2 separate script files for run.
 // 1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel.
 // ============================================================================
+// Donate (optional): If you find this script helpful and want to support me 
+// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
+// ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
 // This script is provided "as is" without warranty of any kind.
@@ -32,7 +35,7 @@ app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 // Global variables
 var scriptName = 'SplitPath',
     scriptVersion = '1.0',
-    scriptAuthor = '© Sergey Osokin, 2018',
+    scriptAuthor = '\u00A9 Sergey Osokin, 2018',
     scriptDonate = 'Donate via PayPal';
 if (app.documents.length > 0) {
     var doc = app.activeDocument,
@@ -79,9 +82,9 @@ function main() {
     var btns = win.add('group');
     btns.alignChild = ['fill', 'fill'];
     btns.orientation = 'row';
-    var cancel = btns.add('button', undefined, 'Cancel');
+    var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
     cancel.helpTip = 'Press Esc to Close';
-    var ok = btns.add('button', undefined, 'OK');
+    var ok = btns.add('button', undefined, 'OK', {name: 'ok'});
     ok.helpTip = 'Press Enter to Run';
     ok.active = true;
 
@@ -95,7 +98,7 @@ function main() {
     lblCopyright.text = scriptAuthor;
     var donate = copyright.add('button', undefined, scriptDonate);
 
-    donate.addEventListener('click', (function () {
+    donate.onClick = function () {
         var fname, shortcut;
         fname = '_aiscript_donate.url';
         shortcut = new File('' + Folder.temp + '/' + fname);
@@ -107,7 +110,7 @@ function main() {
         shortcut.execute();
         $.sleep(4000);
         return shortcut.remove();
-    }), false);
+    }
 
     cancel.onClick = function () {
         win.close();
@@ -121,7 +124,7 @@ function main() {
                 pathIntersect();
             }
         } catch (e) {
-            alert('Error: ' + e.message + '\rin line #' + e.line);
+            showError(e);
         }
         win.close();
     }
@@ -258,8 +261,15 @@ function deselect() {
     doc.selection = null;
 }
 
+function showError(err) {
+    if (confirm(scriptName + ': an unknown error has occurred.\n' +
+        'Would you like to see more information?', true, 'Unknown Error')) {
+        alert(err + ': on line ' + err.line, 'Script Error', true);
+    }
+}
+
 try {
     main();
 } catch (e) {
-    alert('Error: ' + e.message + '\rin line #' + e.line);
+    showError(e);
 }
