@@ -1,5 +1,5 @@
 ![header](images/header.jpg)
-![illustrator-scripts](images/cover.jpg)
+![illustrator-scripts](images/cover.gif)
 
 [![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Dribbble](https://img.shields.io/badge/Dribbble-%40creold-DF3A7A.svg)](https://dribbble.com/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/)
 
@@ -7,6 +7,16 @@
 This is a collection of JSX scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
 
 The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6 (Windows), CC 2017 (Mac OS).   
+
+### Alphabetical list of scripts
+* ArtboardsRotateWithObjects.jsx   
+* ConvertToGradient.jsx   
+* ExtUngroup.jsx   
+* FileVersionInformer.jsx   
+* InlineSVGToAI.jsx   
+* SelectOnlyPoints.jsx   
+* SplitPath.jsx   
+* Zoom And Center.jsx 
 
 ### Installation 
 
@@ -67,59 +77,6 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-
-## SplitPath 1.0 (ex-PathSubtract)
-
-Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
-
-### Usage
-
-1. Place the closed filled shape top
-2. Select shape and line
-3. Run script `File → Scripts → SplitPath `
-4. Select cut method in dialog window
- 
-
-![SplitPath](images/demo-SplitPath.gif) 
-
-<a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
-</a> 
-
-## SelectOnlyPoints
-
-After using the Lasso tool or Direct Selection Tool, both Points and Path segments are selected. 
-
-### Usage
-
-1. Select points on paths with Direct Selection Tool `key: A` or Lasso tool `key: Q`
-2. Run script `File → Scripts → SelectOnlyPoints`
- 
-
-![SelectOnlyPoints](images/demo-SelectOnlyPoints.gif) 
-
-<a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
-</a> 
-
-## Zoom and center
-
-Zooms active view to selection or to all object(s) in a document.   
-*Based on original script by [John Wundes](http://www.wundes.com/).*
-
-### Usage
-
-1. Select object(s) to zoom or deselect all
-2. Run script `File → Scripts → Zoom and center`
-3. If nothing is selected, you will see a dialog with options
- 
-
-![Zoom-And-Center](images/Zoom-And-Center.jpg) 
-
-<a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
-</a> 
-
 ## ExtUngroup v.1.1
 This script is сan be easily custom ungrouping to all group items & releasing clipping masks in the document.   
 *Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
@@ -147,7 +104,7 @@ Script for collecting information about the program version of .ai & .eps files 
 1. Run script `File → Scripts → FileVersionInformer`
 2. Choose folder with .ai or .eps files
 3. Wait for the completion message
-3. Look "FileVersionInformer.txt" in source folder
+4. Look "FileVersionInformer.txt" in source folder
  
 
 ![FileVersionInformer](images/demo-FileVersionInformer.gif) 
@@ -155,6 +112,77 @@ Script for collecting information about the program version of .ai & .eps files 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
 </a> 
+
+## InlineSVGToAI
+
+The script inserts the SVG code as an object from the clipboard into the Adobe Illustrator CC 2014+. Adobe Illustrator CC 2018 v.22.1 (march, 2018) can insert SVG graphics without a script.   
+*Author: [Alexander Ladygin](http://ladygin.pro/). Code refactoring: Sergey Osokin.*
+
+### Usage
+
+1. Run script `File → Scripts → InlineSVGToAI`
+2. Paste your svg code in textarea
+3. Press button "Paste" 
+
+![InlineSVGToAI](images/demo-InlineSVGToAI.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## SelectOnlyPoints
+
+After using the Lasso tool or Direct Selection Tool, both Points and Path segments are selected. 
+
+### Usage
+
+1. Select points on paths with Direct Selection Tool `key: A` or Lasso tool `key: Q`
+2. Run script `File → Scripts → SelectOnlyPoints`
+ 
+
+![SelectOnlyPoints](images/demo-SelectOnlyPoints.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## SplitPath 1.0 (ex-PathSubtract)
+
+Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
+
+### Usage
+
+1. Place the closed filled shape top
+2. Select shape and line
+3. Run script `File → Scripts → SplitPath `
+4. Select cut method in dialog window
+ 
+
+![SplitPath](images/demo-SplitPath.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## Zoom and center
+
+Zooms active view to selection or to all object(s) in a document.   
+*Based on original script by [John Wundes](http://www.wundes.com/).*
+
+### Usage
+
+1. Select object(s) to zoom or deselect all
+2. Run script `File → Scripts → Zoom and center`
+3. If nothing is selected, you will see a dialog with options
+ 
+
+![Zoom-And-Center](images/Zoom-And-Center.jpg) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+### Don't forget sharing link with a friend 🙂 
 
 
 ## Contribute
