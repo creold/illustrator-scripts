@@ -42,10 +42,10 @@ If you find this script helpful, consider shouting me coffee ☕️ via [PayPal]
   <img width="160" height="49" src="images/yandex-badge.png" >
 </a>
 
-## ArtboardsRotateWithObjects 1.1
+## ArtboardsRotateWithObjects 1.2
 
 Script to rotate 90 degrees an document artboards with all the objects on it.   
-*Co-author: [Alexander Ladygin](http://ladygin.pro/)*
+*Author: [Alexander Ladygin](http://ladygin.pro/). UI: Sergey Osokin.*
 
 ### Usage
 

@@ -1,7 +1,7 @@
 // Artboards_Rotate_With_Objects.jsx for Adobe Illustrator
 // Description: Script to rotate 90 degrees an document artboards with all the objects on it.
 // Requirements: Adobe Illustrator CS6 and above
-// Date: July, 2018
+// Date: October, 2018
 // Authors: Alexander Ladygin, email: i@ladygin.pro
 //          Sergey Osokin, email: hi@sergosokin.ru
 // ============================================================================
@@ -17,6 +17,7 @@
 // 0.1 Initial version. Do not rotate locked, hidden items
 // 1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
 // 1.1 Added rotate angle: 90 CW or 90 CCW.
+// 1.2 Fix issues.
 // ============================================================================
 // Donate (optional): If you find this script helpful and want to support me 
 // by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
@@ -35,7 +36,7 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var scriptName = 'ARWO',
-    scriptVersion = '1.1',
+    scriptVersion = '1.2',
     scriptAuthor = '\u00A9 Alex Ladygin, Serg Osokin',
     scriptDonate = 'Donate via PayPal';
 
@@ -106,6 +107,9 @@ try {
             return shortcut.remove();
         }
 
+	    deselect();
+        app.redraw();
+
         dlg.center();
         dlg.show();
 
@@ -162,7 +166,9 @@ function restoreItemsState() {
 
 // Main function for rotate artboard
 function rotateArt(board) {
-    var artRect = board.artboardRect,
+    app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
+
+    var artRect = [].concat(board.artboardRect),
         artWidth = artRect[2] - artRect[0],
         artHeight = -(artRect[3] - artRect[1]);
     deselect();
@@ -175,29 +181,27 @@ function rotateArt(board) {
         artRect[2] - artWidth / 2 + (artHeight / 2),
         artRect[3] + artHeight / 2 - (artWidth / 2)
     ];
-    board.artboardRect = newArtRect;
 
     // Rotate objects
     for (var k = 0; k < selection.length; k++) {
-        var bnds = selection[k].geometricBounds,
+        var bnds = selection[k].position,
+            __width = selection[k].width,
+            __height = selection[k].height,
             top = bnds[1] - artRect[1],
-            right = bnds[2] - artRect[2],
-            left = bnds[0] - artRect[0],
-            bottom = bnds[3] - artRect[3];
-        // selection[k].rotate(90);
+            left = bnds[0] - artRect[0];
+
         if (cwAngle.value == true) {
             // rotate 90 CW
-            selection[k].rotate(-90);
-            selection[k].left = newArtRect[0] + bottom;
-            selection[k].top = newArtRect[1] - left;
+            selection[k].rotate(-90, true, true, true, true, Transformation.CENTER);
+            selection[k].position = [newArtRect[2] - __height + top, newArtRect[1] - left];
         } else {
             // rotate 90 CCW
-            selection[k].rotate(90);
-            selection[k].left = newArtRect[0] - top;
-            selection[k].top = newArtRect[1] + right;
+            selection[k].rotate(90, true, true, true, true, Transformation.CENTER);
+            selection[k].position = [newArtRect[0] - top, newArtRect[3] + left + __width];
         }
     }
     deselect();
+    board.artboardRect = newArtRect;
 }
 
 function deselect() {
