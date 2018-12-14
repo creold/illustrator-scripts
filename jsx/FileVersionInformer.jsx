@@ -29,7 +29,6 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var sourceFolder;
-var emptyFolder = 0;
 
 function main() {
 	// Progress bar
@@ -68,14 +67,10 @@ function main() {
 			}
 			resultFile.writeln();
 			resultFile.close();
+			alert('Script is done.\nLook "FileVersionInformer.txt" in source folder');
 		} else {
-			emptyFolder++;
+			alert('No matching files found.');
 		}
-	}
-	if (emptyFolder == 2) {
-		alert('No matching files found');
-	} else {
-		alert('Script is done.\nLook "FileVersionInformer.txt" in source folder');
 	}
 }
 

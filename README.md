@@ -176,7 +176,7 @@ Zooms active view to selection or to all object(s) in a document.
 3. If nothing is selected, you will see a dialog with options
  
 
-![Zoom-And-Center](images/Zoom-And-Center.jpg) 
+![Zoom-And-Center](images/demo-Zoom-And-Center.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
