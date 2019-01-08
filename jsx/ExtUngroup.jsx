@@ -36,22 +36,20 @@
 // Check other author's scripts: https://github.com/creold
 
 #target illustrator
-app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
 var scriptName = 'ExtUngroup',
-  scriptVersion = '1.1',
-  scriptAuthor = '\u00A9 Sergey Osokin, 2018',
-  scriptDonate = 'Donate via PayPal';
-if (app.documents.length > 0) {
-  var doc = app.activeDocument;
-}
+    scriptVersion = '1.2',
+    scriptAuthor = '\u00A9 Sergey Osokin, 2019',
+    scriptDonate = 'Donate via PayPal';
+var doc = app.activeDocument;
 
 if (app.documents.length > 0) {
   try {
-    var currLayer = doc.activeLayer;
-    var boardNum = doc.artboards.getActiveArtboardIndex() + 1;
-    var clearArr = new Array();
+    var currLayer = doc.activeLayer,
+        boardNum = doc.artboards.getActiveArtboardIndex() + 1,
+        clearArr = [], // Array of Clipping Masks obj
+        margins = [10, 20, 10, 20];
 
     // Create Main Window
     var win = new Window('dialog', scriptName + ' ver.' + scriptVersion, undefined);
@@ -59,53 +57,47 @@ if (app.documents.length > 0) {
     win.alignChildren = ['fill', 'fill'];
 
     // Target radiobutton
-    var slctTarget = win.add('panel', undefined, 'Target:');
+    var slctTarget = win.add('panel', undefined, 'Target');
     slctTarget.alignChildren = 'left';
-    slctTarget.margins = 20;
-    if (doc.selection.length > 0) {
+    slctTarget.margins = margins;
+    if (getSelection(doc).length > 0) {
       var currSelRadio = slctTarget.add('radiobutton', undefined, 'Selected objects');
-      currSelRadio.value = true;
     }
-    var currLayerRadio = slctTarget.add('radiobutton', undefined, 'Active Layer [' + currLayer.name + ']');
+    if (!currLayer.locked && currLayer.visible) {
+      var currLayerRadio = slctTarget.add('radiobutton', undefined, 'Active Layer "' + currLayer.name + '"');
+      currLayerRadio.value = true;
+    }
     var currBoardRadio = slctTarget.add('radiobutton', undefined, 'Artboard No.' + boardNum);
     var currDocRadio = slctTarget.add('radiobutton', undefined, 'All Document');
-    if (doc.selection.length > 0) {
+    if (getSelection(doc).length > 0) {
       currSelRadio.value = true;
-    } else {
-      currLayerRadio.value = true;
+    } else if (typeof (currLayerRadio) == 'undefined') {
+      currBoardRadio.value = true;
     }
 
     // Action checkbox
-    var options = win.add('panel', undefined, 'Options:');
+    var options = win.add('panel', undefined, 'Options');
     options.alignChildren = 'left';
-    options.margins = 20;
+    options.margins = margins;
     var chkUnroup = options.add('checkbox', undefined, 'Ungroup All');
     chkUnroup.value = true;
     var chkClipping = options.add('checkbox', undefined, 'Release Clipping Masks');
-    var rmvClip = options.add('group'),
-      chkRmvClipping = rmvClip.add('checkbox', undefined, 'Remove Masks Shapes');
-    rmvClip.maximumSize = [0, 0];
-    chkRmvClipping.visible = false;
+    var chkRmvClipping = options.add('checkbox', undefined, 'Remove Masks Shapes');
+    chkRmvClipping.enabled = false;
 
     // Show/hide checkbox 'Remove Masks Shapes'
     chkClipping.onClick = function () {
-      rmvClip.maximumSize = (chkRmvClipping.visible ^= 1) ? [1000, 1000] : [0, 0];
-      win.layout.layout(true);
-      if (!this.value) {
-        chkRmvClipping.value = false;
-      }
+      chkRmvClipping.enabled = !chkRmvClipping.enabled;
     }
 
     // Buttons
     var btns = win.add('group');
     btns.alignChildren = ['fill', 'fill'];
     btns.margins = [0, 10, 0, 0];
-    var cancel = btns.add('button', undefined, 'Cancel');
+    var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
     cancel.helpTip = 'Press Esc to Close';
-    var ok = btns.add('button', undefined, 'OK');
+    var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
     ok.helpTip = 'Press Enter to Run';
-    ok.active = true;
-    cancel.onClick = function () { win.close(); }
     ok.onClick = okClick;
 
     // Copyright block
@@ -113,12 +105,19 @@ if (app.documents.length > 0) {
     copyright.orientation = 'column';
     copyright.alignChild = ['center', 'center'];
     copyright.alignment = 'fill';
-    copyright.margins = 5;
+    copyright.margins = margins / 4;
     var lblCopyright = copyright.add('statictext');
     lblCopyright.text = scriptAuthor;
     var donate = copyright.add('button', undefined, scriptDonate);
-    // Opening PayPal donate page
-    donate.addEventListener('click', (function () {
+
+    if (doc.groupItems.length > 0) {
+      win.show();
+    } else { 
+      alert(scriptName + '\nDocument does not contain any groups.'); 
+    }
+
+    // Buttons click 
+    donate.onClick = function () {
       var fname, shortcut;
       fname = '_aiscript_donate.url';
       shortcut = new File('' + Folder.temp + '/' + fname);
@@ -130,65 +129,56 @@ if (app.documents.length > 0) {
       shortcut.execute();
       $.sleep(4000);
       return shortcut.remove();
-    }), false);
+    }
 
-    if (doc.groupItems.length > 0) {
-      win.center();
-      win.show();
-    } else { alert(scriptName + '\nDocument does not contain any groups.'); }
+    cancel.onClick = function () {
+      win.close();
+    }
 
     function okClick() {
       // Ungroup selected objects
-      if (typeof (currSelRadio) !== 'undefined' && currSelRadio.value == true) {
-        ungroup(getSelection());
+      if (typeof (currSelRadio) !== 'undefined' && currSelRadio.value) {
+        ungroup(getSelection(doc));
       }
       // Ungroup in active Layer if it contains groups
-      if (currLayerRadio.value == true && currLayer.groupItems.length > 0) {
-        if (currLayer.locked == true && currLayer.visible == false) {
-          alert(scriptName + '\nCurrent Layer not editable');
-          return;
-        }
+      if (typeof (currLayerRadio) !== 'undefined' && currLayerRadio.value) {
         ungroup(currLayer);
       }
       // Ungroup in active Artboard only visible & unlocked objects
-      if (currBoardRadio.value == true) {
-        doc.selection = null;
-        app.redraw();
+      if (currBoardRadio.value) {
         doc.selectObjectsOnActiveArtboard();
-        ungroup(getSelection());
+        ungroup(getSelection(doc));
         doc.selection = null;
       }
       // Ungroup all in the current Document
-      if (currDocRadio.value == true) {
+      if (currDocRadio.value) {
         for (var j = 0; j < doc.layers.length; j++) {
-          var targetLr = doc.layers[j];
+          var docLayer = doc.layers[j];
           // Run only for editable visible layers
-          if (targetLr.groupItems.length > 0 && targetLr.locked == false && targetLr.visible == true) {
-            ungroup(targetLr);
+          if (!docLayer.locked && docLayer.visible && docLayer.groupItems.length > 0) {
+            ungroup(docLayer);
           }
         }
       }
       // Remove empty clipping masks after ungroup
-      if (chkRmvClipping.value == true) removeMasks();
+      if (chkRmvClipping.value) {
+        removeMasks(clearArr);
+      }
       win.close();
     }
   } catch (e) {
-    alert(e.message, 'Script Alert', true);
+    showError(e);
   }
 } else {
   alert(scriptName + '\nPlease open a document before running this script.');
 }
 
-function getSelection() {
-  var selArr = new Array();
-  for (var j = 0; j < doc.selection.length; j++) {
-    selArr.push(doc.selection[j]);
-  }
-  return selArr;
+function getSelection(doc) {
+  return doc.selection;
 }
 
 function getChildAll(obj) {
-  var childsArr = new Array();
+  var childsArr = [];
   if (Object.prototype.toString.call(obj) === '[object Array]') {
     childsArr.push.apply(childsArr, obj);
   } else {
@@ -206,38 +196,44 @@ function getChildAll(obj) {
 
 // Ungroup array of target objects
 function ungroup(obj) {
-  if (chkClipping.value == false && obj.clipped == true) { return; }
-  var elements = getChildAll(obj);
-  if (elements.length < 1) {
+  if (!chkClipping.value && obj.clipped) { 
+    return; 
+  }
+
+  var childArr = getChildAll(obj);
+
+  if (childArr.length < 1) {
     obj.remove();
     return;
-  } else {
-    for (var k = 0; k < elements.length; k++) {
-      var target = elements[k];
-      if (chkUnroup.value == false && target.clipping == false) { return; }
-      try {
-        if (target.parent.typename !== 'Layer') {
-          target.move(obj, ElementPlacement.PLACEBEFORE);
-          // Push Clipping Masks in Array 
-          if (chkRmvClipping.value == true) {
-            if ((target.typename === 'PathItem' && target.filled == false && target.stroked == false) ||
-              (target.typename === 'CompoundPathItem' && target.pathItems[0].filled == false && target.pathItems[0].stroked == false))
-              clearArr.push(target);
-          }
-        }
-        if (target.typename === 'GroupItem' || target.typename === 'Layer') {
-          ungroup(target);
-        }
-      } catch (e) {
-      }
-    }
   }
-  app.redraw();
+
+  for (var i = 0; i < childArr.length; i++) {
+    var element = childArr[i];
+    try {
+      if (element.parent.typename !== 'Layer') {
+        element.move(obj, ElementPlacement.PLACEBEFORE);
+        // Push empty paths in array 
+        if ((element.typename === 'PathItem' && !element.filled && !element.stroked) ||
+          (element.typename === 'CompoundPathItem' && !element.pathItems[0].filled && !element.pathItems[0].stroked))
+          clearArr.push(element);
+      }
+      if (element.typename === 'GroupItem' || element.typename === 'Layer') {
+        ungroup(element);
+      }
+    } catch (e) { }
+  }
 }
 
 // Remove empty clipping masks after ungroup
-function removeMasks() {
-  for (var i = 0; i < clearArr.length; i++) {
-    clearArr[i].remove();
+function removeMasks(arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].remove();
+  }
+}
+
+function showError(err) {
+  if (confirm(scriptName + ': an unknown error has occurred.\n' +
+    'Would you like to see more information?', true, 'Unknown Error')) {
+    alert(err + ': on line ' + err.line, 'Script Error', true);
   }
 }

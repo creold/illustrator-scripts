@@ -77,7 +77,7 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-## ExtUngroup v.1.1
+## ExtUngroup v.1.2
 This script is сan be easily custom ungrouping to all group items & releasing clipping masks in the document.   
 *Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
 
