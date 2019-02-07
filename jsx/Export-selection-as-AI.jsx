@@ -87,7 +87,7 @@ function main() {
   }
 
   btnOutFolder.onClick = function () {
-    var userFolder = Folder.selectDialog('Select a folder to btnExport');
+    var userFolder = Folder.selectDialog('Select a folder to export');
     if (userFolder != null) {
       lblOutFolder.text = decodeURI(userFolder);
       outFolder = userFolder;
