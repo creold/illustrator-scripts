@@ -11,12 +11,13 @@ The descriptions for each file can be found in the file's header text. Test envi
 ### Alphabetical list of scripts
 * ArtboardsRotateWithObjects.jsx   
 * ConvertToGradient.jsx   
+* Export-selection-as-AI.jsx   
 * ExtUngroup.jsx   
 * FileVersionInformer.jsx   
 * InlineSVGToAI.jsx   
 * SelectOnlyPoints.jsx   
 * SplitPath.jsx   
-* Zoom And Center.jsx 
+* Zoom-and-center.jsx 
 
 ### Installation 
 
@@ -51,7 +52,7 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
 
 1. Open your file
 2. Run script `File → Scripts → ArtboardsRotateWithObjects`
-3. Select the options in the dialog window & click `Ok` button
+3. Select the options in the dialog box & click `Ok` button
 
 ![ArtboardsRotateWithObjects](images/demo-ArtboardsRotateWithObjects.gif) 
 
@@ -77,6 +78,24 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
   <img width="160" height="49" src="images/download.png">
 </a> 
 
+
+## Export selection as AI
+Exports all selected objects to AI files.    
+*Based on Layers to SVG 0.1 by Anton Ball.*
+
+### Usage
+
+1. Select objects
+2. Run script `File → Scripts → Export-selection-as-AI`
+3. Select options in dialog box
+ 
+
+![Export-selection-as-AI](images/demo-Export-selection-as-AI.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
 ## ExtUngroup v.1.2
 This script is сan be easily custom ungrouping to all group items & releasing clipping masks in the document.   
 *Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
@@ -85,7 +104,7 @@ This script is сan be easily custom ungrouping to all group items & releasing c
 
 1. Select object(s) to ungroup or deselect all
 2. Run script `File → Scripts → ExtUngroup`
-3. Select options in dialog window
+3. Select options in dialog box
  
 
 ![Zoom-And-Center](images/demo-ExtUngroup.gif) 
@@ -155,7 +174,7 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 1. Place the closed filled shape top
 2. Select shape and line
 3. Run script `File → Scripts → SplitPath `
-4. Select cut method in dialog window
+4. Select cut method in dialog box
  
 
 ![SplitPath](images/demo-SplitPath.gif) 
@@ -172,7 +191,7 @@ Zooms active view to selection or to all object(s) in a document.
 ### Usage
 
 1. Select object(s) to zoom or deselect all
-2. Run script `File → Scripts → Zoom and center`
+2. Run script `File → Scripts → Zoom-and-center`
 3. If nothing is selected, you will see a dialog with options
  
 
