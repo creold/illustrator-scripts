@@ -201,7 +201,12 @@ Zooms active view to selection or to all object(s) in a document.
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-### Don't forget sharing link with a friend 🙂 
+## Testimonials
+* Sergey, these scripts of yours are great. — Terry Foxx   
+* Wow. I just installed and successfully tested. Outstanding work!!!. — Zak Lay
+* Tried your script to export selected objects to separate Ai, works smartly. — Dmitry
+
+#### Don't forget sharing link with a friend 🙂 
 
 
 ## Contribute

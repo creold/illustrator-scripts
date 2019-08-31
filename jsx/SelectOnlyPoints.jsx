@@ -12,11 +12,15 @@
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > SelectOnlyPoints
 // ============================================================================
+// Versions:
+// 0.1 Initial version
+// 0.2 Fixed when selected unnecessary anchor handles (thanks for Oleg Krasnov, www.github.com/krasnovpro)
+// ============================================================================
 // Donate (optional): If you find this script helpful and want to support me 
 // by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
 // ==========================================================================================
 // NOTICE:
-// Tested with Adobe Illustrator CC 2017 (Mac).
+// Tested with Adobe Illustrator CC 2017..2019 (Mac / Win).
 // This script is provided "as is" without warranty of any kind.
 // Free to use, not for sale.
 // ==========================================================================================
@@ -28,6 +32,9 @@
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
+// Global variables
+var scriptName = 'SelectOnlyPoints 0.2';
+
 // Main function
 function main() {
   if (app.documents.length < 1) {
@@ -36,20 +43,38 @@ function main() {
   }
 
   var doc = app.activeDocument;
-  var docSelection = doc.selection;
+  var docSelection = [];
+
+  for (var i = 0; i < doc.selection.length; i++) { 
+    var currItem = doc.selection[i];
+    if (currItem.typename == 'GroupItem') {
+      for (var j = 0; j < currItem.pageItems.length; j++) {
+          docSelection.push(currItem.pageItems[j]);
+      }
+    } else {
+      docSelection.push(currItem);
+    }
+  }
 
   if (!(docSelection instanceof Array) || docSelection.length < 1) {
-    alert('Please select points atleast one object.');
+    alert(scriptName + '\nUse Lasso tool or Direct Selection Tool for select points.');
     return;
   }
 
   for (var i = 0; i < docSelection.length; i++) {
-    var pointState = false; //
+    var pointState = false;
     if (docSelection[i].pathPoints.length > 1) {
       var points = docSelection[i].pathPoints;
       for (var j = 0; j < points.length; j++) {
-        if (isSelected(points[j])) {
+        var currPoint = points[j];
+        var nextIndex = (j + 1 < points.length) ? j + 1 : 0;
+        if (isSelected(currPoint)) {
           pointState = true;
+        } else {
+          // Deselect orphan handles
+          if (/right/i.test(currPoint.selected) && !(/anchor/i.test(points[nextIndex].selected))) {
+            currPoint.selected = (PathPointSelection.NOSELECTION);
+          }
         }
       }
     }
