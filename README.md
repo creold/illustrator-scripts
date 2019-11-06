@@ -149,6 +149,22 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
   <img width="160" height="49" src="images/download.png">
 </a> 
 
+## Rescale
+
+Automatic scaling of objects to the desired size. If you draw a line on top with the length or height of the desired object, 'Old Size' will be filled automatically. Units associated with "Document Setup".      
+
+### Usage
+
+1. Run script `File → Scripts → Rescale`
+2. Enter numeric values
+3. Press button "OK" 
+
+![Rescale](images/demo-Rescale.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
 ## SelectOnlyPoints
 
 After using the Lasso tool or Direct Selection Tool, both Points and Path segments are selected. 
