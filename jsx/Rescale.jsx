@@ -14,12 +14,28 @@
 // 2. Restart Illustrator
 // 3. Choose File > Scripts > Rescale
 // ============================================================================
+// Versions:
+// 0.1 Initial version.
+// 0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
+// ============================================================================
+// NOTICE:
+// Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
+// This script is provided "as is" without warranty of any kind.
+// Free to use, not for sale.
+// ============================================================================
+// Released under the MIT license.
+// http://opensource.org/licenses/mit-license.php
+// ============================================================================
+// Check other author's scripts: https://github.com/creold
 
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var scriptName = 'Rescale 0.1';
+var scriptName = 'Rescale 0.2';
+var setName = scriptName,
+    actionName = 'Scale-Corners',
+    actionPath = Folder.temp;
 
 function main () {
   if (app.documents.length < 1) {
@@ -28,32 +44,38 @@ function main () {
   }
 
   var doc = app.activeDocument;
-  
+
   // Create Main Window
   var dialog = new Window('dialog', scriptName);
-  dialog.orientation = 'column', 'alignChildren: "right"';
+      dialog.orientation = 'column', 'alignChildren: "right"';
 
   var oldSizePnl = dialog.add('group {alignment: "right"}');
-  oldSizePnl.orientation = 'row';
-  oldSizePnl.add ('statictext', undefined, 'Old size, ' + getDocUnit() + ':');    
+      oldSizePnl.orientation = 'row';
+      oldSizePnl.add ('statictext', undefined, 'Old size, ' + getDocUnit() + ':');    
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
-  oSizeTxt.characters = 6;
-  oSizeTxt.active = true;
+      oSizeTxt.characters = 6;
+      oSizeTxt.active = true;
       
   var newSizePnl = dialog.add('group {alignment: "right"}');
-  newSizePnl.orientation = 'row';
-  newSizePnl.add ('statictext', undefined, 'New size, ' + getDocUnit() + ':');    
+      newSizePnl.orientation = 'row';
+      newSizePnl.add ('statictext', undefined, 'New size, ' + getDocUnit() + ':');    
 
   var nSizeTxt = newSizePnl.add ('edittext', undefined);
-  nSizeTxt.characters = 6;
+      nSizeTxt.characters = 6;
 
-  var chkRmv = dialog.add('checkbox', undefined, 'Remove top path');
+  var option = dialog.add('group {alignment: "center"}');
+      option.orientation = 'column';
+  var chkCorner = option.add('checkbox', undefined, 'Scale Corners');
+      chkCorner.value = true;
+  var chkStroke = option.add('checkbox', undefined, 'Scale Strokes & Effects');
+      chkStroke.value = true;
+  var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
       
   var buttons = dialog.add ('group');
   var ok = buttons.add ('button', undefined, 'OK',  { name: 'ok' });
   var cancel = buttons.add ('button', undefined, 'Cancel', { name: 'cancel' });
-
+  
   ok.onClick = okClick;
 
   cancel.onClick = function () {
@@ -74,7 +96,7 @@ function main () {
     }
     dialog.show();
   }
-
+  
   // Main function
   function okClick() {
     try {
@@ -92,6 +114,30 @@ function main () {
         return;
       }
 
+      // Generate Action
+      var actionStr = 
+        ['/version 3',
+        '/name [' + setName.length + ' ' + ascii2Hex(setName) + ']',
+        '/actionCount 1',
+        '/action-1 {',
+        '/name [' + actionName.length + ' ' + ascii2Hex(actionName) + ']',
+        '    /eventCount 1',
+        '    /event-1 {',
+        '        /internalName (ai_liveshapes)',
+        '        /parameterCount 1',
+        '        /parameter-1 {',
+        '            /key 1933800046',
+        '            /type (boolean)',
+        '            /value ',
+                     chkCorner.value ? 1 : 0,
+        '        }',
+        '    }',
+        '}'].join('');
+
+      createAction(actionStr, setName, actionPath);
+      app.doScript(actionName, setName);
+      app.unloadAction(setName, '');
+
       // Grouping for better performance. Thanks for help @moodyallen
       var items = doc.selection;
       var tmpArray = [];
@@ -104,7 +150,15 @@ function main () {
           items[i].move(selGroup, ElementPlacement.PLACEATEND);
       }
       
-      selGroup.resize(ratio, ratio);
+      selGroup.resize(
+        ratio, // X
+        ratio, // Y
+        true, // changePositions
+        true, // changeFillPatterns
+        true, // changeFillGradients
+        true, // changeStrokePattern
+        chkStroke.value ? ratio : 100,
+      );
 
       // Return objects to places
       items = selGroup.pageItems;
@@ -121,7 +175,7 @@ function main () {
       dialog.close();
     } catch (e) {}
   }
-
+  
   // Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
   function getDocUnit() {
       var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
@@ -199,7 +253,21 @@ function main () {
       }
       return parseFloat(value);
   }
+
+  function createAction (str, set, path) {
+      var f = new File('' + path + '/' + set + '.aia');
+      f.open('w');
+      f.write(str);
+      f.close();
+      app.loadAction(f);
+      f.remove();
+  }
+
+  function ascii2Hex(hex) {
+    return hex.replace(/./g, function (a) { return a.charCodeAt(0).toString(16) });
+  }
 } 
+
 
 // Run script
 try {
