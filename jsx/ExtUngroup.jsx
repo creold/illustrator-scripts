@@ -29,6 +29,7 @@
 // Versions:
 //  1.0 Initial version
 //  1.1 Added option to delete / save mask objects. Fixed a performance issue.
+//  1.2 Fixed ungrouping of the selected group inside another.
 // ============================================================================
 // Released under the MIT license.
 // http://opensource.org/licenses/mit-license.php
@@ -138,7 +139,10 @@ if (app.documents.length > 0) {
     function okClick() {
       // Ungroup selected objects
       if (typeof (currSelRadio) !== 'undefined' && currSelRadio.value) {
-        ungroup(getSelection(doc));
+        var currSel = getSelection(doc);
+        for (var i = 0; i < currSel.length; i++) {
+          if (currSel[i].typename === 'GroupItem') ungroup(currSel[i]);
+        }
       }
       // Ungroup in active Layer if it contains groups
       if (typeof (currLayerRadio) !== 'undefined' && currLayerRadio.value) {
@@ -167,7 +171,7 @@ if (app.documents.length > 0) {
       win.close();
     }
   } catch (e) {
-    showError(e);
+    // showError(e);
   }
 } else {
   alert(scriptName + '\nPlease open a document before running this script.');
