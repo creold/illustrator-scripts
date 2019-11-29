@@ -15,6 +15,7 @@
 // Versions:
 // 0.1 Initial version
 // 0.2 Fixed when selected unnecessary anchor handles (thanks for Oleg Krasnov, www.github.com/krasnovpro)
+// 0.3 Minor bug fixes and improvements
 // ============================================================================
 // Donate (optional): If you find this script helpful and want to support me 
 // by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
@@ -29,11 +30,11 @@
 // ==========================================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
-app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+// #target illustrator
+// app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var scriptName = 'SelectOnlyPoints 0.2';
+var scriptName = 'SelectOnlyPoints 0.3';
 
 // Main function
 function main() {
@@ -43,28 +44,19 @@ function main() {
   }
 
   var doc = app.activeDocument;
-  var docSelection = [];
+  var selArray = [];
+  
+  getPaths(doc.selection, selArray);
 
-  for (var i = 0; i < doc.selection.length; i++) { 
-    var currItem = doc.selection[i];
-    if (currItem.typename == 'GroupItem') {
-      for (var j = 0; j < currItem.pageItems.length; j++) {
-          docSelection.push(currItem.pageItems[j]);
-      }
-    } else {
-      docSelection.push(currItem);
-    }
-  }
-
-  if (!(docSelection instanceof Array) || docSelection.length < 1) {
+  if (!(selArray instanceof Array) || selArray.length < 1) {
     alert(scriptName + '\nUse Lasso tool or Direct Selection Tool for select points.');
     return;
   }
 
-  for (var i = 0; i < docSelection.length; i++) {
+  for (var i = 0; i < selArray.length; i++) {
     var pointState = false;
-    if (docSelection[i].pathPoints.length > 1) {
-      var points = docSelection[i].pathPoints;
+    if (selArray[i].pathPoints.length > 1) {
+      var points = selArray[i].pathPoints;
       for (var j = 0; j < points.length; j++) {
         var currPoint = points[j];
         var nextIndex = (j + 1 < points.length) ? j + 1 : 0;
@@ -79,11 +71,33 @@ function main() {
       }
     }
     // Deselect Path if no Point is selected
-    if (pointState == false) {
-      docSelection[i].selected = false;
+    if (!pointState) {
+      selArray[i].selected = false;
     }
   }
   app.redraw();
+}
+
+function getPaths(item, arr) {
+  for (var i = 0; i < item.length; i++) {
+    var currItem = item[i];
+    try {
+      switch (currItem.typename) {
+        case 'GroupItem':
+          getPaths(currItem.pageItems, arr);
+          break;
+        case 'PathItem':
+          arr.push(currItem);
+          break;
+        case 'CompoundPathItem':
+          getPaths(currItem.pathItems, arr);
+          break;
+        default:
+          currItem.selected = false;
+          break;
+        }
+      } catch (e) {}
+    }
 }
 
 // Check current Point is selected
@@ -101,6 +115,6 @@ function showError(err) {
 // Run script
 try {
   main();
-} catch (e) { 
-  showError(e);
+} catch (e) {
+  // showError(e);
 }
