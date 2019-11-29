@@ -17,6 +17,7 @@
 // Versions:
 // 0.1 Initial version.
 // 0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
+// 0.2.1 Minor improvements
 // ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
@@ -32,7 +33,7 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var scriptName = 'Rescale 0.2';
+var scriptName = 'Rescale 0.2.1';
 var setName = scriptName,
     actionName = 'Scale-Corners',
     actionPath = Folder.temp;
@@ -71,6 +72,7 @@ function main () {
   var chkStroke = option.add('checkbox', undefined, 'Scale Strokes & Effects');
       chkStroke.value = true;
   var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
+      chkRmv.value = true;
       
   var buttons = dialog.add ('group');
   var ok = buttons.add ('button', undefined, 'OK',  { name: 'ok' });
@@ -90,6 +92,7 @@ function main () {
     if (keyPath.typename === 'PathItem' && !keyPath.closed) {
       var keyPathLength = keyPath.length; // If you use a straight line to measure
       oSizeTxt.text = (convertUnits(keyPathLength, getDocUnit())).toFixed(3);
+      nSizeTxt.active = true;
     } else {
       chkRmv.enabled = false;
       chkRmv.value = false;
