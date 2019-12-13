@@ -12,10 +12,12 @@ The descriptions for each file can be found in the file's header text. Test envi
 * ArtboardsRotateWithObjects.jsx   
 * ConvertToGradient.jsx   
 * Export-selection-as-AI.jsx   
-* ExtUngroup.jsx   
+* ExtUngroup.jsx `(upd, 25.11.2019)`   
 * FileVersionInformer.jsx   
 * InlineSVGToAI.jsx   
-* SelectOnlyPoints.jsx   
+* RenameItems.jsx `(new, 13.12.2019)`
+* Rescale.jsx `(new, 06.11.2019)`
+* SelectOnlyPoints.jsx `(upd, 29.11.2019)`   
 * SplitPath.jsx   
 * Zoom-and-center.jsx 
 
@@ -141,9 +143,25 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 
 1. Run script `File → Scripts → InlineSVGToAI`
 2. Paste your svg code in textarea
-3. Press button "Paste" 
+3. Press button "Paste"
 
 ![InlineSVGToAI](images/demo-InlineSVGToAI.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## RenameItems
+
+Script to batch rename selected items with many options or simple rename one selected item / active layer.      
+
+### Usage
+
+1. Run script `File → Scripts → RenameItems`
+2. Enter name
+3. Choose options
+
+![Rescale](images/demo-RenameItems.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
