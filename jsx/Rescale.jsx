@@ -18,6 +18,7 @@
 // 0.1 Initial version.
 // 0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
 // 0.2.1 Minor improvements
+// 0.2.2 Fixed decimal separator bug
 // ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
@@ -33,7 +34,7 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var scriptName = 'Rescale 0.2.1';
+var scriptName = 'Rescale 0.2.2';
 var setName = scriptName,
     actionName = 'Scale-Corners',
     actionPath = Folder.temp;
@@ -102,14 +103,16 @@ function main () {
   
   // Main function
   function okClick() {
+    var oSize = parseLocalNum(oSizeTxt.text);
+    var nSize = parseLocalNum(nSizeTxt.text);
     try {
-      if (isNaN(Number(oSizeTxt.text)) || isNaN(Number(nSizeTxt.text))) {
+      if (isNaN(Number(oSize)) || isNaN(Number(nSize))) {
         alert('Please enter a numeric value.');
         return;
       }
 
-      var oldSize = convertUnits(parseFloat(oSizeTxt.text), 'px');
-      var newSize = convertUnits(parseFloat(nSizeTxt.text), 'px');
+      var oldSize = convertUnits(parseFloat(oSize), 'px');
+      var newSize = convertUnits(parseFloat(nSize), 'px');
       var ratio = (newSize / oldSize)*100;
       // When old and new size are equal
       if (ratio == 100) {
@@ -256,6 +259,11 @@ function main () {
       }
       return parseFloat(value);
   }
+
+// Set decimal separator symbol
+function parseLocalNum(num) {
+    return +(num.replace(',', '.'));
+}
 
   function createAction (str, set, path) {
       var f = new File('' + path + '/' + set + '.aia');
