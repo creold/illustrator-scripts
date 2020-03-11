@@ -19,6 +19,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * Rescale.jsx `(new, 06.11.2019)`
 * SelectOnlyPoints.jsx `(upd, 29.11.2019)`   
 * SplitPath.jsx   
+* TrimMasks.jsx `(new, 11.03.2020)`
 * Zoom-and-center.jsx 
 
 ### Installation 
@@ -212,6 +213,21 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
  
 
 ![SplitPath](images/demo-SplitPath.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## TrimMasks
+
+Automatic trimming of all clipping groups in selection or a document using Pathfinder > Trim.   
+
+### Usage
+
+1. Select object(s) or deselect all
+2. Run script `File → Scripts → TrimMasks `
+
+![TrimMasks](images/demo-TrimMasks.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
