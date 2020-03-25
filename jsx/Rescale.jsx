@@ -19,6 +19,7 @@
 // 0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
 // 0.2.1 Minor improvements
 // 0.2.2 Fixed decimal separator bug
+// 0.2.3 Minor improvements
 // ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
@@ -34,7 +35,7 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var scriptName = 'Rescale 0.2.2';
+var scriptName = 'Rescale 0.2.3';
 var setName = scriptName,
     actionName = 'Scale-Corners',
     actionPath = Folder.temp;
@@ -111,8 +112,8 @@ function main () {
         return;
       }
 
-      var oldSize = convertUnits(parseFloat(oSize), 'px');
-      var newSize = convertUnits(parseFloat(nSize), 'px');
+      var oldSize = convertUnits(oSize + getDocUnit(), 'px');
+      var newSize = convertUnits(nSize + getDocUnit(), 'px');
       var ratio = (newSize / oldSize)*100;
       // When old and new size are equal
       if (ratio == 100) {
@@ -181,104 +182,85 @@ function main () {
       dialog.close();
     } catch (e) {}
   }
-  
-  // Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
-  function getDocUnit() {
-      var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-      switch (unit) {
-          case 'Points':
-              ;
-          case 'Pixels':
-              unit = 'px';
-              break;
-          case 'Millimeters':
-              unit = 'mm';
-              break;
-          case 'Centimeters':
-              unit = 'cm';
-              break;
-          case 'Inches':
-              unit = 'in';
-              break;
-      }
-      return unit;
+} 
+
+// Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
+function getDocUnit() {
+  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  if (unit === 'Centimeters') unit = 'cm';
+  else if (unit === 'Millimeters') unit = 'mm';
+  else if (unit === 'Inches') unit = 'in';
+  else if (unit === 'Pixels') unit = 'px';
+  else if (unit === 'Points') unit = 'pt';
+  return unit;
+}
+
+function getUnits(value, def) {
+  try {
+    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
+  } catch (e) {}
+};
+
+function convertUnits(value, newUnit) {
+  if (value === undefined) return value;
+  if (newUnit === undefined) newUnit = 'px';
+  if (typeof value === 'number') value = value + 'px';
+  if (typeof value === 'string') {
+    var unit = getUnits(value),
+        val = parseFloat(value);
+    if (unit && !isNaN(val)) {
+      value = val;
+    } else if (!isNaN(val)) {
+      value = val;
+      unit = 'px';
+    }
   }
 
-  function getUnits(value, def) {
-      try {
-          return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-      }
-      catch (e) {}
-  };
-
-  function convertUnits(value, newUnit) {
-      if (value === undefined) {
-        return value;
-      }
-      if (newUnit === undefined) {
-        newUnit = 'px';
-      }
-      if (typeof value === 'number') {
-        value = value + 'px';
-      }
-      if (typeof value === 'string') {
-        var unit = getUnits(value),
-            val = parseFloat(value);
-        if (unit && !isNaN(val)) {
-          value = val;
-        } else if (!isNaN(val)) {
-          value = val;
-          unit = 'px';
-        }
-      }
-
-      if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-          value = parseFloat(value) / 2.83464566929134;
-      } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-          value = parseFloat(value) / (2.83464566929134 * 10);
-      } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-          value = parseFloat(value) / 72;
-      } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-          value = parseFloat(value) * 2.83464566929134;
-      } else if ((unit === 'mm') && (newUnit === 'cm')) {
-          value = parseFloat(value) * 10;
-      } else if ((unit === 'mm') && (newUnit === 'in')) {
-          value = parseFloat(value) / 25.4;
-      } else if ((unit === 'cm') && ((newUnit === 'px') || (bnewUnit === 'pt'))) {
-          value = parseFloat(value) * 2.83464566929134 * 10;
-      } else if ((unit === 'cm') && (newUnit === 'mm')) {
-          value = parseFloat(value) / 10;
-      } else if ((unit === 'cm') && (newUnit === 'in')) {
-          value = parseFloat(value) * 2.54;
-      } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-          value = parseFloat(value) * 72;
-      } else if ((unit === 'in') && (newUnit === 'mm')) {
-          value = parseFloat(value) * 25.4;
-      } else if ((unit === 'in') && (newUnit === 'cm')) {
-          value = parseFloat(value) * 25.4;
-      }
-      return parseFloat(value);
+  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
+      value = parseFloat(value) / 2.83464566929134;
+  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
+      value = parseFloat(value) / (2.83464566929134 * 10);
+  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
+      value = parseFloat(value) / 72;
+  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
+      value = parseFloat(value) * 2.83464566929134;
+  } else if ((unit === 'mm') && (newUnit === 'cm')) {
+      value = parseFloat(value) * 10;
+  } else if ((unit === 'mm') && (newUnit === 'in')) {
+      value = parseFloat(value) / 25.4;
+  } else if ((unit === 'cm') && ((newUnit === 'px') || (bnewUnit === 'pt'))) {
+      value = parseFloat(value) * 2.83464566929134 * 10;
+  } else if ((unit === 'cm') && (newUnit === 'mm')) {
+      value = parseFloat(value) / 10;
+  } else if ((unit === 'cm') && (newUnit === 'in')) {
+      value = parseFloat(value) * 2.54;
+  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
+      value = parseFloat(value) * 72;
+  } else if ((unit === 'in') && (newUnit === 'mm')) {
+      value = parseFloat(value) * 25.4;
+  } else if ((unit === 'in') && (newUnit === 'cm')) {
+      value = parseFloat(value) * 25.4;
   }
+  return parseFloat(value);
+}
 
 // Set decimal separator symbol
 function parseLocalNum(num) {
-    return +(num.replace(',', '.'));
+    return num.replace(',', '.');
 }
 
-  function createAction (str, set, path) {
-      var f = new File('' + path + '/' + set + '.aia');
-      f.open('w');
-      f.write(str);
-      f.close();
-      app.loadAction(f);
-      f.remove();
-  }
+function createAction (str, set, path) {
+  var f = new File('' + path + '/' + set + '.aia');
+  f.open('w');
+  f.write(str);
+  f.close();
+  app.loadAction(f);
+  f.remove();
+}
 
-  function ascii2Hex(hex) {
-    return hex.replace(/./g, function (a) { return a.charCodeAt(0).toString(16) });
-  }
-} 
-
+function ascii2Hex(hex) {
+  return hex.replace(/./g, function (a) { return a.charCodeAt(0).toString(16) });
+}
 
 // Run script
 try {
