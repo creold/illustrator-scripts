@@ -69,7 +69,8 @@ function main () {
 
   var option = dialog.add('group {alignment: "center"}');
       option.orientation = 'column';
-  var chkCorner = option.add('checkbox', undefined, 'Scale Corners');
+  var chkCorner = option.add('checkbox', undefined, 'Scale Live Corners');
+      chkCorner.helpTip = 'Only works with Live Shape';
       chkCorner.value = true;
   var chkStroke = option.add('checkbox', undefined, 'Scale Strokes & Effects');
       chkStroke.value = true;

@@ -16,13 +16,15 @@ The descriptions for each file can be found in the file's header text. Test envi
 * FileVersionInformer.jsx   
 * InlineSVGToAI.jsx   
 * RenameItems.jsx `(new, 13.12.2019)`
-* Rescale.jsx `(new, 06.11.2019)`
+* Rescale.jsx `(upd, 25.03.2020)`
 * SelectOnlyPoints.jsx `(upd, 29.11.2019)`   
 * SplitPath.jsx   
 * TrimMasks.jsx `(new, 11.03.2020)`
 * Zoom-and-center.jsx 
 
-### Installation 
+### How to run scripts
+
+#### Variant 1 — Install 
 
 1. [Download archive] and unzip. All scripts are in the folder `jsx`
 2. Place `<script_name>.jsx` in the Illustrator Scripts folder:
@@ -32,6 +34,14 @@ The descriptions for each file can be found in the file's header text. Test envi
 3. Restart Illustrator
 
 [Download archive]: http://bit.ly/2M0j95N 
+
+#### Variant 2 — Drag & Drop
+Drag and drop the script file (JS or JSX) into Adobe Illustrator Window
+
+#### Variant 3 — Use extension
+I recommend the [Scripshon Trees] panel. In it you can specify which folder your script files are stored in.
+
+[Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 
 ### Donate (optional)
 If you find this script helpful, consider shouting me coffee ☕️ via [PayPal] or [Yandex Money] 🙂  
