@@ -17,6 +17,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * InlineSVGToAI.jsx   
 * RenameItems.jsx `(new, 13.12.2019)`
 * Rescale.jsx `(upd, 25.03.2020)`
+* ResizeToSize.jsx `(new, 09.04.2020)`
 * SelectOnlyPoints.jsx `(upd, 29.11.2019)`   
 * SplitPath.jsx   
 * TrimMasks.jsx `(new, 11.03.2020)`
@@ -189,6 +190,23 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 3. Press button "OK" 
 
 ![Rescale](images/demo-Rescale.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## ResizeToSize
+
+Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup".      
+
+### Usage
+
+1. Run script `File → Scripts → ResizeToSize`
+2. Enter numeric values
+3. Choose options
+4. Press button "OK" 
+
+![ResizeToSize](images/demo-ResizeToSize.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
