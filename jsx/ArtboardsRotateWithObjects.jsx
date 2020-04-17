@@ -35,10 +35,8 @@
 #target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
-var scriptName = 'ARWO',
-    scriptVersion = '1.2',
-    scriptAuthor = '\u00A9 Alex Ladygin, Serg Osokin',
-    scriptDonate = 'Donate via PayPal';
+var SCRIPT_NAME = 'ARWO',
+    SCRIPT_VERSION = 'v.1.2';
 
 try {
     if (documents.length > 0) {
@@ -49,7 +47,7 @@ try {
             hiddenItems = new Array();
 
         // Create Main Window
-        var dlg = new Window('dialog', scriptName + ' ver.' + scriptVersion, undefined);
+        var dlg = new Window('dialog', SCRIPT_NAME + ' ver.' + SCRIPT_VERSION, undefined);
         dlg.orientation = 'column';
         dlg.alignChildren = ['fill', 'fill'];
 
@@ -57,16 +55,16 @@ try {
         var slctTarget = dlg.add('panel', undefined, 'What to rotate?');
         slctTarget.orientation = 'column';
         slctTarget.alignChildren = 'left';
-        slctTarget.margins = 20;
+        slctTarget.margins = [10,20,10,10];
         var currArtRadio = slctTarget.add('radiobutton', undefined, 'Active Artboard #' + currArtNum),
             allArtRadio = slctTarget.add('radiobutton', undefined, 'All ' + doc.artboards.length + ' Artboards');
         currArtRadio.value = true;
 
         // Angle radiobutton
-        var slctAngle = dlg.add('panel', undefined, 'Rotation angle:');
+        var slctAngle = dlg.add('panel', undefined, 'Rotation angle');
         slctAngle.orientation = 'row';
         slctAngle.alignChildren = ['fill', 'fill'];
-        slctAngle.margins = 20;
+        slctAngle.margins = [10,20,10,10];
         var cwAngle = slctAngle.add('radiobutton', undefined, '90 CW'),
             ccwAngle = slctAngle.add('radiobutton', undefined, '90 CCW');
         cwAngle.value = true;
@@ -84,28 +82,9 @@ try {
         ok.onClick = okClick;
 
         // Copyright block
-        var copyright = dlg.add('panel');
-        copyright.orientation = 'column';
-        copyright.alignChild = ['center', 'center'];
-        copyright.alignment = 'fill';
-        copyright.margins = 5;
-        var lblCopyright = copyright.add('statictext');
-        lblCopyright.text = scriptAuthor;
-        var donate = copyright.add('button', undefined, scriptDonate);
-
-        donate.onClick = function () {
-            var fname, shortcut;
-            fname = '_aiscript_donate.url';
-            shortcut = new File('' + Folder.temp + '/' + fname);
-            shortcut.open('w');
-            shortcut.writeln('[InternetShortcut]');
-            shortcut.writeln('URL=https://www.paypal.me/osokin/usd');
-            shortcut.writeln();
-            shortcut.close();
-            shortcut.execute();
-            $.sleep(4000);
-            return shortcut.remove();
-        }
+        var copyright = dlg.add('statictext', undefined, '\u00A9 Alex Ladygin, Sergey Osokin');
+        copyright.justify = 'center';
+        copyright.enabled = false;
 
 	    deselect();
         app.redraw();

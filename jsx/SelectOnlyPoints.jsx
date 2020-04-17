@@ -30,11 +30,12 @@
 // ==========================================================================================
 // Check other author's scripts: https://github.com/creold
 
-// #target illustrator
-// app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+//@target illustrator
+//@targetengine "main"
 
 // Global variables
-var scriptName = 'SelectOnlyPoints 0.3';
+var SCRIPT_NAME = 'SelectOnlyPoints',
+    SCRIPT_VERSION = 'v.0.3';
 
 // Main function
 function main() {
@@ -49,7 +50,7 @@ function main() {
   getPaths(doc.selection, selArray);
 
   if (!(selArray instanceof Array) || selArray.length < 1) {
-    alert(scriptName + '\nUse Lasso tool or Direct Selection Tool for select points.');
+    alert(SCRIPT_NAME + ' ' + SCRIPT_VERSION + '\nUse Lasso tool or Direct Selection Tool for select points.');
     return;
   }
 

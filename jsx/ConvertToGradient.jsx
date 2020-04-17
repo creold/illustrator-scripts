@@ -26,12 +26,13 @@
 // ==========================================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
+//@target illustrator
+//@targetengine "main"
 
 // Global variables
-var scriptName = 'Flat to gradient',
-    scriptAuthor = '\u00A9 Sergey Osokin, 2018',
-    maxValue = 0,
+var SCRIPT_NAME = 'ConvertToGradient',
+    SCRIPT_AUTHOR = '\u00A9 www.sergosokin.ru';
+var maxValue = 0,
     fillBad = 0,
     channel = new Array(),
     shiftValue, angleValue, gShiftEnd;
@@ -59,7 +60,7 @@ function main() {
     }
 
     // Main Window
-    var win = new Window('dialog', scriptName + ' ' + scriptAuthor, undefined);
+    var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_AUTHOR, undefined);
     win.orientation = 'row';
     win.alignChild = ['fill', 'fill'];
 

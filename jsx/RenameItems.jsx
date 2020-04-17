@@ -28,7 +28,11 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target Illustrator
+//@target illustrator
+//@targetengine "main"
+
+var SCRIPT_NAME = 'Rename Items',
+    SCRIPT_VERSION = 'v.1.0';
 
 function main() {
   if (app.documents.length == 0) {
@@ -36,26 +40,24 @@ function main() {
     return;
   }
 
-  var scriptName = 'Rename Items',
-      doc = app.activeDocument,
-      sel = doc.selection,
+  var doc = app.activeDocument,
       aLayer = doc.activeLayer,
       title, placeholder = '';
 
   // Create Main Dialog
-  var win = new Window('dialog', scriptName, undefined);
+  var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
       win.orientation = 'column';
       win.alignChildren = 'fill';
 
   // Set title & placeholder for input
-  switch (sel.length) {
+  switch (selection.length) {
     case 0: // empty selection
       title = 'Layer';
       placeholder = aLayer.name;
       break;
     case 1: // one object was selected
       title = 'Path';
-      placeholder = sel[0].name;
+      placeholder = selection[0].name;
       break;
     default: // multiple objects were selected
       title = 'Paths';
@@ -74,7 +76,7 @@ function main() {
       nameInp.active = true;
 
   //  Add more options for multiple selection
-  if (sel.length > 1) {
+  if (selection.length > 1) {
     var chkFind = win.add('checkbox', undefined, 'Find and replace'); 
     chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
                         'For example, if you enter <rect>, it will replace all\n' +
@@ -131,6 +133,11 @@ function main() {
       cancel.helpTip = 'Press Esc to Close';
   var ok = grpBtns.add('button', undefined, 'OK', {name: 'ok'});
       ok.helpTip = 'Press Enter to Run';
+  
+  // Copyright block
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
+      copyright.justify = 'center';
+      copyright.enabled = false;
 
 
   cancel.onClick = function() {
@@ -141,19 +148,19 @@ function main() {
   win.show();
 
   function okClick() {
-    switch (sel.length) {
+    switch (selection.length) {
       case 0: // empty selection
         if (!nameInp.text.isEmpty()) {
           aLayer.name = nameInp.text;
         }
         break;
       case 1: // one object was selected
-        sel[0].name = nameInp.text;
+        selection[0].name = nameInp.text;
         break;
       default: // multiple objects were selected
         var count = isNaN(parseInt(countInp.text)) ? 1 : parseInt(countInp.text);
-        for (var i = 0; i < sel.length; i++) {
-          var item = sel[i];
+        for (var i = 0; i < selection.length; i++) {
+          var item = selection[i];
           var num = sprtInp.text + (i + count);
           if (chkFind.value && rplcInp.text) {
             item.name = item.name.replaceAll(rplcInp.text, nameInp.text);

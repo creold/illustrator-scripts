@@ -36,13 +36,12 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
+//@target illustrator
+//@targetengine "main"
 
 // Global variables
-var scriptName = 'ExtUngroup',
-    scriptVersion = '1.2',
-    scriptAuthor = '\u00A9 Sergey Osokin, 2019',
-    scriptDonate = 'Donate via PayPal';
+var SCRIPT_NAME  = 'ExtUngroup',
+    SCRIPT_VERSION = 'v.1.2';
 var doc = app.activeDocument;
 
 if (app.documents.length > 0) {
@@ -50,26 +49,26 @@ if (app.documents.length > 0) {
     var currLayer = doc.activeLayer,
         boardNum = doc.artboards.getActiveArtboardIndex() + 1,
         clearArr = [], // Array of Clipping Masks obj
-        margins = [10, 20, 10, 20];
+        uiMargins = [10, 20, 10, 10];
 
     // Create Main Window
-    var win = new Window('dialog', scriptName + ' ver.' + scriptVersion, undefined);
+    var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
     win.orientation = 'column';
     win.alignChildren = ['fill', 'fill'];
 
     // Target radiobutton
     var slctTarget = win.add('panel', undefined, 'Target');
     slctTarget.alignChildren = 'left';
-    slctTarget.margins = margins;
+    slctTarget.margins = uiMargins;
     if (getSelection(doc).length > 0) {
       var currSelRadio = slctTarget.add('radiobutton', undefined, 'Selected objects');
     }
     if (!currLayer.locked && currLayer.visible) {
-      var currLayerRadio = slctTarget.add('radiobutton', undefined, 'Active Layer "' + currLayer.name + '"');
+      var currLayerRadio = slctTarget.add('radiobutton', undefined, 'Active layer "' + currLayer.name + '"');
       currLayerRadio.value = true;
     }
-    var currBoardRadio = slctTarget.add('radiobutton', undefined, 'Artboard No.' + boardNum);
-    var currDocRadio = slctTarget.add('radiobutton', undefined, 'All Document');
+    var currBoardRadio = slctTarget.add('radiobutton', undefined, 'Artboard \u2116 ' + boardNum);
+    var currDocRadio = slctTarget.add('radiobutton', undefined, 'All in document');
     if (getSelection(doc).length > 0) {
       currSelRadio.value = true;
     } else if (typeof (currLayerRadio) == 'undefined') {
@@ -79,7 +78,7 @@ if (app.documents.length > 0) {
     // Action checkbox
     var options = win.add('panel', undefined, 'Options');
     options.alignChildren = 'left';
-    options.margins = margins;
+    options.margins = uiMargins;
     var chkUnroup = options.add('checkbox', undefined, 'Ungroup All');
     chkUnroup.value = true;
     var chkClipping = options.add('checkbox', undefined, 'Release Clipping Masks');
@@ -102,14 +101,9 @@ if (app.documents.length > 0) {
     ok.onClick = okClick;
 
     // Copyright block
-    var copyright = win.add('panel');
-    copyright.orientation = 'column';
-    copyright.alignChild = ['center', 'center'];
-    copyright.alignment = 'fill';
-    copyright.margins = margins / 4;
-    var lblCopyright = copyright.add('statictext');
-    lblCopyright.text = scriptAuthor;
-    var donate = copyright.add('button', undefined, scriptDonate);
+    var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
+    copyright.justify = 'center';
+    copyright.enabled = false;
 
     if (doc.groupItems.length > 0) {
       win.show();

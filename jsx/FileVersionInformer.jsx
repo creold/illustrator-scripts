@@ -25,14 +25,14 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
-app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+//@target illustrator
+//@targetengine "main"
 
 var sourceFolder;
 
 function main() {
 	// Progress bar
-	var win = new Window("palette", "FileVersionInformer | Progress bar", [150, 150, 600, 260]);
+	var win = new Window("palette", "FileVersionInformer \u00A9 sergosokin.ru", [150, 150, 600, 260]);
 	win.pnl = win.add("panel", [10, 10, 440, 100], undefined);
 	win.pnl.progBar = win.pnl.add("progressbar", [20, 35, 410, 60], 0, 100);
 	win.pnl.progBarLabel = win.pnl.add("statictext", [20, 20, 320, 35], "0%");

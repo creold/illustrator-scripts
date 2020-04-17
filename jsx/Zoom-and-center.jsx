@@ -29,7 +29,7 @@ if (documents.length > 0) {
 
 function main() {
     // Create Main Window
-    var win = new Window('dialog', 'Zoom & Center', undefined);
+    var win = new Window('dialog', 'Zoom \u0026 Center', undefined);
     win.orientation = 'column';
     win.alignChildren = ['fill', 'fill'];
 
@@ -37,7 +37,7 @@ function main() {
     var option = win.add('panel', undefined, 'What objects to include');
     option.orientation = 'column';
     option.alignChildren = ['fill', 'fill'];
-    option.margins = 20;
+    option.margins = [20, 20, 10, 10];
     var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
         zoomLock = option.add('radiobutton', undefined, 'All except hidden'),
         zoomAll = option.add('radiobutton', undefined, 'All in document');
@@ -65,6 +65,10 @@ function main() {
     ok.active = true;
     cancel.onClick = function () { win.close(); }
     ok.onClick = okClick;
+
+    var copyright = win.add('statictext', undefined, '\u00A9 www.sergosokin.ru');
+    copyright.justify = 'center';
+    copyright.enabled = false;
 
     function okClick() {
         if (zoomVis.value == true) {

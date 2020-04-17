@@ -29,14 +29,13 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
-app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+//@target illustrator
+//@targetengine "main"
 
 // Global variables
-var scriptName = 'SplitPath',
-    scriptVersion = '1.0',
-    scriptAuthor = '\u00A9 Sergey Osokin, 2018',
-    scriptDonate = 'Donate via PayPal';
+var SCRIPT_NAME = 'SplitPath',
+    SCRIPT_VERSION = 'v.1.0';
+
 if (app.documents.length > 0) {
     var doc = app.activeDocument,
         fillOk = false,
@@ -50,7 +49,7 @@ function main() {
     }
 
     if ((app.version.substr(0, 2)) < 16) {
-        alert('Error: \nSorry, ' + scriptName + ' script only works in versions CS6 (v16) and above.\n' + 'You are using Adobe Illustrator v' + app.version.substr(0, 2));
+        alert('Error: \nSorry, ' + SCRIPT_NAME + ' script only works in versions CS6 (v16) and above.\n' + 'You are using Adobe Illustrator v' + app.version.substr(0, 2));
         return;
     }
 
@@ -60,12 +59,12 @@ function main() {
     }
 
     if (chkFill(doc.selection) == false) {
-        alert(scriptName + ' Error: \nPlease, fill the mask object in any color.');
+        alert(SCRIPT_NAME + ' Error: \nPlease, fill the mask object in any color.');
         return;
     }
 
     // Create Main Window
-    var win = new Window('dialog', scriptName + ' ver.' + scriptVersion, undefined);
+    var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
     win.orientation = 'column';
     win.alignChild = ['fill', 'fill'];
 
@@ -73,7 +72,7 @@ function main() {
     var chooseMethod = win.add('panel', undefined, 'What to do?');
     chooseMethod.orientation = 'row';
     chooseMethod.alignChild = ['fill', 'fill'];
-    chooseMethod.margins = 20;
+    chooseMethod.margins = [10, 20, 10, 10];
     var minusRadio = chooseMethod.add('radiobutton', undefined, 'Minus Front'),
         intersectRadio = chooseMethod.add('radiobutton', undefined, 'Intersect');
     minusRadio.value = true;
@@ -88,29 +87,9 @@ function main() {
     ok.helpTip = 'Press Enter to Run';
     ok.active = true;
 
-    // Copyright block
-    var copyright = win.add('panel');
-    copyright.orientation = 'column';
-    copyright.alignChild = ['center', 'center'];
-    copyright.alignment = 'fill';
-    copyright.margins = 5;
-    var lblCopyright = copyright.add('statictext');
-    lblCopyright.text = scriptAuthor;
-    var donate = copyright.add('button', undefined, scriptDonate);
-
-    donate.onClick = function () {
-        var fname, shortcut;
-        fname = '_aiscript_donate.url';
-        shortcut = new File('' + Folder.temp + '/' + fname);
-        shortcut.open('w');
-        shortcut.writeln('[InternetShortcut]');
-        shortcut.writeln('URL=http://www.paypal.me/osokin/usd');
-        shortcut.writeln();
-        shortcut.close();
-        shortcut.execute();
-        $.sleep(4000);
-        return shortcut.remove();
-    }
+    var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
+    copyright.justify = 'center';
+    copyright.enabled = false;
 
     cancel.onClick = function () {
         win.close();
@@ -124,7 +103,7 @@ function main() {
                 pathIntersect();
             }
         } catch (e) {
-            showError(e);
+            //showError(e);
         }
         win.close();
     }
@@ -271,5 +250,5 @@ function showError(err) {
 try {
     main();
 } catch (e) {
-    showError(e);
+    //showError(e);
 }

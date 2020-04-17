@@ -31,12 +31,13 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
-app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+//@target illustrator
+//@targetengine "main"
 
 // Global variables
-var scriptName = 'Rescale 0.2.3';
-var setName = scriptName,
+var SCRIPT_NAME = 'Rescale',
+    SCRIPT_VERSION = 'v.0.2.3';
+var setName = SCRIPT_NAME,
     actionName = 'Scale-Corners',
     actionPath = Folder.temp;
 
@@ -49,22 +50,22 @@ function main () {
   var doc = app.activeDocument;
 
   // Create Main Window
-  var dialog = new Window('dialog', scriptName);
-      dialog.orientation = 'column', 'alignChildren: "right"';
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+      dialog.orientation = 'column';
 
-  var oldSizePnl = dialog.add('group {alignment: "right"}');
+  var oldSizePnl = dialog.add('group {alignment: "center"}');
       oldSizePnl.orientation = 'row';
-      oldSizePnl.add ('statictext', undefined, 'Old size, ' + getDocUnit() + ':');    
+      oldSizePnl.add('statictext', undefined, 'Old size, ' + getDocUnit() + ':');    
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
       oSizeTxt.characters = 6;
       oSizeTxt.active = true;
       
-  var newSizePnl = dialog.add('group {alignment: "right"}');
+  var newSizePnl = dialog.add('group {alignment: "center"}');
       newSizePnl.orientation = 'row';
-      newSizePnl.add ('statictext', undefined, 'New size, ' + getDocUnit() + ':');    
+      newSizePnl.add('statictext', undefined, 'New size, ' + getDocUnit() + ':');    
 
-  var nSizeTxt = newSizePnl.add ('edittext', undefined);
+  var nSizeTxt = newSizePnl.add('edittext', undefined);
       nSizeTxt.characters = 6;
 
   var option = dialog.add('group {alignment: "center"}');
@@ -77,9 +78,14 @@ function main () {
   var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
       chkRmv.value = true;
       
-  var buttons = dialog.add ('group');
-  var ok = buttons.add ('button', undefined, 'OK',  { name: 'ok' });
-  var cancel = buttons.add ('button', undefined, 'Cancel', { name: 'cancel' });
+  var buttons = dialog.add('group');
+  var cancel = buttons.add('button', undefined, 'Cancel', { name: 'cancel' });
+  var ok = buttons.add('button', undefined, 'OK',  { name: 'ok' });
+
+  // Copyright block
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
+      copyright.justify = 'center';
+      copyright.enabled = false;
   
   ok.onClick = okClick;
 

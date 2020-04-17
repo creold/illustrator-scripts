@@ -25,10 +25,11 @@
 // ==========================================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
+//@target illustrator
+//@targetengine "main"
 
-var scriptName = 'Export selection as AI',
-    copyright = ' \u00A9 sergosokin.ru';
+var SCRIPT_NAME = 'Export Selection As AI',
+    SCRIPT_AUTHOR = '\u00A9 sergosokin.ru';
 
 // Main function
 function main() {
@@ -37,6 +38,7 @@ function main() {
       fileExt = '.ai',
       separator = '-',
       outFolder = Folder.desktop;
+      uiMargin = [10,15,10,10];
 
   var sel = app.activeDocument.selection;
 
@@ -46,11 +48,12 @@ function main() {
   }
 
   // Create dialog box
-  var win = new Window('dialog', scriptName + ' ' + copyright);
+  var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_AUTHOR);
       win.alignChildren = 'center';
 
   var outPnl = win.add('panel', undefined, 'Output folder');
       outPnl.orientation = 'row';
+      outPnl.margins = uiMargin;
   var btnOutFolder = outPnl.add('button', undefined, 'Select');
   var lblOutFolder = outPnl.add('edittext', undefined);
       lblOutFolder.text = decodeURI(outFolder);
@@ -59,15 +62,18 @@ function main() {
   var fileNameGrp = win.add('group');
   var namePnl = fileNameGrp.add('panel', undefined, 'File name prefix');
       namePnl.orientation = 'row';
+      namePnl.margins = uiMargin;
   var namePrefix = namePnl.add('edittext', undefined, fileName);
       namePrefix.characters = 20;
   var separatorPnl = fileNameGrp.add('panel', undefined, 'Separator');
+      separatorPnl.margins = uiMargin;
   var symbol = separatorPnl.add('edittext', undefined, separator);
       symbol.characters = 4;
       symbol.enabled = false;
   
-  win.prgPnl = win.add('panel', undefined, 'Progress');
-  win.prgPnl.progBar = win.prgPnl.add('progressbar', [20, 15, 276, 40], 0, 100);
+  var prgPnl = win.add('panel', undefined, 'Progress');
+      prgPnl.margins = uiMargin;
+  var progBar = prgPnl.add('progressbar', [20, 15, 276, 40], 0, 100);
 
   var optionPnl = win.add('group');
       optionPnl.orientation = 'column';
@@ -115,7 +121,7 @@ function main() {
       fileName = fileName + separator;
 
       for (var i = 0; i < sel.length; i++) {
-        win.prgPnl.progBar.value = i*(100.0/(sel.length-1)); // Change progress bar
+        progBar.value = i*(100.0/(sel.length-1)); // Change progress bar
         var element = sel[i];
         var myFile = File(outFolder + '/' + fileName + i + fileExt);
         saveSelection(element, myFile, colorSpace, fitBoardChk.value, separateChk.value);

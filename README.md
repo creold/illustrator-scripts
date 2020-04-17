@@ -9,19 +9,33 @@ This is a collection of JSX scripts for Adobe Illustrator. All scripts created b
 The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6 (Windows), CC 2017 (Mac OS).   
 
 ### Alphabetical list of scripts
-* ArtboardsRotateWithObjects.jsx   
-* ConvertToGradient.jsx   
-* Export-selection-as-AI.jsx   
-* ExtUngroup.jsx `(upd, 25.11.2019)`   
-* FileVersionInformer.jsx   
-* InlineSVGToAI.jsx   
-* RenameItems.jsx `(new, 13.12.2019)`
-* Rescale.jsx `(upd, 25.03.2020)`
-* ResizeToSize.jsx `(new, 09.04.2020)`
-* SelectOnlyPoints.jsx `(upd, 29.11.2019)`   
-* SplitPath.jsx   
-* TrimMasks.jsx `(new, 11.03.2020)`
-* Zoom-and-center.jsx 
+* [ArtboardsRotateWithObjects.jsx]   
+* [ConvertToGradient.jsx]   
+* [Export-selection-as-AI.jsx]   
+* [ExtUngroup.jsx] `(upd, 25.11.2019)`   
+* [FileVersionInformer.jsx]   
+* [InlineSVGToAI.jsx]   
+* [RenameItems.jsx] `(new, 13.12.2019)`
+* [Rescale.jsx] `(upd, 25.03.2020)`
+* [ResizeToSize.jsx] `(upd, 17.04.2020)`
+* [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`   
+* [SplitPath.jsx]   
+* [TrimMasks.jsx] `(new, 11.03.2020)`
+* [Zoom-and-center.jsx] 
+
+[ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
+[ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
+[Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts#export-selection-as-ai 
+[ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
+[FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
+[InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
+[RenameItems.jsx]: https://github.com/creold/illustrator-scripts#renameitems
+[Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
+[ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
+[SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts#selectonlypoints
+[SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath-10-ex-pathsubtract
+[TrimMasks.jsx]: https://github.com/creold/illustrator-scripts#trimmasks
+[Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts#zoom-and-center
 
 ### How to run scripts
 
@@ -197,7 +211,7 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 
 ## ResizeToSize
 
-Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup".      
+Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with Alt + underlined key or digit.      
 
 ### Usage
 
