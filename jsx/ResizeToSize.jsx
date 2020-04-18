@@ -16,6 +16,7 @@
 //  0.3 Added additional settings 
 //  0.4 Correct resize Clipping Mask. Added access key shortcuts
 //  0.5 Added dimensions bounds.
+//  0.6 Added live preview (Shift+P).
 // ============================================================================
 // NOTICE:
 // Tested with Adobe Illustrator CC 2019 (Mac/Win).
@@ -31,10 +32,11 @@
 //@targetengine "main"
 
 var SCRIPT_TITLE = "ResizeToSize";
-var SCRIPT_VERSION = "v.0.5";
+var SCRIPT_VERSION = "v.0.6";
 
 function main () {
   var doc = app.activeDocument;
+  var isUndo = false;
   var scaleRatio, scaleX, scaleY; // Scale factor
   var side = '';
   var refPointNum = 9;
@@ -129,7 +131,7 @@ function main () {
       gr2.margins = 0;       
   var isFill = gr2.add('checkbox', undefined, '\u0046\u0332ill Pattern'); // Unicode F̲
       isFill.value = true;
-  var isStrokePatt = gr2.add('checkbox', undefined, 'Stroke \u0050\u0332attern'); // Unicode P̲
+  var isStrokePatt = gr2.add('checkbox', undefined, 'Stroke Pa\u0074\u0332tern'); // Unicode t̲
       isStrokePatt.value = true;
 
   var hintAlt = dialog.add('statictext', undefined, 'Quick access with Alt + underlined key/digit');
@@ -141,11 +143,13 @@ function main () {
   var cancel = buttons.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = buttons.add('button', undefined, 'OK',  { name: 'ok' });
 
+  var isPreview = dialog.add('checkbox', undefined, '\u0050\u0332review'); // Unicode P̲
+  
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, github.com/creold');
   copyright.justify = 'center';
   copyright.enabled = false;
 
-  // Access key shortcut
+  // Begin access key shortcut
   sizeStr.addEventListener('keydown', function(kd) {
     if (kd.altKey) {
       kd.preventDefault();
@@ -156,31 +160,100 @@ function main () {
     if (kd.altKey) {
       var key = kd.keyName;
       if (key.match(/[1-9]/)) {
-        refPointArr[(1 * key) - 1].value = true;
+        refPointArr[(1 * key) - 1].notify();
       };
-      if (key.match(/V/)) vbRadio.value = true;
-      if (key.match(/G/)) gbRadio.value = true;
-      if (key.match(/L/)) lRadio.value = true;
-      if (key.match(/W/)) wRadio.value = true;
-      if (key.match(/H/)) hRadio.value = true;
-      if (key.match(/U/)) isUniform.value = !isUniform.value;
-      if (!isOldAI() && key.match(/C/)) isCorner.value = !isCorner.value;
-      if (key.match(/F/)) isFill.value = !isFill.value;
-      if (key.match(/P/)) isStrokePatt.value = !isStrokePatt.value;
-      if (key.match(/S/)) isStroke.value = !isStroke.value;
+      if (key.match(/V/)) vbRadio.notify();
+      if (key.match(/G/)) gbRadio.notify();
+      if (key.match(/L/)) lRadio.notify();
+      if (key.match(/W/)) wRadio.notify();
+      if (key.match(/H/)) hRadio.notify();
+      if (key.match(/U/)) isUniform.notify();
+      if (!isOldAI() && key.match(/C/)) isCorner.notify();
+      if (key.match(/F/)) isFill.notify();
+      if (key.match(/T/)) isStrokePatt.notify();
+      if (key.match(/S/)) isStroke.notify();
+      if (key.match(/P/)) isPreview.notify();
     };
   });
+  // End access key shortcut
+
+  // Begin event listener for isPreview
+  isPreview.onClick = function() {
+    drawPreview();
+  }
+
+  sizeStr.onChanging = function() {
+    drawPreview();
+  }
+  for (var i = 0; i < bndsPnl.children.length; i++) {
+    bndsPnl.children[i].onClick = function() {
+      drawPreview();
+    };
+  }  
+  for (var i = 0; i < refPointArr.length; i++) {
+    refPointArr[i].onClick = function() {
+      drawPreview();
+    };
+  }
+
+  for (var i = 0; i < sidePnl.children.length; i++) {
+    sidePnl.children[i].onClick = function() {
+      drawPreview();
+    };
+  }
+
+  for (var i = 0; i < settings.children.length; i++) {
+    var tmp = settings.children[i];
+    for (var j = 0; j < tmp.children.length; j++) {
+      tmp.children[j].onClick = function() {
+        drawPreview();
+      };
+    }
+  }
+  // End event listener for isPreview
   
   cancel.onClick = function () {
+    if (isUndo) {
+      try{
+        app.undo();
+        app.redraw();
+      } catch(e) {}
+    }
     dialog.close();
   }
   
-  ok.onClick = okClick;
+  ok.onClick = function() {
+    if (isPreview.value && isUndo) {
+      isUndo = false;
+      dialog.close();
+    } else {
+      app.undo();
+      okClick();
+      isUndo = false;
+      dialog.close();
+    }
+  }
 
   if (selection.length > 0) {
     dialog.show();
   } else {
     alert('Please select at least 1 object and try again.');
+  }
+    
+  function drawPreview() {
+    try {
+      if (isPreview.value) {
+        if (isUndo) {
+            app.undo();
+        } else isUndo = true;
+        okClick();
+        app.redraw();
+      } else if (isUndo) {
+          app.undo();
+          app.redraw();
+          isUndo = false;
+        }
+    } catch (e) {}
   }
 
   function okClick() {
@@ -258,7 +331,6 @@ function main () {
         if (count == 20) break; // loop insurance
       }
     }
-    dialog.close();
   }
 }
 
