@@ -178,85 +178,69 @@ function main () {
   // End access key shortcut
 
   // Begin event listener for isPreview
-  isPreview.onClick = function() {
-    drawPreview();
+  isPreview.onClick = function(e) {
+    previewStart();
   }
 
-  sizeStr.onChanging = function() {
-    drawPreview();
+  sizeStr.onChanging = function(e) {
+    previewStart();
   }
   for (var i = 0; i < bndsPnl.children.length; i++) {
-    bndsPnl.children[i].onClick = function() {
-      drawPreview();
+    bndsPnl.children[i].onClick = function(e) {
+      previewStart();
     };
   }  
   for (var i = 0; i < refPointArr.length; i++) {
-    refPointArr[i].onClick = function() {
-      drawPreview();
+    refPointArr[i].onClick = function(e) {
+      previewStart();
     };
   }
 
   for (var i = 0; i < sidePnl.children.length; i++) {
-    sidePnl.children[i].onClick = function() {
-      drawPreview();
+    sidePnl.children[i].onClick = function(e) {
+      previewStart();
     };
   }
 
   for (var i = 0; i < settings.children.length; i++) {
     var tmp = settings.children[i];
     for (var j = 0; j < tmp.children.length; j++) {
-      tmp.children[j].onClick = function() {
-        drawPreview();
+      tmp.children[j].onClick = function(e) {
+        previewStart();
       };
     }
   }
   // End event listener for isPreview
   
   cancel.onClick = function () {
-    if (isUndo) {
-      try{
-        app.undo();
-        app.redraw();
-      } catch(e) {}
-    }
     dialog.close();
   }
   
-  ok.onClick = function() {
-    if (isPreview.value && isUndo) {
-      isUndo = false;
-      dialog.close();
-    } else {
-      app.undo();
-      okClick();
-      isUndo = false;
-      dialog.close();
-    }
-  }
-
-  if (selection.length > 0) {
-    dialog.show();
-  } else {
-    alert('Please select at least 1 object and try again.');
-  }
+  ok.onClick = function (e) {
+    if (isPreview.value && isUndo) app.undo();
+    start();
+    isUndo = false;
+    dialog.close();
+  };
     
-  function drawPreview() {
-    try {
-      if (isPreview.value) {
-        if (isUndo) {
-            app.undo();
-        } else isUndo = true;
-        okClick();
+  function previewStart() {
+    if (isPreview.value) {
+      if (isUndo) { 
+        app.undo();
+      } else {
+        isUndo = true;
+      }
+      start();
+      app.redraw();
+    } else if (isUndo) {
+        app.undo();
         app.redraw();
-      } else if (isUndo) {
-          app.undo();
-          app.redraw();
-          isUndo = false;
-        }
-    } catch (e) {}
+        isUndo = false;
+        action = 0;
+      } 
   }
 
-  function okClick() {
+  function start() {
     var _size = convertDecimalPoint(sizeStr.text);
 
     if (isNaN(1 * _size)) {
@@ -331,6 +315,21 @@ function main () {
         if (count == 20) break; // loop insurance
       }
     }
+  }
+  
+  dialog.onClose = function () {
+    if (isUndo) {
+      app.undo();
+      app.redraw();
+      isUndo = false;
+    }
+    return true;
+  }
+
+  if (selection.length > 0) {
+    dialog.show();
+  } else {
+    alert('Please select at least 1 object and try again.');
   }
 }
 

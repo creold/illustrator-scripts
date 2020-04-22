@@ -59,16 +59,16 @@ I recommend the [Scripshon Trees] panel. In it you can specify which folder your
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 
 ### Donate (optional)
-If you find this script helpful, consider shouting me coffee ☕️ via [PayPal] or [Yandex Money] 🙂  
+If you find this script helpful, you can buy me a coffee ☕️ via [PayPal] or [Yandex Money] 🙂  
 
 [PayPal]: https://paypal.me/osokin/2usd
 [Yandex Money]: https://money.yandex.ru/to/410011149615582
 <a href="https://paypal.me/osokin/2usd">
-  <img width="160" height="49" src="images/paypal-badge.png" >
+  <img width="160" height="49" src="images/paypal_badge.gif" >
 </a>  
 
 <a href="https://money.yandex.ru/to/410011149615582">
-  <img width="160" height="49" src="images/yandex-badge.png" >
+  <img width="160" height="49" src="images/yandex_badge.gif" >
 </a>
 
 ## ArtboardsRotateWithObjects 1.2
