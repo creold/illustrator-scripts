@@ -30,6 +30,7 @@
 //  1.0 Initial version
 //  1.1 Added option to delete / save mask objects. Fixed a performance issue.
 //  1.2 Fixed ungrouping of the selected group inside another.
+//  1.2.1 Minor improvements
 // ============================================================================
 // Released under the MIT license.
 // http://opensource.org/licenses/mit-license.php
@@ -37,11 +38,10 @@
 // Check other author's scripts: https://github.com/creold
 
 //@target illustrator
-//@targetengine "main"
 
 // Global variables
 var SCRIPT_NAME  = 'ExtUngroup',
-    SCRIPT_VERSION = 'v.1.2';
+    SCRIPT_VERSION = 'v.1.2.1';
 var doc = app.activeDocument;
 
 if (app.documents.length > 0) {
@@ -109,21 +109,6 @@ if (app.documents.length > 0) {
       win.show();
     } else { 
       alert(scriptName + '\nDocument does not contain any groups.'); 
-    }
-
-    // Buttons click 
-    donate.onClick = function () {
-      var fname, shortcut;
-      fname = '_aiscript_donate.url';
-      shortcut = new File('' + Folder.temp + '/' + fname);
-      shortcut.open('w');
-      shortcut.writeln('[InternetShortcut]');
-      shortcut.writeln('URL=http://www.paypal.me/osokin/usd');
-      shortcut.writeln();
-      shortcut.close();
-      shortcut.execute();
-      $.sleep(4000);
-      return shortcut.remove();
     }
 
     cancel.onClick = function () {
@@ -212,7 +197,8 @@ function ungroup(obj) {
         element.move(obj, ElementPlacement.PLACEBEFORE);
         // Push empty paths in array 
         if ((element.typename === 'PathItem' && !element.filled && !element.stroked) ||
-          (element.typename === 'CompoundPathItem' && !element.pathItems[0].filled && !element.pathItems[0].stroked))
+          (element.typename === 'CompoundPathItem' && !element.pathItems[0].filled && !element.pathItems[0].stroked) ||
+          (element.typename === 'TextFrame' && element.textRange.fillColor == '[NoColor]' && element.textRange.strokeColor == '[NoColor]'))
           clearArr.push(element);
       }
       if (element.typename === 'GroupItem' || element.typename === 'Layer') {
