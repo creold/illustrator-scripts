@@ -32,7 +32,7 @@
 // ============================================================================
 // Check other author's scripts: https://github.com/creold
 
-#target illustrator
+//@target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var SCRIPT_NAME = 'ARWO',

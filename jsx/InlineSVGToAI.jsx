@@ -27,7 +27,7 @@
 // http://opensource.org/licenses/mit-license.php
 // ==========================================================================================
 
-#target illustrator
+//@target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 function main() {

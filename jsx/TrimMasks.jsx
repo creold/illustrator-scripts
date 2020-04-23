@@ -28,7 +28,6 @@
 // Check other author's scripts: https://github.com/creold
 
 //@target illustrator
-//@targetengine "main"
 
 // Global variables
 var setName = 'Pathfinder',

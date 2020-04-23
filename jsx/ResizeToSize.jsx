@@ -29,7 +29,6 @@
 // Check other author's scripts: https://github.com/creold
 
 //@target illustrator
-//@targetengine "main"
 
 var SCRIPT_TITLE = "ResizeToSize";
 var SCRIPT_VERSION = "v.0.6";

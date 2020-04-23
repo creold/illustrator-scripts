@@ -29,7 +29,6 @@
 // Check other author's scripts: https://github.com/creold
 
 //@target illustrator
-//@targetengine "main"
 
 var SCRIPT_NAME = 'Rename Items',
     SCRIPT_VERSION = 'v.1.0';

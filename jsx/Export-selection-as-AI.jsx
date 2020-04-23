@@ -26,7 +26,6 @@
 // Check other author's scripts: https://github.com/creold
 
 //@target illustrator
-//@targetengine "main"
 
 var SCRIPT_NAME = 'Export Selection As AI',
     SCRIPT_AUTHOR = '\u00A9 sergosokin.ru';
