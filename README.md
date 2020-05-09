@@ -30,7 +30,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
 [FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
 [InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
-[PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#pointsmoverandom
+[PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#points-move-random
 [RenameItems.jsx]: https://github.com/creold/illustrator-scripts#renameitems
 [Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
 [ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
