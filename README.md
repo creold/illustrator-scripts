@@ -15,6 +15,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
 * [FileVersionInformer.jsx]   
 * [InlineSVGToAI.jsx]   
+* [PointsMoveRandom.jsx] `(new, 08.05.2020)`  
 * [RenameItems.jsx] `(new, 13.12.2019)`
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
@@ -29,6 +30,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
 [FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
 [InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
+[PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#pointsmoverandom
 [RenameItems.jsx]: https://github.com/creold/illustrator-scripts#renameitems
 [Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
 [ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
@@ -172,6 +174,23 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 3. Press button "Paste"
 
 ![InlineSVGToAI](images/demo-InlineSVGToAI.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## Points Move Random
+
+The script moves randomly in numeric ranges horizontally and vertically selected points or all points on objects.   
+
+### Usage
+
+1. Run script `File → Scripts → PointsMoveRandom`
+2. Enter number values
+3. Choose options
+4. Press button "Apply" or Alt+A
+
+![PointsMoveRandom](images/demo-PointsMoveRandom.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
