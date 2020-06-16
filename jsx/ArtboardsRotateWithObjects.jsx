@@ -1,36 +1,32 @@
-// Artboards_Rotate_With_Objects.jsx for Adobe Illustrator
-// Description: Script to rotate 90 degrees an document artboards with all the objects on it.
-// Requirements: Adobe Illustrator CS6 and above
-// Date: October, 2018
-// Authors: Alexander Ladygin, email: i@ladygin.pro
-//          Sergey Osokin, email: hi@sergosokin.ru
-// ============================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > Artboards_Rotate_With_Objects
-// ============================================================================
-// Versions:
-// 0.1 Initial version. Do not rotate locked, hidden items
-// 1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
-// 1.1 Added rotate angle: 90 CW or 90 CCW.
-// 1.2 Fix issues.
-// ============================================================================
-// Donate (optional): If you find this script helpful and want to support me 
-// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
-// ============================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+    Artboards_Rotate_With_Objects.jsx for Adobe Illustrator
+    Description: Script to rotate 90 degrees an document artboards with all the objects on it.
+    Requirements: Adobe Illustrator CS6 and above
+    Date: October, 2018
+    Authors: Alexander Ladygin, email: i@ladygin.pro
+             Sergey Osokin, email: hi@sergosokin.ru
+    ============================================================================
+    Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+    ============================================================================
+    Versions:
+    0.1 Initial version. Do not rotate locked, hidden items
+    1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
+    1.1 Added rotate angle: 90 CW or 90 CCW.
+    1.2 Fix issues.
+    ============================================================================
+    Donate (optional): If you find this script helpful, you can buy me a coffee
+                        via PayPal http://www.paypal.me/osokin/usd
+    ============================================================================
+    NOTICE:
+    Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
+    This script is provided "as is" without warranty of any kind.
+    Free to use, not for sale.
+    ============================================================================
+    Released under the MIT license.
+    http://opensource.org/licenses/mit-license.php
+    ============================================================================
+    Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;

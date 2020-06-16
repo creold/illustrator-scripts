@@ -1,41 +1,26 @@
-﻿// ExtUngroup.jsx for Adobe Illustrator
-// Description: This script with UI is сan be easily custom ungrouping to all group items, releasing clipping masks in the document.
-// Requirements: Adobe Illustrator CS/CC
-// Author: Sergey Osokin (hi@sergosokin.ru), 2018
-// Based on 'ungroupV1.js' script by Jiwoong Song (netbluew@nate.com), 2009 & modification by John Wundes (wundes.com), 2012
-// ============================================================================
-// Installation:
-// 1. Place script in:
-//  Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//  Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//  Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > ExtUngroup
-// ============================================================================
-// Donate (optional): If you find this script helpful and want to support me 
-// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
-// ============================================================================
-// THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, 
-// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY 
-// AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL 
-// THE FOUNDATION OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
-// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
-// OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER 
-// IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
-// OF THE POSSIBILITY OF SUCH DAMAGE.
-// ============================================================================
-// Versions:
-//  1.0 Initial version
-//  1.1 Added option to delete / save mask objects. Fixed a performance issue.
-//  1.2 Fixed ungrouping of the selected group inside another.
-//  1.2.1 Minor improvements
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+﻿/*
+  ExtUngroup.jsx for Adobe Illustrator
+  Description: This script with UI is сan be easily custom ungrouping to all group items, releasing clipping masks in the document.
+  Requirements: Adobe Illustrator CS/CC
+  Author: Sergey Osokin (hi@sergosokin.ru), 2018
+  Based on 'ungroupV1.js' script by Jiwoong Song (netbluew@nate.com), 2009 & modification by John Wundes (wundes.com), 2012
+  ============================================================================
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  Versions:
+  1.0 Initial version
+  1.1 Added option to delete / save mask objects. Fixed a performance issue.
+  1.2 Fixed ungrouping of the selected group inside another.
+  1.2.1 Minor improvements
+  ============================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 

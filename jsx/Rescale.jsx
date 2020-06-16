@@ -1,35 +1,34 @@
-﻿// Rescale.jsx for Adobe Illustrator
-// Description: Automatic scaling of objects to the desired size. 
-//              If you draw a line on top with the length or height of the desired object, 
-//              'Old Size' will be filled automatically.
-// Date: November, 2019
-// Author: Nick Grabowski, @Grabovvski
-// Co-author: Sergey Osokin, email: hi@sergosokin.ru
-// ==========================================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > Rescale
-// ============================================================================
-// Versions:
-// 0.1 Initial version.
-// 0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
-// 0.2.1 Minor improvements
-// 0.2.2 Fixed decimal separator bug
-// 0.2.3 Minor improvements
-// ============================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+﻿/*
+  Rescale.jsx for Adobe Illustrator
+  Description: Automatic scaling of objects to the desired size. 
+               If you draw a line on top with the length or height of the desired object, 
+               'Old Size' will be filled automatically.
+  Date: November, 2019
+  Author: Nick Grabowski, @Grabovvski
+  Co-author: Sergey Osokin, email: hi@sergosokin.ru
+  ==========================================================================================
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  ============================================================================
+  Versions:
+  0.1 Initial version.
+  0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
+  0.2.1 Minor improvements
+  0.2.2 Fixed decimal separator bug
+  0.2.3 Minor improvements
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  NOTICE:
+  Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
+  ============================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 
@@ -38,7 +37,7 @@ var SCRIPT_NAME = 'Rescale',
     SCRIPT_VERSION = 'v.0.2.3';
 var setName = SCRIPT_NAME,
     actionName = 'Scale-Corners',
-    actionPath = Folder.temp;
+    actionPath = Folder.myDocuments;
 
 function main () {
   if (app.documents.length < 1) {

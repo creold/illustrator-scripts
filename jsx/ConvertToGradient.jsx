@@ -1,30 +1,27 @@
-// ConvertToGradient.jsx for Adobe Illustrator
-// Description: Convert a flat process color into a matching gradient
-// Date: August, 2018
-// Author: Sergey Osokin, email: hi@sergosokin.ru
-// Based on script by Saurabh Sharma (https://tutsplus.com/authors/saurabh-sharma), 2010
-// What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items
-// ==========================================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > ConvertToGradient
-// ============================================================================
-// Donate (optional): If you find this script helpful and want to support me 
-// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
-// ==========================================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2017, CC 2018 (Mac), CS6 (Win).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ==========================================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ==========================================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+    ConvertToGradient.jsx for Adobe Illustrator
+    Description: Convert a flat process color into a matching gradient
+    Date: August, 2018
+    Author: Sergey Osokin, email: hi@sergosokin.ru
+    Based on script by Saurabh Sharma (https://tutsplus.com/authors/saurabh-sharma), 2010
+    What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. 
+                Processes compound paths and groups of items
+    ==========================================================================================
+    Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+    ==========================================================================================
+    Donate (optional): If you find this script helpful, you can buy me a coffee
+                       via PayPal http://www.paypal.me/osokin/usd
+    ==========================================================================================
+    NOTICE:
+    Tested with Adobe Illustrator CC 2017, CC 2018 (Mac), CS6 (Win).
+    This script is provided "as is" without warranty of any kind.
+    Free to use, not for sale.
+    ==========================================================================================
+    Released under the MIT license.
+    http://opensource.org/licenses/mit-license.php
+    ==========================================================================================
+    Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 

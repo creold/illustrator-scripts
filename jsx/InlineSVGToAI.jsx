@@ -1,31 +1,26 @@
-// InlineSVGToAI.jsx for Adobe Illustrator
-// Description: The script inserts the svg code as an object from the clipboard into the Adobe Illustrator.
-//              Adobe Illustrator v.22.1 (March, 2018) can insert svg graphics without a script.
-// Date: 2018
-// Requirements: Adobe Illustrator CC 2014+
-// Author: Alexander Ladygin, email: i@ladygin.pro
-// Code refactoring: Sergey Osokin, email: hi@sergosokin.ru
-// ==========================================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > InlineSVGToAI
-// ============================================================================
-// How to use:
-// 1. Run script
-// 2. Paste your svg code in textarea
-// 3. Press button "Paste"
-// ==========================================================================================
-// NOTICE:
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ==========================================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ==========================================================================================
+/*
+  InlineSVGToAI.jsx for Adobe Illustrator
+  Description: The script inserts the svg code as an object from the clipboard into the Adobe Illustrator.
+               Adobe Illustrator v.22.1 (March, 2018) can insert svg graphics without a script.
+  Date: 2018
+  Requirements: Adobe Illustrator CC 2014+
+  Author: Alexander Ladygin, email: i@ladygin.pro
+  Code refactoring: Sergey Osokin, email: hi@sergosokin.ru
+  ==========================================================================================
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  ============================================================================
+  How to use:
+  1. Run script
+  2. Paste your svg code in textarea
+  3. Press button "Paste"
+  ==========================================================================================
+  NOTICE:
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
+  ==========================================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+*/
 
 //@target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
@@ -74,7 +69,7 @@ function uiDialog() {
 
   function importSVG(string) {
     var svgFileName = "inlineSVGtoAI.svg",
-      svgFile = new File("" + Folder.temp + "/" + svgFileName),
+      svgFile = new File("" + Folder.myDocuments + "/" + svgFileName),
       backDoc = activeDocument;
   
     svgFile.open("w");

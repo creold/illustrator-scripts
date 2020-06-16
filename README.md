@@ -265,7 +265,8 @@ After using the Lasso tool or Direct Selection Tool, both Points and Path segmen
 
 ## SelectPointsType
 
-Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :) 
+Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
+Select `View → Hide Bounding Box` to see active points in real time.
 
 ### Usage
 

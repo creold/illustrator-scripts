@@ -1,38 +1,34 @@
-// TrimMasks.jsx for Adobe Illustrator
-// Description: Automatic trimming of all clipping groups in a document using Pathfinder > Trim. 
-// Date: March, 2020
-// Author: Sergey Osokin, email: hi@sergosokin.ru
-// ==========================================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > TrimMasks
-// ============================================================================
-// Versions:
-// 0.1 Initial version.
-// ============================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Donate (optional): If you find this script helpful and want to support me 
-// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+  TrimMasks.jsx for Adobe Illustrator
+  Description: Automatic trimming of all clipping groups in a document using Pathfinder > Trim. 
+  Date: March, 2020
+  Author: Sergey Osokin, email: hi@sergosokin.ru
+  ==========================================================================================
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  ============================================================================
+  Versions:
+  0.1 Initial version.
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  NOTICE:
+  Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
+  ============================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 
 // Global variables
 var setName = 'Pathfinder',
     actionName = 'Trim-Mask',
-    actionPath = Folder.temp,
+    actionPath = Folder.myDocuments,
     itemProperties = [];
 
 function main() {

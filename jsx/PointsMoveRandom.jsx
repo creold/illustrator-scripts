@@ -1,33 +1,27 @@
-// Move Points Randomly.jsx for Adobe Illustrator
-// Description: Random movement of selected points in an user range.
-// Requirements: Adobe Illustrator CS6 and above
-// Date: May, 2020
-// Author: Sergey Osokin, email: hi@sergosokin.ru
-// ============================================================================
-// Installation:
-// 1. Place script in:
-//    Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//    Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//    Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// 3. Choose File > Scripts > Move Points Randomly
-// ============================================================================
-// Versions:
-// 0.1 Initial version
-// 0.2 Added deselect some anchors, move handles
-// ============================================================================
-// Donate (optional): If you find this script helpful, you can buy me a coffee
-//                    via PayPal http://www.paypal.me/osokin/usd
-// ============================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2018 (Win), 2019 (Mac).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+  PointsMoveRandom.jsx for Adobe Illustrator
+  Description: Random movement of selected points in an user range.
+  Requirements: Adobe Illustrator CS6 and above
+  Date: May, 2020
+  Author: Sergey Osokin, email: hi@sergosokin.ru
+  ============================================================================
+  Versions:
+  0.1 Initial version
+  0.2 Added deselect some anchors, move handles
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  NOTICE:
+  Tested with Adobe Illustrator CC 2018 (Win), 2019 (Mac).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
+  ============================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 

@@ -1,21 +1,23 @@
-// Zoom And Center.jsx
-// Requirements: Adobe Illustrator CS6 / CC
-//============================================================================
-// Original Script: Zoom and Center to Selection v2.
-// Description: Zooms active view to selected object(s).
-// New in v.2: If nothing is selected; sets view to 100% at current location.
-//============================================================================
-// JS code (c) copyright: John Wundes ( john@wundes.com ) http://www.wundes.com
-// copyright full text here:  http://www.wundes.com/js4ai/copyright.txt
-//============================================================================
-// Modification by Sergey Osokin ( hi@sergosokin.ru ) https://github.com/creold
-// Description: Zooms active view to all object(s) in a document or to selection.
-// Used code from FitArtboardToArt.jsx by Darryl Zurn ( daz-scripting@zzzurn.com )
-// ============================================================================
-// Donate (optional): If you find this script helpful and want to support me 
-// by shouting me a cup of coffee, you can by via PayPal http://www.paypal.me/osokin/usd
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+  Zoom And Center.jsx
+  Requirements: Adobe Illustrator CS6 / CC
+  ============================================================================
+  Original Script: Zoom and Center to Selection v2.
+  Description: Zooms active view to selected object(s).
+  New in v.2: If nothing is selected; sets view to 100% at current location.
+  ============================================================================
+  JS code (c) copyright: John Wundes ( john@wundes.com ) http://www.wundes.com
+  copyright full text here:  http://www.wundes.com/js4ai/copyright.txt
+  ============================================================================
+  Modification by Sergey Osokin ( hi@sergosokin.ru ) https://github.com/creold
+  Description: Zooms active view to all object(s) in a document or to selection.
+  Used code from FitArtboardToArt.jsx by Darryl Zurn ( daz-scripting@zzzurn.com )
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;

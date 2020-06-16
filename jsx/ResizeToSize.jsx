@@ -1,32 +1,32 @@
-// ResizeToSize.jsx for Adobe Illustrator
-// Description: Scales each selected objects to a given value
-// Date: March, 2020
-// Author: Sergey Osokin, email: hi@sergosokin.ru
-// ==========================================================================================
-// Installation:
-// 1. Place script file in:
-//  Win (32 bit): C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\
-//  Win (64 bit): C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\
-//  Mac OS: <hard drive>/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts
-// 2. Restart Illustrator
-// ============================================================================
-// Versions:
-//  0.1 Initial version
-//  0.2 Added menu for side selection
-//  0.3 Added additional settings 
-//  0.4 Correct resize Clipping Mask. Added access key shortcuts
-//  0.5 Added dimensions bounds.
-//  0.6 Added live preview (Shift+P).
-// ============================================================================
-// NOTICE:
-// Tested with Adobe Illustrator CC 2019 (Mac/Win).
-// This script is provided "as is" without warranty of any kind.
-// Free to use, not for sale.
-// ============================================================================
-// Released under the MIT license.
-// http://opensource.org/licenses/mit-license.php
-// ============================================================================
-// Check other author's scripts: https://github.com/creold
+/*
+  ResizeToSize.jsx for Adobe Illustrator
+  Description: Scales each selected objects to a given value
+  Date: March, 2020
+  Author: Sergey Osokin, email: hi@sergosokin.ru
+  ==========================================================================================
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  ============================================================================
+  Versions:
+   0.1 Initial version
+   0.2 Added menu for side selection
+   0.3 Added additional settings 
+   0.4 Correct resize Clipping Mask. Added access key shortcuts
+   0.5 Added dimensions bounds.
+   0.6 Added live preview (Shift+P).
+  ============================================================================
+  Donate (optional): If you find this script helpful, you can buy me a coffee
+                     via PayPal http://www.paypal.me/osokin/usd
+  ============================================================================
+  NOTICE:
+  Tested with Adobe Illustrator CC 2019 (Mac/Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
+  ============================================================================
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
+  ============================================================================
+  Check other author's scripts: https://github.com/creold
+*/
 
 //@target illustrator
 
@@ -254,7 +254,7 @@ function main () {
       // Generate Action
       var actionSetName = 'Resize',
           actionName = 'Scale-Corners',
-          actionPath = Folder.temp;
+          actionPath = Folder.myDocuments;
 
       var actionStr = 
         ['/version 3',

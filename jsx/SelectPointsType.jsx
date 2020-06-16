@@ -29,6 +29,10 @@
 var SCRIPT_NAME = 'SelectPointsType',
     SCRIPT_VERSION = 'v.1.1';
 
+// Folder for icons
+var ICNS_FOLDER = Folder.myDocuments + '/Adobe Scripts/' + SCRIPT_NAME + '/';
+if(!Folder(ICNS_FOLDER).exists) Folder(ICNS_FOLDER).create();
+
 // RAW icons data
 var SMOOTH_ICNS_RAW = {
       normal:   new String("\u0089PNG\r\n\x1A\n\x00\x00\x00\rIHDR\x00\x00\x00!\x00\x00\x00$\b\x06\x00\x00\x00\x07)S\u00DC\x00\x00\x00\tpHYs\x00\x00\x10\u009B\x00\x00\x10\u009B\x01t\u0089\u009CK\x00\x00\x02\u00AEIDATX\u0085\u00ED\u0097_HSQ\x1C\u00C7?\u00B7?lT\u008CY\u009A\t\u0091\u00B9^4\x04\u0087E\x1A\x14\u00CC\u0097\u00E8\x1F\x14\x04\u00BD\u00F8\u00E0 \u00B0\u0082J\t_/\u0099#\u00E8)*\u0082,\u00C8\u00F4\u00C1\u00A7\x10\f\u00B2\u00A4\u0097\u0084z\u00A8\u0088\u00B5Q\u00E0C`3\u00A4U&MM\u009B\u0096\u009D8\u00D7\u00DDy\u00B6\u00DD9k\x0F\u00F6p\u00BFp\u00E1\u009C\u00DF\u00FD\u009D\u00EF\u00F9\u00EC\u00FC\u00BD\u00D3\u0084\x10,\u00B7V,;\u0081\r\u00A1\u00C8\u00860eC\u0098\u00B2!L\u00FD\x17\x10\u00AB,\u00A3\x01m+ \u009F\x18\u00BA\b-\u00EA\x10\u00D0\u00DC\u00807Q\x0B\u00A1\u008BX\u008E|\u0099+\u00DBD\u00D0ED\u00862\u00EF\u008E\u009B\x15\u00ED8\x0B\x1A\u00F0\u00ECs\x12}\u00F5\u0093\u0089\u0091\u00974\u0086\u00F6X\x1A\u00DE\u00A9\u00D9Kl\u00E8!\u0095\u00F5\u00EB\u008C\u00FA\u00DB\u00EE\u00EF\u00B8=\x079\u00F1\u00E2\u00A9e\u00FEm\u00EF3\\\u009BwQ\u00B2s5C\u008F\u00E3\u00C4\u00BFuqz\u00F0\x14\x12\"\u00F9\u00B4\u00E1\x15\x1D\u00BB\x7F\bU\u00FDMB\u00B4W\u00B6\u00A4\u00E5\u00B9E\x1B~q\u00BDl\\D_/$\u00CB\u00B2\u008C\u00C9w2Gm#=\u00A4\u0097*\u00D9W\x1B\u00DE\u00D4\u00E9(\u00A9\u00AE\u00A7\u00BA\u00D1\u0099\x12+?\n\u00EF\x1E\u00B4\x10\u00D0\x0E\x03\u00CE\u00C44\x15\x1B\u00EF\x1C.\u00D8\u00E4]\u00C8\u0095e\u0087\u00CB\x05\u00DC5\u009E\u0080\u00F6\u00D9\x18v\u0088S\u00B0\u00AD\u00DC\u00F0R\u00B5\u00FD\u00B8\u0093\u00B9\u0099\u00FA\u00D4\u0085\x19\r\u00F6\u00F1)m\t\u00C4\"\u00E0t\u00F7\x03\u00BD@M\x12@jb\x04\u00E2\u00CA\x12\u0090\u00E5\u00C9\u008Fj\u00EB\u00E2D\u009B^\u00C3#\x16\u00C9\u00F4\u009E\x1E\x0Be\u00AE\u0089k[F\u00A9=_H\u0095\x1F\u0086\x07\u00A0\u00EF\u00E44S_\x1E\x01\u00C7\u00D2fx\x18\u00B7g\u008C\u00A2\u008A*\u00F6\u00DFXiD\u00FA\u00CF\u00CC1:\x18&6\u00B4\x01(M\u00CB\u00EFa\u00ED\u00C6\x03\x1C\u00BA\u00B5\u0086R\x1F\u0084;\u00E1\u00F9\u0095\u00AF4}(\u00CA\u0084\u0090\u00AB\u00BDd\u00C7Uf\u00C6}8\\o\u0088\x06g\u00D2\x00\u0086\u0081Vt\u00D1i\u00D4:j\x1B\u0099\u009D<k\u0094g\u00A7.s.\u00D2\u009D\u00F0\u00F1\x1By\u00A90=\x14\u0096\u00AF\u00E7\u00F7/\x0F\x0E\u00D7=\u00A2\u00C1Kr7-\u00FEe\x15\u00D0\u00A4\u00C9\x05%r\x1F\u00F0\u00E7\u00DC\u0086\u00EA\x0F\x02\t{D\u0089^D\x17\u00ADjZv\u0088\u00F9\u00B3\u00E2\u00BD\x12\u00E9B\x17\u00FE%u\u009E\u00E9%A\x1A\u0094H\u0099yF\u0090\u00E3\u00C4Ti\u00E5\x144\u00FF\x13\u00C0\u00BC\u009A\x13\x1EV\u00DEYF\"s\x14\u00EA\u00D0\u00C5@\x1E\x10\u00D2\u00D3\x07<Q\"\u00C9\u00D1\u00C86\x12\u00EA\u0086\x0E\u00E7\r 5\u00EF\x11\u00B6\u00EA#\x1B\u0084O)\u00F7\u00E6\r`\u00ED\u0095\u00EC#\x1B\u0084[)\u00E7?\n\u00D6^\u00C9>\u00B2A(g1K\u00DB\u008EK\u0093\u00EA\u0095\u00EC\u00C3\u00FA*W\u00D7D\u00AE\u00AB\u00FCo$\u00BD\x02Z]z\x0B\u00FBo\u00A0)\x1B\u00C2\u0094\ra\u00CA\u00860\u00B5\u00FC\x10\u00C0\x1F\u00C1c-8\u00DA\x1D\u00C2\u00CF\x00\x00\x00\x00IEND\u00AEB`\u0082"),
@@ -194,7 +198,7 @@ function createIcons(prefix, obj) {
   var outfile;
   var count = 0;
   for (var key in obj) {
-    var filePath = Folder.temp + '/' + prefix + '_' + count + '.png';
+    var filePath = ICNS_FOLDER + prefix + '_' + count + '.png';
     try {
       outfile = new File(filePath);
       outfile.encoding = 'binary';
@@ -209,7 +213,7 @@ function createIcons(prefix, obj) {
 // Get icons files for GUI from disk
 function getIcons(pattern) {
   var arr = [];
-  var iconsFolder = Folder(Folder.temp);
+  var iconsFolder = Folder(ICNS_FOLDER);
   var icnsFiles = iconsFolder.getFiles(pattern + '_*.png');
   try {
     for (var i = 0; i < icnsFiles.length; i++) {
