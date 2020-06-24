@@ -9,6 +9,7 @@
   ============================================================================
   Versions:
   1.0 Initial version.
+  1.0 Added option Find and replace string in all Layer names.
   ============================================================================
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -27,7 +28,7 @@
 //@target illustrator
 
 var SCRIPT_NAME = 'Rename Items',
-    SCRIPT_VERSION = 'v.1.0';
+    SCRIPT_VERSION = 'v.1.1';
 
 function main() {
   if (app.documents.length == 0) {
@@ -74,7 +75,7 @@ function main() {
   if (selection.length > 1) {
     var chkFind = win.add('checkbox', undefined, 'Find and replace'); 
     chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
-                        'For example, if you enter <rect>, it will replace all\n' +
+                        'E.g.: if you enter <rect>, it will replace all\n' +
                         'the <rect> occurrences in the selected items name.'; 
     
     // Replace
@@ -96,7 +97,7 @@ function main() {
 
     var sprtTitle = grpSprt.add('statictext', undefined, 'Name separator'); 
     var sprtInp = grpSprt.add('edittext', undefined, '-'); 
-        sprtInp.helpTip = 'Eg: name-1, name-2, etc.'
+        sprtInp.helpTip = 'E.g.: name-1, name-2, etc.'
         sprtInp.preferredSize.width = 45;
 
     // Counting
@@ -110,12 +111,36 @@ function main() {
     // Toggle Find & Replace input
     chkFind.onClick = function () {
       grpRplc.enabled = !grpRplc.enabled;
+      nameTitle.text = (chkFind.value) ? 'Replace ' + title + ' name' : 'Enter ' + title + ' name';
     }
 
     // Toggle Auto-increment naming inputs
     chkAutoInc.onClick = function () {
       grpSprt.enabled = !grpSprt.enabled;
       grpCount.enabled = !grpCount.enabled;
+    }
+  }
+  
+  //  Add more options for Layers rename
+  if (selection.length == 0) {
+    var chkFind = win.add('checkbox', undefined, 'Find and replace in all Layer'); 
+    chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
+                        'E.g.: if you enter <Test>, it will replace all\n' +
+                        'the <Test> occurrences in all Layer names.'; 
+    
+    // Replace
+    var grpRplc = win.add('group', undefined); 
+        grpRplc.orientation = 'row';
+        grpRplc.enabled = false;
+
+    var rplcTitle = grpRplc.add('statictext', undefined, 'Search string'); 
+    var rplcInp = grpRplc.add('edittext', undefined, ''); 
+        rplcInp.characters = 10;
+
+    // Toggle Find & Replace input
+    chkFind.onClick = function () {
+      grpRplc.enabled = !grpRplc.enabled;
+      nameTitle.text = (chkFind.value) ? 'Replace ' + title + ' name' : 'Enter ' + title + ' name';
     }
   }
 
@@ -134,18 +159,23 @@ function main() {
       copyright.justify = 'center';
       copyright.enabled = false;
 
-
   cancel.onClick = function() {
     win.close();
   }
-  ok.onClick = okClick;
 
-  win.show();
-
-  function okClick() {
+  ok.onClick = function () {
     switch (selection.length) {
       case 0: // empty selection
-        if (!nameInp.text.isEmpty()) {
+        var layers = doc.layers;
+        if (chkFind.value && rplcInp.text) {
+          for (var i = 0; i < layers.length; i++) {
+            var iLayer = layers[i];
+            var newLayerName = iLayer.name.replaceAll(rplcInp.text, nameInp.text);
+            if (newLayerName != iLayer.name) {
+              iLayer.name = newLayerName;
+            }
+          }
+        } else {
           aLayer.name = nameInp.text;
         }
         break;
@@ -176,10 +206,8 @@ function main() {
   }
 
   reopenPnl();
-}
-
-String.prototype.isEmpty = function() {
-  return (!this || this.length === 0 || /^\s*$/.test(this));
+  
+  win.show();
 }
 
 String.prototype.replaceAll = function(search, replacement) {
