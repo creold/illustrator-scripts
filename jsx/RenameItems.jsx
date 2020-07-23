@@ -202,10 +202,9 @@ function main() {
         }
         break;
     }
+    reopenPnl();
     win.close();
   }
-
-  reopenPnl();
   
   win.show();
 }
