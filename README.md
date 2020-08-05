@@ -20,7 +20,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`  
-* [SelectPointsType.jsx] `(new, 28.05.2020)`   
+* [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
 * [SplitPath.jsx]   
 * [TrimMasks.jsx] `(new, 11.03.2020)`
 * [Zoom-and-center.jsx] 
@@ -36,7 +36,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
 [ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
 [SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts#selectonlypoints
-[SelectPointsType.jsx]: https://github.com/creold/illustrator-scripts#selectpointstype
+[SelectPointsByType.jsx]: https://github.com/creold/illustrator-scripts#selectpointsbytype
 [SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath-10-ex-pathsubtract
 [TrimMasks.jsx]: https://github.com/creold/illustrator-scripts#trimmasks
 [Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts#zoom-and-center
@@ -263,7 +263,7 @@ After using the Lasso tool or Direct Selection Tool, both Points and Path segmen
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-## SelectPointsType
+## SelectPointsByType
 
 Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
 Select `View → Hide Bounding Box` to see active points in real time.
@@ -271,14 +271,16 @@ Select `View → Hide Bounding Box` to see active points in real time.
 ### Usage
 
 1. Select paths with Direct Selection Tool `key: A` or Group Selection Tool
-2. Run script `File → Scripts → SelectPointsType`
+2. Run script `File → Scripts → SelectPointsByType`
 3. Click the button or use keyboard shortcuts:
 
-* Smooth `Alt+1`
-* Corner `Alt+2`
-* Broken `Alt+3` 
+* Bezier `Alt+1`
+* Flush `Alt+2`
+* Corner `Alt+3`
+* Broken `Alt+4`
+* Flat `Alt+5` 
 
-![SelectPointsType](images/demo-SelectPointsType.gif) 
+![SelectPointsType](images/demo-SelectPointsByType.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
