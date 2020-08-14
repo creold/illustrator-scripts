@@ -48,15 +48,15 @@ function main() {
   // Set title & placeholder for input
   switch (selection.length) {
     case 0: // empty selection
-      title = 'Layer';
+      title = 'layer';
       placeholder = aLayer.name;
       break;
     case 1: // one object was selected
-      title = 'Path';
+      title = 'item';
       placeholder = selection[0].name;
       break;
     default: // multiple objects were selected
-      title = 'Paths';
+      title = 'items';
       break;
   }
 

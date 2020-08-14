@@ -21,7 +21,8 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`  
 * [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
-* [SplitPath.jsx]   
+* [SplitPath.jsx] 
+* [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
 * [TrimMasks.jsx] `(new, 11.03.2020)`
 * [Zoom-and-center.jsx] 
 
@@ -38,6 +39,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts#selectonlypoints
 [SelectPointsByType.jsx]: https://github.com/creold/illustrator-scripts#selectpointsbytype
 [SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath-10-ex-pathsubtract
+[StrokeColorFromFill.jsx]: https://github.com/creold/illustrator-scripts#strokecolorfromfill
 [TrimMasks.jsx]: https://github.com/creold/illustrator-scripts#trimmasks
 [Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts#zoom-and-center
 
@@ -299,6 +301,23 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
  
 
 ![SplitPath](images/demo-SplitPath.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## StrokeColorFromFill
+
+Setting the Stroke color of object based on an his solid or gradient fill. The option to automatically add an stroke is not available for Mac OS users with an Illustrator older than CC 2020.   
+
+### Usage
+
+1. Select object(s)
+3. Run script `File → Scripts → StrokeColorFromFill `
+4. Enter color shift value
+ 
+
+![SplitPath](images/demo-StrokeColorFromFill.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">

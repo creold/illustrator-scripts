@@ -235,7 +235,6 @@ function main () {
         app.undo();
         app.redraw();
         isUndo = false;
-        action = 0;
       } 
   }
 
