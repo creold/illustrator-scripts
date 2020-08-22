@@ -6,7 +6,7 @@
 # Hi everybody :)
 This is a collection of JSX scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
 
-The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6 (Windows), CC 2017 (Mac OS).   
+The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6, CC 2020 (Windows), CC 2019, 2020 (Mac OS).   
 
 ### Alphabetical list of scripts
 * [ArtboardsRotateWithObjects.jsx]   
@@ -360,6 +360,7 @@ Zooms active view to selection or to all object(s) in a document.
 * Sergey, these scripts of yours are great. — Terry Foxx   
 * Wow. I just installed and successfully tested. Outstanding work!!!. — Zak Lay
 * Tried your script to export selected objects to separate Ai, works smartly. — Dmitry
+* I looked at your post. Useful scripts!. — Askhat Gilyakhov
 
 #### Don't forget sharing link with a friend 🙂 
 

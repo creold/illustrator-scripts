@@ -7,6 +7,10 @@
   ==========================================================================================
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
   ============================================================================
+  Versions:
+  0.1 Initial version
+  0.2 Added changing the color shift value with the Up/Down keys
+  ============================================================================
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
   ============================================================================
@@ -38,7 +42,7 @@ var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошиб�
     LANG_STROKE = { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить'};
     LANG_SPOT = { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в '};
     LANG_OK = { en: 'Ok', ru: 'Готово'},
-    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена'};
+    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена'},
     LANG_PREVIEW = { en: 'Preview', ru: 'Предпросмотр'}; 
 
 var selPaths = [],
@@ -133,22 +137,43 @@ function main() {
   if (isExists(isAddStroke)) { isAddStroke.onClick = previewStart; }
   // End event listener for isPreview
 
+  // Use Up / Down arrow keys (+ Shift) for change color shift
+  colorShift.addEventListener('keydown', function (kd) {
+    var step;
+    ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+    if (kd.keyName == 'Down') {
+      if (Number(this.text) >= -maxValue + step) {
+        this.text = Number(this.text) - step;
+        kd.preventDefault();
+      } else {
+        this.text = -maxValue;
+      }
+    }
+    if (kd.keyName == 'Up') {
+      if (Number(this.text) <= maxValue - step) {
+        this.text = Number(this.text) + step;
+        kd.preventDefault();
+      } else {
+        this.text = maxValue;
+      }
+    }
+    previewStart();
+  });
+
   ok.onClick = okClick;
 
   function okClick() {
     if (isPreview.value && isUndo) { app.undo(); }
-    isUndo = false;
     start();
+    isUndo = false;
     dialog.close();
   }
 
   function previewStart() {
     try {
       if (isPreview.value && (arrHasStroke || (isExists(isAddStroke) && isAddStroke.value))) {
-        if (isUndo) { 
-          app.undo(); }
-        else { 
-          isUndo = true; }
+        if (isUndo) { app.undo(); }
+        else { isUndo = true; }
         start();
         app.redraw();
       } else if (isUndo) {
@@ -165,7 +190,7 @@ function main() {
   function start() {
     tempPath = doc.activeLayer.pathItems.add();
     tempPath.name = 'Temp_Path';
-    var shiftNum = (isNaN(Number(colorShift.text)) || colorShift.text === '') ? 0 : Math.round(Number(colorShift.text));
+    var shiftNum = (isNaN(Number(colorShift.text)) || colorShift.text.replace(/\s/g, '').length == 0) ? 0 : Math.round(Number(colorShift.text));
     for (var i = 0; i < selPaths.length; i++) {
       try {
         var item = selPaths[i];
