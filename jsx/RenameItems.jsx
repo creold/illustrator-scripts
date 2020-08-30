@@ -67,8 +67,7 @@ function main() {
 
   var nameTitle = grpName.add('statictext', undefined, undefined); 
       nameTitle.text = 'Enter ' + title + ' name';
-  var nameInp = grpName.add('edittext'); 
-      nameInp.text = placeholder; 
+  var nameInp = grpName.add('edittext', [0, 0, 170, 30], placeholder); 
       nameInp.active = true;
 
   //  Add more options for multiple selection

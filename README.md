@@ -21,7 +21,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`  
 * [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
-* [SplitPath.jsx] 
+* [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
 * [TrimMasks.jsx] `(new, 11.03.2020)`
 * [Zoom-and-center.jsx] 
@@ -38,7 +38,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
 [SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts#selectonlypoints
 [SelectPointsByType.jsx]: https://github.com/creold/illustrator-scripts#selectpointsbytype
-[SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath-10-ex-pathsubtract
+[SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath
 [StrokeColorFromFill.jsx]: https://github.com/creold/illustrator-scripts#strokecolorfromfill
 [TrimMasks.jsx]: https://github.com/creold/illustrator-scripts#trimmasks
 [Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts#zoom-and-center
@@ -288,7 +288,7 @@ Select `View → Hide Bounding Box` to see active points in real time.
   <img width="160" height="49" src="images/download.png">
 </a> 
 
-## SplitPath 1.0 (ex-PathSubtract)
+## SplitPath
 
 Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
 
