@@ -152,14 +152,19 @@ function intersect() {
   restore(saveFill);
 
   rectIntersect = activeDocument.pageItems.getByName(SCRIPT_NAME);
-  rectIntersect.move(selection[0], ElementPlacement.PLACEBEFORE);
   rectIntersect.selected = true;
   
+  // Create a intersect mask
   app.executeMenuCommand('group');
   app.executeMenuCommand('Live Pathfinder Minus Back');
   app.executeMenuCommand('expandStyle');
   app.executeMenuCommand('ungroup');
-
+  
+  // Place the intersect mask over the lines
+  app.executeMenuCommand('group');
+  selection[0].move(saveSel[0], ElementPlacement.PLACEBEFORE);
+  app.executeMenuCommand('ungroup');
+  
   restore(saveSel);
   cutPaths();
 }
@@ -168,7 +173,6 @@ function intersect() {
 function checkFill(arr) {
   for (var i = 0; i < arr.length; i++) {
     var currItem = arr[i];
-
     try {
       switch (currItem.typename) {
         case 'GroupItem':
@@ -236,20 +240,30 @@ function releaseGroups(arr) {
 function saveState(sel, fills) {
   for (var i = 0; i < selection.length; i++) {
     var currItem = selection[i];
-    if (currItem.filled && currItem.closed) { fills.push(currItem); }
-    if (currItem.typename === 'CompoundPathItem' && currItem.pathItems[0].filled
-        && currItem.pathItems[0].closed) {
-      fills.push(currItem);
-    }
-    if (!currItem.closed) { sel.push(currItem); }
+    try {
+      switch (currItem.typename) {
+        case 'PathItem':
+          if (currItem.filled && currItem.closed) { fills.push(currItem); }
+          if (!currItem.closed) { sel.push(currItem); }
+          break;
+        case 'CompoundPathItem':
+          var zeroItem = currItem.pathItems[0];
+          if (zeroItem.filled && zeroItem.closed) { fills.push(currItem); }
+          if (!zeroItem.closed) { sel.push(currItem); }
+          break;
+        default:
+          break;
+      }
+    } catch (e) { }
   }
+
+  return [sel, fills];
 }
 
 function cutPaths() {
   app.executeMenuCommand('Make Planet X');
   app.executeMenuCommand('Expand Planet X');
   selection[0].groupItems[selection[0].groupItems.length - 1].remove();
-  app.executeMenuCommand('ungroup');
   app.executeMenuCommand('ungroup');
 }
 
