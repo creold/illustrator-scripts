@@ -8,6 +8,7 @@
   ============================================================================
   Versions:
   0.1 Initial version.
+  0.2 Added "SAVE_FILLED_CLIPMASK" boolean flag for save the filled mask path, fixed the live text masks.
   ============================================================================
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -24,27 +25,47 @@
 */
 
 //@target illustrator
+$.localize = true; // Enabling automatic localization
+app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 // Global variables
-var setName = 'Pathfinder',
-    actionName = 'Trim-Mask',
-    actionPath = Folder.myDocuments,
-    itemProperties = [];
+var AI_VER = parseInt(app.version),
+    ACTION_SET = 'Pathfinder',
+    ACTION_NAME = 'Trim-Mask',
+    ACTION_PATH = Folder.myDocuments + '/Adobe Scripts/',
+    LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
+                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
+    LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and later.',
+                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.'},
+    SAVE_FILLED_CLIPMASK = false, // true — save the filled mask path when trimming, false - not save
+    OVER_GROUPS = 10; // When the number of clip groups >, full-screen mode is enabled
+    clipCounter = 0;
+    itemAttr = { mOpacity: 100, mBlending: BlendModes.NORMAL };
+    
+
+if (!Folder(ACTION_PATH).exists) { Folder(ACTION_PATH).create(); }
 
 function main() {
   if (app.documents.length == 0) {
-      alert('Error: \nOpen a document and try again.');
-      return;
+    alert(LANG_ERR_DOC);
+    return;
   }
-  var doc = app.activeDocument;
 
-  // Generate action Pathfinder > Trim
+  if (AI_VER < 16) {
+    alert(LANG_ERR_VER);
+    return;
+  }
+
+  var doc = app.activeDocument,
+      userScreen = doc.views[0].screenMode;
+
+  // Generate action Pathfinder > Crop
   var actionStr =   
     ['   /version 3',
-    '/name [' + setName.length + ' ' + ascii2Hex(setName) + ']',
+    '/name [' + ACTION_SET.length + ' ' + ascii2Hex(ACTION_SET) + ']',
     '/actionCount 1',
     '/action-1 {',
-    '/name [' + actionName.length + ' ' + ascii2Hex(actionName) + ']',
+    '/name [' + ACTION_NAME.length + ' ' + ascii2Hex(ACTION_NAME) + ']',
     '  /keyIndex 0',
     '  /colorIndex 0',
     '  /isOpen 1',
@@ -64,57 +85,88 @@ function main() {
     '      /showInPalette 4294967295',
     '      /type (enumerated)',
     '      /name [ 4',
-    '        5472696d',
+    '        43726f70',
     '      ]',
-    '      /value 7',
+    '      /value 9',
     '    }',
     '  }',
     '}'].join('');
 
-  createAction(actionStr, setName, actionPath);
-
-  if (doc.selection.length > 0) {
-    trimThis(getGroups(doc.selection));
-  } else {
-    trimThis(getGroups(doc.pageItems));
+  createAction(actionStr, ACTION_SET, ACTION_PATH);
+  
+  if (selection.length == 0) {
+    app.executeMenuCommand('selectall');
+  }
+  var groups = getGroups(selection);
+  clipCount(groups);
+  // When the number of clip groups >, full-screen mode is enabled
+  if (clipCounter > OVER_GROUPS) {
+    doc.views[0].screenMode = ScreenMode.FULLSCREEN;
   }
 
-  app.unloadAction(setName, '');
+  try {
+    processing(groups);
+  } catch (e) {
+    // showError(e);
+  }
+  
+  app.unloadAction(ACTION_SET, '');
   resetSelection();
+  doc.views[0].screenMode = userScreen;
+  app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
 }
 
-function trimThis(obj) {
+function processing(items) {
   var currItem;
-  for (var i = 0; i < obj.length; i++) {
+  for (var i = 0; i < items.length; i++) {
     resetSelection();
-    currItem = obj[i];
-    try {
-      // Save <clip group> properties
-      itemProperties[0] = currItem.opacity;
-      itemProperties[1] = currItem.blendingMode;
-      if (currItem.clipped) {
-        currItem.selected = true;
-        app.doScript(actionName, setName);
-      } else if (currItem.typename === 'GroupItem') {
-          // Save parent group properties if <clip group> inside
-          if (currItem.pageItems.length == 1) {
-            itemProperties[2] = currItem.opacity;
-            itemProperties[3] = currItem.blendingMode;
-          }
-          trimThis(currItem.pageItems);
-      }
-      currItem = app.activeDocument.selection[0];
-      // Restore <clip group> properties to child path
-      if (typeof(itemProperties[2]) !== 'undefined' && itemProperties[2] != 100 && itemProperties[3] != 'BlendModes.NORMAL') {
-        currItem.opacity = itemProperties[2];
-        currItem.blendingMode = itemProperties[3];
+    currItem = items[i];
+    if (currItem.typename === 'GroupItem' && currItem.clipped) {
+      trim(currItem);
+    }
+    if (currItem.typename === 'GroupItem' && !currItem.clipped) {
+      if (currItem.pageItems.length == 1 && currItem.pageItems[0].typename === 'GroupItem') {
+        var singleItem = currItem.pageItems[0];
+        singleItem.moveBefore(currItem);
+        trim(singleItem);
       } else {
-        currItem.opacity = itemProperties[0];
-        currItem.blendingMode = itemProperties[1];
+        processing(currItem.pageItems);
       }
-      itemProperties = [];
-    } catch (e) { }
+    }
   }
+}
+
+function trim(item) {
+  // Save opacity & blendingMode properties
+  if (item.opacity < 100) { itemAttr.mOpacity = item.opacity; }
+  if (item.blendingMode != BlendModes.NORMAL) { itemAttr.mBlending = item.blendingMode; }
+  
+  // If <clip group> contains live text
+  outlineText(item);
+  
+  // Trick for Compound path created from groups of paths
+  item.selected = true;
+  compoundPathsNormalize(selection);
+  
+  if (SAVE_FILLED_CLIPMASK) { 
+    duplicateFilledMask(item, itemAttr.mOpacity, itemAttr.mBlending);
+  }
+  
+  item.selected = true;
+  if (SAVE_FILLED_CLIPMASK) {
+    // Because the duplicate mask is select behind
+    selection = selection[0];
+  }
+  app.doScript(ACTION_NAME, ACTION_SET);
+
+  if (selection.length > 0) {
+    // Restore opacity to child path
+    if (itemAttr.mOpacity < 100) { selection[0].opacity = itemAttr.mOpacity; }
+    // Restore blendingMode to child path
+    if (itemAttr.mBlending != BlendModes.NORMAL) { selection[0].blendingMode = itemAttr.mBlending; }
+  }
+
+  itemAttr = { mOpacity: 100, mBlending: BlendModes.NORMAL };
 }
 
 function createAction (str, set, path) {
@@ -131,21 +183,126 @@ function ascii2Hex(hex) {
 }
 
 // Get only groups from selection or document
-function getGroups(obj) {
+function getGroups(items) {
   var childsArr = [],
-      item;
-  for (var i = 0; i < obj.length; i++) {
-    item = obj[i];
-    if (item.typename === 'GroupItem' && item.pageItems.length) childsArr.push(obj[i]);
+      currItem;
+  for (var i = 0; i < items.length; i++) {
+    currItem = items[i];
+    if (currItem.typename === 'GroupItem') { 
+      childsArr.push(currItem);
+    }
   }
   return childsArr;
 }
 
-function resetSelection () {
-  app.activeDocument.selection = null;
+function outlineText(group) {
+  try {
+    for (var i = 0; i < group.pageItems.length; i++) {
+      var currItem = group.pageItems[i],
+          itemType = currItem.typename;
+      if (itemType === 'TextFrame') { 
+        var textColor = currItem.textRange.fillColor;
+        currItem.selected = true;
+        app.executeMenuCommand('outline');
+        for (var j = 0; j < selection.length; j++) {
+          if (selection[j].typename  === 'PathItem') selection[j].fillColor = textColor;
+          if (selection[j].typename  === 'CompoundPathItem') {
+            // Trick for Compound path created from groups of paths
+            if (selection[j].pathItems.length == 0) {
+              var tempPath = selection[j].pathItems.add();
+            }
+            selection[j].pathItems[0].fillColor = textColor;
+            tempPath.remove();
+          }
+        }
+        resetSelection();
+      }
+      if (itemType === 'GroupItem') {
+        outlineText(currItem);
+      }
+    }
+  } catch (e) {
+    // showError(e);
+  }
+}
+
+function ungroup(items) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].typename === 'GroupItem') {
+      var j = items[i].pageItems.length;
+      while (j--) {
+        items[i].pageItems[0].locked = items[i].pageItems[0].hidden = false;
+        items[i].pageItems[0].moveBefore(items[i]);
+      }
+      items[i].remove();
+    }
+  }
+}
+
+// Trick for Compound path created from groups of paths
+function compoundPathFix(item) {
+  selection = [item];
+  app.executeMenuCommand('noCompoundPath');
+  ungroup(selection);
+  app.executeMenuCommand('compoundPath');
+  resetSelection();
+}
+
+// From compoundFix.jsx by Alexander Ladygin https://github.com/alexander-ladygin
+function compoundPathsNormalize(items) {
+  var i = items.length;
+  while (i--) {
+    if (items[i].typename === 'GroupItem') {
+      compoundPathsNormalize(items[i].pageItems);
+    } else if (items[i].typename === 'CompoundPathItem') {
+      compoundPathFix(items[i]);
+    }
+  }
+}
+
+function duplicateFilledMask(group, opacity, blending) {
+  try {
+    for (var i = 0; i < group.pageItems.length; i++) {
+      var currItem = group.pageItems[i],
+          itemType = currItem.typename,
+          zeroPath = (itemType === 'CompoundPathItem') ? currItem.pathItems[0] : currItem;
+
+      if ((itemType === 'PathItem' || itemType === 'CompoundPathItem') && zeroPath.clipping && zeroPath.filled) {
+        var maskClone = currItem.duplicate(group, ElementPlacement.PLACEAFTER);
+            // Restore opacity to child path
+            if (opacity < 100) { maskClone.opacity = opacity; }
+            // Restore blendingMode to child path
+            if (blending != BlendModes.NORMAL) { maskClone.blendingMode = blending; }
+      }
+    }
+    app.redraw();
+  } catch (e) {
+    // showError(e);
+  }
+}
+
+function clipCount(items) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].typename === 'GroupItem' && items[i].clipped) {
+      clipCounter++;
+    }
+    if (items[i].typename === 'GroupItem' && !items[i].clipped) {
+      clipCount(items[i].pageItems);
+    }
+  }
+}
+
+function resetSelection() {
+  selection = null;
   app.redraw();
 }
 
+function showError(err) {
+  alert(err + ': on line ' + err.line, 'Script Error', true);
+}
+
 try {
-    main();
-} catch (e) { }
+  main();
+} catch (e) {
+  // showError(e);
+}

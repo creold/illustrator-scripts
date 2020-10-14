@@ -16,14 +16,14 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [FileVersionInformer.jsx]   
 * [InlineSVGToAI.jsx]   
 * [PointsMoveRandom.jsx] `(new, 08.05.2020)`  
-* [RenameItems.jsx] `(new, 13.12.2019)`
+* [RenameItems.jsx] `(upd, 23.07.2020)`
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`  
 * [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
-* [TrimMasks.jsx] `(new, 11.03.2020)`
+* [TrimMasks.jsx] `(upd, 14.10.2020)`
 * [Zoom-and-center.jsx] 
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
@@ -325,7 +325,8 @@ Setting the Stroke color of object based on an his solid or gradient fill. The o
 
 ## TrimMasks
 
-Automatic trimming of all clipping groups in selection or a document using Pathfinder > Trim.   
+Automatic trimming of all clipping groups in selection or a document using `Pathfinder > Crop`.   
+If you want to save the filled mask after trimming, open the script file in a text editor and change `SAVE_FILLED_CLIPMASK = false;` value to `true`.
 
 ### Usage
 
