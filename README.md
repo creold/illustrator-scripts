@@ -11,6 +11,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 ### Alphabetical list of scripts
 * [ArtboardsRotateWithObjects.jsx]   
 * [ConvertToGradient.jsx]   
+* [DuplicateArtboardsLight.jsx] `(new, 21.10.2020)`  
 * [Export-selection-as-AI.jsx]   
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
 * [FileVersionInformer.jsx]   
@@ -28,6 +29,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
+[DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts#duplicateartboardslight
 [Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts#export-selection-as-ai 
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
 [FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
@@ -107,6 +109,21 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 3. Enter a numeric values in input fields
 
 ![ConvertToGradient](images/demo-ConvertToGradient.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="images/download.png">
+</a> 
+
+## DuplicateArtboardsLight
+
+Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
+
+### Usage
+
+1. Run script `File → Scripts → DuplicateArtboardsLight `
+2. Enter a numeric values in input fields
+
+![ConvertToGradient](images/demo-DuplicateArtboardsLight.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="images/download.png">
