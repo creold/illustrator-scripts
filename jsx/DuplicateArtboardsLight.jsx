@@ -7,6 +7,10 @@
   ============================================================================
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
   ============================================================================
+  Versions:
+  0.1 Initial version
+  0.2 Fixed: bounds checking of the Illustrator canvas; position of the first copy
+  ============================================================================
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
   ============================================================================
@@ -26,6 +30,7 @@ $.localize = true; // Enabling automatic localization
 
 // Global variables
 var SCRIPT_NAME = 'Duplicate Atboards Light',
+    SCRIPT_VERSION = 'v.0.2',
     SETTINGS_FILE = {
       name: SCRIPT_NAME.replace(/\s/g, '_') + '_data.ini',
       folder: Folder.myDocuments + '/Adobe Scripts/'
@@ -37,7 +42,8 @@ var SCRIPT_NAME = 'Duplicate Atboards Light',
     SUFFIX_DEF = ' ',
     L_KEYWORD = '%isLocked',
     H_KEYWORD = '%isHidden',
-    CANVAS_LIMIT = 8672, // The Illustrator canvas relative coordinates -7711,7911,8672,-8472
+    OVER_OBJ = 2500, // The amount of objects, when the script can run slowly
+    CNVS_SIZE = 16383, // Illustrator canvas max bounds, px
     OVER_COPIES = 10, // When the number of copies >, full-screen mode is enabled
     DEF_DLG_OPACITY = 0.9,  // UI window opacity. Range 0-1
     FIELD_SIZE = [0, 0, 60, 30],
@@ -49,6 +55,8 @@ var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошиб�
                      ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.'},
     LANG_ERR_COPIES = { en: 'Error\nMaximum amount of copies in document: ',
                         ru: 'Ошибка\nМаксимальное количество копий в документе: '},
+    LANG_SLOW = { en: 'In the document over ' + OVER_OBJ + ' objects. The script can run slowly',
+                  ru: 'В документе свыше ' + OVER_OBJ + ' объектов. Скрипт может работать медленно'},
     LANG_ARTBOARD = { en: 'Select artboard', ru: 'Выберите артборд'},
     LANG_COPIES = { en: 'Copies (max ', ru: 'Копии (до '},
     LANG_SPACING = { en: 'Spacing', ru: 'Расстояние'},
@@ -68,27 +76,27 @@ function main() {
 
   var doc = app.activeDocument,
       COPIES_MAX = 1000 - doc.artboards.length,
-      currBoardIdx = doc.artboards.getActiveArtboardIndex(),
-      boardsArr = [],
+      currAbIdx = doc.artboards.getActiveArtboardIndex(),
+      abArr = [],
       copies = spacing = 0;
  
   for (var i = 0; i < doc.artboards.length; i++) {
-    boardsArr.push((i + 1) + ': ' + doc.artboards[i].name);
+    abArr.push((i + 1) + ': ' + doc.artboards[i].name);
   }
 
   // Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME, undefined);
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
       dialog.opacity = DEF_DLG_OPACITY;
 
   // Input fields
-  var boardsGroup = dialog.add('group');
-      boardsGroup.orientation = 'column';
-      boardsGroup.alignChildren = ['fill', 'top'];
-      boardsGroup.add('statictext', undefined, LANG_ARTBOARD);
-  var artboardIdx = boardsGroup.add('dropdownlist', TITLE_SIZE, boardsArr);
-      artboardIdx.selection = currBoardIdx;
+  var abGroup = dialog.add('group');
+      abGroup.orientation = 'column';
+      abGroup.alignChildren = ['fill', 'top'];
+      abGroup.add('statictext', undefined, LANG_ARTBOARD);
+  var abIdx = abGroup.add('dropdownlist', TITLE_SIZE, abArr);
+      abIdx.selection = currAbIdx;
   
   var fieldGroup = dialog.add('group');
       fieldGroup.orientation = 'row';
@@ -104,6 +112,10 @@ function main() {
   var copiesVal = inputsGroup.add('edittext', FIELD_SIZE, COPIES_DEF);
   var spacingVal = inputsGroup.add('edittext', FIELD_SIZE, SPACING_DEF);
 
+  if (doc.pageItems.length > OVER_OBJ) {
+    var warning = dialog.add('statictext', undefined, LANG_SLOW, { multiline: true });
+  }
+
   // Buttons
   var btnsGroup = dialog.add('group');
       btnsGroup.orientation = 'row';
@@ -118,12 +130,12 @@ function main() {
   loadSettings();
   
   spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
-  currBoardIdx = doc.artboards.getActiveArtboardIndex();
-  var oversizeCanvasWidth = isCanvasWidthReached(currBoardIdx, COPIES_MAX, spacing);
+  currAbIdx = doc.artboards.getActiveArtboardIndex();
+  var overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
   
-  copiesTitle.text = LANG_COPIES + oversizeCanvasWidth.copies + ')';
-  if (copiesVal.text * 1 > oversizeCanvasWidth.copies) {
-    copiesVal.text = oversizeCanvasWidth.copies;
+  copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
+  if (copiesVal.text * 1 > overCnvsSize.copies) {
+    copiesVal.text = overCnvsSize.copies;
   }
 
   // Use Up / Down arrow keys (+ Shift) for change value
@@ -140,27 +152,34 @@ function main() {
   }
   copiesVal.onChanging = spacingVal.onChanging = function() {
     spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
-    currBoardIdx = doc.artboards.getActiveArtboardIndex();
-    var oversizeCanvasWidth = isCanvasWidthReached(currBoardIdx, COPIES_MAX, spacing);
+    currAbIdx = doc.artboards.getActiveArtboardIndex();
+    overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
 
-    copiesTitle.text = LANG_COPIES + oversizeCanvasWidth.copies + ')';
-    if (copiesVal.text * 1 > oversizeCanvasWidth.copies) { 
-      copiesVal.text = oversizeCanvasWidth.copies;
+    copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
+    if (copiesVal.text * 1 > overCnvsSize.copies) { 
+      copiesVal.text = overCnvsSize.copies;
     } else if (copiesVal.text * 1 < 0) { 
       copiesVal.text = 0;
     }
   }
-  artboardIdx.onChange = function() {
-    doc.artboards.setActiveArtboardIndex(artboardIdx.selection.index);
+  abIdx.onChange = function() {
+    doc.artboards.setActiveArtboardIndex(abIdx.selection.index);
     app.redraw();
+
+    currAbIdx = doc.artboards.getActiveArtboardIndex();
+    overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
+
+    copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
+    if (copiesVal.text * 1 > overCnvsSize.copies) { 
+      copiesVal.text = overCnvsSize.copies;
+    } else if (copiesVal.text * 1 < 0) { 
+      copiesVal.text = 0;
+    }
   }
   
   ok.onClick = okClick;
 
   function okClick() {
-    doc.artboards.setActiveArtboardIndex(artboardIdx.selection.index);
-    currBoardIdx = doc.artboards.getActiveArtboardIndex();
-
     copies = copiesVal.text * 1;
     spacing = spacingVal.text * 1;
     spacing = convertUnits(spacing + getDocUnit(), 'px'); // Convert value to document units
@@ -179,16 +198,18 @@ function main() {
     saveItemsState(); // Save information about locked & hidden pageItems
    
     try {
+      // Copy Artwork
+      doc.selectObjectsOnActiveArtboard();
+      app.copy();
       for (var i = 0; i < copies; i++) {
         suffix = SUFFIX_DEF + fillZero((i + 1), copies.toString().length);
-        duplicateArtboard(currBoardIdx, spacing, suffix);
+        duplicateArtboard(currAbIdx, spacing, suffix, i);
       }
     } catch (e) {
       // showError(e);
     }
 
     // Restore locked & hidden pageItems
-    app.executeMenuCommand('unlockAll');
     restoreItemsState();
     selection = null;
     doc.views[0].screenMode = userScreen;
@@ -289,51 +310,77 @@ function fillZero(number, size) {
 }
 
 // Find out if the amount of copies over the canvas width
-function isCanvasWidthReached(thisBoardIdx, copies, spacing) {
+function isOverCnvsBounds(thisAbIdx, copies, spacing) {
   var doc = app.activeDocument,
-      thisBoard = doc.artboards[thisBoardIdx], // The user selected artboard
-      thisRect = thisBoard.artboardRect, // The artboard size
-      lastBoardRightEdge = thisRect[2] + (spacing + thisRect[2] - thisRect[0]) * copies,
-      tempEdge = lastBoardRightEdge;
+      thisAbRect = doc.artboards[thisAbIdx].artboardRect; // The selected artboard size
   
   copies = copies * 1;
   spacing = spacing * 1;
 
+  // Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
+  var fakePath = doc.pathItems.add();
+  var cnvsDelta = 1 + ((fakePath.position[0] * 2 - 16384) - (fakePath.position[1] * 2 + 16384)) / 2;
+  var cnvsTempPath = doc.pathItems.rectangle(fakePath.position[0] - cnvsDelta, fakePath.position[1] + cnvsDelta, 300, 300);
+  cnvsTempPath.filled = false;
+  cnvsTempPath.stroked  = false;
+  
+  // Create a rectangle with the same size as the artboard
+  var top = thisAbRect[1],
+      left = thisAbRect[0],
+      width = thisAbRect[2] - thisAbRect[0],
+      height = thisAbRect[1] - thisAbRect[3];
+  
+  var abTempPath = doc.pathItems.rectangle(top, left, width, height);
+  abTempPath.stroked  = false;
+  abTempPath.filled = false;
+
+  // Use the X, Y coordinates of cnvsTempPath and abTempPath to get the absolute coordinate
+  var absRight = Math.floor(abTempPath.position[0] - cnvsTempPath.position[0]) + width,
+      lastAbRight = absRight + (spacing + width) * copies,
+      tempEdge = lastAbRight;
+  
   // Get a safe amount of copies
   for (var i = copies; i >= 0; i--) {
-    if (tempEdge <= CANVAS_LIMIT) { break; } 
-    else { tempEdge = tempEdge - (spacing + thisRect[2] - thisRect[0]); }
+    if (tempEdge <= CNVS_SIZE) { break; } 
+    else { tempEdge = tempEdge - (spacing + thisAbRect[2] - thisAbRect[0]); }
   }
 
-  return { 'answer': lastBoardRightEdge > CANVAS_LIMIT, 'copies': i };
+  fakePath.remove();
+  abTempPath.remove();
+  cnvsTempPath.remove();
+  app.redraw();
+
+  return { 'answer': lastAbRight > CNVS_SIZE, 'copies': i };
 }
 
 // The function is based on the idea of @Silly-V
-function duplicateArtboard(thisBoardIdx, spacing, suffix) {
+function duplicateArtboard(thisAbIdx, spacing, suffix, count) {
   var doc = app.activeDocument,
-	    thisBoard = doc.artboards[thisBoardIdx],
-	    thisRect = thisBoard.artboardRect,
+	    thisAb = doc.artboards[thisAbIdx],
+	    thisAbRect = thisAb.artboardRect,
 	    idx = doc.artboards.length - 1,
-      lastBoard = doc.artboards[idx],
-      lastRect = lastBoard.artboardRect,
-      colBoardHeight = thisRect[2] - thisRect[0];
-  // Lock Artwork outside the Artboard
-  doc.selectObjectsOnActiveArtboard();
-  app.executeMenuCommand('Inverse menu item');
-  app.executeMenuCommand('lock');
-  app.redraw();
-  // Copy Artwork
-  doc.selectObjectsOnActiveArtboard();
-  app.copy();
+      lastAb = doc.artboards[idx],
+      lastAbRect = lastAb.artboardRect,
+      colAbHeight = thisAbRect[2] - thisAbRect[0];
 
-	var newBoard = doc.artboards.add(thisRect);
-  newBoard.artboardRect = [
-    lastRect[2] + spacing,
-    lastRect[1],
-    lastRect[2] + spacing + colBoardHeight,
-    lastRect[3]
-  ];
-	newBoard.name = thisBoard.name + suffix;
+  
+	var newAb = doc.artboards.add(thisAbRect);
+  if (count === 0) {
+    newAb.artboardRect = [
+      thisAbRect[2] + spacing,
+      thisAbRect[1],
+      thisAbRect[2] + spacing + colAbHeight,
+      thisAbRect[3]
+    ];
+  } else {
+    newAb.artboardRect = [
+      lastAbRect[2] + spacing,
+      lastAbRect[1],
+      lastAbRect[2] + spacing + colAbHeight,
+      lastAbRect[3]
+    ];
+  }
+	newAb.name = thisAb.name + suffix;
   app.executeMenuCommand('pasteFront');
   selection = null;
 }
