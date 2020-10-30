@@ -4,23 +4,23 @@
   Requirements: Adobe Illustrator CS6 and later
   Date: October, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+  
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+  
   Versions:
   0.1 Initial version
   0.2 Fixed: bounds checking of the Illustrator canvas; position of the first copy
-  ============================================================================
+  
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+  
   NOTICE:
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+  
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+  
   Check other author's scripts: https://github.com/creold
 */
 
@@ -131,7 +131,9 @@ function main() {
   
   spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
   currAbIdx = doc.artboards.getActiveArtboardIndex();
-  var overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
+
+  var abCoord = getArtboardCoordinates(currAbIdx);
+  var overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
   
   copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
   if (copiesVal.text * 1 > overCnvsSize.copies) {
@@ -153,7 +155,8 @@ function main() {
   copiesVal.onChanging = spacingVal.onChanging = function() {
     spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
     currAbIdx = doc.artboards.getActiveArtboardIndex();
-    overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
+    abCoord = getArtboardCoordinates(currAbIdx);
+    overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
 
     copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
     if (copiesVal.text * 1 > overCnvsSize.copies) { 
@@ -167,7 +170,8 @@ function main() {
     app.redraw();
 
     currAbIdx = doc.artboards.getActiveArtboardIndex();
-    overCnvsSize = isOverCnvsBounds(currAbIdx, COPIES_MAX, spacing);
+    abCoord = getArtboardCoordinates(currAbIdx);
+    overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
 
     copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
     if (copiesVal.text * 1 > overCnvsSize.copies) { 
@@ -197,10 +201,10 @@ function main() {
     }
     saveItemsState(); // Save information about locked & hidden pageItems
    
+    // Copy Artwork
+    doc.selectObjectsOnActiveArtboard();
+    app.copy();
     try {
-      // Copy Artwork
-      doc.selectObjectsOnActiveArtboard();
-      app.copy();
       for (var i = 0; i < copies; i++) {
         suffix = SUFFIX_DEF + fillZero((i + 1), copies.toString().length);
         duplicateArtboard(currAbIdx, spacing, suffix, i);
@@ -309,15 +313,11 @@ function fillZero(number, size) {
   return str.slice(str.length - size);
 }
 
-// Find out if the amount of copies over the canvas width
-function isOverCnvsBounds(thisAbIdx, copies, spacing) {
+// Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
+function getArtboardCoordinates(abIdx) {
   var doc = app.activeDocument,
-      thisAbRect = doc.artboards[thisAbIdx].artboardRect; // The selected artboard size
+      thisAbRect = doc.artboards[abIdx].artboardRect; // The selected artboard size
   
-  copies = copies * 1;
-  spacing = spacing * 1;
-
-  // Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
   var fakePath = doc.pathItems.add();
   var cnvsDelta = 1 + ((fakePath.position[0] * 2 - 16384) - (fakePath.position[1] * 2 + 16384)) / 2;
   var cnvsTempPath = doc.pathItems.rectangle(fakePath.position[0] - cnvsDelta, fakePath.position[1] + cnvsDelta, 300, 300);
@@ -335,20 +335,32 @@ function isOverCnvsBounds(thisAbIdx, copies, spacing) {
   abTempPath.filled = false;
 
   // Use the X, Y coordinates of cnvsTempPath and abTempPath to get the absolute coordinate
-  var absRight = Math.floor(abTempPath.position[0] - cnvsTempPath.position[0]) + width,
-      lastAbRight = absRight + (spacing + width) * copies,
+  var absLeft = Math.floor(abTempPath.position[0] - cnvsTempPath.position[0]),
+      absTop = Math.floor(cnvsTempPath.position[1] - abTempPath.position[1]),
+      absBottom = absTop + height,
+      absRight = absLeft + width;
+  
+  fakePath.remove();
+  abTempPath.remove();
+  cnvsTempPath.remove();
+  app.redraw();
+
+  return { 'left': absLeft, 'right': absRight, 'top': absTop, 'bottom': absBottom };
+}
+
+// Find out if the amount of copies over the canvas width
+function isOverCnvsBounds(coord, copies, spacing) { 
+  copies = copies * 1;
+  spacing = spacing * 1;
+
+  var lastAbRight = coord.right + (spacing + coord.right - coord.left) * copies,
       tempEdge = lastAbRight;
   
   // Get a safe amount of copies
   for (var i = copies; i >= 0; i--) {
     if (tempEdge <= CNVS_SIZE) { break; } 
-    else { tempEdge = tempEdge - (spacing + thisAbRect[2] - thisAbRect[0]); }
+    else { tempEdge = tempEdge - (spacing + coord.right - coord.left); }
   }
-
-  fakePath.remove();
-  abTempPath.remove();
-  cnvsTempPath.remove();
-  app.redraw();
 
   return { 'answer': lastAbRight > CNVS_SIZE, 'copies': i };
 }
