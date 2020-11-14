@@ -20,7 +20,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [RenameItems.jsx] `(upd, 23.07.2020)`
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
-* [SelectOnlyPoints.jsx] `(upd, 29.11.2019)`  
+* [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
 * [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
@@ -70,12 +70,12 @@ I recommend the [Scripshon Trees] panel. In it you can specify which folder your
 If you find this script helpful, you can buy me a coffee ☕️ via [PayPal] or [Yandex Money] 🙂  
 
 [PayPal]: https://paypal.me/osokin/2usd
-[Yandex Money]: https://money.yandex.ru/to/410011149615582
+[Yandex Money]: https://yoomoney.ru/to/410011149615582
 <a href="https://paypal.me/osokin/2usd">
   <img width="160" height="49" src="images/paypal_badge.gif" >
 </a>  
 
-<a href="https://money.yandex.ru/to/410011149615582">
+<a href="https://yoomoney.ru/to/410011149615582">
   <img width="160" height="49" src="images/yandex_badge.gif" >
 </a>
 

@@ -4,79 +4,67 @@
           The script leaves only Points selected.
   Date: September, 2018
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ==========================================================================================
+  
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+  
   Versions:
   0.1 Initial version
   0.2 Fixed when selected unnecessary anchor handles (thanks for Oleg Krasnov, www.github.com/krasnovpro)
   0.3 Minor bug fixes and improvements
-  ============================================================================
+  0.3.2 Minor bug fixes
+  
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+  
   NOTICE:
   Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+  
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+  
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+$.localize = true; // Enabling automatic localization
 
 // Global variables
-var SCRIPT_NAME = 'SelectOnlyPoints',
-    SCRIPT_VERSION = 'v.0.3';
+var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', 
+                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
+    LANG_ERR_SELECT = { en: 'Error\nUse Lasso tool or Direct Selection Tool to select an area with points.', 
+                        ru: 'Ошибка\nИспользуйте инструмент "Лассо или "Прямое выделения" для выбора области с точками.'};
 
 // Main function
 function main() {
-  if (app.documents.length < 1) {
-    alert('Open a document and try again.');
+  if (app.documents.length == 0) {
+    alert(LANG_ERR_DOC);
     return;
   }
 
-  var doc = app.activeDocument;
-  var selArray = [];
+  var selArray = [],
+      selPoints = [];
   
-  getPaths(doc.selection, selArray);
+  getPaths(selection, selArray);
 
   if (!(selArray instanceof Array) || selArray.length < 1) {
-    alert(SCRIPT_NAME + ' ' + SCRIPT_VERSION + '\nUse Lasso tool or Direct Selection Tool for select points.');
+    alert(LANG_ERR_SELECT);
     return;
   }
 
-  for (var i = 0; i < selArray.length; i++) {
-    var pointState = false;
-    if (selArray[i].pathPoints.length > 1) {
-      var points = selArray[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
-        var currPoint = points[j];
-        var nextIndex = (j + 1 < points.length) ? j + 1 : 0;
-        if (isSelected(currPoint)) {
-          pointState = true;
-        } else {
-          // Deselect orphan handles
-          if (/right/i.test(currPoint.selected) && !(/anchor/i.test(points[nextIndex].selected))) {
-            currPoint.selected = (PathPointSelection.NOSELECTION);
-          }
-        }
-      }
-    }
-    // Deselect Path if no Point is selected
-    if (!pointState) {
-      selArray[i].selected = false;
-    }
+  getPoints(selArray, selPoints);
+  
+  selection = null;
+
+  for (var i = 0; i < selPoints.length; i++) {
+    selPoints[i].selected = PathPointSelection.ANCHORPOINT;
   }
-  app.redraw();
 }
 
-function getPaths(item, arr) {
-  for (var i = 0; i < item.length; i++) {
-    var currItem = item[i];
+function getPaths(items, arr) {
+  for (var i = 0; i < items.length; i++) {
+    var currItem = items[i];
     try {
       switch (currItem.typename) {
         case 'GroupItem':
@@ -91,9 +79,20 @@ function getPaths(item, arr) {
         default:
           currItem.selected = false;
           break;
-        }
-      } catch (e) {}
+      }
+    } catch (e) {}
+  }
+}
+
+function getPoints(items, arr) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].pathPoints.length > 1) {
+      var points = items[i].pathPoints;
+      for (var j = 0; j < points.length; j++) {
+        if ( isSelected(points[j]) ) arr.push(points[j]);
+      }
     }
+  }
 }
 
 // Check current Point is selected
@@ -101,11 +100,9 @@ function isSelected(point) {
   return point.selected == PathPointSelection.ANCHORPOINT;
 }
 
+// For debugging
 function showError(err) {
-  if (confirm(scriptName + ': an unknown error has occurred.\n' +
-      'Would you like to see more information?', true, 'Unknown Error')) {
-      alert(err + ': on line ' + err.line, 'Script Error', true);
-  }
+  alert(err + ': on line ' + err.line, 'Script Error', true);
 }
 
 // Run script

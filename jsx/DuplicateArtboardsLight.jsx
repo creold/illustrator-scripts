@@ -10,6 +10,7 @@
   Versions:
   0.1 Initial version
   0.2 Fixed: bounds checking of the Illustrator canvas; position of the first copy
+  0.2.1 Fixed script didn't run if the layers were locked
   
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -30,7 +31,7 @@ $.localize = true; // Enabling automatic localization
 
 // Global variables
 var SCRIPT_NAME = 'Duplicate Atboards Light',
-    SCRIPT_VERSION = 'v.0.2',
+    SCRIPT_VERSION = 'v.0.2.1',
     SETTINGS_FILE = {
       name: SCRIPT_NAME.replace(/\s/g, '_') + '_data.ini',
       folder: Folder.myDocuments + '/Adobe Scripts/'
@@ -42,6 +43,7 @@ var SCRIPT_NAME = 'Duplicate Atboards Light',
     SUFFIX_DEF = ' ',
     L_KEYWORD = '%isLocked',
     H_KEYWORD = '%isHidden',
+    TMP_LAYER_NAME = 'FOR_AB_COORD',
     OVER_OBJ = 2500, // The amount of objects, when the script can run slowly
     CNVS_SIZE = 16383, // Illustrator canvas max bounds, px
     OVER_COPIES = 10, // When the number of copies >, full-screen mode is enabled
@@ -180,6 +182,18 @@ function main() {
       copiesVal.text = 0;
     }
   }
+
+  cancel.onClick = function() {
+    dialog.close();
+  }
+
+  dialog.onClose = function() {
+    // Remove temp layer with artboards numbers
+    try {
+      var layerToRm = doc.layers.getByName(TMP_LAYER_NAME);
+      layerToRm.remove();
+    } catch (e) {}
+  }
   
   ok.onClick = okClick;
 
@@ -199,7 +213,7 @@ function main() {
     if (copies > OVER_COPIES) { 
       doc.views[0].screenMode = ScreenMode.FULLSCREEN;
     }
-    saveItemsState(); // Save information about locked & hidden pageItems
+    saveItemsState();
    
     // Copy Artwork
     doc.selectObjectsOnActiveArtboard();
@@ -223,11 +237,7 @@ function main() {
     
     dialog.close();
   }
-  
-  cancel.onClick = function() {
-    dialog.close();
-  }
-  
+    
   dialog.center();
   dialog.show();
 
@@ -274,10 +284,12 @@ function main() {
   }
 }
 
-// Save information about locked & hidden pageItems
+// Save information about locked & hidden pageItems & layers
 function saveItemsState() {
-  for (var i = 0; i < activeDocument.pageItems.length; i++) {
-    var currItem = activeDocument.pageItems[i];
+  unlockLayers(app.activeDocument.layers);
+
+  for (var i = 0; i < app.activeDocument.pageItems.length; i++) {
+    var currItem = app.activeDocument.pageItems[i];
     if (currItem.locked) {
       if (currItem.note == '') { currItem.note = L_KEYWORD; }
       else { currItem.note += L_KEYWORD; }
@@ -289,13 +301,22 @@ function saveItemsState() {
       currItem.hidden = false;
     }
   }
+
   app.redraw();
 }
 
-// Restoring locked & hidden pageItems
+// Unlock all Layers & Sublayers
+function unlockLayers(_layers) {
+  for (var i = 0; i < _layers.length; i++) {
+    if (_layers[i].locked) _layers[i].locked = false;
+    if (_layers[i].layers.length) unlockLayers(_layers[i].layers);
+  }
+}
+
+// Restoring locked & hidden pageItems & layers
 function restoreItemsState() {
-  for (var i = 0; i < activeDocument.pageItems.length; i++) {
-    var currItem = activeDocument.pageItems[i];
+  for (var i = 0; i < app.activeDocument.pageItems.length; i++) {
+    var currItem = app.activeDocument.pageItems[i];
     if (currItem.note.match(L_KEYWORD) != null) {
       currItem.locked = true;
       currItem.note = currItem.note.replace(L_KEYWORD, '');
@@ -316,11 +337,19 @@ function fillZero(number, size) {
 // Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
 function getArtboardCoordinates(abIdx) {
   var doc = app.activeDocument,
-      thisAbRect = doc.artboards[abIdx].artboardRect; // The selected artboard size
+      thisAbRect = doc.artboards[abIdx].artboardRect, // The selected artboard size
+      tmpLayer;
+
+  try {
+    tmpLayer = doc.layers.getByName(TMP_LAYER_NAME);
+  } catch (e) {
+    tmpLayer = doc.layers.add();
+    tmpLayer.name = TMP_LAYER_NAME;
+  }
   
-  var fakePath = doc.pathItems.add();
+  var fakePath = tmpLayer.pathItems.add();
   var cnvsDelta = 1 + ((fakePath.position[0] * 2 - 16384) - (fakePath.position[1] * 2 + 16384)) / 2;
-  var cnvsTempPath = doc.pathItems.rectangle(fakePath.position[0] - cnvsDelta, fakePath.position[1] + cnvsDelta, 300, 300);
+  var cnvsTempPath = tmpLayer.pathItems.rectangle(fakePath.position[0] - cnvsDelta, fakePath.position[1] + cnvsDelta, 300, 300);
   cnvsTempPath.filled = false;
   cnvsTempPath.stroked  = false;
   
@@ -330,7 +359,7 @@ function getArtboardCoordinates(abIdx) {
       width = thisAbRect[2] - thisAbRect[0],
       height = thisAbRect[1] - thisAbRect[3];
   
-  var abTempPath = doc.pathItems.rectangle(top, left, width, height);
+  var abTempPath = tmpLayer.pathItems.rectangle(top, left, width, height);
   abTempPath.stroked  = false;
   abTempPath.filled = false;
 
