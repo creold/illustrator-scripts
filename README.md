@@ -17,7 +17,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [FileVersionInformer.jsx]   
 * [InlineSVGToAI.jsx]   
 * [PointsMoveRandom.jsx] `(new, 08.05.2020)`  
-* [RenameItems.jsx] `(upd, 23.07.2020)`
+* [RenameItems.jsx] `(upd, 23.11.2020)`
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
@@ -118,6 +118,10 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 
 Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
 
+<a href="https://youtu.be/qDH1YRaYMYk">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
+
 ### Usage
 
 1. Run script `File → Scripts → DuplicateArtboardsLight `
@@ -204,6 +208,10 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 
 The script moves randomly in numeric ranges horizontally and vertically selected points or all points on objects.   
 
+<a href="https://youtu.be/9wVTDWUAEmE">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
+
 ### Usage
 
 1. Run script `File → Scripts → PointsMoveRandom`
@@ -253,6 +261,10 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 
 Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with Alt + underlined key or digit.      
 
+<a href="https://youtu.be/PN3dAf6rac8">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
+
 ### Usage
 
 1. Run script `File → Scripts → ResizeToSize`
@@ -285,7 +297,11 @@ After using the Lasso tool or Direct Selection Tool, both Points and Path segmen
 ## SelectPointsByType
 
 Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
-Select `View → Hide Bounding Box` to see active points in real time.
+Select `View → Hide Bounding Box` to see active points in real time.   
+
+<a href="https://youtu.be/pjHmBDLIWbw">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
 
 ### Usage
 
@@ -308,6 +324,10 @@ Select `View → Hide Bounding Box` to see active points in real time.
 ## SplitPath
 
 Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
+
+<a href="https://youtu.be/1_vUUFkTwxk">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
 
 ### Usage
 
@@ -344,6 +364,10 @@ Setting the Stroke color of object based on an his solid or gradient fill. The o
 
 Automatic trimming of all clipping groups in selection or a document using `Pathfinder > Crop`.   
 If you want to save the filled mask after trimming, open the script file in a text editor and change `SAVE_FILLED_CLIPMASK = false;` value to `true`.
+
+<a href="https://youtu.be/liui0ZUAN50">
+  <img width="122" height="47" src="images/youtube_badge.png">
+</a>
 
 ### Usage
 

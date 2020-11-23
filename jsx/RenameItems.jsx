@@ -4,153 +4,122 @@
                or simple rename one selected item / active layer.
   Date: December, 2019
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+  
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+  
   Versions:
   1.0 Initial version.
   1.0 Added option Find and replace string in all Layer names.
-  ============================================================================
+  1.2 Added recursive search in Sublayers names.
+  
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+  
   NOTICE:
   Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+  
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+  
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
 
 var SCRIPT_NAME = 'Rename Items',
-    SCRIPT_VERSION = 'v.1.1';
+    SCRIPT_VERSION = 'v.1.2',
+    USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS';
 
 function main() {
   if (app.documents.length == 0) {
-    alert('Open a document and try again.');
+    alert('Error\nOpen a document and try again.');
     return;
   }
 
   var doc = app.activeDocument,
       aLayer = doc.activeLayer,
-      title, placeholder = '';
+      texts = initTitle(),
+      target = texts[0], 
+      placeholder = texts[1],
+      start = 1;
+
+  var enterTitleStr = 'Enter ' + target + ' name',
+      rplcTitleStr  = 'Replace ' + target + ' name';
 
   // Create Main Dialog
   var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
       win.orientation = 'column';
       win.alignChildren = 'fill';
 
-  // Set title & placeholder for input
-  switch (selection.length) {
-    case 0: // empty selection
-      title = 'layer';
-      placeholder = aLayer.name;
-      break;
-    case 1: // one object was selected
-      title = 'item';
-      placeholder = selection[0].name;
-      break;
-    default: // multiple objects were selected
-      title = 'items';
-      break;
-  }
-
   // Name
-  var grpName = win.add('group', undefined); 
+  var grpName = win.add('group'); 
       grpName.alignChildren = 'fill';
       grpName.orientation = 'column'; 
 
-  var nameTitle = grpName.add('statictext', undefined, undefined); 
-      nameTitle.text = 'Enter ' + title + ' name';
+  var nameTitle = grpName.add('statictext'); 
+      nameTitle.text = 'Enter ' + target + ' name';
   var nameInp = grpName.add('edittext', [0, 0, 170, 30], placeholder); 
-      nameInp.active = true;
+  if (USER_OS == 'MAC') nameInp.active = true;
 
-  //  Add more options for multiple selection
-  if (selection.length > 1) {
-    var chkFind = win.add('checkbox', undefined, 'Find and replace'); 
+  //  Add more options for multiple selection or layers
+  if (selection.length > 1 || (selection.length == 0 && hasMultiLayer())) {
+    var chkFind = win.add('checkbox', undefined, 'Find and replace in all'); 
     chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
-                        'E.g.: if you enter <rect>, it will replace all\n' +
-                        'the <rect> occurrences in the selected items name.'; 
+                        'E.g.: if you enter MY, it will replace all\n' +
+                        'the MY occurrences in the names.'; 
     
     // Replace
-    var grpRplc = win.add('group', undefined); 
+    var grpRplc = win.add('group'); 
         grpRplc.orientation = 'row';
         grpRplc.enabled = false;
 
     var rplcTitle = grpRplc.add('statictext', undefined, 'Search string'); 
-    var rplcInp = grpRplc.add('edittext', undefined, ''); 
-        rplcInp.characters = 10;
+    var rplcInp = grpRplc.add('edittext'); 
+        rplcInp.characters = 16;
 
-    var chkAutoInc = win.add('checkbox', undefined, 'Auto-increment naming'); 
-        chkAutoInc.helpTip = 'Eg: name-1, name-2, etc.'; 
-        chkAutoInc.value = true;
-
-    // Separator group
-    var grpSprt = win.add('group', undefined); 
-        grpSprt.orientation = 'row'; 
-
-    var sprtTitle = grpSprt.add('statictext', undefined, 'Name separator'); 
-    var sprtInp = grpSprt.add('edittext', undefined, '-'); 
-        sprtInp.helpTip = 'E.g.: name-1, name-2, etc.'
-        sprtInp.preferredSize.width = 45;
-
-    // Counting
-    var grpCount = win.add('group', undefined); 
-        grpCount.orientation = 'row'; 
-
-    var countTitle = grpCount.add('statictext', undefined, 'Start counting at'); 
-    var countInp = grpCount.add('edittext', undefined, '1'); 
-        countInp.preferredSize.width = 40;
-    
     // Toggle Find & Replace input
     chkFind.onClick = function () {
       grpRplc.enabled = !grpRplc.enabled;
-      nameTitle.text = (chkFind.value) ? 'Replace ' + title + ' name' : 'Enter ' + title + ' name';
+      nameTitle.text = (chkFind.value) ? rplcTitleStr : enterTitleStr;
     }
 
-    // Toggle Auto-increment naming inputs
-    chkAutoInc.onClick = function () {
-      grpSprt.enabled = !grpSprt.enabled;
-      grpCount.enabled = !grpCount.enabled;
+    if (selection.length > 1) { 
+      var chkAutoInc = win.add('checkbox', undefined, 'Auto-numbering up'); 
+          chkAutoInc.helpTip = 'Eg: name-1, name-2, etc.'; 
+          chkAutoInc.value = true;
+
+      var extra = win.add('group');
+          extra.orientation = 'row';
+
+      // Numeration
+      var countTitle = extra.add('statictext', undefined, 'Start from'); 
+      var countInp = extra.add('edittext', undefined, start); 
+          countInp.preferredSize.width = 40;
+
+      // Separator
+      var sprtTitle = extra.add('statictext', undefined, 'Separator'); 
+      var sprtInp = extra.add('edittext', undefined, '-'); 
+          sprtInp.helpTip = 'E.g.: name-1, name-2, etc.'
+          sprtInp.preferredSize.width = 40;
+
+      // Toggle Auto-increment naming inputs
+      chkAutoInc.onClick = function () {
+        countInp.enabled = !countInp.enabled;
+        sprtInp.enabled = !sprtInp.enabled;
+      }
     }
   }
   
-  //  Add more options for Layers rename
-  if (selection.length == 0) {
-    var chkFind = win.add('checkbox', undefined, 'Find and replace in all Layer'); 
-    chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
-                        'E.g.: if you enter <Test>, it will replace all\n' +
-                        'the <Test> occurrences in all Layer names.'; 
-    
-    // Replace
-    var grpRplc = win.add('group', undefined); 
-        grpRplc.orientation = 'row';
-        grpRplc.enabled = false;
-
-    var rplcTitle = grpRplc.add('statictext', undefined, 'Search string'); 
-    var rplcInp = grpRplc.add('edittext', undefined, ''); 
-        rplcInp.characters = 10;
-
-    // Toggle Find & Replace input
-    chkFind.onClick = function () {
-      grpRplc.enabled = !grpRplc.enabled;
-      nameTitle.text = (chkFind.value) ? 'Replace ' + title + ' name' : 'Enter ' + title + ' name';
-    }
-  }
-
   // Buttons
-  var grpBtns = win.add('group', undefined); 
+  var grpBtns = win.add('group'); 
       grpBtns.orientation = 'row';
       grpBtns.alignChildren = ['center','center'];
 
-  var cancel = grpBtns.add('button', undefined, 'Cancel', {name: 'cancel'});
+  var cancel = grpBtns.add('button', undefined, 'Cancel');
       cancel.helpTip = 'Press Esc to Close';
-  var ok = grpBtns.add('button', undefined, 'OK', {name: 'ok'});
+  var ok = grpBtns.add('button', undefined, 'OK');
       ok.helpTip = 'Press Enter to Run';
   
   // Copyright block
@@ -162,55 +131,90 @@ function main() {
     win.close();
   }
 
-  ok.onClick = function () {
+  ok.onClick = okClick;
+
+  function okClick() {
     switch (selection.length) {
       case 0: // empty selection
-        var layers = doc.layers;
-        if (chkFind.value && rplcInp.text) {
-          for (var i = 0; i < layers.length; i++) {
-            var iLayer = layers[i];
-            var newLayerName = iLayer.name.replaceAll(rplcInp.text, nameInp.text);
-            if (newLayerName != iLayer.name) {
-              iLayer.name = newLayerName;
-            }
-          }
-        } else {
-          aLayer.name = nameInp.text;
-        }
+        if (chkFind.value && rplcInp.text.length > 0) renameLayers(doc.layers);
+        else aLayer.name = nameInp.text;
         break;
       case 1: // one object was selected
         selection[0].name = nameInp.text;
         break;
       default: // multiple objects were selected
-        var count = isNaN(parseInt(countInp.text)) ? 1 : parseInt(countInp.text);
-        for (var i = 0; i < selection.length; i++) {
-          var item = selection[i];
-          var num = sprtInp.text + (i + count);
-          if (chkFind.value && rplcInp.text) {
-            item.name = item.name.replaceAll(rplcInp.text, nameInp.text);
-            if (chkAutoInc.value) {
-              item.name += num;
-            }
-          }
-          if (!chkFind.value && chkAutoInc.value) {
-            item.name = nameInp.text + num;
-          }
-          if (!chkFind.value && !chkAutoInc.value) {
-            item.name = nameInp.text;
-          }
-        }
+        renameItems();
         break;
     }
+
     reopenPnl();
     win.close();
+  }
+
+  function renameLayers(_layers) {
+    for (var i = 0; i < _layers.length; i++) {
+      var iLayer = _layers[i];
+      if (iLayer.layers.length > 0) renameLayers(iLayer.layers);
+      
+      var newName = iLayer.name.replaceAll(rplcInp.text, nameInp.text);
+      if (newName != iLayer.name) {
+        iLayer.name = newName;
+      }
+    }
+  }
+
+  function renameItems() {
+    var count = convertInputToNum(countInp.text);
+    for (var i = 0; i < selection.length; i++) {
+      var item = selection[i];
+      if (!chkFind.value) item.name = nameInp.text;
+      if (chkAutoInc.value) item.name += sprtInp.text + count;
+      if (chkFind.value && rplcInp.text.length > 0) {
+        item.name = item.name.replaceAll(rplcInp.text, nameInp.text);
+      }
+      
+      count++;
+    }
   }
   
   win.show();
 }
 
+// Set title & placeholder for input
+function initTitle() {
+  var target, placeholder;
+  switch (selection.length) {
+    case 0: // empty selection
+      target = 'layer';
+      placeholder = activeDocument.activeLayer.name;
+      break;
+    case 1: // one object was selected
+      target = '1 item';
+      placeholder = selection[0].name;
+      break;
+    default: // multiple objects were selected
+      target = selection.length + ' items';
+      placeholder = '';
+      break;
+  }
+  return [target, placeholder];
+}
+
+function hasMultiLayer() {
+  return activeDocument.layers.length > 1 || activeDocument.layers[0].layers.length > 0;
+}
+
 String.prototype.replaceAll = function(search, replacement) {
   return this.replace(new RegExp(search, 'g'), replacement);
 };
+
+function convertInputToNum(str) {
+  if (isNaN(str * 1) || (str * 1) <= 0 || str.replace(/\s/g, '').length == 0) { 
+    return 0; 
+  } else { 
+    return str * 1; 
+  }
+}
 
 // Illustrator UI trick. Reopen layers panel for update names 
 function reopenPnl() {
