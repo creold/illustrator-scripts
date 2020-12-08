@@ -29,8 +29,7 @@
 //@target illustrator
 
 var SCRIPT_NAME = 'Rename Items',
-    SCRIPT_VERSION = 'v.1.2',
-    USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS';
+    SCRIPT_VERSION = 'v.1.2';
 
 function main() {
   if (app.documents.length == 0) {
@@ -61,7 +60,7 @@ function main() {
   var nameTitle = grpName.add('statictext'); 
       nameTitle.text = 'Enter ' + target + ' name';
   var nameInp = grpName.add('edittext', [0, 0, 170, 30], placeholder); 
-  if (USER_OS == 'MAC') nameInp.active = true;
+      nameInp.active = true;
 
   //  Add more options for multiple selection or layers
   if (selection.length > 1 || (selection.length == 0 && hasMultiLayer())) {

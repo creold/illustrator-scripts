@@ -1,7 +1,7 @@
-![header](images/header.jpg)
-![illustrator-scripts](images/cover.gif)
+![header](https://i.ibb.co/HPdMXmz/header.jpg)
+![illustrator-scripts](https://i.ibb.co/Pm60cLC/cover.gif)
 
-[![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Dribbble](https://img.shields.io/badge/Dribbble-%40creold-DF3A7A.svg)](https://dribbble.com/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/)
+[![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/) [![Dribbble](https://img.shields.io/badge/-YouTube%20Channel-FF0000.svg)](https://www.youtube.com/channel/UC53QJ8BfkCQ3FVNQ-Ra3Tyw/videos)
 
 # Hi everybody :)
 This is a collection of JSX scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
@@ -72,11 +72,11 @@ If you find this script helpful, you can buy me a coffee ☕️ via [PayPal] or 
 [PayPal]: https://paypal.me/osokin/2usd
 [Yandex Money]: https://yoomoney.ru/to/410011149615582
 <a href="https://paypal.me/osokin/2usd">
-  <img width="160" height="49" src="images/paypal_badge.gif" >
+  <img width="160" height="49" src="https://i.ibb.co/LkgNvzG/paypal-badge.gif" >
 </a>  
 
 <a href="https://yoomoney.ru/to/410011149615582">
-  <img width="160" height="49" src="images/yandex_badge.gif" >
+  <img width="160" height="49" src="https://i.ibb.co/R906WmF/yandex-badge.gif" >
 </a>
 
 ## ArtboardsRotateWithObjects 1.2
@@ -90,10 +90,10 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
 2. Run script `File → Scripts → ArtboardsRotateWithObjects`
 3. Select the options in the dialog box & click `Ok` button
 
-![ArtboardsRotateWithObjects](images/demo-ArtboardsRotateWithObjects.gif) 
+![ArtboardsRotateWithObjects](https://i.ibb.co/YtV4nc6/demo-Artboards-Rotate-With-Objects.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## ConvertToGradient
@@ -108,10 +108,10 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 2. Run script `File → Scripts → ConvertToGradient`
 3. Enter a numeric values in input fields
 
-![ConvertToGradient](images/demo-ConvertToGradient.gif) 
+![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## DuplicateArtboardsLight
@@ -119,7 +119,7 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
 
 <a href="https://youtu.be/qDH1YRaYMYk">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -127,10 +127,10 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 1. Run script `File → Scripts → DuplicateArtboardsLight `
 2. Enter a numeric values in input fields
 
-![ConvertToGradient](images/demo-DuplicateArtboardsLight.gif) 
+![ConvertToGradient](https://i.ibb.co/rF92HpV/demo-Duplicate-Artboards-Light.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 
@@ -145,10 +145,10 @@ Exports all selected objects to AI files.
 3. Select options in dialog box
  
 
-![Export-selection-as-AI](images/demo-Export-selection-as-AI.gif) 
+![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## ExtUngroup v.1.2
@@ -162,10 +162,10 @@ This script is сan be easily custom ungrouping to all group items & releasing c
 3. Select options in dialog box
  
 
-![Zoom-And-Center](images/demo-ExtUngroup.gif) 
+![Zoom-And-Center](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## FileVersionInformer
@@ -181,10 +181,10 @@ Script for collecting information about the program version of .ai & .eps files 
 4. Look "FileVersionInformer.txt" in source folder
  
 
-![FileVersionInformer](images/demo-FileVersionInformer.gif) 
+![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## InlineSVGToAI
@@ -198,10 +198,10 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 2. Paste your svg code in textarea
 3. Press button "Paste"
 
-![InlineSVGToAI](images/demo-InlineSVGToAI.gif) 
+![InlineSVGToAI](https://i.ibb.co/xSzT8z4/demo-Inline-SVGTo-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## Points Move Random
@@ -209,7 +209,7 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 The script moves randomly in numeric ranges horizontally and vertically selected points or all points on objects.   
 
 <a href="https://youtu.be/9wVTDWUAEmE">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -219,10 +219,10 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 3. Choose options
 4. Press button "Apply" or Alt+A
 
-![PointsMoveRandom](images/demo-PointsMoveRandom.gif) 
+![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## RenameItems
@@ -235,10 +235,10 @@ Script to batch rename selected items with many options or simple rename one sel
 2. Enter name
 3. Choose options
 
-![Rescale](images/demo-RenameItems.gif) 
+![Rescale](https://i.ibb.co/Gkcqt8D/demo-Rename-Items.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## Rescale
@@ -251,10 +251,10 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 2. Enter numeric values
 3. Press button "OK" 
 
-![Rescale](images/demo-Rescale.gif) 
+![Rescale](https://i.ibb.co/gDj142f/demo-Rescale.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## ResizeToSize
@@ -262,7 +262,7 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with Alt + underlined key or digit.      
 
 <a href="https://youtu.be/PN3dAf6rac8">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -272,10 +272,10 @@ Adobe Illustrator has a Transform panel, but you cannot use it to transform seve
 3. Choose options
 4. Press button "OK" 
 
-![ResizeToSize](images/demo-ResizeToSize.gif) 
+![ResizeToSize](https://i.ibb.co/FxPGDM2/demo-Resize-To-Size.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## SelectOnlyPoints
@@ -288,10 +288,10 @@ After using the Lasso tool or Direct Selection Tool, both Points and Path segmen
 2. Run script `File → Scripts → SelectOnlyPoints`
  
 
-![SelectOnlyPoints](images/demo-SelectOnlyPoints.gif) 
+![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## SelectPointsByType
@@ -300,7 +300,7 @@ Selects points on the selected paths according to their type. Does the thing tha
 Select `View → Hide Bounding Box` to see active points in real time.   
 
 <a href="https://youtu.be/pjHmBDLIWbw">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -315,10 +315,10 @@ Select `View → Hide Bounding Box` to see active points in real time.
 * Broken `Alt+4`
 * Flat `Alt+5` 
 
-![SelectPointsType](images/demo-SelectPointsByType.gif) 
+![SelectPointsType](https://i.ibb.co/8X0SFNc/demo-Select-Points-By-Type.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## SplitPath
@@ -326,7 +326,7 @@ Select `View → Hide Bounding Box` to see active points in real time.
 Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
 
 <a href="https://youtu.be/1_vUUFkTwxk">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -337,10 +337,10 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 4. Select cut method in dialog box
  
 
-![SplitPath](images/demo-SplitPath.gif) 
+![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## StrokeColorFromFill
@@ -354,10 +354,10 @@ Setting the Stroke color of object based on an his solid or gradient fill. The o
 4. Enter color shift value
  
 
-![SplitPath](images/demo-StrokeColorFromFill.gif) 
+![SplitPath](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## TrimMasks
@@ -366,7 +366,7 @@ Automatic trimming of all clipping groups in selection or a document using `Path
 If you want to save the filled mask after trimming, open the script file in a text editor and change `SAVE_FILLED_CLIPMASK = false;` value to `true`.
 
 <a href="https://youtu.be/liui0ZUAN50">
-  <img width="122" height="47" src="images/youtube_badge.png">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
 ### Usage
@@ -374,10 +374,10 @@ If you want to save the filled mask after trimming, open the script file in a te
 1. Select object(s) or deselect all
 2. Run script `File → Scripts → TrimMasks `
 
-![TrimMasks](images/demo-TrimMasks.gif) 
+![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## Zoom and center
@@ -392,10 +392,10 @@ Zooms active view to selection or to all object(s) in a document.
 3. If nothing is selected, you will see a dialog with options
  
 
-![Zoom-And-Center](images/demo-Zoom-And-Center.gif) 
+![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="images/download.png">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
 </a> 
 
 ## Testimonials
