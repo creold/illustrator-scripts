@@ -25,7 +25,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
 * [TrimMasks.jsx] `(upd, 14.10.2020)`
-* [Zoom-and-center.jsx] 
+* [Zoom-and-center.jsx] `(upd, 23.01.2021)`
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
