@@ -112,14 +112,10 @@ function main() {
     }
 
     // Start zoom
-    // Define bounds if text editing mode is active
+    // Define the current TextFrames to zoom, if text editing mode is active
     if (selection.typename === 'TextRange') {
-        var idx = getActiveTextFrameIdx();
-        var textFrameBounds = doc.textFrames[idx].visibleBounds;
-        ul_x = textFrameBounds[0];
-        ul_y = textFrameBounds[1];
-        lr_x = textFrameBounds[2];
-        lr_y = textFrameBounds[3];
+        var selTextFrames = getActiveTextFrames();
+        calcBounds(selTextFrames);
         zoom();
     } else if (selection.length > 0) {
         calcBounds(selection);
@@ -130,15 +126,27 @@ function main() {
     }
 }
 
-function getActiveTextFrameIdx() {
-    var i = 0;
-    while (i < doc.textFrames.length) {
-        var currFrame = doc.textFrames[i];
-        if (currFrame.selected) break;
-        i++;
+function getActiveTextFrames() {
+    var parentTextFrames = selection.parent.textFrames,
+        selTextFrames = [],
+        firstFrameIdx, lastFrameIdx;
+
+    for (var i = 0; i < parentTextFrames.length; i++) {
+        if (selection.start >= parentTextFrames[i].textRange.start &&
+            selection.start <= parentTextFrames[i].textRange.end) {
+                firstFrameIdx = i;
+        }
+        if (selection.end >= parentTextFrames[i].textRange.start &&
+            selection.end <= parentTextFrames[i].textRange.end) {
+                lastFrameIdx = i;
+        }
     }
-  
-    return i;
+
+    for (var j = firstFrameIdx; j <= lastFrameIdx; j++) {
+        selTextFrames.push(parentTextFrames[j]);
+    }
+
+    return selTextFrames;
 }
 
 function calcBounds(sel) {
