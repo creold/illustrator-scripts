@@ -16,16 +16,16 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
 * [FileVersionInformer.jsx]   
 * [InlineSVGToAI.jsx]   
-* [PointsMoveRandom.jsx] `(new, 08.05.2020)`  
-* [RenameItems.jsx] `(upd, 23.11.2020)`
+* [PointsMoveRandom.jsx] `(upd, 20.03.2021)`  
+* [RenameItems.jsx] `(upd, 20.03.2021)`
 * [Rescale.jsx] `(upd, 25.03.2020)`
 * [ResizeToSize.jsx] `(upd, 17.04.2020)`
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
-* [SelectPointsByType.jsx] `(upd, 05.08.2020)`   
+* [SelectPointsByType.jsx] `(upd, 20.03.2021)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
 * [TrimMasks.jsx] `(upd, 14.10.2020)`
-* [Zoom-and-center.jsx] `(upd, 23.01.2021)`
+* [Zoom-and-center.jsx] `(upd, 20.03.2021)`
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
@@ -54,6 +54,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 	- OS X: `/Applications/Adobe Illustrator [vers.]/Presets.localized/en_GB/Scripts`
 	- Windows (32 bit): `C:\Program Files (x86)\Adobe\Adobe Illustrator [vers.]\Presets\en_GB\Scripts\`
 	- Windows (64 bit): `C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\`
+	- RU lang: `C:\Program Files\Adobe\Adobe Illustrator [версия]\Стили\ru_RU\Сценарии\`
 3. Restart Illustrator
 
 [Download archive]: http://bit.ly/2M0j95N 

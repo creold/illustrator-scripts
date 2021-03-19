@@ -38,7 +38,7 @@ var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
 
 // Main function
 function main() {
-  if (app.documents.length == 0) {
+  if (documents.length == 0) {
     alert(LANG_ERR_DOC);
     return;
   }

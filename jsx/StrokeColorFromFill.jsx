@@ -62,17 +62,17 @@ var selPaths = [],
 // End global variables
 
 function main() {
-  if (app.documents.length == 0) {
+  if (documents.length == 0) {
     alert(LANG_ERR_DOC);
     return;
-  } else { 
-    doc = app.activeDocument;
   }
 
-  if (doc.selection.length == 0) {
+  if (selection.length == 0 || selection.typename == 'TextRange') {
     alert(LANG_ERR_SELECT);
     return;
   }
+
+  var doc = app.activeDocument;
 
   // Get initial data
   if (doc.documentColorSpace == DocumentColorSpace.RGB) {

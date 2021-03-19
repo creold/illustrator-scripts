@@ -34,10 +34,11 @@
 
 // Global variables
 var SCRIPT_NAME = 'Rescale',
-    SCRIPT_VERSION = 'v.0.2.3';
-var setName = SCRIPT_NAME,
-    actionName = 'Scale-Corners',
-    actionPath = Folder.myDocuments;
+    SCRIPT_VERSION = 'v.0.2.3',
+    DEF_VAL = 1;
+var SET_NAME = SCRIPT_NAME,
+    ACTION_NAME = 'Scale-Corners',
+    ACTION_PATH = Folder.myDocuments;
 
 function main () {
   if (app.documents.length < 1) {
@@ -91,11 +92,14 @@ function main () {
     dialog.close();
   }
 
-  if (doc.selection.length == 0) {
+  oSizeTxt.onChange = function () { this.text = convertToNum(this.text, DEF_VAL) };
+  nSizeTxt.onChange = function () { this.text = convertToNum(this.text, DEF_VAL) };
+
+  if (selection.length == 0) {
     alert('Please select at least 1 object and try again.');
     return;
   } else {
-    var keyPath = doc.selection[0];
+    var keyPath = selection[0];
     if (keyPath.typename === 'PathItem' && !keyPath.closed) {
       var keyPathLength = keyPath.length; // If you use a straight line to measure
       oSizeTxt.text = (convertUnits(keyPathLength, getDocUnit())).toFixed(3);
@@ -109,17 +113,10 @@ function main () {
   
   // Main function
   function okClick() {
-    var oSize = parseLocalNum(oSizeTxt.text);
-    var nSize = parseLocalNum(nSizeTxt.text);
     try {
-      if (isNaN(Number(oSize)) || isNaN(Number(nSize))) {
-        alert('Please enter a numeric value.');
-        return;
-      }
-
-      var oldSize = convertUnits(oSize + getDocUnit(), 'px');
-      var newSize = convertUnits(nSize + getDocUnit(), 'px');
-      var ratio = (newSize / oldSize)*100;
+      var oldSize = convertUnits(oSizeTxt.text * 1 + getDocUnit(), 'px');
+      var newSize = convertUnits(nSizeTxt.text * 1 + getDocUnit(), 'px');
+      var ratio = (newSize / oldSize) * 100;
       // When old and new size are equal
       if (ratio == 100) {
         dialog.close();
@@ -129,10 +126,10 @@ function main () {
       // Generate Action
       var actionStr = 
         ['/version 3',
-        '/name [' + setName.length + ' ' + ascii2Hex(setName) + ']',
+        '/name [' + SET_NAME.length + ' ' + ascii2Hex(SET_NAME) + ']',
         '/actionCount 1',
         '/action-1 {',
-        '/name [' + actionName.length + ' ' + ascii2Hex(actionName) + ']',
+        '/name [' + ACTION_NAME.length + ' ' + ascii2Hex(ACTION_NAME) + ']',
         '    /eventCount 1',
         '    /event-1 {',
         '        /internalName (ai_liveshapes)',
@@ -146,12 +143,12 @@ function main () {
         '    }',
         '}'].join('');
 
-      createAction(actionStr, setName, actionPath);
-      app.doScript(actionName, setName);
-      app.unloadAction(setName, '');
+      createAction(actionStr, SET_NAME, ACTION_PATH);
+      app.doScript(ACTION_NAME, SET_NAME);
+      app.unloadAction(SET_NAME, '');
 
       // Grouping for better performance. Thanks for help @moodyallen
-      var items = doc.selection;
+      var items = selection;
       var tmpArray = [];
       var aLayer = doc.activeLayer;
       var selGroup = aLayer.groupItems.add();
@@ -249,9 +246,14 @@ function convertUnits(value, newUnit) {
   return parseFloat(value);
 }
 
-// Set decimal separator symbol
-function parseLocalNum(num) {
-    return num.replace(',', '.');
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
 }
 
 function createAction (str, set, path) {

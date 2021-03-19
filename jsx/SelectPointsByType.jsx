@@ -3,25 +3,25 @@
   Description: Selects points on the selected paths according to their type.
   Date: May, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+
   Versions:
-   1.0 Initial version. Tolerance for broken points handles 0..180 degrees
-   1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
-   2.0 Added more points type. Minor improvements
-  ============================================================================
+  1.0 Initial version. Tolerance for broken points handles 0..180 degrees
+  1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
+  2.0 Added more points type. Minor improvements
+
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
   NOTICE:
   Tested with Adobe Illustrator CC 2020 (Win), 2019 (Mac).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -47,7 +47,7 @@ var BIN_BEZIER_N = "\u0089PNG\r\n\x1A\n\x00\x00\x00\rIHDR\x00\x00\x00!\x00\x00\x
 
 // Main function
 function main() {
-  if (app.documents.length == 0) {
+  if (documents.length == 0) {
     alert('Open a document and try again.');
     return;
   }
@@ -116,50 +116,16 @@ function main() {
   var copyright = dialog.add('statictext', undefined, 'www.github.com/creold');
       copyright.justify = 'center';
       copyright.enabled = false;
-
-  // MONITORING EVENTS      
-  tolValue.onChanging = function() {
-    var numText = convertDecimalPoint(this.text);
-
-    if (this.text == '') this.text = 0;
-    if (numText < MIN_ANGLE) this.text = MIN_ANGLE;
-    if (numText > MAX_ANGLE) this.text = MAX_ANGLE;
-
-    if (isNaN(numText)) {
-      btns.enabled = false; 
-    } else {
-      btns.enabled = true;
-    }
+ 
+  // Update selection after change tolerance angle
+  tolValue.onChange = function() {
+    this.text = convertToNum(this.text, MAX_ANGLE);
+    if (this.text * 1 > MAX_ANGLE) this.text = MAX_ANGLE;
+    if (brokenBtn.value || cornerBtn.value) run();
   }
 
   // Use Up / Down arrow keys (+ Shift) for change tolerance angle
-  tolValue.addEventListener('keydown', function (e) {
-    var step;
-    ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
-    if (e.keyName == 'Down') {
-      if (Number(this.text) >= step) {
-        this.text = Number(this.text) - step;
-        e.preventDefault();
-      } else {
-        this.text = MIN_ANGLE;
-      }
-    }
-    if (e.keyName == 'Up') {
-      if (Number(this.text) <= MAX_ANGLE - step) {
-        this.text = Number(this.text) + step;
-        e.preventDefault();
-      } else {
-        this.text = MAX_ANGLE;
-      }
-    }
-  });
-  
-  // Update selection after change tolerance angle
-  tolValue.onChange = function() {
-    if (brokenBtn.value || cornerBtn.value) {
-      run();
-    }
-  }
+  shiftInputNumValue(tolValue);
 
   tolValue.addEventListener('keydown', function(kd) {
     if (kd.altKey) kd.preventDefault();
@@ -167,10 +133,8 @@ function main() {
 
   // Dialog shortcuts Alt key + digits
   dialog.addEventListener('keydown', function(kd) {
-    if(kd.keyName === 'Enter'){
-      if (brokenBtn.value || cornerBtn.value) {
-        run();
-      }
+    if (kd.keyName === 'Enter' && (brokenBtn.value || cornerBtn.value)) {
+      run();
     }
     if (kd.altKey) {
       if (kd.keyName.match(/1/)) bezierBtn.notify();
@@ -197,8 +161,31 @@ function main() {
   function run() {
     app.selection = null;
     btnsState = [bezierBtn.value, flushBtn.value, cornerBtn.value, brokenBtn.value, flatBtn.value];
-    processPoints(btnsState, selPaths, convertDecimalPoint(tolValue.text));
+    processPoints(btnsState, selPaths, tolValue.text * 1);
     sPoints.text = 'Selected Points: ' + getSelectedPoints(selPaths);
+  }
+
+  function shiftInputNumValue(item) {
+    item.addEventListener('keydown', function (e) {
+      var step;
+      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+      if (e.keyName == 'Down') {
+        if (Number(this.text) >= step) {
+          this.text = Number(this.text) - step;
+          e.preventDefault();
+        } else {
+          this.text = MIN_ANGLE;
+        }
+      }
+      if (e.keyName == 'Up') {
+        if (Number(this.text) <= MAX_ANGLE - step) {
+          this.text = Number(this.text) + step;
+          e.preventDefault();
+        } else {
+          this.text = MAX_ANGLE;
+        }
+      }
+    });
   }
 
   dialog.show();  
@@ -227,9 +214,14 @@ function getPaths(item, arr) {
   }
 }
  
-// Set decimal separator symbol and convert to number
-function convertDecimalPoint(str) {
-  return +str.replace(',', '.');
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
 }
 
 function getPointType(point, tolerance) {

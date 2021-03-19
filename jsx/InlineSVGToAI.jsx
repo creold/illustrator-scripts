@@ -26,8 +26,8 @@
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 function main() {
-  if (app.documents.length == 0) {
-    alert("Error: \nOpen a document and try again.");
+  if (documents.length == 0) {
+    alert("Error\nOpen a document and try again.");
     return;
   }
   uiDialog().show();

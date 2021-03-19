@@ -34,15 +34,15 @@ var maxValue = 0,
     shiftValue, angleValue, gShiftEnd;
 
 function main() {
-    if (app.documents.length == 0) {
-        alert('Error: \nOpen a document and try again.');
+    if (documents.length == 0) {
+        alert('Error\nOpen a document and try again.');
         return;
     } else {
         doc = app.activeDocument;
     }
 
     if (doc.selection.length == 0) {
-        alert('Error: \nPlease select atleast one object.');
+        alert('Error\nPlease select atleast one object.');
         return;
     }
 

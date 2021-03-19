@@ -11,6 +11,7 @@
   1.0 Initial version.
   1.0 Added option Find and replace string in all Layer names.
   1.2 Added recursive search in Sublayers names.
+  1.3 Added renaming of the parent Symbol
   
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -29,10 +30,10 @@
 //@target illustrator
 
 var SCRIPT_NAME = 'Rename Items',
-    SCRIPT_VERSION = 'v.1.2';
+    SCRIPT_VERSION = 'v.1.3';
 
 function main() {
-  if (app.documents.length == 0) {
+  if (documents.length == 0) {
     alert('Error\nOpen a document and try again.');
     return;
   }
@@ -62,9 +63,14 @@ function main() {
   var nameInp = grpName.add('edittext', [0, 0, 170, 30], placeholder); 
       nameInp.active = true;
 
+  //  Add more options for selected Symbol
+  if (selection.length == 1 && isSymbol(selection[0])) {
+    var isRplcParent = win.add('checkbox', undefined, 'Rename parent symbol');
+  }
+
   //  Add more options for multiple selection or layers
   if (selection.length > 1 || (selection.length == 0 && hasMultiLayer())) {
-    var chkFind = win.add('checkbox', undefined, 'Find and replace in all'); 
+    var chkFind = win.add('checkbox', undefined, 'Find and replace in all');
     chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
                         'E.g.: if you enter MY, it will replace all\n' +
                         'the MY occurrences in the names.'; 
@@ -108,6 +114,9 @@ function main() {
         countInp.enabled = !countInp.enabled;
         sprtInp.enabled = !sprtInp.enabled;
       }
+
+      countInp.onChange = function () { this.text = convertToNum(countInp.text); }
+      shiftInputNumValue(countInp);
     }
   }
   
@@ -140,6 +149,9 @@ function main() {
         break;
       case 1: // one object was selected
         selection[0].name = nameInp.text;
+        if (isRplcParent !== undefined && isRplcParent.value) { 
+          selection[0].symbol.name = nameInp.text;
+        }
         break;
       default: // multiple objects were selected
         renameItems();
@@ -163,7 +175,7 @@ function main() {
   }
 
   function renameItems() {
-    var count = convertInputToNum(countInp.text);
+    var count = convertToNum(countInp.text);
     for (var i = 0; i < selection.length; i++) {
       var item = selection[i];
       if (!chkFind.value) item.name = nameInp.text;
@@ -174,6 +186,21 @@ function main() {
       
       count++;
     }
+  }
+
+  function shiftInputNumValue(item) {
+    item.addEventListener('keydown', function (kd) {
+      var step;
+      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+      if (kd.keyName == 'Down') {
+        this.text = Number(this.text) - step;
+        kd.preventDefault();
+      }
+      if (kd.keyName == 'Up') {
+        this.text = Number(this.text) + step;
+        kd.preventDefault();
+      }
+    });
   }
   
   win.show();
@@ -188,8 +215,12 @@ function initTitle() {
       placeholder = activeDocument.activeLayer.name;
       break;
     case 1: // one object was selected
-      target = '1 item';
-      placeholder = selection[0].name;
+      target = isSymbol(selection[0]) ? 'symbol' : 'item';
+      if (isSymbol(selection[0]) && selection[0].name == '') {
+        placeholder = selection[0].symbol.name;
+      } else {
+        placeholder = selection[0].name;
+      }
       break;
     default: // multiple objects were selected
       target = selection.length + ' items';
@@ -207,12 +238,20 @@ String.prototype.replaceAll = function(search, replacement) {
   return this.replace(new RegExp(search, 'g'), replacement);
 };
 
-function convertInputToNum(str) {
-  if (isNaN(str * 1) || (str * 1) <= 0 || str.replace(/\s/g, '').length == 0) { 
-    return 0; 
-  } else { 
-    return str * 1; 
-  }
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  // Remove duplicate Minus
+  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
+}
+
+function isSymbol(item) {
+  return item.typename === 'SymbolItem';
 }
 
 // Illustrator UI trick. Reopen layers panel for update names 

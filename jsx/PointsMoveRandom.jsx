@@ -4,58 +4,390 @@
   Requirements: Adobe Illustrator CS6 and above
   Date: May, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+
   Versions:
   0.1 Initial version
   0.2 Added deselect some anchors, move handles
-  ============================================================================
+  0.3 Added step, saving settings. Minor improvements
+
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
   NOTICE:
-  Tested with Adobe Illustrator CC 2018 (Win), 2019 (Mac).
+  Tested with Adobe Illustrator CC 2018, 2021 (Win), CC 2019, 2021 (Mac).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+$.localize = true; // Enabling automatic localization
 
 // Global variables
 var SCRIPT_NAME = 'Points Move Random',
-    SCRIPT_VERSION = 'v.0.2';
+    SCRIPT_VERSION = 'v.0.3',
+    DEF_MOVE = 1,
+    DEF_CHANCE = 50,
+    DEF_STEP = 1.0,
+    SETTINGS_FILE = {
+      name: SCRIPT_NAME.replace(/\s/g, '_') + '_data.ini',
+      folder: Folder.myDocuments + '/Adobe Scripts/'
+    };
+
+var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
+                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
+    LANG_ERR_SELECT = { en: 'Error\nPlease, select one or more paths.',
+                        ru: 'Ошибка\nВыделите 1 или более объектов.'},
+    LANG_ERR_STEP_ZERO = { en: 'Error\nThe step must be greater than 0.',
+                           ru: 'Ошибка\nШаг должен быть больше 0.'},
+    LANG_ERR_STEP_MAX = { en: 'Error\nThe step is out of range: ',
+                          ru: 'Ошибка\nШаг выходит за границы диапазона: '};
 
 // Main function
 function main() {
-  if (app.documents.length < 1) return;
-  if (!(selection instanceof Array) || selection.length < 1) return;
+  if (!app.documents.length) {
+    alert(LANG_ERR_DOC);
+    return;
+  }
 
-  var doc = app.activeDocument;
-  var selPaths = [];
-  var selPoints = [];
+  var doc = app.activeDocument,
+      selPaths = [],
+      selPoints = [];
 
   getPaths(doc.selection, selPaths);
-
-  for (var i = 0; i < selPaths.length; i++) {
-    if (selPaths[i].pathPoints.length > 1) {
-      var points = selPaths[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
-        if (isSelected(points[j])) selPoints.push(points[j]);
-      }
-    }
+  getPoints(selPaths, selPoints);
+  
+  if (selPaths.length === 0) {
+    alert(LANG_ERR_SELECT);
+    return;
   }
+
   doc.selection = null;
   app.redraw();
+
   buildGUI(selPoints);
 }
 
-function getPaths(item, arr) {
-  for (var i = 0; i < item.length; i++) {
-    var currItem = item[i];
+function buildGUI(points) {
+  var undoCount = 0,
+      newPoints = tempPoints = [],
+      isRandChanged = false;
+
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION); 
+      dialog.orientation = 'column'; 
+      dialog.alignChildren = ['fill','center']; 
+
+  // RANGE PANEL
+  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + getDocUnit()); 
+      rangePnl.orientation = 'column';
+      rangePnl.alignChildren = ['left','center'];
+      rangePnl.margins = [10,20,10,5]; 
+
+  // HORIZONTAL INPUT
+  var hGroup = rangePnl.add('group'); 
+      hGroup.orientation = 'row'; 
+      hGroup.alignChildren = ['left','center']; 
+
+  var hGroupTitle = hGroup.add('statictext', undefined, 'Horizontal'); 
+
+  var hRangeGroup = hGroup.add('group'); 
+      hRangeGroup.orientation = 'row'; 
+      hRangeGroup.alignChildren = ['left','center']; 
+
+  var hFromVal = hRangeGroup.add('edittext', undefined, -DEF_MOVE); 
+      hFromVal.characters = 5;
+      hFromVal.active = true;
+
+  var hGroupSubtitle = hRangeGroup.add('statictext', undefined, 'to'); 
+
+  var hToVal = hRangeGroup.add('edittext', undefined, DEF_MOVE); 
+      hToVal.characters = 5;
+
+  var isHFixed = hRangeGroup.add('checkbox', undefined, 'Fixed H\u0332'); // Unicode underlined H
+      isHFixed.helpTip = 'Press Alt+H to enable';
+
+  // VERTICAL INPUT
+  var vGroup = rangePnl.add('group'); 
+      vGroup.orientation = 'row'; 
+      vGroup.alignChildren = ['left','center']; 
+      vGroup.spacing = 28; 
+
+  var vGroupTitle = vGroup.add('statictext', undefined, 'Vertical'); 
+
+  var vRangeGroup = vGroup.add('group'); 
+      vRangeGroup.orientation = 'row'; 
+      vRangeGroup.alignChildren = ['left','center']; 
+
+  var vFromVal = vRangeGroup.add('edittext', undefined, -DEF_MOVE);
+      vFromVal.characters = 5;
+
+  var vGroupSubtitle = vRangeGroup.add('statictext', undefined, 'to'); 
+
+  var vToVal = vRangeGroup.add('edittext', undefined, DEF_MOVE); 
+      vToVal.characters = 5;
+  
+  var isVFixed = vRangeGroup.add('checkbox', undefined, 'Fixed V\u0332'); // Unicode underlined V
+      isVFixed.helpTip = 'Press Alt+V to enable';
+
+  // STEP INPUT
+  var step = rangePnl.add('group'); 
+      step.orientation = 'row'; 
+
+  var stepTitle = step.add('statictext', [0, 0, 200, 30]);
+      stepTitle.text = 'Step for random value, ' + getDocUnit() + ' (> 0)';
+
+  var stepInp = step.add('edittext', undefined, DEF_STEP);
+      stepInp.characters = 5;
+
+  // OPTIONS
+  var options = dialog.add('group'); 
+      options.orientation = 'column'; 
+      options.alignChildren = ['left','center'];
+
+  var randOption = options.add('group'); 
+      randOption.orientation = 'row'; 
+      randOption.alignChildren = ['center','center']; 
+
+  var isRandPoint = randOption.add('checkbox');
+      isRandPoint.text = 'S\u0332elect some of the points randomly'; // Unicode underlined S
+      isRandPoint.helpTip = 'Press Alt+S to enable';
+
+  var chanceInp = randOption.add('edittext', undefined, '50'); 
+      chanceInp.characters = 4;
+      chanceInp.enabled = false;
+
+  var percent = randOption.add('statictext', undefined, '%');
+
+  var isHandles = options.add('checkbox');
+      isHandles.text = 'M\u0332ove only points handles'; // Unicode underlined M
+      isHandles.helpTip = 'Press Alt+M to enable';
+
+  isRandPoint.onClick = function () {
+    chanceInp.enabled = !chanceInp.enabled;
+  }
+
+  // BUTTONS
+  var buttons = dialog.add('group'); 
+      buttons.orientation = 'row'; 
+      buttons.alignChildren = ['center','top']; 
+
+  var close = buttons.add('button', undefined, 'Close', {name: 'cancel'});
+      close.helpTip = 'Press Esc to Close';
+
+  var revert = buttons.add('button', undefined, 'R\u0332evert'); // Unicode underlined R
+      revert.helpTip = 'Press Alt+R to Revert';
+      revert.enabled = false;
+
+  var apply = buttons.add('button', undefined, 'A\u0332pply', {name: 'ok'}); // Unicode underlined A
+      apply.helpTip = 'Press Alt+A to Apply';
+
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, github.com/creold');
+      copyright.justify = 'center';
+      copyright.enabled = false;
+
+  close.onClick = function () { dialog.close(); }
+  dialog.onClose = function () { saveSettings(); }
+
+  isHFixed.onClick = function () { hFromVal.enabled = !hFromVal.enabled; }
+  isVFixed.onClick = function () { vFromVal.enabled = !vFromVal.enabled; }
+   
+  // Restore original points state
+  revert.onClick = function() {
+    app.selection = null;
+    if (undoCount) {
+      while (undoCount--) app.undo();
+      newPoints = tempPoints = [];
+      isRandChanged = false;
+      undoCount = 0;
+      revert.enabled = false;
+      app.redraw();
+    }
+  }
+  
+  // Use Up / Down arrow keys (+ Shift) for change value
+  shiftInputNumValue(hFromVal);
+  shiftInputNumValue(hToVal);
+  shiftInputNumValue(vFromVal);
+  shiftInputNumValue(vToVal);
+  shiftInputNumValue(chanceInp);
+  
+  // Begin Apply shortcut
+  for (var i = 0; i < rangePnl.children.length; i++) {
+    blockInput(rangePnl.children[i]);
+  }
+  blockInput(chanceInp);
+  blockInput(stepInp);
+ 
+  dialog.addEventListener('keydown', function(kd) {
+    if (kd.altKey) {
+      if (kd.keyName.match(/A/)) apply.notify();
+      if (kd.keyName.match(/H/)) isHFixed.notify();
+      if (kd.keyName.match(/M/)) isHandles.notify();
+      if (kd.keyName.match(/S/)) isRandPoint.notify();
+      if (kd.keyName.match(/R/)) revert.notify();
+      if (kd.keyName.match(/V/)) isVFixed.notify();
+    }
+  });
+  // End Apply shortcut
+ 
+  apply.onClick = start;
+  
+  loadSettings();
+
+  dialog.show();
+
+  function blockInput(item) {
+    item.addEventListener('keydown', function(kd) {
+      if (kd.altKey) kd.preventDefault();
+    });
+  }
+
+  function shiftInputNumValue(item) {
+    item.addEventListener('keydown', function (kd) {
+      var step;
+      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+      if (kd.keyName == 'Down') {
+        this.text = Number(this.text) - step;
+        kd.preventDefault();
+      }
+      if (kd.keyName == 'Up') {
+        this.text = Number(this.text) + step;
+        kd.preventDefault();
+      }
+    });
+  }
+
+  function start() {
+    if (convertToNum(stepInp.text, 0) == 0) {
+      alert(LANG_ERR_STEP_ZERO);
+      return;
+    }
+
+    var range = [],
+        chanceVal,
+        stepVal,
+        tempMinMax,
+        tempChance,
+        errStepMsg = '';
+    
+    // Validation of numeric inputs 
+    range[0] = hFromVal.text = convertToNum(hFromVal.text, -DEF_MOVE);
+    range[1] = hToVal.text = convertToNum(hToVal.text, DEF_MOVE);
+    range[2] = vFromVal.text = convertToNum(vFromVal.text, -DEF_MOVE);
+    range[3] = vToVal.text = convertToNum(vToVal.text, DEF_MOVE);
+    chanceVal = chanceInp.text = convertToNum(chanceInp.text, DEF_CHANCE);
+    stepVal = stepInp.text = convertToNum(stepInp.text, DEF_STEP);
+    
+    // Swap values if the start are greater than the end
+    if (range[1] < range[0]) {
+      tempMinMax = range[0];
+      range[0] = hFromVal.text = range[1];
+      range[1] = hToVal.text = tempMinMax;
+    }
+    if (range[3] < range[2]) {
+      tempMinMax = range[2];
+      range[2] = vFromVal.text = range[3];
+      range[3] = vToVal.text = tempMinMax;
+    }
+
+    if (chanceVal < 0) chanceVal = chanceInp.text = 0;
+    if (chanceVal > 100) chanceVal = chanceInp.text = 100;
+
+    if (stepVal < 0) stepVal = stepInp.text = DEF_STEP;
+    // Check that the step don't out of the range
+    if (stepVal + range[0] > range[1]) { errStepMsg += hGroupTitle.text + ', '; }
+    if (stepVal + range[2] > range[3]) { errStepMsg += vGroupTitle.text + ', '; }
+    if (errStepMsg.length !== 0) {
+      alert(LANG_ERR_STEP_MAX + errStepMsg.slice(0, -2));
+      return;
+    }
+
+    // Get random points
+    if (isRandPoint.value && (!isRandChanged || tempChance !== chanceVal)) {
+      newPoints = [];
+      tempPoints = shuffle(points);
+      var shuffledLength = tempPoints.length * chanceVal / 100;
+      for (var j = 0; j < shuffledLength; j++) {
+        newPoints.push(tempPoints[j]);
+      }
+      isRandChanged = true;
+      tempChance = chanceVal;
+      app.redraw();
+    }
+    
+    revert.enabled = true;
+    undoCount++;
+
+    // Start move
+    movePoint(isRandPoint.value ? newPoints : points,
+      range[0],
+      range[1],
+      range[2],
+      range[3],
+      isHFixed.value,
+      isVFixed.value,
+      isHandles.value,
+      stepVal
+    );
+
+    app.redraw();
+  };
+
+  function saveSettings() {
+    if(!Folder(SETTINGS_FILE.folder).exists) Folder(SETTINGS_FILE.folder).create();
+    var $file = new File(SETTINGS_FILE.folder + SETTINGS_FILE.name),
+      data = [
+        hFromVal.text,
+        hToVal.text,
+        isHFixed.value,
+        vFromVal.text,
+        vToVal.text,
+        isVFixed.value,
+        stepInp.text,
+        isHandles.value,
+        isRandPoint.value,
+        chanceInp.text
+      ].toString();
+    $file.open('w');
+    $file.write(data);
+    $file.close();
+  }
+  
+  function loadSettings() {
+    var $file = File(SETTINGS_FILE.folder + SETTINGS_FILE.name);
+    if ($file.exists) {
+      try {
+        $file.open('r');
+        var data = $file.read().split('\n'),
+            $main = data[0].split(',');
+        hFromVal.text = $main[0];
+        hToVal.text = $main[1];
+        isHFixed.value = ($main[2] === 'true');
+        if (isHFixed.value) hFromVal.enabled = false;
+        vFromVal.text = $main[3]; 
+        vToVal.text = $main[4];
+        isVFixed.value = ($main[5] === 'true');
+        if (isVFixed.value) vFromVal.enabled = false;
+        stepInp.text = $main[6];
+        isHandles.value = ($main[7] === 'true');
+        isRandPoint.value = ($main[8] === 'true');
+        if (isRandPoint.value) chanceInp.enabled = true;
+        chanceInp.text = $main[9]; 
+      } catch (e) {}
+      $file.close();
+    }
+  }
+}
+
+function getPaths(collection, arr) {
+  for (var i = 0; i < collection.length; i++) {
+    var currItem = collection[i];
     try {
       switch (currItem.typename) {
         case 'GroupItem':
@@ -75,214 +407,78 @@ function getPaths(item, arr) {
   }
 }
 
+function getPoints(collection, arr) {
+  for (var i = 0; i < collection.length; i++) {
+    if (collection[i].pathPoints.length > 1) {
+      var points = collection[i].pathPoints;
+      for (var j = 0; j < points.length; j++) {
+        if (isSelected(points[j])) arr.push(points[j]);
+      }
+    }
+  }
+}
+
 // Check current Point is selected
 function isSelected(point) {
   return point.selected == PathPointSelection.ANCHORPOINT;
 }
 
-function buildGUI(points) {
-  var undoCount = tmpChance = 0;
-  var newPoints = tmpPoints = [];
-  var isChanged = false;
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  // Remove duplicate Minus
+  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
+}
 
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION); 
-      dialog.orientation = 'column'; 
-      dialog.alignChildren = ['fill','center']; 
-
-  // RANGE PANEL
-  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + getDocUnit()); 
-      rangePnl.orientation = 'column';
-      rangePnl.margins = [10,20,10,5]; 
-
-  // HORIZONTAL INPUT
-  var hGroup = rangePnl.add('group'); 
-      hGroup.orientation = 'row'; 
-      hGroup.alignChildren = ['left','center']; 
-
-  var hGroupTitle = hGroup.add('statictext', undefined, 'Horizontal'); 
-
-  var hRangeGroup = hGroup.add('group'); 
-      hRangeGroup.orientation = 'row'; 
-      hRangeGroup.alignChildren = ['left','center']; 
-
-  var hFromVal = hRangeGroup.add('edittext', undefined, '-10'); 
-      hFromVal.characters = 5;
-      hFromVal.active = true;
-
-  var hGroupSubtitle = hRangeGroup.add('statictext', undefined, 'to'); 
-
-  var hToVal = hRangeGroup.add('edittext', undefined, '10'); 
-      hToVal.characters = 5;
-
-  var isHFixed = hRangeGroup.add('checkbox', undefined, 'Fixed \u0048\u0332'); // Unicode underlined H
-      isHFixed.helpTip = 'Press Alt+H to enable';
-
-  // VERTICAL INPUT
-  var vGroup = rangePnl.add('group'); 
-      vGroup.orientation = 'row'; 
-      vGroup.alignChildren = ['left','center']; 
-      vGroup.spacing = 28; 
-
-  var vGroupTitle = vGroup.add('statictext', undefined, 'Vertical'); 
-
-  var vRangeGroup = vGroup.add('group'); 
-      vRangeGroup.orientation = 'row'; 
-      vRangeGroup.alignChildren = ['left','center']; 
-
-  var vFromVal = vRangeGroup.add('edittext', undefined, '-10');
-      vFromVal.characters = 5;
-
-  var vGroupSubtitle = vRangeGroup.add('statictext', undefined, 'to'); 
-
-  var vToVal = vRangeGroup.add('edittext', undefined, '10'); 
-      vToVal.characters = 5;
-  
-  var isVFixed = vRangeGroup.add('checkbox', undefined, 'Fixed \u0056\u0332'); // Unicode underlined V
-      isVFixed.helpTip = 'Press Alt+V to enable';
-
-  var isHandles = rangePnl.add('checkbox');
-      isHandles.text = '\u004d\u0332ove only points handles'; // Unicode underlined M
-      isHandles.helpTip = 'Press Alt+M to enable';
-
-  // OPTIONS
-  var options = dialog.add('group'); 
-      options.orientation = 'row'; 
-      options.alignChildren = ['center','center']; 
-
-  var isRandomPoint = options.add('checkbox');
-      isRandomPoint.text = '\u0053\u0332elect some of the points randomly'; // Unicode underlined S
-      isRandomPoint.helpTip = 'Press Alt+S to enable';
-
-  var chanceInp = options.add('edittext', undefined, '50'); 
-      chanceInp.characters = 4;
-      chanceInp.enabled = false;
-
-  var percent = options.add('statictext', undefined, '%'); 
-
-  isRandomPoint.onClick = function () {
-    chanceInp.enabled = !chanceInp.enabled;
+// Shuffle array
+function shuffle(arr) {
+  var j, temp;
+  for (var i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
   }
+  return arr;
+}
 
-  // BUTTONS
-  var buttons = dialog.add('group'); 
-      buttons.orientation = 'row'; 
-      buttons.alignChildren = ['center','top']; 
+// The max and min values is included
+function getRandomInRange(min, max, step) {
+  var range, randNum;
+  range = ((max - min) / step);
+  randNum = Math.round(Math.random() * range) * step + min;
+  return randNum;
+}
 
-  var close = buttons.add('button', undefined, 'Close');
-      close.helpTip = 'Press Esc to Close';
+// Move points
+function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) {
+  var deltaX, deltaY;
 
-  var revert = buttons.add('button', undefined, '\u0052\u0332evert'); // Unicode underlined R
-      revert.helpTip = 'Press Alt+R to Revert';
+  for (var i = 0; i < points.length; i++) {
+    deltaX = isHFixed ? x2 : getRandomInRange(x1, x2, step);
+    deltaY = isVFixed ? y2 : getRandomInRange(y1, y2, step);
 
-  var apply = buttons.add('button', undefined, '\u0041\u0332pply'); // Unicode underlined A
-      apply.helpTip = 'Press Alt+A to Apply';
+    deltaX = convertUnits(deltaX + getDocUnit(), 'px');
+    deltaY = convertUnits(deltaY + getDocUnit(), 'px');
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, github.com/creold');
-      copyright.justify = 'center';
-      copyright.enabled = false;
-
-  isHFixed.onClick = function () {
-    hFromVal.enabled = !hFromVal.enabled;
-  }
-  
-  isVFixed.onClick = function () {
-    vFromVal.enabled = !vFromVal.enabled;
-  }
-
-  close.onClick = function () {
-    dialog.close();
-  }
-    
-  // Restore original points state
-  revert.onClick = function() {
-    app.selection = null;
-    if (undoCount) {
-      while (undoCount--) app.undo();
-      newPoints = tmpPoints = [];
-      isChanged = false;
-      undoCount = 0;
-      app.redraw();
-    }
-  }
-
-  // Begin Apply shortcut
-  for (var i = 0; i < rangePnl.children.length; i++) {
-    rangePnl.children[i].addEventListener('keydown', function(kd) {
-      if (kd.altKey) kd.preventDefault();
-    });
-  }
-  
-  chanceInp.addEventListener('keydown', function(kd) {
-    if (kd.altKey) kd.preventDefault();
-  });
-  
-  dialog.addEventListener('keydown', function(kd) {
-    if (kd.altKey) {
-      if (kd.keyName.match(/A/)) apply.notify();
-      if (kd.keyName.match(/H/)) isHFixed.notify();
-      if (kd.keyName.match(/M/)) isHandles.notify();
-      if (kd.keyName.match(/S/)) isRandomPoint.notify();
-      if (kd.keyName.match(/R/)) revert.notify();
-      if (kd.keyName.match(/V/)) isVFixed.notify();
-    }
-  });
-  // End Apply shortcut
- 
-  apply.onClick = function () {
-    var coord = [
-        convertToNum(hFromVal.text),
-        convertToNum(hToVal.text),
-        convertToNum(vFromVal.text),
-        convertToNum(vToVal.text)
-    ]; 
-
-    for (var i = 0; i < coord.length; i++) {
-      if (isNaN(coord[i])) {
-        alert('Please enter a numeric value.');
-        return;
+    with (points[i]) {
+      if (!isHandles) { // Move the anchor and handles
+        anchor = [anchor[0] + deltaX, anchor[1] + deltaY];
+        leftDirection = [leftDirection[0] + deltaX, leftDirection[1] + deltaY];
+        rightDirection = [rightDirection[0] + deltaX, rightDirection[1] + deltaY];
+      } else { // Mirror move the handles
+        leftDirection = [anchor[0] + (leftDirection[0] - anchor[0]) - deltaX,
+                         anchor[1] + (leftDirection[1] - anchor[1]) - deltaY];
+        rightDirection = [anchor[0] + (rightDirection[0] - anchor[0]) + deltaX,
+                          anchor[1] + (rightDirection[1] - anchor[1]) + deltaY];
       }
     }
-    
-    var chanceVal = convertToNum(chanceInp.text);
-
-    if (isNaN(chanceVal)) {
-      alert('Please enter a numeric value.');
-      return;
-    } else if (chanceVal > 100) {
-      chanceVal = 100;
-      chanceInp.text = '100';
-    } else if (chanceVal < 0) {
-      chanceVal = 0;
-      chanceInp.text = '0';
-    }
-
-    if (isRandomPoint.value && (!isChanged || (tmpChance !== chanceVal))) {
-      newPoints = [];
-      tmpPoints = shuffle(points);
-      for (var j = 0; j < (tmpPoints.length * chanceVal / 100); j++) {
-        newPoints.push(tmpPoints[j]);
-      }
-      app.redraw();
-      isChanged = true;
-      tmpChance = chanceVal;
-    }
-
-    undoCount++;
-
-    startMove(isRandomPoint.value ? newPoints : points,
-      coord[0],
-      coord[1],
-      coord[2],
-      coord[3],
-      isHFixed.value,
-      isVFixed.value,
-      isHandles.value
-    );
-
-    app.redraw();
-  };
-  
-  dialog.show();
+  }
 }
 
 // Units conversion
@@ -343,55 +539,6 @@ function convertUnits(value, newUnit) {
       value = parseFloat(value) * 25.4;
   }
   return parseFloat(value);
-}
-
-// Set decimal separator symbol and convert to number
-function convertToNum(str) {
-  return 1 * str.replace(',', '.');
-}
-
-// Shuffle array
-function shuffle(arr) {
-  var j, temp;
-  for (var i = arr.length - 1; i > 0; i--) {
-    j = Math.floor(Math.random() * (i + 1));
-    temp = arr[j];
-    arr[j] = arr[i];
-    arr[i] = temp;
-  }
-  return arr;
-}
-
-// The maximum and minimum values  is inclusive
-function getRandomInRange(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Move points
-function startMove(items, x1, x2, y1, y2, isHFixed, isVFixed, isHandles) {
-  var deltaX, deltaY;
-  for (var i = 0; i < items.length; i++) {
-    deltaX = isHFixed ? x2 : getRandomInRange(x1, x2);
-    deltaY = isVFixed ? y2 : getRandomInRange(y1, y2);
-
-    deltaX = convertUnits(deltaX + getDocUnit(), 'px');
-    deltaY = convertUnits(deltaY + getDocUnit(), 'px');
-
-    with(items[i]) {
-      if (!isHandles) {
-        anchor = [anchor[0] + deltaX, anchor[1] + deltaY];
-        leftDirection = [leftDirection[0] + deltaX, leftDirection[1] + deltaY];
-        rightDirection = [rightDirection[0] + deltaX, rightDirection[1] + deltaY];
-      } else {
-        leftDirection = [anchor[0] + (leftDirection[0] - anchor[0]) - deltaX,
-                         anchor[1] + (leftDirection[1] - anchor[1]) - deltaY];
-        rightDirection = [anchor[0] + (rightDirection[0] - anchor[0]) + deltaX,
-                          anchor[1] + (rightDirection[1] - anchor[1]) + deltaY];
-      }
-    }
-  }
 }
 
 // Run script
