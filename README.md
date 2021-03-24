@@ -18,7 +18,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [InlineSVGToAI.jsx]   
 * [PointsMoveRandom.jsx] `(upd, 20.03.2021)`  
 * [RenameItems.jsx] `(upd, 20.03.2021)`
-* [Rescale.jsx] `(upd, 25.03.2020)`
+* [Rescale.jsx] `(upd, 24.03.2021)`
 * [ResizeToSize.jsx] `(upd, 22.03.2021)`
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
 * [SelectPointsByType.jsx] `(upd, 20.03.2021)`   

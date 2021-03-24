@@ -15,6 +15,7 @@
   0.2.1 Minor improvements
   0.2.2 Fixed decimal separator bug
   0.2.3 Minor improvements
+  0.2.4 Minor improvements
   ============================================================================
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -34,11 +35,10 @@
 
 // Global variables
 var SCRIPT_NAME = 'Rescale',
-    SCRIPT_VERSION = 'v.0.2.3',
-    DEF_VAL = 1;
-var SET_NAME = SCRIPT_NAME,
-    ACTION_NAME = 'Scale-Corners',
-    ACTION_PATH = Folder.myDocuments;
+    SCRIPT_VERSION = 'v.0.2.4',
+    DEF_VAL = 1,
+    DEF_CORNER = app.preferences.getIntegerPreference('policyForPreservingCorners'),
+    DEF_STROKE = app.preferences.getBooleanPreference('scaleLineWeight');
 
 function main () {
   if (app.documents.length < 1) {
@@ -69,11 +69,11 @@ function main () {
 
   var option = dialog.add('group {alignment: "center"}');
       option.orientation = 'column';
-  var chkCorner = option.add('checkbox', undefined, 'Scale Live Corners');
+  var chkCorner = option.add('checkbox', undefined, 'Scale corners radius');
       chkCorner.helpTip = 'Only works with Live Shape';
-      chkCorner.value = true;
-  var chkStroke = option.add('checkbox', undefined, 'Scale Strokes & Effects');
-      chkStroke.value = true;
+      chkCorner.value = (DEF_CORNER == 1) ? true : false;
+  var chkStroke = option.add('checkbox', undefined, 'Scale strokes & effects');
+      chkStroke.value = DEF_STROKE;
   var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
       chkRmv.value = true;
       
@@ -123,29 +123,10 @@ function main () {
         return;
       }
 
-      // Generate Action
-      var actionStr = 
-        ['/version 3',
-        '/name [' + SET_NAME.length + ' ' + ascii2Hex(SET_NAME) + ']',
-        '/actionCount 1',
-        '/action-1 {',
-        '/name [' + ACTION_NAME.length + ' ' + ascii2Hex(ACTION_NAME) + ']',
-        '    /eventCount 1',
-        '    /event-1 {',
-        '        /internalName (ai_liveshapes)',
-        '        /parameterCount 1',
-        '        /parameter-1 {',
-        '            /key 1933800046',
-        '            /type (boolean)',
-        '            /value ',
-                     chkCorner.value ? 1 : 0,
-        '        }',
-        '    }',
-        '}'].join('');
-
-      createAction(actionStr, SET_NAME, ACTION_PATH);
-      app.doScript(ACTION_NAME, SET_NAME);
-      app.unloadAction(SET_NAME, '');
+      if (isAiCC()) {
+        var _isCorner = chkCorner.value ? 1 : 2;
+        app.preferences.setIntegerPreference('policyForPreservingCorners', _isCorner);
+      }
 
       // Grouping for better performance. Thanks for help @moodyallen
       var items = selection;
@@ -178,9 +159,8 @@ function main () {
       selGroup.remove();
       selGroup = null;      
       
-      if (chkRmv.enabled && chkRmv.value) {
-        keyPath.remove();
-      }
+      if (chkRmv.enabled && chkRmv.value) keyPath.remove();
+
       dialog.close();
     } catch (e) {}
   }
@@ -256,17 +236,10 @@ function convertToNum(str, def) {
   return parseFloat(str);
 }
 
-function createAction (str, set, path) {
-  var f = new File('' + path + '/' + set + '.aia');
-  f.open('w');
-  f.write(str);
-  f.close();
-  app.loadAction(f);
-  f.remove();
-}
-
-function ascii2Hex(hex) {
-  return hex.replace(/./g, function (a) { return a.charCodeAt(0).toString(16) });
+// Check Adobe Illustrator version
+function isAiCC() {
+  if (parseInt(app.version) <= 16) { return false; }
+  return true;
 }
 
 // Run script

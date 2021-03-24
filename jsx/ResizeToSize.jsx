@@ -33,14 +33,14 @@
 
 // Global variables
 var SCRIPT_TITLE = 'ResizeToSize',
-    SCRIPT_VERSION = 'v.0.6.2';
+    SCRIPT_VERSION = 'v.0.7';
 
 var DLG_MARGINS = [10, 20, 10, 10],
     DEF_SIZE = 100, // Default size value
-    DEF_BNDS = app.preferences.getBooleanPreference('includeStrokeInBounds');
-    DEF_CORNER = app.preferences.getIntegerPreference('policyForPreservingCorners');
-    DEF_STROKE = app.preferences.getBooleanPreference('scaleLineWeight');
-    DEF_PATT = app.preferences.getBooleanPreference('transformPatterns');
+    DEF_BNDS = app.preferences.getBooleanPreference('includeStrokeInBounds'),
+    DEF_CORNER = app.preferences.getIntegerPreference('policyForPreservingCorners'),
+    DEF_STROKE = app.preferences.getBooleanPreference('scaleLineWeight'),
+    DEF_PATT = app.preferences.getBooleanPreference('transformPatterns'),
     MAX_SIZE = 16383, // Px
     REF_POINT_NUM = 9, // Don't change
     refPointArr = new Array(REF_POINT_NUM), // Reference point array
