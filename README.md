@@ -23,8 +23,8 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
 * [SelectPointsByType.jsx] `(upd, 20.03.2021)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
-* [StrokeColorFromFill.jsx] `(new, 14.08.2020)`   
-* [TrimMasks.jsx] `(upd, 14.10.2020)`
+* [StrokeColorFromFill.jsx] `(upd, 30.03.2021)`   
+* [TrimMasks.jsx] `(upd, 30.03.2021)`
 * [Zoom-and-center.jsx] `(upd, 20.03.2021)`
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12

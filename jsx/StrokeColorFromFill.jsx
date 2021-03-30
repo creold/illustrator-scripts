@@ -4,23 +4,25 @@
                Adds a stroke, if there is none (not available on Mac OS Illustrator older than CC 2020)
   Date: August, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ==========================================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+
   Versions:
   0.1 Initial version
   0.2 Added changing the color shift value with the Up/Down keys
-  ============================================================================
+  0.3 Added color interpolation to get the Stroke color from the gradient
+
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
   NOTICE:
+  Tested with Adobe Illustrator CC 2018-2021 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -28,9 +30,11 @@
 $.localize = true; // Enabling automatic localization
 
 // Begin global variables
-var SCRIPT_NAME = 'Stroke Color From Fill';
-var USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS';
-var AI_VER = parseInt(app.version);
+var SCRIPT_NAME = 'Stroke Color From Fill',
+    SCRIPT_VERSION = 'v.0.3',
+    USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
+    AI_VER = parseInt(app.version);
+
 // EN-RU localized messages
 var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
     LANG_ERR_SELECT = { en: 'Error\nPlease select atleast one object.', ru: 'Ошибка\nВыделите хотя бы 1 объект.'},
@@ -47,18 +51,18 @@ var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошиб�
 
 var selPaths = [],
     docProfile = 'RGB', // Current document color mode
-    arrHasStroke = false,
-    shift = 0,
+    hasStroke = false,
+    shift = 0, // Color shift
     maxValue = 0, // Max color value in the channel
-    badFillCount = 0, // Object counter with non-solid fill
+    badFillCount = 0,
     colorChannel = [], // RGB or CMYK names
     isUndo = false,
     tempPath, // For fix Preview bug
-    DEF_SHIFT = 30, // Default color shift value
+    DEF_SHIFT = -30, // Default color shift value
     DEF_ADD_STROKE = true,
     DEF_IS_PREVIEW = true,
     DEF_SPOT_CONVERT = false,
-    DEF_DLG_OPACITY = 0.9;  // UI window opacity. Range 0-1
+    DEF_DLG_OPACITY = 0.95;  // UI window opacity. Range 0-1
 // End global variables
 
 function main() {
@@ -72,9 +76,8 @@ function main() {
     return;
   }
 
+  // Setup initial data
   var doc = app.activeDocument;
-
-  // Get initial data
   if (doc.documentColorSpace == DocumentColorSpace.RGB) {
     maxValue = 255;
     colorChannel = ['red', 'green', 'blue'];
@@ -86,10 +89,10 @@ function main() {
   
   getPaths(doc.selection, selPaths);
   
-  arrHasStroke = searchStrokedPath(selPaths);
+  hasStroke = hasStrokedPath(selPaths);
 
   // Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME, undefined);
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill','center'];
       dialog.opacity = DEF_DLG_OPACITY;
@@ -108,8 +111,8 @@ function main() {
   var isSpotConvert = dialog.add('checkbox', undefined, LANG_SPOT + docProfile);
       isSpotConvert.value = DEF_SPOT_CONVERT;
 
-  // Stroke bug in Ai older 2020 (Mac OS) 
-  if (USER_OS == 'WINDOWS' || (USER_OS == 'MAC' && AI_VER >=24)) {
+  // AI older 2020 on Mac OS has bug with add stroke
+  if (USER_OS == 'WINDOWS' || (USER_OS == 'MAC' && AI_VER >= 24)) {
     var isAddStroke = dialog.add('checkbox', undefined, LANG_STROKE);
         isAddStroke.value = DEF_ADD_STROKE;
   }
@@ -132,38 +135,18 @@ function main() {
       copyright.enabled = false;
 
   // Begin event listener for isPreview
-  if (isPreview.value) { previewStart(); }
+  if (isPreview.value) previewStart();
   colorShift.onChanging = isSpotConvert.onClick = isPreview.onClick = previewStart;
-  if (isExists(isAddStroke)) { isAddStroke.onClick = previewStart; }
+  if (isExists(isAddStroke)) isAddStroke.onClick = previewStart;
   // End event listener for isPreview
 
   // Use Up / Down arrow keys (+ Shift) for change color shift
-  colorShift.addEventListener('keydown', function (kd) {
-    var step;
-    ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
-    if (kd.keyName == 'Down') {
-      if (Number(this.text) >= -maxValue + step) {
-        this.text = Number(this.text) - step;
-        kd.preventDefault();
-      } else {
-        this.text = -maxValue;
-      }
-    }
-    if (kd.keyName == 'Up') {
-      if (Number(this.text) <= maxValue - step) {
-        this.text = Number(this.text) + step;
-        kd.preventDefault();
-      } else {
-        this.text = maxValue;
-      }
-    }
-    previewStart();
-  });
+  shiftInputNumValue(colorShift);
 
   ok.onClick = okClick;
 
   function okClick() {
-    if (isPreview.value && isUndo) { app.undo(); }
+    if (isPreview.value && isUndo) app.undo();
     start();
     isUndo = false;
     dialog.close();
@@ -171,9 +154,10 @@ function main() {
 
   function previewStart() {
     try {
-      if (isPreview.value && (arrHasStroke || (isExists(isAddStroke) && isAddStroke.value))) {
-        if (isUndo) { app.undo(); }
-        else { isUndo = true; }
+      if (isPreview.value && (hasStroke || 
+          (isExists(isAddStroke) && isAddStroke.value))) {
+        if (isUndo) app.undo();
+        else isUndo = true;
         start();
         app.redraw();
       } else if (isUndo) {
@@ -189,8 +173,8 @@ function main() {
   // Start conversion
   function start() {
     tempPath = doc.activeLayer.pathItems.add();
-    tempPath.name = 'Temp_Path';
-    var shiftNum = (isNaN(Number(colorShift.text)) || colorShift.text.replace(/\s/g, '').length == 0) ? 0 : Math.round(Number(colorShift.text));
+    tempPath.name = '__TempPath';
+    var shiftVal = convertToNum(colorShift.text, 0);
     for (var i = 0; i < selPaths.length; i++) {
       try {
         var item = selPaths[i];
@@ -198,7 +182,7 @@ function main() {
           item.stroked = true; 
           item.strokeWidth = 1;
         }
-        applyColor(item, shiftNum, isSpotConvert.value);
+        applyColor(item, shiftVal, isSpotConvert.value);
       } catch (e) {
         // showError(e);
       }
@@ -221,8 +205,32 @@ function main() {
     }
     tempPath.remove();
     app.redraw();
-    if (badFillCount > 0) { alert(LANG_ERR_FILL + ' ' + badFillCount); }
+    if (badFillCount) alert(LANG_ERR_FILL + ' ' + badFillCount);
     return true;
+  }
+
+  function shiftInputNumValue(item) {
+    item.addEventListener('keydown', function (kd) {
+      var step;
+      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+      if (kd.keyName == 'Down') {
+        if (Number(this.text) >= -maxValue + step) {
+          this.text = Number(this.text) - step;
+          kd.preventDefault();
+        } else {
+          this.text = -maxValue;
+        }
+      }
+      if (kd.keyName == 'Up') {
+        if (Number(this.text) <= maxValue - step) {
+          this.text = Number(this.text) + step;
+          kd.preventDefault();
+        } else {
+          this.text = maxValue;
+        }
+      }
+      previewStart();
+    });
   }
 
   dialog.center();
@@ -230,9 +238,9 @@ function main() {
 }
 
 // Checking whether there are stroked Paths in the selection
-function searchStrokedPath(arr) {
+function hasStrokedPath(arr) {
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i].stroked) { return true; }
+    if (arr[i].stroked) return true;
   }
   return false;
 }
@@ -251,12 +259,13 @@ function getPaths(item, arr) {
           getPaths(currItem.pageItems, arr);
           break;
         case 'PathItem':
-          if (currItem.filled && isSolidFillType(currItem)) { arr.push(currItem); }
-          else { badFillCount++; }
+          if (currItem.filled && hasColorFill(currItem)) arr.push(currItem);
+          else badFillCount++;
           break;
         case 'CompoundPathItem':
-          if (currItem.pathItems[0].filled && isSolidFillType(currItem.pathItems[0])) { arr.push(currItem.pathItems[0]); }
-          else { badFillCount++; }
+          if (currItem.pathItems[0].filled && hasColorFill(currItem.pathItems[0])) { 
+            arr.push(currItem.pathItems[0]);
+          } else { badFillCount++; }
           break;
         default:
           break;
@@ -268,42 +277,37 @@ function getPaths(item, arr) {
 }
 
 // Apply color to stroke
-function applyColor(obj, shift, convert) { 
-  var fillAttr = obj.fillColor,
+function applyColor(obj, shift, isSpotRplc) { 
+  var _fill = obj.fillColor,
+      sColor = (docProfile == 'RGB') ? new RGBColor() : new CMYKColor(),
       currColor,
-      strokeNewColor = (docProfile == 'RGB') ? new RGBColor() : new CMYKColor(),
       delta = 0;
   
-  if (fillAttr.typename == 'GradientColor') {
-    var gStopsNum = fillAttr.gradient.gradientStops.length;
-    var half = parseInt(gStopsNum / 2);
-    fillAttr = fillAttr.gradient.gradientStops[half].color;
-  }
-
-  currColor = (fillAttr.typename == 'SpotColor' && convert) ? fillAttr.spot.color : fillAttr;
+  if (_fill.typename == 'GradientColor') _fill = interpolateColor(_fill.gradient);
+  currColor = (_fill.typename == 'SpotColor' && isSpotRplc) ? _fill.spot.color : _fill;
 
   // For Grayscale mode color is set individually
   if (currColor.typename == 'GrayColor') {
-    strokeNewColor = new GrayColor();
+    sColor = new GrayColor();
     var grayColor = Math.round(currColor.gray),
         grayDelta = grayColor - shift;
 
-    if (grayDelta > 100) strokeNewColor.gray = 100;
-    else if (grayDelta < 0) strokeNewColor.gray = 0;
-    else strokeNewColor.gray = grayDelta;
+    if (grayDelta > 100) sColor.gray = 100;
+    else if (grayDelta < 0) sColor.gray = 0;
+    else sColor.gray = grayDelta;
   }
 
   // For Spot or Global color is set individually
-  if (currColor.typename == 'SpotColor' && !convert) {
-    strokeNewColor = new SpotColor();
+  if (currColor.typename == 'SpotColor' && !isSpotRplc) {
+    sColor = new SpotColor();
     var spotColor = currColor.spot,
         spotDelta = currColor.tint - shift;
     
-    strokeNewColor.spot = currColor.spot;
+    sColor.spot = currColor.spot;
 
-    if (spotDelta > 100) strokeNewColor.tint = 100;
-    else if (spotDelta < 0) strokeNewColor.tint = 0;
-    else strokeNewColor.tint = spotDelta;
+    if (spotDelta > 100) sColor.tint = 100;
+    else if (spotDelta < 0) sColor.tint = 0;
+    else sColor.tint = spotDelta;
   } else {
     // Set color for RGB || CMYK channels
     for (var j = 0; j < colorChannel.length; j++) {
@@ -311,32 +315,58 @@ function applyColor(obj, shift, convert) {
           currChannelColor = Math.round(currColor[channelName]);
       delta = (docProfile == 'RGB') ? currChannelColor + shift : currChannelColor - shift;
 
-      if (delta > maxValue) strokeNewColor[channelName] = maxValue;
-      else if (delta < 0) strokeNewColor[channelName] = 0;
-      else strokeNewColor[channelName] = delta;
+      if (delta > maxValue) sColor[channelName] = maxValue;
+      else if (delta < 0) sColor[channelName] = 0;
+      else sColor[channelName] = delta;
     }
   }
 
   // Set a new color to stroke
-  if (obj.stroked) { obj.strokeColor = strokeNewColor; }
+  if (obj.stroked) obj.strokeColor = sColor;
 }
 
-function isSolidFillType(obj) {
-  if (obj.fillColor.typename == 'RGBColor' ||
-      obj.fillColor.typename == 'CMYKColor' ||
-      obj.fillColor.typename == 'GrayColor' ||
-      obj.fillColor.typename == 'SpotColor' ||
-      obj.fillColor.typename == 'GradientColor')
-    { return true; }
+// Color interpolation by moody allen (moodyallen7@gmail.com)
+function interpolateColor(color) {
+  var gStopsLength = color.gradientStops.length,
+      cSum = {}; // Sum of color channels
+  for (var j = 0; j < gStopsLength; j++) {
+    var c = color.gradientStops[j].color;
+    if (c.typename === 'SpotColor') c = c.spot.color;
+    if (c.typename === 'GrayColor') c.red = c.green = c.blue = c.black = c.gray;
+    for (var key in c) {
+      if (typeof c[key] === 'number') {
+        if (cSum[key]) cSum[key] += c[key];
+        else cSum[key] = c[key];
+      }
+    }
+  }
+  var iColor = (docProfile == 'RGB') ? new RGBColor() : new CMYKColor();
+  for (var key in cSum) { iColor[key] = cSum[key] / gStopsLength; }
+  return iColor;
+}
+
+function hasColorFill(obj) {
+  var _type = obj.fillColor.typename;
+  if (_type == 'RGBColor' || _type == 'CMYKColor' || _type == 'GrayColor' || 
+      _type == 'SpotColor' || _type == 'GradientColor') return true;
   return false;
+}
+
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  // Remove duplicate Minus
+  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
 }
 
 // For debugging
 function showError(err) {
-  if (confirm(SCRIPT_NAME + ': an unknown error has occurred.\n' +
-      'Would you like to see more information?', true, 'Unknown Error')) {
-    alert(err + ': on line ' + err.line, 'Script Error', true);
-  }
+  alert(err + ': on line ' + err.line, 'Script Error', true);
 }
 
 // Run script
