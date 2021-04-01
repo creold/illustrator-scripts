@@ -11,6 +11,7 @@
   0.1 Initial version
   0.2 Fixed: bounds checking of the Illustrator canvas; position of the first copy
   0.2.1 Fixed script didn't run if the layers were locked
+  0.2.2 Performance optimization
   
   Donate (optional): If you find this script helpful, you can buy me a coffee
                      via PayPal http://www.paypal.me/osokin/usd
@@ -31,39 +32,40 @@ $.localize = true; // Enabling automatic localization
 
 // Global variables
 var SCRIPT_NAME = 'Duplicate Atboards Light',
-    SCRIPT_VERSION = 'v.0.2.1',
+    SCRIPT_VERSION = 'v.0.2.2',
     SETTINGS_FILE = {
       name: SCRIPT_NAME.replace(/\s/g, '_') + '_data.ini',
       folder: Folder.myDocuments + '/Adobe Scripts/'
     },
     AI_VER = parseInt(app.version),
-    COPIES_DEF = 0,
-    SPACING_DEF = 20,
-    SPACING_MIN = 0,
-    SUFFIX_DEF = ' ',
-    L_KEYWORD = '%isLocked',
-    H_KEYWORD = '%isHidden',
+    DEF_COPIES = 0, // Default amount of copies
+    DEF_SPACING = 20, // Default spacing between copies (doc units)
+    SPACING_MIN = 0, // The spacing can't be < 0
+    DEF_SUFFIX = ' ', // Default suffix for copies names
+    L_KEY = '%isLocked',
+    H_KEY = '%isHidden',
     TMP_LAYER_NAME = 'FOR_AB_COORD',
     OVER_OBJ = 2500, // The amount of objects, when the script can run slowly
     CNVS_SIZE = 16383, // Illustrator canvas max bounds, px
     OVER_COPIES = 10, // When the number of copies >, full-screen mode is enabled
-    DEF_DLG_OPACITY = 0.9,  // UI window opacity. Range 0-1
+    DEF_DLG_OPACITY = 0.97,  // UI window opacity. Range 0-1
     FIELD_SIZE = [0, 0, 60, 30],
     TITLE_SIZE = [0, 0, 120, 30];
 
 // EN-RU localized messages
-var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
+var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', 
+                     ru: 'Ошибка\nОткройте документ и запустите скрипт.' },
     LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and later.',
-                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.'},
+                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.' },
     LANG_ERR_COPIES = { en: 'Error\nMaximum amount of copies in document: ',
-                        ru: 'Ошибка\nМаксимальное количество копий в документе: '},
+                        ru: 'Ошибка\nМаксимальное количество копий в документе: ' },
     LANG_SLOW = { en: 'In the document over ' + OVER_OBJ + ' objects. The script can run slowly',
-                  ru: 'В документе свыше ' + OVER_OBJ + ' объектов. Скрипт может работать медленно'},
-    LANG_ARTBOARD = { en: 'Select artboard', ru: 'Выберите артборд'},
-    LANG_COPIES = { en: 'Copies (max ', ru: 'Копии (до '},
-    LANG_SPACING = { en: 'Spacing', ru: 'Расстояние'},
-    LANG_OK = { en: 'Ok', ru: 'Готово'},
-    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена'};
+                  ru: 'В документе свыше ' + OVER_OBJ + ' объектов. Скрипт может работать медленно' },
+    LANG_ARTBOARD = { en: 'Select artboard', ru: 'Выберите артборд' },
+    LANG_COPIES = { en: 'Copies (max ', ru: 'Копии (до ' },
+    LANG_SPACING = { en: 'Spacing', ru: 'Расстояние' },
+    LANG_OK = { en: 'Ok', ru: 'Готово' },
+    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена' };
 
 function main() {
   if (AI_VER < 16) {
@@ -71,17 +73,18 @@ function main() {
     return;
   } 
 
-  if (app.documents.length == 0) {
+  if (documents.length == 0) {
     alert(LANG_ERR_DOC);
     return;
   }
 
   var doc = app.activeDocument,
-      COPIES_MAX = 1000 - doc.artboards.length,
+      maxCopies = 1000 - doc.artboards.length, // 1000 is max artboards
       currAbIdx = doc.artboards.getActiveArtboardIndex(),
       abArr = [],
       copies = spacing = 0;
  
+  // Collect artboards names for dropdown menu
   for (var i = 0; i < doc.artboards.length; i++) {
     abArr.push((i + 1) + ': ' + doc.artboards[i].name);
   }
@@ -111,8 +114,8 @@ function main() {
   
   var inputsGroup = fieldGroup.add('group');
       inputsGroup.orientation = 'column';
-  var copiesVal = inputsGroup.add('edittext', FIELD_SIZE, COPIES_DEF);
-  var spacingVal = inputsGroup.add('edittext', FIELD_SIZE, SPACING_DEF);
+  var copiesVal = inputsGroup.add('edittext', FIELD_SIZE, DEF_COPIES);
+  var spacingVal = inputsGroup.add('edittext', FIELD_SIZE, DEF_SPACING);
 
   if (doc.pageItems.length > OVER_OBJ) {
     var warning = dialog.add('statictext', undefined, LANG_SLOW, { multiline: true });
@@ -131,56 +134,28 @@ function main() {
 
   loadSettings();
   
-  spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
+  spacing = convertUnits( convertToNum(spacingVal.text, SPACING_MIN) + getDocUnit(), 'px' );
   currAbIdx = doc.artboards.getActiveArtboardIndex();
 
   var abCoord = getArtboardCoordinates(currAbIdx);
-  var overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
+  var overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing);
   
   copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
-  if (copiesVal.text * 1 > overCnvsSize.copies) {
+  if (convertToNum(copiesVal.text, DEF_COPIES) > overCnvsSize.copies) {
     copiesVal.text = overCnvsSize.copies;
   }
 
-  // Use Up / Down arrow keys (+ Shift) for change value
-  keyListener(copiesVal, COPIES_DEF);
-  keyListener(spacingVal, SPACING_MIN);
+  shiftInputNumValue(copiesVal, DEF_COPIES);
+  shiftInputNumValue(spacingVal, SPACING_MIN);
   
   // Change listeners
-  copiesVal.onChange = function() {
-    this.text = convertInputToNum(this.text, COPIES_DEF);
-    this.text = parseInt(this.text);
-  }
-  spacingVal.onChange = function() {
-    this.text = convertInputToNum(this.text, SPACING_MIN);
-  }
-  copiesVal.onChanging = spacingVal.onChanging = function() {
-    spacing = convertUnits((spacingVal.text * 1) + getDocUnit(), 'px');
-    currAbIdx = doc.artboards.getActiveArtboardIndex();
-    abCoord = getArtboardCoordinates(currAbIdx);
-    overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
+  copiesVal.onChange = spacingVal.onChange = recalcCopies;
+  copiesVal.onChanging = spacingVal.onChanging = recalcCopies;
 
-    copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
-    if (copiesVal.text * 1 > overCnvsSize.copies) { 
-      copiesVal.text = overCnvsSize.copies;
-    } else if (copiesVal.text * 1 < 0) { 
-      copiesVal.text = 0;
-    }
-  }
   abIdx.onChange = function() {
     doc.artboards.setActiveArtboardIndex(abIdx.selection.index);
     app.redraw();
-
-    currAbIdx = doc.artboards.getActiveArtboardIndex();
-    abCoord = getArtboardCoordinates(currAbIdx);
-    overCnvsSize = isOverCnvsBounds(abCoord, COPIES_MAX, spacing);
-
-    copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
-    if (copiesVal.text * 1 > overCnvsSize.copies) { 
-      copiesVal.text = overCnvsSize.copies;
-    } else if (copiesVal.text * 1 < 0) { 
-      copiesVal.text = 0;
-    }
+    recalcCopies();
   }
 
   cancel.onClick = function() {
@@ -198,29 +173,29 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    copies = copiesVal.text * 1;
-    spacing = spacingVal.text * 1;
-    spacing = convertUnits(spacing + getDocUnit(), 'px'); // Convert value to document units
+    copies = copiesVal.text = Math.round( convertToNum(copiesVal.text, DEF_COPIES) );
+    spacing = spacingVal.text = convertToNum(spacingVal.text, DEF_SPACING);
+    spacing = convertUnits(spacing + getDocUnit(), 'px');
 
-    if (copies > COPIES_MAX) {
-      alert(LANG_ERR_COPIES + COPIES_MAX);
+    if (copies > maxCopies) {
+      alert(LANG_ERR_COPIES + maxCopies);
       return;
     }
     
     selection = null;
 
-    var userScreen = doc.views[0].screenMode;
-    if (copies > OVER_COPIES) { 
-      doc.views[0].screenMode = ScreenMode.FULLSCREEN;
-    }
-    saveItemsState();
+    var userView = doc.views[0].screenMode;
+    if (copies > OVER_COPIES) doc.views[0].screenMode = ScreenMode.FULLSCREEN;
+    unlockLayers(doc.layers);
+    removeNote(doc.layers, L_KEY, H_KEY); // Сlear Note after previous run
+    saveItemsState(doc.layers, L_KEY, H_KEY);
    
     // Copy Artwork
     doc.selectObjectsOnActiveArtboard();
     app.copy();
     try {
       for (var i = 0; i < copies; i++) {
-        suffix = SUFFIX_DEF + fillZero((i + 1), copies.toString().length);
+        suffix = DEF_SUFFIX + fillZero((i + 1), copies.toString().length);
         duplicateArtboard(currAbIdx, spacing, suffix, i);
       }
     } catch (e) {
@@ -228,10 +203,10 @@ function main() {
     }
 
     // Restore locked & hidden pageItems
-    restoreItemsState();
+    restoreItemsState(doc.layers, L_KEY, H_KEY);
+    removeNote(doc.layers, L_KEY, H_KEY); // Сlear Note before close
     selection = null;
-    doc.views[0].screenMode = userScreen;
-
+    doc.views[0].screenMode = userView;
     saveSettings();
     app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
     
@@ -240,23 +215,51 @@ function main() {
     
   dialog.center();
   dialog.show();
+  
+  /**
+   * Recalculate the maximum amount of copies at a given spacing
+   */
+  function recalcCopies() {
+    spacing = convertUnits( convertToNum(spacingVal.text, SPACING_MIN) + getDocUnit(), 'px' );
+    currAbIdx = doc.artboards.getActiveArtboardIndex();
+    abCoord = getArtboardCoordinates(currAbIdx);
+    overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing);
 
-  function keyListener(item, min) {
+    copiesTitle.text = LANG_COPIES + overCnvsSize.copies + ')';
+    if (convertToNum(copiesVal.text, DEF_COPIES) > overCnvsSize.copies) { 
+      copiesVal.text = overCnvsSize.copies;
+    }
+    if (convertToNum(copiesVal.text, DEF_COPIES) < 0) { 
+      copiesVal.text = 0;
+    }
+  }
+
+  /**
+   * Use Up / Down arrow keys (+ Shift) for change value
+   * @param {object} item - input text field
+   * @param {number} min - minimal input value
+   */
+  function shiftInputNumValue(item, min) {
     item.addEventListener('keydown', function (kd) {
       var step;
       ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
       if (kd.keyName == 'Down') {
         this.text = Number(this.text) - step;
-        if (this.text * 1 < min) { this.text = min; }
+        if (convertToNum(this.text, min) < min) this.text = min;
+        recalcCopies();
         kd.preventDefault();
       }
       if (kd.keyName == 'Up') {
-        this.text = Number(this.text) + step;
+        this.text = convertToNum(this.text, min) + step;
+        recalcCopies();
         kd.preventDefault();
       }
     });
   }
 
+  /**
+   * Save input data to file
+   */
   function saveSettings() {
     if(!Folder(SETTINGS_FILE.folder).exists) Folder(SETTINGS_FILE.folder).create();
     var $file = new File(SETTINGS_FILE.folder + SETTINGS_FILE.name),
@@ -269,6 +272,9 @@ function main() {
     $file.close();
   }
   
+  /**
+   * Load input data from file
+   */
   function loadSettings() {
     var $file = File(SETTINGS_FILE.folder + SETTINGS_FILE.name);
     if ($file.exists) {
@@ -284,28 +290,10 @@ function main() {
   }
 }
 
-// Save information about locked & hidden pageItems & layers
-function saveItemsState() {
-  unlockLayers(app.activeDocument.layers);
-
-  for (var i = 0; i < app.activeDocument.pageItems.length; i++) {
-    var currItem = app.activeDocument.pageItems[i];
-    if (currItem.locked) {
-      if (currItem.note == '') { currItem.note = L_KEYWORD; }
-      else { currItem.note += L_KEYWORD; }
-      currItem.locked = false;
-    }
-    if (currItem.hidden) {
-      if (currItem.note == '') { currItem.note = H_KEYWORD; }
-      else { currItem.note += H_KEYWORD; }
-      currItem.hidden = false;
-    }
-  }
-
-  app.redraw();
-}
-
-// Unlock all Layers & Sublayers
+/**
+ * Unlock all Layers & Sublayers
+ * @param {object} _layers - the collection of layers
+ */
 function unlockLayers(_layers) {
   for (var i = 0; i < _layers.length; i++) {
     if (_layers[i].locked) _layers[i].locked = false;
@@ -313,28 +301,115 @@ function unlockLayers(_layers) {
   }
 }
 
-// Restoring locked & hidden pageItems & layers
-function restoreItemsState() {
-  for (var i = 0; i < app.activeDocument.pageItems.length; i++) {
-    var currItem = app.activeDocument.pageItems[i];
-    if (currItem.note.match(L_KEYWORD) != null) {
-      currItem.locked = true;
-      currItem.note = currItem.note.replace(L_KEYWORD, '');
-    }
-    if (currItem.note.match(H_KEYWORD) != null) {
-      currItem.hidden = true;
-      currItem.note = currItem.note.replace(H_KEYWORD, '');
+/**
+ * Remove keyword from Note in Attributes panel
+ * @param {object} _layers - the collection of layers
+ * @param {string} lKey - keyword for locked items
+ * @param {string} hKey - keyword for hidden items
+ */
+function removeNote(_layers, lKey, hKey) {
+  var regexp = new RegExp(lKey + '|' + hKey, 'gi');
+  for (var i = 0; i < _layers.length; i++) {
+    var currLayer = _layers[i],
+        allItems = [];
+    if (currLayer.layers.length > 0) removeNote(currLayer.layers, lKey, hKey); 
+    getItems(currLayer.pageItems, allItems);
+    for (var j = 0; j < allItems.length; j++) {
+      var currItem = allItems[j];
+      currItem.note = currItem.note.replace(regexp, '');
     }
   }
 }
 
-// Add zero to the file name before the indexes are less then size
+/**
+ * Save information about locked & hidden pageItems & layers
+ * @param {object} _layers - the collection of layers
+ * @param {string} lKey - keyword for locked items
+ * @param {string} hKey - keyword for hidden items
+ */
+function saveItemsState(_layers, lKey, hKey) {
+  var allItems = [];
+  for (var i = 0; i < _layers.length; i++) {
+    var currLayer = _layers[i];
+    if (currLayer.layers.length > 0) { 
+      saveItemsState(currLayer.layers, lKey, hKey);
+    }
+    getItems(currLayer.pageItems, allItems);
+    for (var j = 0; j < allItems.length; j++) {
+      var currItem = allItems[j];
+      if (currItem.locked) {
+        currItem.note += lKey;
+        currItem.locked = false;
+      }
+      if (currItem.hidden) {
+        currItem.note += hKey;
+        currItem.hidden = false;
+      }
+    }
+  }
+  app.redraw();
+}
+
+/**
+ * Restoring locked & hidden pageItems & layers
+ * @param {object} _layers - the collection of layers
+ * @param {string} lKey - keyword for locked items
+ * @param {string} hKey - keyword for hidden items
+ */
+function restoreItemsState(_layers, lKey, hKey) {
+  var allItems = [];
+  for (var i = 0; i < _layers.length; i++) {
+    var currLayer = _layers[i];
+    if (currLayer.layers.length > 0) { 
+      restoreItemsState(currLayer.layers, lKey, hKey);
+    }
+    getItems(currLayer.pageItems, allItems);
+    for (var j = 0; j < allItems.length; j++) {
+      var currItem = allItems[j];
+      if (currItem.note.match(lKey) != null) currItem.locked = true;
+      if (currItem.note.match(hKey) != null) currItem.hidden = true;
+    }
+  }
+}
+
+/**
+ * Collect items
+ * @param {object} obj - collection of items
+ * @param {array} arr - output array with childrens
+ */
+function getItems(obj, arr) {
+  for (var i = 0; i < obj.length; i++) {
+    var currItem = obj[i];
+    try {
+      switch (currItem.typename) {
+        case 'GroupItem':
+          arr.push(currItem);
+          getItems(currItem.pageItems, arr);
+          break;
+        default:
+          arr.push(currItem);
+          break;
+      }
+    } catch (e) {}
+  }
+}
+
+/**
+ * Add zero to the file name before the indexes are less then size
+ * @param {number} number - copy number
+ * @param {number} size - length of the amount of copies 
+ * @return {string} copy number with pre-filled zeros
+ */
 function fillZero(number, size) {
   var str = '000000000' + number;
   return str.slice(str.length - size);
 }
 
-// Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
+/**
+ * Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
+ * @param {number*} abIdx - current artboard index
+ * @return {object} absolute coordinates of the artboard 
+ */
 function getArtboardCoordinates(abIdx) {
   var doc = app.activeDocument,
       thisAbRect = doc.artboards[abIdx].artboardRect, // The selected artboard size
@@ -377,24 +452,33 @@ function getArtboardCoordinates(abIdx) {
   return { 'left': absLeft, 'right': absRight, 'top': absTop, 'bottom': absBottom };
 }
 
-// Find out if the amount of copies over the canvas width
+/**
+ * Find out if the amount of copies over the canvas width
+ * @param {object} coord - coordinates of the selected artboard
+ * @param {number} copies - amount of copies
+ * @param {number} spacing - distance between copies
+ * @return {object} information about the extreme possible artboard
+ */
 function isOverCnvsBounds(coord, copies, spacing) { 
-  copies = copies * 1;
-  spacing = spacing * 1;
-
   var lastAbRight = coord.right + (spacing + coord.right - coord.left) * copies,
       tempEdge = lastAbRight;
   
   // Get a safe amount of copies
   for (var i = copies; i >= 0; i--) {
-    if (tempEdge <= CNVS_SIZE) { break; } 
-    else { tempEdge = tempEdge - (spacing + coord.right - coord.left); }
+    if (tempEdge <= CNVS_SIZE) break;
+    tempEdge = tempEdge - (spacing + coord.right - coord.left);
   }
 
   return { 'answer': lastAbRight > CNVS_SIZE, 'copies': i };
 }
 
-// The function is based on the idea of @Silly-V
+/**
+ * Duplicate the selected artboard. Based on the idea of @Silly-V
+ * @param {number} thisAbIdx - current artboard index
+ * @param {number} spacing - distance between copies
+ * @param {string} suffix - copy name suffix
+ * @param {number} count - current copy number
+ */
 function duplicateArtboard(thisAbIdx, spacing, suffix, count) {
   var doc = app.activeDocument,
 	    thisAb = doc.artboards[thisAbIdx],
@@ -404,7 +488,6 @@ function duplicateArtboard(thisAbIdx, spacing, suffix, count) {
       lastAbRect = lastAb.artboardRect,
       colAbHeight = thisAbRect[2] - thisAbRect[0];
 
-  
 	var newAb = doc.artboards.add(thisAbRect);
   if (count === 0) {
     newAb.artboardRect = [
@@ -426,7 +509,10 @@ function duplicateArtboard(thisAbIdx, spacing, suffix, count) {
   selection = null;
 }
 
-// Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
+/**
+ * Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
+ * @return {string} document ruler units
+ */
 function getDocUnit() {
   var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
   if (unit === 'Centimeters') unit = 'cm';
@@ -437,12 +523,23 @@ function getDocUnit() {
   return unit;
 }
 
+/**
+ * @param {string} value - input data
+ * @param {string} def - default units
+ * @return {string} input data units
+ */
 function getUnits(value, def) {
   try {
     return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
   } catch (e) {}
 };
 
+/**
+ * Сonvert to the specified units of measurement
+ * @param {string} value - input data
+ * @param {string} newUnit - specified units
+ * @return {number} converted data 
+ */
 function convertUnits(value, newUnit) {
   if (value === undefined) return value;
   if (newUnit === undefined) newUnit = 'px';
@@ -486,14 +583,20 @@ function convertUnits(value, newUnit) {
   return parseFloat(value);
 }
 
-function convertInputToNum(str, def) {
-  str = str.replace(',', '.');
-  if (isNaN(str * 1) || (str * 1) <= 0 || str.replace(/\s/g, '').length == 0) { 
-    return def; 
-  }
-  else { 
-    return str * 1; 
-  }
+/**
+ * Convert any input data to a number
+ * @param {string} str - input data
+ * @param {number} def - default value if the input data don't contain numbers
+ * @return {number} 
+ */
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
 }
 
 function showError(err) {
@@ -502,4 +605,6 @@ function showError(err) {
 
 try {
   main();
-} catch (e) {}
+} catch (e) {
+  // showError(e);
+}
