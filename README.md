@@ -11,11 +11,12 @@ The descriptions for each file can be found in the file's header text. Test envi
 ### Alphabetical list of scripts
 * [ArtboardsRotateWithObjects.jsx]   
 * [ConvertToGradient.jsx]   
-* [DuplicateArtboardsLight.jsx] `(new, 21.10.2020)`  
+* [DuplicateArtboardsLight.jsx] `(upd, 01.04.2021)`  
 * [Export-selection-as-AI.jsx]   
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
 * [FileVersionInformer.jsx]   
 * [InlineSVGToAI.jsx]   
+* [NamedItemsFinder.jsx] `(new, 11.04.2021)`  
 * [PointsMoveRandom.jsx] `(upd, 20.03.2021)`  
 * [RenameItems.jsx] `(upd, 20.03.2021)`
 * [Rescale.jsx] `(upd, 24.03.2021)`
@@ -34,6 +35,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
 [FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
 [InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
+[NamedItemsFinder.jsx]: https://github.com/creold/illustrator-scripts#nameditemsfinder
 [PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#points-move-random
 [RenameItems.jsx]: https://github.com/creold/illustrator-scripts#renameitems
 [Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
@@ -200,6 +202,27 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 3. Press button "Paste"
 
 ![InlineSVGToAI](https://i.ibb.co/xSzT8z4/demo-Inline-SVGTo-AI.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
+</a> 
+
+## Named Items Finder
+
+Search items in the document by name and zoom to them contents. Inspired by Photoshop CC 2020 features.   
+
+<a href="https://youtu.be/30AwGPf_2Wk">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
+### Usage
+
+1. Run script `File → Scripts → NamedItemsFinder`
+2. Enter the name of the item
+3. Choose options
+4. Click on a match from the list to zoom
+
+![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
@@ -400,10 +423,11 @@ Zooms active view to selection or to all object(s) in a document.
 </a> 
 
 ## Testimonials
-* Sergey, these scripts of yours are great. — Terry Foxx   
-* Wow. I just installed and successfully tested. Outstanding work!!!. — Zak Lay
-* Tried your script to export selected objects to separate Ai, works smartly. — Dmitry
-* I looked at your post. Useful scripts!. — Askhat Gilyakhov
+* Sergey, these scripts of yours are great — Terry Foxx   
+* Wow. I just installed and successfully tested. Outstanding work!!! — Zak Lay
+* Tried your script to export selected objects to separate Ai, works smartly — Dmitry
+* I looked at your post. Useful scripts! — Askhat Gilyakhov
+* Thank you for such wonderful scripts — Oleg Zybailov
 
 #### Don't forget sharing link with a friend 🙂 
 
