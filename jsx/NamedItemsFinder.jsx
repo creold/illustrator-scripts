@@ -487,8 +487,8 @@ function checkParentState(item, _layers, arr) {
  * @return {string} return full word between whitespaces
  */
 function getFirstWord(item, str) {
-  var enterCode = String.fromCharCode(3);
-      regSplit = new RegExp('\\s|' + enterCode, 'g');
+  var enterCode = String.fromCharCode(3),
+      regSplit = new RegExp('\\s|' + enterCode, 'g'),
       regStr = new RegExp(str, 'i'), // Case insensitive search
       words = item.contents.split(regSplit);
   for (var i = 0, len = words.length; i < len; i++) {

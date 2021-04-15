@@ -163,7 +163,7 @@ function main() {
   }
 
   function renameLayers(_layers) {
-    for (var i = 0; i < _layers.length; i++) {
+    for (var i = 0, lyrLen = _layers.length; i < lyrLen; i++) {
       var iLayer = _layers[i];
       if (iLayer.layers.length > 0) renameLayers(iLayer.layers);
       
@@ -176,7 +176,7 @@ function main() {
 
   function renameItems() {
     var count = convertToNum(countInp.text);
-    for (var i = 0; i < selection.length; i++) {
+    for (var i = 0, sLen = selection.length; i < sLen; i++) {
       var item = selection[i];
       if (!chkFind.value) item.name = nameInp.text;
       if (chkAutoInc.value) item.name += sprtInp.text + count;
