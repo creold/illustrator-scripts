@@ -6,9 +6,9 @@
   Date: November, 2019
   Author: Nick Grabowski, @Grabovvski
   Co-author: Sergey Osokin, email: hi@sergosokin.ru
-  ==========================================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+
   Versions:
   0.1 Initial version.
   0.2 Added "Scale Strokes & Effects", "Scale Corners" option.
@@ -16,18 +16,21 @@
   0.2.2 Fixed decimal separator bug
   0.2.3 Minor improvements
   0.2.4 Minor improvements
-  ============================================================================
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
+
   NOTICE:
-  Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -41,7 +44,7 @@ var SCRIPT_NAME = 'Rescale',
     DEF_STROKE = app.preferences.getBooleanPreference('scaleLineWeight');
 
 function main () {
-  if (app.documents.length < 1) {
+  if (!app.documents.length) {
     alert('Please open a document and try again.');
     return;
   }
@@ -95,8 +98,8 @@ function main () {
   oSizeTxt.onChange = function () { this.text = convertToNum(this.text, DEF_VAL) };
   nSizeTxt.onChange = function () { this.text = convertToNum(this.text, DEF_VAL) };
 
-  if (selection.length == 0) {
-    alert('Please select at least 1 object and try again.');
+  if (selection.length == 0 || selection.typename == 'TextRange') {
+    alert('Please select at least 1 object and try again');
     return;
   } else {
     var keyPath = selection[0];
@@ -133,11 +136,12 @@ function main () {
       var tmpArray = [];
       var aLayer = doc.activeLayer;
       var selGroup = aLayer.groupItems.add();
-      for (var i = 0, tmpItem; i < items.length; i++) {
-          tmpItem = aLayer.pathItems.add();
-          tmpItem.move(items[i], ElementPlacement.PLACEBEFORE);
-          tmpArray.push(tmpItem);
-          items[i].move(selGroup, ElementPlacement.PLACEATEND);
+      for (var i = 0, iLen = items.length; i < iLen; i++) {
+        var tmpItem;
+        tmpItem = aLayer.pathItems.add();
+        tmpItem.move(items[i], ElementPlacement.PLACEBEFORE);
+        tmpArray.push(tmpItem);
+        items[i].move(selGroup, ElementPlacement.PLACEATEND);
       }
       
       selGroup.resize(
@@ -152,9 +156,9 @@ function main () {
 
       // Return objects to places
       items = selGroup.pageItems;
-      for (var i = 0; i < items.length; i++) {
-          items[i].move(tmpArray[i], ElementPlacement.PLACEBEFORE);
-          tmpArray[i].move(selGroup, ElementPlacement.PLACEATBEGINNING);
+      for (var i = 0, iLen = items.length; i < iLen; i++) {
+        items[i].move(tmpArray[i], ElementPlacement.PLACEBEFORE);
+        tmpArray[i].move(selGroup, ElementPlacement.PLACEATBEGINNING);
       }
       selGroup.remove();
       selGroup = null;      

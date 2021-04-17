@@ -11,12 +11,16 @@
   0.1 Initial version
   0.2 Added changing the color shift value with the Up/Down keys
   0.3 Added color interpolation to get the Stroke color from the gradient
+  0.3.1 Minor improvements
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -31,26 +35,30 @@ $.localize = true; // Enabling automatic localization
 
 // Begin global variables
 var SCRIPT_NAME = 'Stroke Color From Fill',
-    SCRIPT_VERSION = 'v.0.3',
+    SCRIPT_VERSION = 'v.0.3.1',
     USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
     AI_VER = parseInt(app.version);
 
 // EN-RU localized messages
-var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.', ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
-    LANG_ERR_SELECT = { en: 'Error\nPlease select atleast one object.', ru: 'Ошибка\nВыделите хотя бы 1 объект.'},
-    LANG_ERR_FILL = { en: 'Attention\nThe script skips Paths & Compound Paths with patterns or empty fills. Such objects:', 
-                   ru: 'Внимание\nСкрипт пропускает контуры и составные контуры с паттернами или без заливки. Таких объектов:'},
-    LANG_SHIFT = { en: 'Color Shift', ru: 'Смещение цвета'},
-    LANG_LIGHTER = { en: 'lighter', ru: 'светлее'},
-    LANG_DARKER = { en: 'darker', ru: 'темнее'},
-    LANG_STROKE = { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить'};
-    LANG_SPOT = { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в '};
-    LANG_OK = { en: 'Ok', ru: 'Готово'},
-    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена'},
-    LANG_PREVIEW = { en: 'Preview', ru: 'Предпросмотр'}; 
+var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again', 
+                      ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+    LANG_ERR_SELECT = { en: 'Error\nPlease select atleast one object',
+                        ru: 'Ошибка\nВыделите хотя бы 1 объект' },
+    LANG_ERR_FILL = { en: 'Attention\nThe script skips Paths & Compound Paths ' +
+                          'with patterns or empty fills. Such objects:', 
+                      ru: 'Внимание\nСкрипт пропускает контуры и составные контуры ' +
+                          'с паттернами или без заливки. Таких объектов:' },
+    LANG_SHIFT = { en: 'Color Shift', ru: 'Смещение цвета' },
+    LANG_LIGHTER = { en: 'lighter', ru: 'светлее' },
+    LANG_DARKER = { en: 'darker', ru: 'темнее' },
+    LANG_STROKE = { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить' };
+    LANG_SPOT = { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в ' };
+    LANG_OK = { en: 'Ok', ru: 'Готово' },
+    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена' },
+    LANG_PREVIEW = { en: 'Preview', ru: 'Предпросмотр' }; 
 
 var selPaths = [],
-    docProfile = 'RGB', // Current document color mode
+    isRgbProfile = true, // Current document color mode
     hasStroke = false,
     shift = 0, // Color shift
     maxValue = 0, // Max color value in the channel
@@ -62,7 +70,7 @@ var selPaths = [],
     DEF_ADD_STROKE = true,
     DEF_IS_PREVIEW = true,
     DEF_SPOT_CONVERT = false,
-    DEF_DLG_OPACITY = 0.95;  // UI window opacity. Range 0-1
+    DLG_OPACITY = 0.95;  // UI window opacity. Range 0-1
 // End global variables
 
 function main() {
@@ -78,11 +86,12 @@ function main() {
 
   // Setup initial data
   var doc = app.activeDocument;
-  if (doc.documentColorSpace == DocumentColorSpace.RGB) {
+  isRgbProfile = (doc.documentColorSpace == DocumentColorSpace.RGB) ? true : false;
+
+  if (isRgbProfile) {
     maxValue = 255;
     colorChannel = ['red', 'green', 'blue'];
   } else {
-    docProfile = 'CMYK';
     maxValue = 100;
     colorChannel = ['cyan', 'magenta', 'yellow', 'black'];
   }
@@ -92,15 +101,15 @@ function main() {
   hasStroke = hasStrokedPath(selPaths);
 
   // Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill','center'];
-      dialog.opacity = DEF_DLG_OPACITY;
+      dialog.alignChildren = ['fill', 'center'];
+      dialog.opacity = DLG_OPACITY;
 
   // Value fields
   var shiftPanel = dialog.add('panel', undefined, LANG_SHIFT);
       shiftPanel.orientation = 'row';
-      shiftPanel.alignChildren = ['left','center']; 
+      shiftPanel.alignChildren = ['left', 'center']; 
   var colorShift = shiftPanel.add('edittext', [0, 0, 80, 30], DEF_SHIFT);
   
   var info = shiftPanel.add('group');
@@ -108,7 +117,7 @@ function main() {
   var lighter = info.add('statictext', undefined, '> 0 : ' + LANG_LIGHTER);
   var darker = info.add('statictext', undefined, '< 0 : ' + LANG_DARKER);
 
-  var isSpotConvert = dialog.add('checkbox', undefined, LANG_SPOT + docProfile);
+  var isSpotConvert = dialog.add('checkbox', undefined, LANG_SPOT + (isRgbProfile ? 'RGB' : 'CMYK'));
       isSpotConvert.value = DEF_SPOT_CONVERT;
 
   // AI older 2020 on Mac OS has bug with add stroke
@@ -120,13 +129,13 @@ function main() {
   // Buttons
   var btns = dialog.add('group');
       btns.orientation = 'row';
-      btns.alignChildren = ['fill','center'];
-  var cancel = btns.add('button', undefined, LANG_CANCEL);
-  var ok = btns.add('button', undefined, LANG_OK);
+      btns.alignChildren = ['fill', 'center'];
+  var cancel = btns.add('button', undefined, LANG_CANCEL, {name: 'cancel'});
+  var ok = btns.add('button', undefined, LANG_OK, {name: 'ok'});
 
   var grpPreview = dialog.add('group');
       grpPreview.orientation = 'row';
-      grpPreview.alignChildren = ['center','center'];
+      grpPreview.alignChildren = ['center', 'center'];
   var isPreview = grpPreview.add('checkbox', undefined, LANG_PREVIEW);
       isPreview.value = DEF_IS_PREVIEW;
 
@@ -175,7 +184,7 @@ function main() {
     tempPath = doc.activeLayer.pathItems.add();
     tempPath.name = '__TempPath';
     var shiftVal = convertToNum(colorShift.text, 0);
-    for (var i = 0; i < selPaths.length; i++) {
+    for (var i = 0, pLen = selPaths.length; i < pLen; i++) {
       try {
         var item = selPaths[i];
         if (isExists(isAddStroke) && isAddStroke.value && !item.stroked) { 
@@ -239,7 +248,7 @@ function main() {
 
 // Checking whether there are stroked Paths in the selection
 function hasStrokedPath(arr) {
-  for (var i = 0; i < arr.length; i++) {
+  for (var i = 0, aLen = arr.length; i < aLen; i++) {
     if (arr[i].stroked) return true;
   }
   return false;
@@ -251,7 +260,7 @@ function isExists(item) {
 
 // Get only Paths from selection
 function getPaths(item, arr) {
-  for (var i = 0; i < item.length; i++) {
+  for (var i = 0, iLen = item.length; i < iLen; i++) {
     var currItem = item[i];
     try {
       switch (currItem.typename) {
@@ -279,7 +288,7 @@ function getPaths(item, arr) {
 // Apply color to stroke
 function applyColor(obj, shift, isSpotRplc) { 
   var _fill = obj.fillColor,
-      sColor = (docProfile == 'RGB') ? new RGBColor() : new CMYKColor(),
+      sColor = isRgbProfile ? new RGBColor() : new CMYKColor(),
       currColor,
       delta = 0;
   
@@ -310,10 +319,10 @@ function applyColor(obj, shift, isSpotRplc) {
     else sColor.tint = spotDelta;
   } else {
     // Set color for RGB || CMYK channels
-    for (var j = 0; j < colorChannel.length; j++) {
+    for (var j = 0, cLen = colorChannel.length; j < cLen; j++) {
       var channelName = colorChannel[j],
           currChannelColor = Math.round(currColor[channelName]);
-      delta = (docProfile == 'RGB') ? currChannelColor + shift : currChannelColor - shift;
+      delta = isRgbProfile ? currChannelColor + shift : currChannelColor - shift;
 
       if (delta > maxValue) sColor[channelName] = maxValue;
       else if (delta < 0) sColor[channelName] = 0;
@@ -340,7 +349,7 @@ function interpolateColor(color) {
       }
     }
   }
-  var iColor = (docProfile == 'RGB') ? new RGBColor() : new CMYKColor();
+  var iColor = isRgbProfile ? new RGBColor() : new CMYKColor();
   for (var key in cSum) { iColor[key] = cSum[key] / gStopsLength; }
   return iColor;
 }

@@ -4,20 +4,23 @@
                in selected folder & subfolder
   Date: December, 2017
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
+
   NOTICE:
   Tested with Adobe Illustrator CS6 (Win), CC 2017 (Mac).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -27,7 +30,7 @@ var sourceFolder;
 
 function main() {
 	// Progress bar
-	var win = new Window("palette", "FileVersionInformer \u00A9 sergosokin.ru", [150, 150, 600, 260]);
+	var win = new Window("palette", "FileVersionInformer", [150, 150, 600, 260]);
 	win.pnl = win.add("panel", [10, 10, 440, 100], undefined);
 	win.pnl.progBar = win.pnl.add("progressbar", [20, 35, 410, 60], 0, 100);
 	win.pnl.progBarLabel = win.pnl.add("statictext", [20, 20, 320, 35], "0%");
@@ -42,7 +45,7 @@ function main() {
 			resultFile.remove();
 		}
 
-		files = GetSubfolderFiles(sourceFolder);
+		files = getSubfolderFiles(sourceFolder);
 
 		// If folder not empty
 		if (files.length > 0) {
@@ -51,34 +54,34 @@ function main() {
 			resultFile.open('a+');
 			resultFile.writeln('List of .ai, .eps files in Folder & Subolders');
 			resultFile.writeln("------------------");
-			for (var i = 0; i < files.length; i++) {
+			for (var i = 0, fLen = files.length; i < fLen; i++) {
 				// Change Progress bar
-				win.pnl.progBar.value = progCount * (100 / files.length);
+				win.pnl.progBar.value = progCount * (100 / fLen);
 				win.pnl.progBarLabel.text = win.pnl.progBar.value.toFixed(0) + "%";
 				win.update();
 				// Writing current file name and Illustrator version
-				resultFile.writeln("File '" + decodeURI(files[i].name) + "' saved as " + savedAsVersion(files[i]));
+				resultFile.writeln("File '" + decodeURI(files[i].name) + "' saved as " + getVersion(files[i]));
 				progCount++;
 			}
 			resultFile.writeln();
 			resultFile.close();
-			alert('Script is done.\nLook "FileVersionInformer.txt" in source folder');
+			alert('Script is done\nLook "FileVersionInformer.txt" in source folder');
 		} else {
 			alert('No matching files found.');
 		}
 	}
 }
 
-function GetSubfolderFiles(folder) {
+function getSubfolderFiles(folder) {
 	var filelist = folder.getFiles();
 	var files = [];
 
-	for (var j = 0; j < filelist.length; j++) {
-		if (filelist[j] instanceof Folder) {
-			files = files.concat(GetSubfolderFiles(filelist[j]));
-		} else if (filelist[j] instanceof File) {
-			if (filelist[j].name.indexOf(".ai") > -1 || filelist[j].name.indexOf(".eps") > -1) {
-				files.push(filelist[j]);
+	for (var i = 0, fLen = filelist.length; i < fLen; i++) {
+		if (filelist[i] instanceof Folder) {
+			files = files.concat(getSubfolderFiles(filelist[i]));
+		} else if (filelist[i] instanceof File) {
+			if (filelist[i].name.indexOf(".ai") > -1 || filelist[i].name.indexOf(".eps") > -1) {
+				files.push(filelist[i]);
 			}
 		}
 	}
@@ -86,7 +89,7 @@ function GetSubfolderFiles(folder) {
 }
 
 // Finding in file information about version
-function savedAsVersion(targetFile) {
+function getVersion(targetFile) {
 	if (targetFile.open() == false) return null;
 
 	var lineVersion = '';
@@ -98,9 +101,17 @@ function savedAsVersion(targetFile) {
 		lineVersion = targetFile.readln();
 		//Search version info
 		if (/^%%Creator:/.test(lineVersion)) {
-			getVers = Math.floor(lineVersion.substr(32));
+			getVers = Math.floor(lineVersion.substr(32)).toString();
 			// Convert version number
-			outVersion = String(getVers).replace(/22/gi, 'CC').replace(/21/gi, 'CC').replace(/20/gi, 'CC').replace(/19/gi, 'CC').replace(/18/gi, 'CC').replace(/17/gi, 'CC').replace(/16/gi, 'CS6').replace(/15/gi, 'CS5').replace(/14/gi, 'CS4').replace(/13/gi, 'CS3').replace(/12/gi, 'CS2').replace(/11/gi, 'CS');
+			if (/24/.test(getVers)) outVersion = 'CC2020';
+			if (/22|21|20|19|18|17/.test(getVers)) outVersion = 'CC';
+			if (/16/.test(getVers)) outVersion = 'CS6';
+			if (/15/.test(getVers)) outVersion = 'CS5';
+			if (/14/.test(getVers)) outVersion = 'CS4';
+			if (/13/.test(getVers)) outVersion = 'CS3';
+			if (/12/.test(getVers)) outVersion = 'CS2';
+			if (/11/.test(getVers)) outVersion = 'CS';
+
 			counter++;
 			// For .eps files search second 'Creator' string
 			if (counter > 1) {
@@ -112,4 +123,13 @@ function savedAsVersion(targetFile) {
 	return outVersion;
 }
 
-main();
+function showError(err) {
+  alert(err + ': on line ' + err.line, 'Script Error', true);
+}
+
+// Run script
+try {
+  main();
+} catch (e) {
+  // showError(e);
+}

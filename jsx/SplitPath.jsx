@@ -4,24 +4,28 @@
   Requirements: Adobe Illustrator CS6 and above
   Date: August, 2018
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  ============================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+
   Versions:
   0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run.
   1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel.
   1.1 Minor improvements.
-  ============================================================================
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
+
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
+
   NOTICE:
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -59,7 +63,7 @@ function main() {
     return;
   }
 
-  if (selection.length == 0) {
+  if (selection.length == 0 || selection.typename == 'TextRange') {
     alert(LANG_ERR_SELECT);
     return;
   }
@@ -72,30 +76,38 @@ function main() {
   checkFill(selection);
   
   // Create Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
-  dialog.orientation = 'column';
-  dialog.alignChild = ['fill', 'center'];
+  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+      dialog.orientation = 'column';
+      dialog.alignChild = ['fill', 'center'];
 
   // Split method
   var method = dialog.add('group');
-  method.orientation = 'row';
-  method.alignChild = 'fill';
-  method.margins = [0, 10, 0, 10];
+      method.orientation = 'row';
+      method.margins = [0, 10, 0, 10];
   var minusRadio = method.add('radiobutton', undefined, LANG_MINUS);
+      minusRadio.active = true;
+      minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG_INTERSECT);
-  minusRadio.value = true;
 
   // Buttons
   var btns = dialog.add('group');
-  btns.alignChild = 'fill';
-  btns.orientation = 'row';
+      btns.orientation = 'row';
   var cancel = btns.add('button', undefined, LANG_CANCEL, {name: 'cancel'});
   var ok = btns.add('button', undefined, LANG_OK, {name: 'ok'});
-  ok.active = true;
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
   copyright.justify = 'center';
   copyright.enabled = false;
+
+  // Begin access key shortcut
+  dialog.addEventListener('keydown', function(kd) {
+    if (kd.altKey) {
+      var key = kd.keyName;
+      if (key.match(/1/)) minusRadio.notify();
+      if (key.match(/2/)) intersectRadio.notify();
+    };
+  });
+  // End access key shortcut
 
   ok.onClick = okClick;
   
@@ -125,9 +137,7 @@ function main() {
     dialog.close();
   }
 
-  cancel.onClick = function () {
-    dialog.close();
-  }
+  cancel.onClick = function () { dialog.close(); }
 
   dialog.center();
   dialog.show();
@@ -171,7 +181,7 @@ function intersect() {
 
 // Searching unfilled objects
 function checkFill(arr) {
-  for (var i = 0; i < arr.length; i++) {
+  for (var i = 0, aLen = arr.length; i < aLen; i++) {
     var currItem = arr[i];
     try {
       switch (currItem.typename) {
@@ -202,12 +212,12 @@ function getChildAll(arr) {
   if (Object.prototype.toString.call(arr) === '[object Array]') {
     childsArr.push.apply(childsArr, arr);
   } else {
-    for (var i = 0; i < arr.pageItems.length; i++) {
+    for (var i = 0, piLen = arr.pageItems.length; i < piLen; i++) {
       childsArr.push(arr.pageItems[i]);
     }
   }
   if (arr.layers) {
-    for (var l = 0; l < arr.layers.length; l++) {
+    for (var l = 0, lyrLen = arr.layers.length; l < lyrLen; l++) {
       childsArr.push(arr.layers[l]);
     }
   }
@@ -223,7 +233,7 @@ function releaseGroups(arr) {
     return;
   }
 
-  for (var i = 0; i < childArr.length; i++) {
+  for (var i = 0, cLen = childArr.length; i < cLen; i++) {
     var currItem = childArr[i];
     try {
       if (currItem.parent.typename !== 'Layer') {
@@ -238,18 +248,18 @@ function releaseGroups(arr) {
 }
 
 function saveState(sel, fills) {
-  for (var i = 0; i < selection.length; i++) {
+  for (var i = 0, selLen = selection.length; i < selLen; i++) {
     var currItem = selection[i];
     try {
       switch (currItem.typename) {
         case 'PathItem':
-          if (currItem.filled && currItem.closed) { fills.push(currItem); }
-          if (!currItem.closed) { sel.push(currItem); }
+          if (currItem.filled && currItem.closed) fills.push(currItem);
+          if (!currItem.closed) sel.push(currItem);
           break;
         case 'CompoundPathItem':
           var zeroItem = currItem.pathItems[0];
-          if (zeroItem.filled && zeroItem.closed) { fills.push(currItem); }
-          if (!zeroItem.closed) { sel.push(currItem); }
+          if (zeroItem.filled && zeroItem.closed) fills.push(currItem);
+          if (!zeroItem.closed) sel.push(currItem);
           break;
         default:
           break;
@@ -271,7 +281,7 @@ function addTopRectangle() {
   if (selection instanceof Array) {
     // Used code from FitArtboardToArt.jsx by Darryl Zurn
     var initBounds = selection[0].visibleBounds;
-    for (var i = 1; i < selection.length; i++) {
+    for (var i = 1, selLen = selection.length; i < selLen; i++) {
       var groupBounds = selection[i].visibleBounds;
       if (groupBounds[0] < initBounds[0]) {
         initBounds[0] = groupBounds[0];
@@ -300,16 +310,13 @@ function addTopRectangle() {
 }
 
 function restore(arr) {
-  for (var i = 0; i < arr.length; i++) {
+  for (var i = 0, aLen = arr.length; i < aLen; i++) {
     arr[i].selected = true;
   }
 }
 
-function showError(e) {
-  if (confirm(scriptName + ': an unknown error has occurred.\n' +
-    'Would you like to see more information?', true, 'Unknown Error')) {
-    alert(e + ': on line ' + e.line, 'Script Error', true);
-  }
+function showError(err) {
+  alert(err + ': on line ' + err.line, 'Script Error', true);
 }
 
 try {

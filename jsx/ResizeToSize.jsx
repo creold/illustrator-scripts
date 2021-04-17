@@ -15,11 +15,14 @@
    0.6 Added live preview (Shift+P).
    0.7 Fixed live preview bug. Minor improvements
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019, 2021 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -277,7 +280,7 @@ function main () {
 
     // Ignore the change if the new size is the same
     isUndo = false;
-    for (var j = 0; j < docSel.length; j++) {
+    for (var j = 0, len = docSel.length; j < len; j++) {
       var currItem = docSel[j];
       if (getSize(currItem, scaleSide, vbRadio.value).val.toFixed(4) !== pxSize.toFixed(4)) {
         isUndo = true;
@@ -285,7 +288,7 @@ function main () {
       };
     }
 
-    for (var i = 0; i < docSel.length; i++) {
+    for (var i = 0, len = docSel.length; i < len; i++) {
       var currItem = docSel[i],
           isWidth = getSize(currItem, scaleSide, vbRadio.value).check,
           breakCount = 0;
@@ -380,7 +383,7 @@ function getSize(item, side, isBnds) {
   
     if (item.typename === 'GroupItem' && item.clipped) {
       try {
-        for (var i = 0; i < item.pageItems.length; i++) {
+        for (var i = 0, iLen = item.pageItems.length; i < iLen; i++) {
           var clipItem = item.pageItems[i];
           if (clipItem.clipping || (clipItem.typename === 'CompoundPathItem' && 
               clipItem.pathItems[0].clipping)) {

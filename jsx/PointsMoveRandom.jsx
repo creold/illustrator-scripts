@@ -12,11 +12,14 @@
   0.2 Added deselect some anchors, move handles
   0.3 Added step, saving settings. Minor improvements
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018, 2021 (Win), CC 2019, 2021 (Mac).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -386,7 +389,7 @@ function buildGUI(points) {
 }
 
 function getPaths(collection, arr) {
-  for (var i = 0; i < collection.length; i++) {
+  for (var i = 0, len = collection.length; i < len; i++) {
     var currItem = collection[i];
     try {
       switch (currItem.typename) {
@@ -408,10 +411,10 @@ function getPaths(collection, arr) {
 }
 
 function getPoints(collection, arr) {
-  for (var i = 0; i < collection.length; i++) {
+  for (var i = 0, len = collection.length; i < len; i++) {
     if (collection[i].pathPoints.length > 1) {
       var points = collection[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
+      for (var j = 0, pLen = points.length; j < pLen; j++) {
         if (isSelected(points[j])) arr.push(points[j]);
       }
     }
@@ -459,7 +462,7 @@ function getRandomInRange(min, max, step) {
 function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) {
   var deltaX, deltaY;
 
-  for (var i = 0; i < points.length; i++) {
+  for (var i = 0, pLen = points.length; i < pLen; i++) {
     deltaX = isHFixed ? x2 : getRandomInRange(x1, x2, step);
     deltaY = isVFixed ? y2 : getRandomInRange(y1, y2, step);
 

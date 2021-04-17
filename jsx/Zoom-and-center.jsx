@@ -16,8 +16,11 @@
   1.0 Initial version.
   1.1 Fixed zoom in text editing mode.
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   Check other author's scripts: https://github.com/creold
 */
@@ -40,25 +43,26 @@ function main() {
   if (doc.pageItems.length == 0) return;
 
   // Create Main Window
-  var win = new Window('dialog', 'Zoom \u0026 Center', undefined);
-      win.orientation = 'column';
-      win.alignChildren = ['fill', 'fill'];
+  var dialog = new Window('dialog', 'Zoom \u0026 Center', undefined);
+      dialog.orientation = 'column';
+      dialog.alignChildren = ['fill', 'fill'];
 
   // Zoom to locked item checkbox
-  var option = win.add('panel', undefined, 'What objects to include');
+  var option = dialog.add('panel', undefined, 'What objects to include');
       option.orientation = 'column';
       option.alignChildren = ['fill', 'fill'];
       option.margins = [20, 20, 10, 10];
   var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
       zoomLock = option.add('radiobutton', undefined, 'All except hidden'),
       zoomAll = option.add('radiobutton', undefined, 'All in document');
+      zoomVis.active = true;
       zoomVis.value = true;
 
   // If the number of objects is large, the script can run slowly. 
   // The number depends on the performance of the computer 
   var chckCount = getCountObj(doc);
   if (chckCount > 4000) {
-      var warning = win.add('panel');
+      var warning = dialog.add('panel');
       warning.orientation = 'column';
       warning.margins = 5;
       var warningTxt = warning.add('statictext', undefined, 
@@ -69,7 +73,7 @@ function main() {
   }
 
   // Buttons
-  var btns = win.add('group');
+  var btns = dialog.add('group');
       btns.alignChildren = 'center';
       btns.margins = [0, 10, 0, 0];
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
@@ -78,10 +82,21 @@ function main() {
       ok.helpTip = 'Press Enter to Run';
       ok.active = true;
 
-  cancel.onClick = function () { win.close(); }
+  // Begin access key shortcut
+  dialog.addEventListener('keydown', function(kd) {
+    if (kd.altKey) {
+      var key = kd.keyName;
+      if (key.match(/1/)) zoomVis.notify();
+      if (key.match(/2/)) zoomLock.notify();
+      if (key.match(/3/)) zoomAll.notify();
+    };
+  });
+  // End access key shortcut
+
+  cancel.onClick = function () { dialog.close(); }
   ok.onClick = okClick;
 
-  var copyright = win.add('statictext', undefined, '\u00A9 www.sergosokin.ru');
+  var copyright = dialog.add('statictext', undefined, '\u00A9 www.sergosokin.ru');
       copyright.justify = 'center';
       copyright.enabled = false;
 
@@ -99,7 +114,7 @@ function main() {
     } else if (zoomAll.value) {
       // The VisibleBounds rect is in this order: 0 - left, 1 - right, 2 - top, 3 - bottom
       var myVisibleBounds = doc.pageItems[0].visibleBounds;
-      for (var i = 1; i < doc.pageItems.length; i++) {
+      for (var i = 1, piLen = doc.pageItems.length; i < piLen; i++) {
         // We want the ultimate maximum bounds, so select the minimum left and bottom, and max right and top of our rect.
         myVisibleBounds[0] = Math.min(myVisibleBounds[0], doc.pageItems[i].visibleBounds[0]);
         myVisibleBounds[1] = Math.max(myVisibleBounds[1], doc.pageItems[i].visibleBounds[1]);
@@ -113,7 +128,7 @@ function main() {
     }
       
     zoom();
-    win.close();
+    dialog.close();
   }
 
   // Start zoom
@@ -126,8 +141,8 @@ function main() {
     calcBounds(selection);
     zoom();
   } else {
-    win.center();
-    win.show();
+    dialog.center();
+    dialog.show();
   }
 }
 
@@ -136,7 +151,7 @@ function getActiveTextFrames() {
       selTextFrames = [],
       firstFrameIdx, lastFrameIdx;
 
-  for (var i = 0; i < parentTextFrames.length; i++) {
+  for (var i = 0, tfLen = parentTextFrames.length; i < tfLen; i++) {
     if (selection.start >= parentTextFrames[i].textRange.start &&
         selection.start <= parentTextFrames[i].textRange.end) {
       firstFrameIdx = i;
@@ -164,7 +179,7 @@ function calcBounds(sel) {
     lr_x = initBounds[2];
     lr_y = initBounds[3];
     // Check rest of group if any
-    for (i = 1; i < sel.length; i++) {
+    for (i = 1, sLen = sel.length; i < sLen; i++) {
       groupBounds = sel[i].visibleBounds;
       if (groupBounds[0] < ul_x) {
         ul_x = groupBounds[0];
@@ -217,14 +232,14 @@ function zoom() {
 
 // Save information about locked Layers, pageItems
 function saveItemsState(target) {
-  for (var i = 0; i < target.layers.length; i++) {
+  for (var i = 0, lyrLen = target.layers.length; i < lyrLen; i++) {
     if (target.layers[i].locked) {
       target.layers[i].locked = false;
       lockedLayers.push(i);
     }
   }
 
-  for (var j = 0; j < target.pageItems.length; j++) {
+  for (var j = 0, piLen = target.pageItems.length; j < piLen; j++) {
     var currItem = target.pageItems[j];
     if (currItem.locked && !currItem.hidden && currItem.layer.visible) {
       lockedItems.push(j);
@@ -235,13 +250,13 @@ function saveItemsState(target) {
 
 // Restoring locked Layers, pageItems
 function restoreItemsState(target) {
-  for (var k = 0; k < lockedItems.length; k++) {
-    var idx = lockedItems[k];
+  for (var i = 0, iLen = lockedItems.length; i < iLen; i++) {
+    var idx = lockedItems[i];
     target.pageItems[idx].locked = true;
   }
 
-  for (var l = 0; l < lockedLayers.length; l++) {
-    var idx = lockedLayers[l];
+  for (var j = 0, lyrLen = lockedLayers.length; j < lyrLen; j++) {
+    var idx = lockedLayers[j];
     target.layers[idx].locked = true;
   }
 }

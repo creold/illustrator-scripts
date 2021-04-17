@@ -4,27 +4,24 @@
     Requirements: Adobe Illustrator CS6 and above
     Date: October, 2018
     Authors: Alexander Ladygin, email: i@ladygin.pro
-             Sergey Osokin, email: hi@sergosokin.ru
-    ============================================================================
+                Sergey Osokin, email: hi@sergosokin.ru
+
     Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-    ============================================================================
+
     Versions:
     0.1 Initial version. Do not rotate locked, hidden items
     1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
     1.1 Added rotate angle: 90 CW or 90 CCW.
     1.2 Fix issues.
-    ============================================================================
-    Donate (optional): If you find this script helpful, you can buy me a coffee
-                        via PayPal http://www.paypal.me/osokin/usd
-    ============================================================================
+
     NOTICE:
     Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
     This script is provided "as is" without warranty of any kind.
     Free to use, not for sale.
-    ============================================================================
+
     Released under the MIT license.
     http://opensource.org/licenses/mit-license.php
-    ============================================================================
+
     Check other author's scripts: https://github.com/creold
 */
 
@@ -33,7 +30,6 @@ app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var SCRIPT_NAME = 'ARWO',
     SCRIPT_VERSION = 'v.1.2';
-
 try {
     if (documents.length > 0) {
         var doc = app.activeDocument,
@@ -96,7 +92,7 @@ try {
             if (currArtRadio.value == true) {
                 rotateArt(currArt);
             } else {
-                for (var i = 0; i < doc.artboards.length; i++) {
+                for (var i = 0, absLen = doc.artboards.length; i < absLen; i++) {
                     doc.artboards.setActiveArtboardIndex(i);
                     rotateArt(doc.artboards[i]);
                 }
@@ -106,15 +102,15 @@ try {
             dlg.close();
         }
     } else {
-        throw new Error(scriptName + '\nPlease open a document before running this script.');
+        throw new Error(scriptName + '\nPlease open a document before running this script');
     }
 } catch (e) {
-    showError(e);
+    // showError(e);
 }
 
 // Save information about locked & hidden pageItems
 function saveItemsState() {
-    for (var i = 0; i < doc.pageItems.length; i++) {
+    for (var i = 0, piLen = doc.pageItems.length; i < piLen; i++) {
         var currItem = doc.pageItems[i];
         if (currItem.locked == true) {
             lockedItems.push(i);
@@ -129,11 +125,11 @@ function saveItemsState() {
 
 // Restoring locked & hidden pageItems
 function restoreItemsState() {
-    for (var i = 0; i < lockedItems.length; i++) {
+    for (var i = 0, liLen = lockedItems.length; i < liLen; i++) {
         var index = lockedItems[i];
         doc.pageItems[index].locked = true;
     }
-    for (var j = 0; j < hiddenItems.length; j++) {
+    for (var j = 0, hiLen = hiddenItems.length; j < hiLen; j++) {
         var index = hiddenItems[j];
         doc.pageItems[index].hidden = true;
     }
@@ -158,7 +154,7 @@ function rotateArt(board) {
     ];
 
     // Rotate objects
-    for (var k = 0; k < selection.length; k++) {
+    for (var k = 0, selLen = selection.length; k < selLen; k++) {
         var bnds = selection[k].position,
             __width = selection[k].width,
             __height = selection[k].height,
@@ -180,12 +176,9 @@ function rotateArt(board) {
 }
 
 function deselect() {
-    activeDocument.selection = null;
+    selection = null;
 }
 
 function showError(err) {
-    if (confirm(scriptName + ': an unknown error has occurred.\n' +
-        'Would you like to see more information?', true, 'Unknown Error')) {
-        alert(err + ': on line ' + err.line, 'Script Error', true);
-    }
+  alert(err + ': on line ' + err.line, 'Script Error', true);
 }

@@ -11,13 +11,16 @@
   0.2 Added "SAVE_FILLED_CLIPMASK" boolean flag for save the filled mask path, fixed the live text masks.
   0.3 Fixed a cropping bug when is even-odd fill-rule
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
@@ -34,10 +37,10 @@ var AI_VER = parseInt(app.version),
     ACTION_SET = 'Trim-Mask',
     ACTION_NAME = 'Trim-Mask',
     ACTION_PATH = Folder.myDocuments + '/Adobe Scripts/',
-    LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
-                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
-    LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and later.',
-                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.'},
+    LANG_ERR_DOC = { en: 'Error\nOpen a document and try again',
+                     ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+    LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
+                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
     SAVE_FILLED_CLIPMASK = true, // true — save the filled mask path when trimming, false - not save
     OVER_GROUPS = 10, // When the number of clip groups >, full-screen mode is enabled
     clipCounter = 0,
@@ -97,15 +100,11 @@ function main() {
 
   createAction(actionStr, ACTION_SET, ACTION_PATH);
 
-  if (selection.length == 0) {
-    app.executeMenuCommand('selectall');
-  }
+  if (selection.length == 0) app.executeMenuCommand('selectall');
   var groups = getGroups(selection);
   clipCount(groups);
   // When the number of clip groups >, full-screen mode is enabled
-  if (clipCounter > OVER_GROUPS) {
-    doc.views[0].screenMode = ScreenMode.FULLSCREEN;
-  }
+  if (clipCounter > OVER_GROUPS) doc.views[0].screenMode = ScreenMode.FULLSCREEN;
 
   try {
     processing(groups);
@@ -136,7 +135,7 @@ function ascii2Hex(hex) {
 function getGroups(items) {
   var childsArr = [],
       currItem;
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     currItem = items[i];
     if (isGroup(currItem)) childsArr.push(currItem);
   }
@@ -150,7 +149,7 @@ function isGroup(item) {
 
 // Count all clipping groups
 function clipCount(items) {
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     if (isGroup(items[i]) && items[i].clipped) clipCounter++;
     if (isGroup(items[i]) && !items[i].clipped) clipCount(items[i].pageItems);
   }
@@ -158,7 +157,7 @@ function clipCount(items) {
 
 function processing(items) {
   var currItem;
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     deselect();
     currItem = items[i];
     if (isGroup(currItem) && currItem.clipped) {
@@ -184,7 +183,7 @@ function deselect() {
 
 // If Attributes > Even-Odd is true, then the Pathfinder > Crop has an incorrect result
 function fixFillRule(item) {
-  for (var i = 0; i < item.pageItems.length; i++) {
+  for (var i = 0, piLen = item.pageItems.length; i < piLen; i++) {
     var currItem = item.pageItems[i];
     if (isGroup(currItem)) fixFillRule(currItem);
     if (currItem.typename === 'CompoundPathItem') currItem = currItem.pathItems[0];
@@ -225,14 +224,14 @@ function trim(item, isSaveMask) {
 
 function outlineText(group) {
   try {
-    for (var i = 0; i < group.pageItems.length; i++) {
+    for (var i = 0, piLen = group.pageItems.length; i < piLen; i++) {
       var currItem = group.pageItems[i],
           itemType = currItem.typename;
       if (itemType === 'TextFrame') { 
         var textColor = currItem.textRange.fillColor;
         currItem.selected = true;
         app.executeMenuCommand('outline');
-        for (var j = 0; j < selection.length; j++) {
+        for (var j = 0, selLen = selection.length; j < selLen; j++) {
           if (selection[j].typename  === 'PathItem') selection[j].fillColor = textColor;
           if (selection[j].typename  === 'CompoundPathItem') {
             // Trick for Compound path created from groups of paths
@@ -253,7 +252,7 @@ function outlineText(group) {
 }
 
 function ungroup(items) {
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     if (isGroup(items[i])) {
       var j = items[i].pageItems.length;
       while (j--) {
@@ -288,7 +287,7 @@ function compoundPathsNormalize(items) {
 
 function duplicateFilledMask(group, opacity, blending) {
   try {
-    for (var i = 0; i < group.pageItems.length; i++) {
+    for (var i = 0, piLen = group.pageItems.length; i < piLen; i++) {
       var currItem = group.pageItems[i],
           itemType = currItem.typename,
           zeroPath = (itemType === 'CompoundPathItem') ? currItem.pathItems[0] : currItem;

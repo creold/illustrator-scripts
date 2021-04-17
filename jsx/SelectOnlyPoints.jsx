@@ -13,11 +13,14 @@
   0.3 Minor bug fixes and improvements
   0.3.2 Minor bug fixes
   
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
-  
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
+
   NOTICE:
-  Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
   
@@ -57,13 +60,13 @@ function main() {
   
   selection = null;
 
-  for (var i = 0; i < selPoints.length; i++) {
+  for (var i = 0, pLen = selPoints.length; i < pLen; i++) {
     selPoints[i].selected = PathPointSelection.ANCHORPOINT;
   }
 }
 
 function getPaths(items, arr) {
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     var currItem = items[i];
     try {
       switch (currItem.typename) {
@@ -85,10 +88,10 @@ function getPaths(items, arr) {
 }
 
 function getPoints(items, arr) {
-  for (var i = 0; i < items.length; i++) {
+  for (var i = 0, iLen = items.length; i < iLen; i++) {
     if (items[i].pathPoints.length > 1) {
       var points = items[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
+      for (var j = 0, pLen = points.length; j < pLen; j++) {
         if ( isSelected(points[j]) ) arr.push(points[j]);
       }
     }

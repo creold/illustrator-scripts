@@ -6,18 +6,18 @@
   Requirements: Adobe Illustrator CC 2014+
   Author: Alexander Ladygin, email: i@ladygin.pro
   Code refactoring: Sergey Osokin, email: hi@sergosokin.ru
-  ==========================================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
+
   How to use:
   1. Run script
   2. Paste your svg code in textarea
   3. Press button "Paste"
-  ==========================================================================================
+
   NOTICE:
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
-  ==========================================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
 */
@@ -97,14 +97,12 @@ function uiDialog() {
 
 
 function showError(err) {
-  if (confirm(scriptName + ": an unknown error has occurred.\n" +
-    "Would you like to see more information?", true, "Unknown Error")) {
-    alert(err + ": on line " + err.line, "Script Error", true);
-  }
+  alert(err + ': on line ' + err.line, 'Script Error', true);
 }
 
+// Run script
 try {
   main();
 } catch (e) {
-  showError(e);
+  // showError(e);
 }

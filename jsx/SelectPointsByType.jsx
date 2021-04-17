@@ -11,11 +11,14 @@
   1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
   2.0 Added more points type. Minor improvements
 
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via PayPal http://www.paypal.me/osokin/usd
+  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2020 (Win), 2019 (Mac).
+  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -52,7 +55,7 @@ function main() {
     return;
   }
 
-  if (selection.length < 1) {
+  if (selection.length == 0 || selection.typename == 'TextRange') {
     alert('Please select at least 1 object and try again.');
     return;
   }
@@ -60,13 +63,13 @@ function main() {
   var selPaths = [],
       btnsState = [];
 
-  getPaths(app.selection, selPaths);
+  getPaths(selection, selPaths);
 
   // START DIALOG
   var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION); 
       dialog.orientation = 'column'; 
       dialog.alignChildren = ['fill','center'];
-      dialog.opacity = .9; // Range 0-1
+      dialog.opacity = .95; // Range 0-1
 
   var icoBezier = ScriptUI.newImage(BIN_BEZIER_N, BIN_BEZIER_D, BIN_BEZIER_N, BIN_BEZIER_N),
       icoFlush = ScriptUI.newImage(BIN_FLUSH_N, BIN_FLUSH_D, BIN_FLUSH_N, BIN_FLUSH_N),
@@ -193,7 +196,7 @@ function main() {
 
 // Get paths from selection
 function getPaths(item, arr) {
-  for (var i = 0; i < item.length; i++) {
+  for (var i = 0, iLen = item.length; i < iLen; i++) {
     var currItem = item[i];
     try {
       switch (currItem.typename) {
@@ -303,10 +306,10 @@ function selector(point) {
 }
 
 function processPoints(btnsVal, paths, tolerance) {
-  for (var i = 0; i < paths.length; i++) {
+  for (var i = 0, iLen = paths.length; i < iLen; i++) {
     if (paths[i].pathPoints.length > 1) {
       var points = paths[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
+      for (var j = 0, pLen = points.length; j < pLen; j++) {
         var currPoint = points[j],
             answer = getPointType(currPoint, tolerance),
             pointCos = 0,
@@ -367,10 +370,10 @@ function processPoints(btnsVal, paths, tolerance) {
 
 function getSelectedPoints(paths) {
   var count = 0;
-  for (var i = 0; i < paths.length; i++) {
+  for (var i = 0, iLen = paths.length; i < iLen; i++) {
     if (paths[i].pathPoints.length > 1) {
       var points = paths[i].pathPoints;
-      for (var j = 0; j < points.length; j++) {
+      for (var j = 0, pLen = points.length; j < pLen; j++) {
         if (points[j].selected == PathPointSelection.ANCHORPOINT) count++;
       }
     }
