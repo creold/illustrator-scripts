@@ -15,6 +15,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [Export-selection-as-AI.jsx]   
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
 * [FileVersionInformer.jsx]   
+* [GradientToFlat.jsx] `(new, 20.04.2021)`  
 * [InlineSVGToAI.jsx]   
 * [NamedItemsFinder.jsx] `(new, 11.04.2021)`  
 * [PointsMoveRandom.jsx] `(upd, 20.03.2021)`  
@@ -34,6 +35,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 [Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts#export-selection-as-ai 
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
 [FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
+[GradientToFlat.jsx]: https://github.com/creold/illustrator-scripts#gradienttoflat
 [InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
 [NamedItemsFinder.jsx]: https://github.com/creold/illustrator-scripts#named-items-finder
 [PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#points-move-random
@@ -185,6 +187,22 @@ Script for collecting information about the program version of .ai & .eps files 
  
 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
+</a> 
+
+## GradientToFlat
+
+Convert a gradient to an interpolated solid color.   
+
+### Usage
+
+1. Run script `File → Scripts → GradientToFlat`
+2. Choose options
+3. Press button "OK"
+
+![GradientToFlat](https://i.ibb.co/yn1j852/demo-Gradient-To-Flat.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="160" height="49" src="https://i.ibb.co/VTBsw1c/download.png">
