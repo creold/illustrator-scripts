@@ -72,7 +72,7 @@ function main() {
       dialog.opacity = defs.dlgOpacity;
 
   var options = dialog.add('group');
-      options.orientation = ($.locale.match(/ru/gi) != null) ? 'column' : 'row';
+      options.orientation = isCyrillicUi() ? 'column' : 'row';
       options.alignChildren = ['left', 'center'];
       options.spacing = 20;
 
@@ -178,6 +178,19 @@ function interpolateColor(color, isRgb) {
   return iColor;
 }
 
+/**
+ * Check the Illustrator interface language
+ * @return {boolean} is Russian or Ukrainian language
+ */
+function isCyrillicUi() {
+  return $.locale.match(/ru|ua/gi) !== null;
+}
+
+/**
+ * Check gradient color
+ * @param {object} color current item color
+ * @return {boolean} is Gradient color or not
+ */
 function isGradient(color) {
   return color.typename === 'GradientColor';
 }
