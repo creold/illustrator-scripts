@@ -1,11 +1,11 @@
-![header](https://i.ibb.co/4YFZbBm/header.png)
-![illustrator-scripts](https://i.ibb.co/Pm60cLC/cover.gif)
+![header](https://i.ibb.co/mF018gV/emblem.png)
+# Adobe Illustrator Scripts
 
 [![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/) [![Yotube](https://img.shields.io/badge/-YouTube%20Channel-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md), [Русский](README.ru.md)*
 
-# 👨‍💻 Привет
+### 👨‍💻 Привет
 Это коллекция авторских скриптов для Adobe Illustrator.   
 
 Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2021 (Windows), CC 2018-2021 (Mac OS).   
@@ -26,7 +26,7 @@
 * [Rescale.jsx] `(upd, 24.03.2021)`
 * [ResizeToSize.jsx] `(upd, 22.03.2021)`
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
-* [SelectPointsByType.jsx] `(upd, 20.03.2021)`   
+* [SelectPointsByType.jsx] `(upd, 31.08.2021)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(upd, 30.03.2021)`   
 * [TrimMasks.jsx] `(upd, 30.03.2021)`
@@ -79,19 +79,20 @@
 ### 💸 Поддержка (по желанию)
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [PayPal], [ЮMoney] или [Donatty] 🙂  
 
-[PayPal]: https://paypal.me/osokin/2usd
+[PayPal]: https://paypal.me/osokin/3usd
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
+
 <a href="https://paypal.me/osokin/3usd">
-  <img width="160" height="49" src="https://i.ibb.co/LkgNvzG/paypal-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/Z8Wd8Sn/paypal-badge.png" >
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
-  <img width="160" height="49" src="https://i.ibb.co/6s5DFCd/yoomoney-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/448NHjM/yoomoney-badge.png" >
 </a>
 
 <a href="https://donatty.com/sergosokin">
-  <img width="160" height="49" src="https://i.ibb.co/tcwzLkB/donatty-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
 </a>
 
 ## ArtboardsRotateWithObjects 1.2
@@ -108,7 +109,7 @@
 ![ArtboardsRotateWithObjects](https://i.ibb.co/YtV4nc6/demo-Artboards-Rotate-With-Objects.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## ConvertToGradient
@@ -126,7 +127,7 @@
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## DuplicateArtboardsLight
@@ -145,7 +146,7 @@
 ![ConvertToGradient](https://i.ibb.co/rF92HpV/demo-Duplicate-Artboards-Light.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 
@@ -163,7 +164,7 @@
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## ExtUngroup v.1.2
@@ -180,7 +181,7 @@
 ![Zoom-And-Center](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## FileVersionInformer
@@ -199,7 +200,7 @@
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## GradientToFlat
@@ -214,7 +215,7 @@
 ![GradientToFlat](https://i.ibb.co/yn1j852/demo-Gradient-To-Flat.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## InlineSVGToAI
@@ -231,7 +232,7 @@
 ![InlineSVGToAI](https://i.ibb.co/xSzT8z4/demo-Inline-SVGTo-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## Named Items Finder
@@ -252,7 +253,7 @@
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## Points Move Random
@@ -273,7 +274,7 @@
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## RandomScribble
@@ -289,7 +290,7 @@
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## RenameItems
@@ -305,7 +306,7 @@
 ![Rescale](https://i.ibb.co/Gkcqt8D/demo-Rename-Items.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## Rescale
@@ -321,7 +322,7 @@
 ![Rescale](https://i.ibb.co/gDj142f/demo-Rescale.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## ResizeToSize
@@ -342,7 +343,7 @@
 ![ResizeToSize](https://i.ibb.co/FxPGDM2/demo-Resize-To-Size.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## SelectOnlyPoints
@@ -358,7 +359,7 @@
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## SelectPointsByType
@@ -377,15 +378,16 @@
 3. Выберите любой тип точек, нажав на кнопку или горячими клавишами:
 
 * Bezier <kbd>Alt</kbd>+<kbd>1</kbd>
-* Flush <kbd>Alt</kbd>+<kbd>2</kbd>
-* Corner <kbd>Alt</kbd>+<kbd>3</kbd>
-* Broken <kbd>Alt</kbd>+<kbd>4</kbd>
-* Flat <kbd>Alt</kbd>+<kbd>5</kbd>
+* Ortho <kbd>Alt</kbd>+<kbd>2</kbd>
+* Flush <kbd>Alt</kbd>+<kbd>3</kbd>
+* Corner <kbd>Alt</kbd>+<kbd>4</kbd>
+* Broken <kbd>Alt</kbd>+<kbd>5</kbd>
+* Flat <kbd>Alt</kbd>+<kbd>6</kbd>
 
-![SelectPointsType](https://i.ibb.co/8X0SFNc/demo-Select-Points-By-Type.gif) 
+![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## SplitPath
@@ -407,7 +409,7 @@
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## StrokeColorFromFill
@@ -424,7 +426,7 @@
 ![SplitPath](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## TrimMasks
@@ -444,7 +446,7 @@
 ![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## Zoom and center
@@ -463,7 +465,7 @@
 ![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/ZW07Fw4/download-ru.png">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
 </a> 
 
 ## 🗣 Отзывы

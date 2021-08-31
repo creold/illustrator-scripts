@@ -1,12 +1,12 @@
-![header](https://i.ibb.co/4YFZbBm/header.png)
-![illustrator-scripts](https://i.ibb.co/Pm60cLC/cover.gif)
+![header](https://i.ibb.co/mF018gV/emblem.png)
+# Adobe Illustrator Scripts
 
 [![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/) [![Yotube](https://img.shields.io/badge/-YouTube%20Channel-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
-# 👨‍💻 Hi
-This is a collection of JSX scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
+### 👨‍💻 Hi
+This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes used part of the code of other authors.  
 
 The descriptions for each file can be found in the file's header text. Test environment: Illustrator CS6, CC 2021 (Windows), CC 2018-2021 (Mac OS).   
 
@@ -26,7 +26,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [Rescale.jsx] `(upd, 24.03.2021)`
 * [ResizeToSize.jsx] `(upd, 22.03.2021)`
 * [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
-* [SelectPointsByType.jsx] `(upd, 20.03.2021)`   
+* [SelectPointsByType.jsx] `(upd, 31.08.2021)`   
 * [SplitPath.jsx] `(upd, 30.08.2020)`    
 * [StrokeColorFromFill.jsx] `(upd, 30.03.2021)`   
 * [TrimMasks.jsx] `(upd, 30.03.2021)`
@@ -79,19 +79,20 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 ### 💸 Donate (optional)
 If you find this script helpful, you can buy me a coffee ☕️ via [PayPal], [ЮMoney] or [Donatty] 🙂  
 
-[PayPal]: https://paypal.me/osokin/2usd
+[PayPal]: https://paypal.me/osokin/3usd
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
+
 <a href="https://paypal.me/osokin/3usd">
-  <img width="160" height="49" src="https://i.ibb.co/LkgNvzG/paypal-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/Z8Wd8Sn/paypal-badge.png" >
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
-  <img width="160" height="49" src="https://i.ibb.co/6s5DFCd/yoomoney-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/448NHjM/yoomoney-badge.png" >
 </a>
 
 <a href="https://donatty.com/sergosokin">
-  <img width="160" height="49" src="https://i.ibb.co/tcwzLkB/donatty-badge.gif" >
+  <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
 </a>
 
 ## ArtboardsRotateWithObjects 1.2
@@ -108,7 +109,7 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
 ![ArtboardsRotateWithObjects](https://i.ibb.co/YtV4nc6/demo-Artboards-Rotate-With-Objects.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## ConvertToGradient
@@ -126,7 +127,7 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## DuplicateArtboardsLight
@@ -145,7 +146,7 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 ![ConvertToGradient](https://i.ibb.co/rF92HpV/demo-Duplicate-Artboards-Light.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 
@@ -163,7 +164,7 @@ Exports all selected objects to AI files.
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## ExtUngroup v.1.2
@@ -180,7 +181,7 @@ This script is сan be easily custom ungrouping to all group items & releasing c
 ![Zoom-And-Center](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## FileVersionInformer
@@ -199,7 +200,7 @@ Script for collecting information about the program version of .ai & .eps files 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## GradientToFlat
@@ -215,7 +216,7 @@ Convert a gradient to an interpolated solid color.
 ![GradientToFlat](https://i.ibb.co/yn1j852/demo-Gradient-To-Flat.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## InlineSVGToAI
@@ -232,7 +233,7 @@ The script inserts the SVG code as an object from the clipboard into the Adobe I
 ![InlineSVGToAI](https://i.ibb.co/xSzT8z4/demo-Inline-SVGTo-AI.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## Named Items Finder
@@ -253,7 +254,7 @@ Search items in the document by name and zoom to them contents. Inspired by Phot
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## Points Move Random
@@ -274,7 +275,7 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## RandomScribble
@@ -290,7 +291,7 @@ Creates random paths with a specified number of points. These can be random stra
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a>
 
 ## RenameItems
@@ -306,7 +307,7 @@ Script to batch rename selected items with many options or simple rename one sel
 ![Rescale](https://i.ibb.co/Gkcqt8D/demo-Rename-Items.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## Rescale
@@ -322,7 +323,7 @@ Automatic scaling of objects to the desired size. If you draw a line on top with
 ![Rescale](https://i.ibb.co/gDj142f/demo-Rescale.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## ResizeToSize
@@ -343,7 +344,7 @@ Adobe Illustrator has a Transform panel, but you cannot use it to transform seve
 ![ResizeToSize](https://i.ibb.co/FxPGDM2/demo-Resize-To-Size.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## SelectOnlyPoints
@@ -359,7 +360,7 @@ After using the Lasso tool or Direct Selection Tool, both Points and Path segmen
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## SelectPointsByType
@@ -378,15 +379,16 @@ Select `View → Hide Bounding Box` to see active points in real time.
 3. Click the button or use keyboard shortcuts:
 
 * Bezier <kbd>Alt</kbd>+<kbd>1</kbd>
-* Flush <kbd>Alt</kbd>+<kbd>2</kbd>
-* Corner <kbd>Alt</kbd>+<kbd>3</kbd>
-* Broken <kbd>Alt</kbd>+<kbd>4</kbd>
-* Flat <kbd>Alt</kbd>+<kbd>5</kbd>
+* Ortho <kbd>Alt</kbd>+<kbd>2</kbd>
+* Flush <kbd>Alt</kbd>+<kbd>3</kbd>
+* Corner <kbd>Alt</kbd>+<kbd>4</kbd>
+* Broken <kbd>Alt</kbd>+<kbd>5</kbd>
+* Flat <kbd>Alt</kbd>+<kbd>6</kbd>
 
-![SelectPointsType](https://i.ibb.co/8X0SFNc/demo-Select-Points-By-Type.gif) 
+![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## SplitPath
@@ -408,7 +410,7 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## StrokeColorFromFill
@@ -425,7 +427,7 @@ Setting the Stroke color of object based on an his solid or gradient fill. The o
 ![SplitPath](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## TrimMasks
@@ -445,7 +447,7 @@ If you want to save the filled mask after trimming, open the script file in a te
 ![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## Zoom and center
@@ -463,7 +465,7 @@ Zooms active view to selection or to all object(s) in a document.
 ![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif) 
 
 <a href="http://bit.ly/2M0j95N">
-  <img width="160" height="49" src="https://i.ibb.co/CVHgrFk/download-en.png">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
 </a> 
 
 ## 🗣 Testimonials
