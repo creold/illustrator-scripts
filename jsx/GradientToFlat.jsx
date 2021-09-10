@@ -6,14 +6,15 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -27,13 +28,13 @@
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
-var SCRIPT_NAME = 'Gradient To Flat',
-    defs = {
+var defs = {
       isFill: true, // Convert fill color
       isStroke: true, // Convert stroke color
-      dlgOpacity: 0.95 // UI window opacity. Range 0-1
+      dlgOpacity: 0.96 // UI window opacity. Range 0-1
     },
     lang = {
       errDoc: { en: 'Error\nOpen a document and try again',
@@ -48,7 +49,12 @@ var SCRIPT_NAME = 'Gradient To Flat',
 
 // Main function
 function main() {
-  if (app.documents.length == 0) {
+  var SCRIPT = {
+        name: 'Gradient To Flat',
+        version: 'v.0.1'
+      };
+
+  if (!documents.length) {
     alert(lang.errDoc);
     return;
   }
@@ -58,14 +64,14 @@ function main() {
     return;
   }
 
-  var doc = app.activeDocument,
+  var doc = activeDocument,
       isRgbProfile = (doc.documentColorSpace == DocumentColorSpace.RGB) ? true : false,
       selPaths = [],
       tmp = []; // Array of temp paths for fix compound paths
 
   getPaths(selection, selPaths, tmp);
 
-  var dialog = new Window('dialog', SCRIPT_NAME);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
       dialog.margins = 20;
@@ -84,6 +90,13 @@ function main() {
 
   var btnCancel = dialog.add('button', undefined, lang.cancel, {name: 'cancel'});
   var btnConvert = dialog.add('button', undefined, lang.ok, {name: 'ok'});
+
+  var copyright = dialog.add('statictext', undefined, 'Visit Github');
+      copyright.justify = 'center';
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   // Shortcut for options
   dialog.addEventListener('keydown', function(kd) {
@@ -195,13 +208,20 @@ function isGradient(color) {
   return color.typename === 'GradientColor';
 }
 
-// Debugging
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+/**
+ * Open link in browser
+ * @param {string} url - website adress
+ */
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
+
 
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

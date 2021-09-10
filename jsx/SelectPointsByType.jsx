@@ -6,7 +6,7 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   1.0 Initial version. Tolerance for broken points handles 0..180 degrees
   1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
   2.0 Added more points type. Minor improvements
@@ -31,6 +31,7 @@
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 // Main function
 function main() {

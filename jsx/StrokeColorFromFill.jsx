@@ -1,13 +1,13 @@
 /*
   StrokeColorFromFill.jsx for Adobe Illustrator
-  Description: Sets a stroke color of an object based on an its solid or gradient fill. 
-               Adds a stroke, if there is none (not available on Mac OS Illustrator older than CC 2020)
+  Description: Sets a stroke color of an object based on an its solid or gradient fill.
+                Adds a stroke, if there is none (not available on Mac OS Illustrator older than CC 2020)
   Date: August, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   0.1 Initial version
   0.2 Added changing the color shift value with the Up/Down keys
   0.3 Added color interpolation to get the Stroke color from the gradient
@@ -15,129 +15,127 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
-// Begin global variables
-var SCRIPT_NAME = 'Stroke Color From Fill',
-    SCRIPT_VERSION = 'v.0.3.1',
-    USER_OS = $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
-    AI_VER = parseInt(app.version);
-
-// EN-RU localized messages
-var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again', 
-                      ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-    LANG_ERR_SELECT = { en: 'Error\nPlease select atleast one object',
-                        ru: 'Ошибка\nВыделите хотя бы 1 объект' },
-    LANG_ERR_FILL = { en: 'Attention\nThe script skips Paths & Compound Paths ' +
-                          'with patterns or empty fills. Such objects:', 
-                      ru: 'Внимание\nСкрипт пропускает контуры и составные контуры ' +
-                          'с паттернами или без заливки. Таких объектов:' },
-    LANG_SHIFT = { en: 'Color Shift', ru: 'Смещение цвета' },
-    LANG_LIGHTER = { en: 'lighter', ru: 'светлее' },
-    LANG_DARKER = { en: 'darker', ru: 'темнее' },
-    LANG_STROKE = { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить' };
-    LANG_SPOT = { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в ' };
-    LANG_OK = { en: 'Ok', ru: 'Готово' },
-    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена' },
-    LANG_PREVIEW = { en: 'Preview', ru: 'Предпросмотр' }; 
-
-var selPaths = [],
-    isRgbProfile = true, // Current document color mode
-    hasStroke = false,
-    shift = 0, // Color shift
-    maxValue = 0, // Max color value in the channel
-    badFillCount = 0,
-    colorChannel = [], // RGB or CMYK names
-    isUndo = false,
-    tempPath, // For fix Preview bug
-    DEF_SHIFT = -30, // Default color shift value
-    DEF_ADD_STROKE = true,
-    DEF_IS_PREVIEW = true,
-    DEF_SPOT_CONVERT = false,
-    DLG_OPACITY = 0.95;  // UI window opacity. Range 0-1
-// End global variables
-
 function main() {
-  if (documents.length == 0) {
-    alert(LANG_ERR_DOC);
+  var SCRIPT = {
+        name: 'Stroke Color From Fill',
+        version: 'v.0.3.1'
+      },
+      CFG = {
+        aiVers: parseInt(app.version),
+        os: $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
+        isRgb: (activeDocument.documentColorSpace == DocumentColorSpace.RGB) ? true : false,
+        uiOpacity: .97, // UI window opacity. Range 0-1
+        spotConvert: false,
+        preview: true,
+        addStroke: true,
+        shift: -30 // Default color shift value
+      },
+      LANG = {
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        errSel: { en: 'Error\nPlease select atleast one object',
+                  ru: 'Ошибка\nВыделите хотя бы 1 объект' },
+        errFill: { en: 'Attention\nThe script skips Paths & Compound Paths ' +
+                        'with patterns or empty fills. Such objects:',
+                  ru: 'Внимание\nСкрипт пропускает контуры и составные контуры ' +
+                        'с паттернами или без заливки. Таких объектов:' },
+        shift: { en: 'Color Shift', ru: 'Смещение цвета' },
+        lighter: { en: 'lighter', ru: 'светлее' },
+        darker: { en: 'darker', ru: 'темнее' },
+        stroke: { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить' },
+        spot: { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в ' },
+        cancel: { en: 'Cancel', ru: 'Отмена' },
+        ok: { en: 'Ok', ru: 'Готово' },
+        preview: { en: 'Preview', ru: 'Предпросмотр' }
+      };
+    
+  if (!documents.length) {
+    alert(LANG.errDoc);
     return;
   }
 
-  if (selection.length == 0 || selection.typename == 'TextRange') {
-    alert(LANG_ERR_SELECT);
+  if (!selection.length || selection.typename == 'TextRange') {
+    alert(LANG.errSel);
     return;
   }
 
   // Setup initial data
-  var doc = app.activeDocument;
-  isRgbProfile = (doc.documentColorSpace == DocumentColorSpace.RGB) ? true : false;
+  var doc = activeDocument,
+      selPaths = [],
+      isUndo = false,
+      maxVal = 0, // Max color value in the channel
+      cKeys = [], // RGB or CMYK names
+      tempPath; // For fix Preview bug
 
-  if (isRgbProfile) {
-    maxValue = 255;
-    colorChannel = ['red', 'green', 'blue'];
+  var badFills = getPaths(doc.selection, selPaths),
+      hasStroke = hasStrokedPath(selPaths);
+
+  if (CFG.isRgb) {
+    maxVal = 255;
+    cKeys = ['red', 'green', 'blue'];
   } else {
-    maxValue = 100;
-    colorChannel = ['cyan', 'magenta', 'yellow', 'black'];
+    maxVal = 100;
+    cKeys = ['cyan', 'magenta', 'yellow', 'black'];
   }
-  
-  getPaths(doc.selection, selPaths);
-  
-  hasStroke = hasStrokedPath(selPaths);
 
-  // Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+  // DIALOG
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
-      dialog.opacity = DLG_OPACITY;
+      dialog.opacity = CFG.uiOpacity;
 
   // Value fields
-  var shiftPanel = dialog.add('panel', undefined, LANG_SHIFT);
+  var shiftPanel = dialog.add('panel', undefined, LANG.shift);
       shiftPanel.orientation = 'row';
-      shiftPanel.alignChildren = ['left', 'center']; 
-  var colorShift = shiftPanel.add('edittext', [0, 0, 80, 30], DEF_SHIFT);
-  
+      shiftPanel.alignChildren = ['left', 'center'];
+  var colorShift = shiftPanel.add('edittext', [0, 0, 80, 30], CFG.shift);
+
   var info = shiftPanel.add('group');
       info.orientation = 'column';
-  var lighter = info.add('statictext', undefined, '> 0 : ' + LANG_LIGHTER);
-  var darker = info.add('statictext', undefined, '< 0 : ' + LANG_DARKER);
+  var lighter = info.add('statictext', undefined, '> 0 : ' + LANG.lighter);
+  var darker = info.add('statictext', undefined, '< 0 : ' + LANG.darker);
 
-  var isSpotConvert = dialog.add('checkbox', undefined, LANG_SPOT + (isRgbProfile ? 'RGB' : 'CMYK'));
-      isSpotConvert.value = DEF_SPOT_CONVERT;
+  var isSpotConvert = dialog.add('checkbox', undefined, LANG.spot + (CFG.isRgb ? 'RGB' : 'CMYK'));
+      isSpotConvert.value = CFG.spotConvert;
 
   // AI older 2020 on Mac OS has bug with add stroke
-  if (USER_OS == 'WINDOWS' || (USER_OS == 'MAC' && AI_VER >= 24)) {
-    var isAddStroke = dialog.add('checkbox', undefined, LANG_STROKE);
-        isAddStroke.value = DEF_ADD_STROKE;
+  if (CFG.os == 'WINDOWS' || (CFG.os == 'MAC' && CFG.aiVers >= 24)) {
+    var isAddStroke = dialog.add('checkbox', undefined, LANG.stroke);
+        isAddStroke.value = CFG.addStroke;
   }
 
   // Buttons
   var btns = dialog.add('group');
       btns.orientation = 'row';
       btns.alignChildren = ['fill', 'center'];
-  var cancel = btns.add('button', undefined, LANG_CANCEL, {name: 'cancel'});
-  var ok = btns.add('button', undefined, LANG_OK, {name: 'ok'});
+  var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
+  var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
   var grpPreview = dialog.add('group');
       grpPreview.orientation = 'row';
       grpPreview.alignChildren = ['center', 'center'];
-  var isPreview = grpPreview.add('checkbox', undefined, LANG_PREVIEW);
-      isPreview.value = DEF_IS_PREVIEW;
+  var isPreview = grpPreview.add('checkbox', undefined, LANG.preview);
+      isPreview.value = CFG.preview;
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 github.com/creold');
       copyright.justify = 'center';
@@ -150,7 +148,7 @@ function main() {
   // End event listener for isPreview
 
   // Use Up / Down arrow keys (+ Shift) for change color shift
-  shiftInputNumValue(colorShift);
+  shiftInputNumValue(colorShift, maxVal);
 
   ok.onClick = okClick;
 
@@ -163,20 +161,18 @@ function main() {
 
   function previewStart() {
     try {
-      if (isPreview.value && (hasStroke || 
+      if (isPreview.value && (hasStroke ||
           (isExists(isAddStroke) && isAddStroke.value))) {
         if (isUndo) app.undo();
         else isUndo = true;
         start();
-        app.redraw();
+        redraw();
       } else if (isUndo) {
-          app.undo();
-          app.redraw();
+          undo();
+          redraw();
           isUndo = false;
         }
-    } catch (e) {
-      // showError(e);
-    }
+    } catch (e) {}
   }
 
   // Start conversion
@@ -187,55 +183,49 @@ function main() {
     for (var i = 0, pLen = selPaths.length; i < pLen; i++) {
       try {
         var item = selPaths[i];
-        if (isExists(isAddStroke) && isAddStroke.value && !item.stroked) { 
-          item.stroked = true; 
+        if (isExists(isAddStroke) && isAddStroke.value && !item.stroked) {
+          item.stroked = true;
           item.strokeWidth = 1;
         }
-        applyColor(item, shiftVal, isSpotConvert.value);
-      } catch (e) {
-        // showError(e);
-      }
+        applyColor(item, shiftVal, maxVal, cKeys, CFG.isRgb, isSpotConvert.value);
+      } catch (e) {}
     }
   }
 
-  cancel.onClick = function() {
-    dialog.close();
-  }
+  cancel.onClick = dialog.close;
 
   dialog.onClose = function () {
     try {
       if (isUndo) {
-        app.undo();
-        app.redraw();
+        undo();
+        redraw();
         isUndo = false;
       }
-    } catch (e) {
-      // showError(e);
-    }
+    } catch (e) {}
     tempPath.remove();
-    app.redraw();
-    if (badFillCount) alert(LANG_ERR_FILL + ' ' + badFillCount);
+    redraw();
+    if (badFills) alert(LANG.errFill + ' ' + badFills);
     return true;
   }
 
-  function shiftInputNumValue(item) {
+  function shiftInputNumValue(item, max) {
     item.addEventListener('keydown', function (kd) {
       var step;
       ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
       if (kd.keyName == 'Down') {
-        if (Number(this.text) >= -maxValue + step) {
+        if (Number(this.text) >= -max + step) {
           this.text = Number(this.text) - step;
           kd.preventDefault();
         } else {
-          this.text = -maxValue;
+          this.text = -max;
         }
       }
       if (kd.keyName == 'Up') {
-        if (Number(this.text) <= maxValue - step) {
+        if (Number(this.text) <= max - step) {
           this.text = Number(this.text) + step;
           kd.preventDefault();
         } else {
-          this.text = maxValue;
+          this.text = max;
         }
       }
       previewStart();
@@ -255,44 +245,44 @@ function hasStrokedPath(arr) {
 }
 
 function isExists(item) {
-  return typeof (item) !== 'undefined';
+  return typeof item !== 'undefined';
 }
 
 // Get only Paths from selection
 function getPaths(item, arr) {
+  var noColorCounter = 0;
   for (var i = 0, iLen = item.length; i < iLen; i++) {
     var currItem = item[i];
     try {
       switch (currItem.typename) {
         case 'GroupItem':
-          getPaths(currItem.pageItems, arr);
+          noColorCounter += getPaths(currItem.pageItems, arr);
           break;
         case 'PathItem':
           if (currItem.filled && hasColorFill(currItem)) arr.push(currItem);
-          else badFillCount++;
+          else noColorCounter++;
           break;
         case 'CompoundPathItem':
-          if (currItem.pathItems[0].filled && hasColorFill(currItem.pathItems[0])) { 
+          if (currItem.pathItems[0].filled && hasColorFill(currItem.pathItems[0])) {
             arr.push(currItem.pathItems[0]);
-          } else { badFillCount++; }
+          } else { noColorCounter++; }
           break;
         default:
           break;
       }
-    } catch (e) {
-      // showError(e);
-    }
+    } catch (e) {}
   }
+  return noColorCounter;
 }
 
 // Apply color to stroke
-function applyColor(obj, shift, isSpotRplc) { 
+function applyColor(obj, shift, max, keys, isRgb, isSpotRplc) {
   var _fill = obj.fillColor,
-      sColor = isRgbProfile ? new RGBColor() : new CMYKColor(),
+      sColor = isRgb ? new RGBColor() : new CMYKColor(),
       currColor,
       delta = 0;
-  
-  if (_fill.typename == 'GradientColor') _fill = interpolateColor(_fill.gradient);
+
+  if (_fill.typename == 'GradientColor') _fill = interpolateColor(isRgb, _fill.gradient);
   currColor = (_fill.typename == 'SpotColor' && isSpotRplc) ? _fill.spot.color : _fill;
 
   // For Grayscale mode color is set individually
@@ -311,7 +301,7 @@ function applyColor(obj, shift, isSpotRplc) {
     sColor = new SpotColor();
     var spotColor = currColor.spot,
         spotDelta = currColor.tint - shift;
-    
+
     sColor.spot = currColor.spot;
 
     if (spotDelta > 100) sColor.tint = 100;
@@ -319,14 +309,14 @@ function applyColor(obj, shift, isSpotRplc) {
     else sColor.tint = spotDelta;
   } else {
     // Set color for RGB || CMYK channels
-    for (var j = 0, cLen = colorChannel.length; j < cLen; j++) {
-      var channelName = colorChannel[j],
-          currChannelColor = Math.round(currColor[channelName]);
-      delta = isRgbProfile ? currChannelColor + shift : currChannelColor - shift;
+    for (var j = 0, cLen = keys.length; j < cLen; j++) {
+      var keyName = keys[j],
+          currKeyColor = Math.round(currColor[keyName]);
+      delta = isRgb ? currKeyColor + shift : currKeyColor - shift;
 
-      if (delta > maxValue) sColor[channelName] = maxValue;
-      else if (delta < 0) sColor[channelName] = 0;
-      else sColor[channelName] = delta;
+      if (delta > max) sColor[keyName] = max;
+      else if (delta < 0) sColor[keyName] = 0;
+      else sColor[keyName] = delta;
     }
   }
 
@@ -335,7 +325,7 @@ function applyColor(obj, shift, isSpotRplc) {
 }
 
 // Color interpolation by moody allen (moodyallen7@gmail.com)
-function interpolateColor(color) {
+function interpolateColor(isRgb, color) {
   var gStopsLength = color.gradientStops.length,
       cSum = {}; // Sum of color channels
   for (var j = 0; j < gStopsLength; j++) {
@@ -349,14 +339,14 @@ function interpolateColor(color) {
       }
     }
   }
-  var iColor = isRgbProfile ? new RGBColor() : new CMYKColor();
+  var iColor = isRgb ? new RGBColor() : new CMYKColor();
   for (var key in cSum) { iColor[key] = cSum[key] / gStopsLength; }
   return iColor;
 }
 
 function hasColorFill(obj) {
   var _type = obj.fillColor.typename;
-  if (_type == 'RGBColor' || _type == 'CMYKColor' || _type == 'GrayColor' || 
+  if (_type == 'RGBColor' || _type == 'CMYKColor' || _type == 'GrayColor' ||
       _type == 'SpotColor' || _type == 'GradientColor') return true;
   return false;
 }
@@ -373,14 +363,7 @@ function convertToNum(str, def) {
   return parseFloat(str);
 }
 
-// For debugging
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
-}
-
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

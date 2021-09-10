@@ -4,25 +4,30 @@
   Requirements: Adobe Illustrator CS/CC
   Author: Sergey Osokin (hi@sergosokin.ru), 2018
   Based on 'ungroupV1.js' script by Jiwoong Song (netbluew@nate.com), 2009 & modification by John Wundes (wundes.com), 2012
-  ============================================================================
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  ============================================================================
-  Donate (optional): If you find this script helpful, you can buy me a coffee
-                     via PayPal http://www.paypal.me/osokin/usd
-  ============================================================================
-  Versions:
+
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
+  - via PayPal http://www.paypal.me/osokin/usd
+
+  Release notes:
   1.0 Initial version
   1.1 Added option to delete / save mask objects. Fixed a performance issue.
   1.2 Fixed ungrouping of the selected group inside another.
   1.2.1 Minor improvements
-  ============================================================================
+
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
-  ============================================================================
+
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 // Global variables
 var SCRIPT_NAME  = 'ExtUngroup',

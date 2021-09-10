@@ -1,71 +1,83 @@
 ﻿/*
   NamedItemsFinder.jsx for Adobe Illustrator
   Description: Search items in the document by name and zoom to them contents.
-               Inspired by Photoshop CC 2020 features
+                Inspired by Photoshop CC 2020 features
   Date: April, 2021
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
-  1.0 Initial version
+  Release notes:
+  0.1 Initial version
+  0.2 Added custom zoom checkbox & saving settings
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
-//Global variables
-var SCRIPT_NAME = 'Named Items Finder',
-    SCRIPT_VERSION = 'v.0.1',
-    ZOOM_FACTOR = 0.5, // Zoom ratio in document window
-    LIST_WIDTH = 300, // Units: px
-    LIST_ROWS = 7, // Amount of rows in listbox
-    DLG_OPACITY = .98, // UI window opacity. Range 0-1
-    OVER_ITEMS = 3000, // Limit for warning about performance
-    DEF_IN_TEXT = false, // Default value for search only inside text
-    DEF_IN_DOC = false, // Default value for search throughout the doc
-    DEF_IN_LYR = false; // Default value for include locked & hidden layers
-
-// EN-RU localized messages
-var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
-                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
-    LANG_SLOW = { en: 'Warning: in the document over ' + OVER_ITEMS + ' objects. The script can run slowly',
-                  ru: 'Внимание: в документе свыше ' + OVER_ITEMS + ' объектов. Скрипт может работать медленно'},
-    LANG_INPUT = { en: 'Enter name...', ru: 'Введите имя...'},
-    LANG_CHK_LOCKED = { en: 'Include locked & hidden layers', ru: 'Включить заблокированные и скрытые слои'},
-    LANG_CHK_DOC = { en: 'Search whole document', ru: 'Искать по всему документу'},
-    LANG_CHK_TEXT = { en: 'Search only text contents', ru: 'Искать по содержимому текстов'},
-    LANG_TITLE_LAYER = { en: 'Layer', ru: 'Слой'},
-    LANG_TITLE_ITEM = { en: 'Item', ru: 'Объект'},
-    LANG_TITLE_HIDDEN = { en: 'Hidden', ru: 'Скрыт'},
-    LANG_TITLE_LOCKED = { en: 'Locked', ru: 'Заблокирован'},
-    LANG_SEARCH = { en: 'Search', ru: 'Найти'},
-    LANG_WAIT = { en: 'Waiting...', ru: 'Ожидайте...'},
-    LANG_CLOSE = { en: 'Close', ru: 'Закрыть'};
-
 function main() {
-  if (!app.documents.length) {
-    alert(LANG_ERR_DOC);
+  var SCRIPT = {
+        name: 'Named Items Finder',
+        version: 'v.0.2'
+      },
+      CFG = {
+        zoomRatio: 0.1, // Zoom ratio in document window
+        width: 300, // Units: px
+        rows: 7, // Amount of rows in listbox
+        inText: false, // Default value for search only inside text
+        inDoc: false, // Default value for search throughout the doc
+        inLayers: false, // Default value for include locked & hidden layers
+        noZoom: false, // Jump to item without zoom
+        limit: 3000, // Limit for warning about performance
+        uiOpacity: .97 // UI window opacity. Range 0-1
+      },
+      SETTINGS = {
+        name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
+        folder: Folder.myDocuments + '/Adobe Scripts/'
+      },
+      LANG = {
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        warning: { en: 'Warning: in the document over ' + CFG.limit + ' objects. The script can run slowly',
+                  ru: 'Внимание: в документе свыше ' + CFG.limit + ' объектов. Скрипт может работать медленно'},
+        input: { en: 'Enter name...', ru: 'Введите имя...'},
+        allDoc: { en: 'Search whole document', ru: 'Искать по всему документу'},
+        allLayers: { en: 'Include locked & hidden layers', ru: 'Включить заблокированные и скрытые слои'},
+        onlyText: { en: 'Search only text contents', ru: 'Искать по содержимому текстов'},
+        noZoom: { en: 'Center view with zoom ratio (' + CFG.zoomRatio + '-1)', ru: 'Показать по центру с приближением (' + CFG.zoomRatio + '-1)'},
+        layer: { en: 'Layer', ru: 'Слой'},
+        item: { en: 'Item', ru: 'Объект'},
+        hidden: { en: 'Hidden', ru: 'Скрыт'},
+        locked: { en: 'Locked', ru: 'Заблокирован'},
+        search: { en: 'Search', ru: 'Найти'},
+        wait: { en: 'Waiting...', ru: 'Ожидайте...'},
+        close: { en: 'Close', ru: 'Закрыть'}
+      };
+
+  if (!documents.length) {
+    alert(LANG.errDoc);
     return;
   }
 
-  var doc = app.activeDocument,
+  var doc = activeDocument,
       namedItems = [], // Array of all items with name in doc or selection
       resItems = [], // Array of found items
       selItems = [], // Array of selected items
@@ -78,24 +90,24 @@ function main() {
   saveLayersState(doc.layers, layersState);
 
   // Check the document contains too many items
-  if ( (selection.length && selItems.length > OVER_ITEMS) ||
-       (!selection.length && doc.pageItems.length > OVER_ITEMS) ) {
+  if ( (selection.length && selItems.length > CFG.limit) ||
+        (!selection.length && doc.pageItems.length > CFG.limit) ) {
     isOverItems = true;
   }
 
-  // Create Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
+  // DIALOG
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.alignChildren = ['fill', 'fill'];
-      dialog.opacity = DLG_OPACITY;
+      dialog.opacity = CFG.uiOpacity;
 
-  var nameInp = dialog.add('edittext', undefined, LANG_INPUT);
+  var nameInp = dialog.add('edittext', undefined, LANG.input);
       nameInp.active = true;
 
-  var listbox = dialog.add('listbox', [0, 0, LIST_WIDTH, 20 + 21 * LIST_ROWS], undefined,
+  var listbox = dialog.add('listbox', [0, 0, CFG.width, 20 + 21 * CFG.rows], undefined,
       {
         numberOfColumns: 4,
         showHeaders: true,
-        columnTitles: [LANG_TITLE_LAYER, LANG_TITLE_ITEM, LANG_TITLE_HIDDEN, LANG_TITLE_LOCKED],
+        columnTitles: [LANG.layer, LANG.item, LANG.hidden, LANG.locked],
         multiselect: true
       });
 
@@ -106,33 +118,47 @@ function main() {
       chkGroup.spacing = 5;
 
   if (selItems.length > 0) {
-    var isInDoc = chkGroup.add('checkbox', undefined, LANG_CHK_DOC);
-        isInDoc.value = DEF_IN_DOC;
+    var isInDoc = chkGroup.add('checkbox', undefined, LANG.allDoc);
+        isInDoc.value = CFG.inDoc;
   }
 
-  var isInLocked = chkGroup.add('checkbox', undefined, LANG_CHK_LOCKED);
-      isInLocked.value = (typeof isInDoc !== 'undefined') ? false : DEF_IN_LYR;
+  var isInLocked = chkGroup.add('checkbox', undefined, LANG.allLayers);
+      isInLocked.value = (typeof isInDoc !== 'undefined') ? false : CFG.inLayers;
       isInLocked.enabled = (typeof isInDoc !== 'undefined') ? false : true;
 
-  var isInText = chkGroup.add('checkbox', undefined, LANG_CHK_TEXT);
-      isInText.value = DEF_IN_TEXT;
+  var isInText = chkGroup.add('checkbox', undefined, LANG.onlyText);
+      isInText.value = CFG.inText;
+
+  var zoomGroup = chkGroup.add('group');
+      zoomGroup.alignChildren = ['left', 'bottom'];
+
+  var isZoom = zoomGroup.add('checkbox', undefined, LANG.noZoom);
+      isZoom.value = CFG.noZoom;
+
+  var zoomRatioInp = zoomGroup.add('edittext', undefined, CFG.zoomRatio);
+      zoomRatioInp.characters = 5;
 
   if (isOverItems) {
-    var warningMsg = dialog.add('statictext', undefined, LANG_SLOW, {multiline: true});
+    var warningMsg = dialog.add('statictext', undefined, LANG.warning, { multiline: true });
         warningMsg.enabled = false;
   }
 
   // Buttons
   var btns = dialog.add('group');
       btns.alignChildren = ['center', 'center'];
-  var close = btns.add('button', undefined, LANG_CLOSE, {name: 'cancel'});
+  var close = btns.add('button', undefined, LANG.close, {name: 'cancel'});
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 https://github.com/creold');
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
-      copyright.enabled = false;
+
+  loadSettings(layersState);
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   if (isOverItems) {
-    var search = btns.add('button', undefined, LANG_SEARCH,  {name: 'ok'});
+    var search = btns.add('button', undefined, LANG.search,  {name: 'ok'});
     search.onClick = outputResult;
   } else {
     nameInp.onChanging = outputResult;
@@ -150,7 +176,7 @@ function main() {
       if (!this.value) {
         isInLocked.value = false;
         restoreLayersState(layersState);
-        app.redraw();
+        redraw();
       }
       if (typeof search == 'undefined') outputResult();
     }
@@ -159,14 +185,33 @@ function main() {
   // Include locked & hidden layers
   isInLocked.onClick = function() {
     (this.value) ? resetLayersState(layersState) : restoreLayersState(layersState);
-    app.redraw();
+    redraw();
     namedItems = []; // Clear for collect new items
     if (typeof search == 'undefined') outputResult();
   };
 
+  isZoom.onClick = function() {
+    zoomRatioInp.onChange();
+  }
+
+  // Changing the zoom ratio
+  zoomRatioInp.onChange = function() {
+    if (convertToNum(this.text, CFG.zoomRatio) > 1) this.text = 1;
+    if (convertToNum(this.text, CFG.zoomRatio) < CFG.zoomRatio) this.text = CFG.zoomRatio;
+
+    for (var i = 0, len = listbox.children.length; i < len; i++) {
+      if (listbox.children[i].selected) {
+        zoom(this.text, isZoom.value);
+        redraw();
+        break;
+      }
+    }
+  }
+
   close.onClick = function() {
     if (isLockedPrnt || isHiddenPrnt) selection = null;
     if (isInLocked.value) restoreLayersState(layersState);
+    saveSettings();
     dialog.close();
   };
 
@@ -174,7 +219,7 @@ function main() {
   function outputResult() {
     // Change the search button label
     if (typeof search !== 'undefined') {
-      search.text = LANG_WAIT;
+      search.text = LANG.wait;
       dialog.update();
     }
 
@@ -228,7 +273,7 @@ function main() {
 
     // Restore the search button label
     if (typeof search !== 'undefined') {
-      search.text = LANG_SEARCH;
+      search.text = LANG.search;
       dialog.update();
     }
   }
@@ -270,11 +315,55 @@ function main() {
         resItems[i].selected = true;
       };
     }
+    
+    var ratio = convertToNum(zoomRatioInp.text, CFG.zoomRatio);
+    zoom(ratio, isZoom.value);
 
-    calcBounds(selection);
-    zoom(ZOOM_FACTOR);
     restoreItemsState(tmpState);
-    app.redraw();
+    redraw();
+  }
+
+  function saveSettings() {
+    if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
+    var $file = new File(SETTINGS.folder + SETTINGS.name);
+    $file.encoding = 'UTF-8';
+    $file.open('w');
+    var pref = {};
+    pref.inAllDoc = (typeof isInDoc !== 'undefined') ? isInDoc.value : false;
+    pref.inAllLayers = isInLocked.value;
+    pref.inOnlyText = isInText.value;
+    pref.isZoom = isZoom.value;
+    pref.zoomRatio = zoomRatioInp.text;
+    var data = pref.toSource();
+    $file.write(data);
+    $file.close();
+  }
+
+  function loadSettings(arr) {
+    var $file = File(SETTINGS.folder + SETTINGS.name);
+    if ($file.exists) {
+      try {
+        $file.encoding = 'UTF-8';
+        $file.open('r');
+        var json = $file.readln();
+        var pref = new Function('return ' + json)();
+        $file.close();
+        if (typeof pref != 'undefined') {
+          if (typeof isInDoc !== 'undefined') {
+            isInDoc.value = (pref.inAllDoc == true);
+            if (pref.inAllDoc == true) isInLocked.enabled = true;
+          }
+          isInLocked.value = (isInLocked.enabled && pref.inAllLayers == true);
+          if (isInLocked.value) {
+            resetLayersState(arr);
+            redraw();
+          }
+          isInText.value = (pref.inOnlyText == true);
+          isZoom.value = (pref.isZoom == true);
+          zoomRatioInp.text = pref.zoomRatio;
+        }
+      } catch (e) {}
+    }
   }
 
   dialog.center;
@@ -348,7 +437,7 @@ function getNamedItems(collection) {
  * @param {string} str search string
  * @param {array} collection source array of named items
  * @param {boolean} option the value of the text search checkbox
- * @return {array} array of matches 
+ * @return {array} array of matches
  */
 function getByName(str, collection, option) {
   var currItem,
@@ -359,8 +448,8 @@ function getByName(str, collection, option) {
     if (option) {
       if (isNotEmptyText(currItem) && currItem.contents.match(regexp)) arr.push(currItem);
     } else {
-      if ((isSymbol(currItem) && currItem.name == '' && currItem.symbol.name.match(regexp))
-           || (currItem.name.match(regexp) && currItem.name !== '')) {
+      if ((isSymbol(currItem) && currItem.name == '' && currItem.symbol.name.match(regexp)) ||
+          (currItem.name.match(regexp) && currItem.name !== '')) {
         arr.push(currItem);
       }
     }
@@ -510,20 +599,23 @@ function calcBounds(collection) {
   // If object is a (collection of) object(s) not a text field.
   if (collection instanceof Array) {
     // Initialize vars
-    initBounds = collection[0].visibleBounds;
-    ul_x = initBounds[0];
-    ul_y = initBounds[1];
-    lr_x = initBounds[2];
-    lr_y = initBounds[3];
+    var initBounds = collection[0].visibleBounds,
+        ul_x = initBounds[0];
+        ul_y = initBounds[1];
+        lr_x = initBounds[2];
+        lr_y = initBounds[3];
+
     // Check rest of group if any
-    for (i = 1, len = collection.length; i < len; i++) {
-      groupBounds = collection[i].visibleBounds;
+    for (var i = 1, len = collection.length; i < len; i++) {
+      var groupBounds = collection[i].visibleBounds;
       if (groupBounds[0] < ul_x) ul_x = groupBounds[0];
       if (groupBounds[1] > ul_y) ul_y = groupBounds[1];
       if (groupBounds[2] > lr_x) lr_x = groupBounds[2];
       if (groupBounds[3] < lr_y) lr_y = groupBounds[3];
     }
   }
+
+  return [ul_x, ul_y, lr_x, lr_y];
 }
 
 /**
@@ -531,43 +623,44 @@ function calcBounds(collection) {
  * Based on script 'Zoom and Center to Selection v2' by John Wundes (http://www.wundes.com)
  * @param {number} ratio scale ratio
  */
-function zoom(ratio) {
-  var doc = app.activeDocument;
+function zoom(ratio, isZoom) {
+  var doc = activeDocument;
   // Get x,y/x,y Matrix for 100% view
-  doc.views[0].zoom = 1;
-  screenSize = doc.views[0].bounds;
-  screenWidth = screenSize[2] - screenSize[0];
-  screenHeight = screenSize[1] - screenSize[3];
-  screenProportion = screenHeight / screenWidth;
+  if (isZoom) doc.views[0].zoom = 1;
+
+  var screenSize = doc.views[0].bounds,
+      screenWidth = screenSize[2] - screenSize[0],
+      screenHeight = screenSize[1] - screenSize[3],
+      screenProportion = screenHeight / screenWidth;
 
   // Determine upperLeft position of object(s)
-  cntrPos = [ul_x, ul_y];
+  var bnds = calcBounds(selection),
+      centerPos = [bnds[0], bnds[1]],
+      width = bnds[2] - bnds[0],
+      height = bnds[1] - bnds[3];
 
-  mySelWidth = lr_x - ul_x;
-  mySelHeight = ul_y - lr_y;
-  cntrPos[0] = ul_x + mySelWidth / 2;
-  cntrPos[1] = ul_y - mySelHeight / 2;
-  doc.views[0].centerPoint = cntrPos;
+  centerPos[0] = bnds[0] + width / 2;
+  centerPos[1] = bnds[1] - height / 2;
 
-  // Set zoom for height and width
-  zoomFactorW = screenWidth / mySelWidth;
-  zoomFactorH = screenHeight / mySelHeight;
+  doc.views[0].centerPoint = centerPos;
 
-  // Decide which proportion is larger...
-  if (mySelWidth * screenProportion >= mySelHeight) {
-    zF = zoomFactorW;
-  } else {
-    zF = zoomFactorH;
+  if (isZoom) {
+    // Set zoom for height and width
+    var zoomRatioW = screenWidth / width,
+        zoomRatioH = screenHeight / height;
+
+    // Decide which proportion is larger...
+    var zR = (width * screenProportion >= height) ? zoomRatioW : zoomRatioH;
+
+    // And scale to that proportion minus a little bit.
+    doc.views[0].zoom = zR * parseFloat(ratio);
   }
-
-  // And scale to that proportion minus a little bit.
-  doc.views[0].zoom = zF * parseFloat(ratio);
 }
 
 /**
  * Check item type
  * @param {object} item source item
- * @return {boolean} 
+ * @return {boolean}
  */
 function isSymbol(item) {
   return item.typename === 'SymbolItem';
@@ -576,7 +669,7 @@ function isSymbol(item) {
 /**
  * Check item type
  * @param {object} item source item
- * @return {boolean} 
+ * @return {boolean}
  */
 function isNotEmptyText(item) {
   return item.typename === 'TextFrame' && item.contents.length > 0;
@@ -585,18 +678,41 @@ function isNotEmptyText(item) {
 /**
  * Check for multiple words in the string
  * @param {string} str user input
- * @return {boolean} 
+ * @return {boolean}
  */
 function hasWhiteSpace(str) {
   return /\s/g.test(str);
 }
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+/**
+ * Convert any input data to a number
+ * @param {string} str - input data
+ * @param {number} def - default value if the input data don't contain numbers
+ * @return {number} 
+ */
+function convertToNum(str, def) {
+  // Remove unnecessary characters
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
+  // Remove duplicate Point
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  return parseFloat(str);
+}
+
+/**
+* Open link in browser
+* @param {string} url - website adress
+*/
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

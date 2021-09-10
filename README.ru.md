@@ -12,25 +12,25 @@
 
 ### 📜 Алфавитный список
 * [ArtboardsRotateWithObjects.jsx]   
-* [ConvertToGradient.jsx]   
-* [DuplicateArtboardsLight.jsx] `(upd, 01.04.2021)`  
-* [Export-selection-as-AI.jsx]   
+* [ConvertToGradient.jsx] `(upd, 10.09.2021)`  
+* [DuplicateArtboardsLight.jsx] `(upd, 10.09.2021)`  
+* [Export-selection-as-AI.jsx] `(upd, 10.09.2021)`     
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
-* [FileVersionInformer.jsx]   
-* [GradientToFlat.jsx] `(new, 20.04.2021)`  
+* [FileVersionInformer.jsx] `(upd, 10.09.2021)`  
+* [GradientToFlat.jsx] `(upd, 10.09.2021)`  
 * [InlineSVGToAI.jsx]   
-* [NamedItemsFinder.jsx] `(new, 11.04.2021)`  
-* [PointsMoveRandom.jsx] `(upd, 20.03.2021)`  
-* [RandomScribble.jsx] `(new, 26.07.2021)`
-* [RenameItems.jsx] `(upd, 20.03.2021)`
-* [Rescale.jsx] `(upd, 24.03.2021)`
-* [ResizeToSize.jsx] `(upd, 22.03.2021)`
-* [SelectOnlyPoints.jsx] `(upd, 14.11.2020)`  
-* [SelectPointsByType.jsx] `(upd, 31.08.2021)`   
-* [SplitPath.jsx] `(upd, 30.08.2020)`    
-* [StrokeColorFromFill.jsx] `(upd, 30.03.2021)`   
-* [TrimMasks.jsx] `(upd, 30.03.2021)`
-* [Zoom-and-center.jsx] `(upd, 20.03.2021)`
+* [NamedItemsFinder.jsx] `(upd, 10.09.2021)`  
+* [PointsMoveRandom.jsx] `(upd, 10.09.2021)`  
+* [RandomScribble.jsx] `(upd, 10.09.2021)`  
+* [RenameItems.jsx] `(upd, 10.09.2021)`  
+* [Rescale.jsx] `(upd, 10.09.2021)`  
+* [ResizeToSize.jsx] `(upd, 10.09.2021)`  
+* [SelectOnlyPoints.jsx] `(upd, 10.09.2021)`  
+* [SelectPointsByType.jsx] `(upd, 10.09.2021)`  
+* [SplitPath.jsx] `(upd, 10.09.2021)`  
+* [StrokeColorFromFill.jsx] `(upd, 10.09.2021)`  
+* [TrimMasks.jsx] `(upd, 10.09.2021)`  
+* [Zoom-and-center.jsx] `(upd, 10.09.2021)`  
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient

@@ -7,37 +7,38 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
-    0.1 Initial version
+  Release notes:
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
-  - via QIWI https://qiwi.com/n/OSOKIN​
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
   - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
 // Main function
 function main() {
-  var script = {
+  var SCRIPT = {
         name: 'Random Scribble',
         version: 'v.0.1'
       },
-      cfg = {
+      CFG = {
         points: 4, // Default amount of the path points
         stroke: 1, // Default stroke width
         isClosed: true, // Default closed state of the path
@@ -46,7 +47,7 @@ function main() {
         maxTension: 1, // Maximum curve tension
         dlgOpacity: 0.97 // UI window opacity. Range 0-1
       },
-      lang = {
+      LANG = {
         errDoc: { en: 'Error\nOpen a document and try again', ru: 'Ошибка\nОткройте документ и запустите скрипт' },
         amount: { en: 'Amount of points', ru: 'Количество точек' },
         tension: { en: 'Curve tension', ru: 'Натяжение кривой' },
@@ -57,13 +58,13 @@ function main() {
       };
 
   if (!documents.length) {
-    alert(lang.errDoc)
+    alert(LANG.errDoc)
     return;
   }
 
   var doc = app.activeDocument,
       activeAB = doc.artboards[doc.artboards.getActiveArtboardIndex()],
-      currTension = cfg.tension,
+      currTension = CFG.tension,
       lines = [],
       container = [];
 
@@ -79,71 +80,71 @@ function main() {
     container.push(activeAB.artboardRect);
   }
 
-  // Dialog
-  var dialog = new Window('dialog', script.name + ' ' + script.version);
+  // DIALOG
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
       dialog.spacing = 10;
       dialog.margins = 16;
-      dialog.opacity = cfg.dlgOpacity;
+      dialog.opacity = CFG.dlgOpacity;
 
-  var pointsTitle = dialog.add('statictext', undefined, lang.amount);
-  var pointsLbl = dialog.add('edittext', undefined, cfg.points);
+  var pointsTitle = dialog.add('statictext', undefined, LANG.amount);
+  var pointsLbl = dialog.add('edittext', undefined, CFG.points);
   
-  var tensionTitle = dialog.add('statictext', undefined, lang.tension);
+  var tensionTitle = dialog.add('statictext', undefined, LANG.tension);
   var tensionGrp = dialog.add('group');
       tensionGrp.orientation = 'row';
-  var tensionSlider = tensionGrp.add('slider', undefined, cfg.tension, cfg.minTension, cfg.maxTension);
-  var tensionLbl = tensionGrp.add('edittext', undefined, cfg.tension);
+  var tensionSlider = tensionGrp.add('slider', undefined, CFG.tension, CFG.minTension, CFG.maxTension);
+  var tensionLbl = tensionGrp.add('edittext', undefined, CFG.tension);
       tensionLbl.characters = 4;
   
-  var isClosed = dialog.add('checkbox', undefined, lang.close);
-      isClosed.value = cfg.isClosed ? true : false;
+  var isClosed = dialog.add('checkbox', undefined, LANG.close);
+      isClosed.value = CFG.isClosed ? true : false;
 
-  var randomize = dialog.add('button', undefined, lang.random);
+  var randomize = dialog.add('button', undefined, LANG.random);
       randomize.active = true;
-  var ok = dialog.add('button', undefined, lang.ok, {name: 'ok'});
-  var cancel = dialog.add('button', undefined, lang.cancel, {name: 'cancel'});
+  var ok = dialog.add('button', undefined, LANG.ok, {name: 'ok'});
+  var cancel = dialog.add('button', undefined, LANG.cancel, {name: 'cancel'});
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 github.com/creold');
       copyright.justify = 'center';
       copyright.enabled = false;
 
   dialog.onShow = function () {
-    process(container, lines, pointsLbl.text, isClosed.value, cfg.stroke, currTension);
+    process(container, lines, pointsLbl.text, isClosed.value, CFG.stroke, currTension);
   }
 
   pointsLbl.onChange = randomize.onClick = function () { 
     removeLines(lines);
-    process(container, lines, pointsLbl.text, isClosed.value, cfg.stroke, currTension);
+    process(container, lines, pointsLbl.text, isClosed.value, CFG.stroke, currTension);
   }
 
   tensionSlider.onChange = function () {
-    currTension = mapRange(this.value.toFixed(1), cfg.minTension, cfg.maxTension, 1);
+    currTension = mapRange(this.value.toFixed(1), CFG.minTension, CFG.maxTension, 1);
 
     for (var i = 0; i < lines.length; i++) {
       smoothing(lines[i], currTension);
     }
 
     tensionLbl.text = this.value.toFixed(1);
-    app.redraw();
+    redraw();
   }
 
   tensionLbl.onChange = function () {
-    currTension = convertToNum(this.text, cfg.tension);
-    if (currTension > cfg.maxTension) {
-      currTension = cfg.maxTension;
-      this.text = cfg.maxTension;
+    currTension = convertToNum(this.text, CFG.tension);
+    if (currTension > CFG.maxTension) {
+      currTension = CFG.maxTension;
+      this.text = CFG.maxTension;
     }
 
     tensionSlider.value = currTension;
-    currTension = mapRange(currTension.toFixed(1), cfg.minTension, cfg.maxTension, 1);
+    currTension = mapRange(currTension.toFixed(1), CFG.minTension, CFG.maxTension, 1);
     
     for (var i = 0; i < lines.length; i++) {
       smoothing(lines[i], currTension);
     }
     
-    app.redraw();
+    redraw();
   }
 
   isClosed.onClick = function () {
@@ -163,7 +164,7 @@ function main() {
       }
       if (this.value) smoothing(lines[i], currTension);
     }
-    app.redraw();
+    redraw();
   }
 
   // Access key shortcut
@@ -183,9 +184,7 @@ function main() {
     dialog.close();
   }
 
-  ok.onClick = function () { 
-    dialog.close();
-  }
+  ok.onClick = dialog.close;
 
   dialog.center();
   dialog.show();
@@ -235,7 +234,7 @@ function process(container, arr, points, isClosed, stroke, tension) {
     arr.push(line.pItem);
     line.pItem.selected = true;
   }
-  app.redraw();
+  redraw();
 }
 
 /**

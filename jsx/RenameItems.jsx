@@ -1,47 +1,51 @@
 /*
   RenameItems.jsx for Adobe Illustrator
   Description: Script to batch rename selected items with many options 
-               or simple rename one selected item / active layer.
+                or simple rename one selected item / active layer
   Date: December, 2019
   Author: Sergey Osokin, email: hi@sergosokin.ru
   
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
   
-  Versions:
+  Release notes:
   1.0 Initial version.
-  1.0 Added option Find and replace string in all Layer names.
-  1.2 Added recursive search in Sublayers names.
+  1.0 Added option Find and replace string in all Layer names
+  1.2 Added recursive search in Sublayers names
   1.3 Added renaming of the parent Symbol
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
   
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
   
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
-
-var SCRIPT_NAME = 'Rename Items',
-    SCRIPT_VERSION = 'v.1.3';
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
+  var SCRIPT = {
+        name: 'Rename Items',
+        version: 'v.1.3'
+      };
+      
   if (documents.length == 0) {
     alert('Error\nOpen a document and try again.');
     return;
   }
 
-  var doc = app.activeDocument,
+  var doc = activeDocument,
       aLayer = doc.activeLayer,
       texts = initTitle(),
       target = texts[0], 
@@ -52,12 +56,12 @@ function main() {
       rplcTitleStr  = 'Replace ' + target + ' name';
 
   // Create Main Dialog
-  var win = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION, undefined);
-      win.orientation = 'column';
-      win.alignChildren = 'fill';
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version, undefined);
+      dialog.orientation = 'column';
+      dialog.alignChildren = 'fill';
 
   // Name
-  var grpName = win.add('group'); 
+  var grpName = dialog.add('group'); 
       grpName.alignChildren = 'fill';
       grpName.orientation = 'column'; 
 
@@ -68,18 +72,18 @@ function main() {
 
   //  Add more options for selected Symbol
   if (selection.length == 1 && isSymbol(selection[0])) {
-    var isRplcParent = win.add('checkbox', undefined, 'Rename parent symbol');
+    var isRplcParent = dialog.add('checkbox', undefined, 'Rename parent symbol');
   }
 
   //  Add more options for multiple selection or layers
   if (selection.length > 1 || (selection.length == 0 && hasMultiLayer())) {
-    var chkFind = win.add('checkbox', undefined, 'Find and replace in all');
+    var chkFind = dialog.add('checkbox', undefined, 'Find and replace in all');
     chkFind.helpTip = 'Enter the part of the name you want to replace.\n' + 
                         'E.g.: if you enter MY, it will replace all\n' +
                         'the MY occurrences in the names.'; 
     
     // Replace
-    var grpRplc = win.add('group'); 
+    var grpRplc = dialog.add('group'); 
         grpRplc.orientation = 'row';
         grpRplc.enabled = false;
 
@@ -94,11 +98,11 @@ function main() {
     }
 
     if (selection.length > 1) { 
-      var chkAutoInc = win.add('checkbox', undefined, 'Auto-numbering up'); 
+      var chkAutoInc = dialog.add('checkbox', undefined, 'Auto-numbering up'); 
           chkAutoInc.helpTip = 'Eg: name-1, name-2, etc.'; 
           chkAutoInc.value = true;
 
-      var extra = win.add('group');
+      var extra = dialog.add('group');
           extra.orientation = 'row';
 
       // Numeration
@@ -118,29 +122,30 @@ function main() {
         sprtInp.enabled = !sprtInp.enabled;
       }
 
-      countInp.onChange = function () { this.text = convertToNum(countInp.text); }
+      countInp.onChange = function () { this.text = convertToNum(countInp.text, 1); }
       shiftInputNumValue(countInp);
     }
   }
   
   // Buttons
-  var grpBtns = win.add('group'); 
-      grpBtns.orientation = 'row';
-      grpBtns.alignChildren = ['center','center'];
+  var btns = dialog.add('group'); 
+      btns.orientation = 'row';
+      btns.alignChildren = ['center','center'];
 
-  var cancel = grpBtns.add('button', undefined, 'Cancel');
+  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
       cancel.helpTip = 'Press Esc to Close';
-  var ok = grpBtns.add('button', undefined, 'OK');
+  var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
       ok.helpTip = 'Press Enter to Run';
   
   // Copyright block
-  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
-      copyright.enabled = false;
-
-  cancel.onClick = function() {
-    win.close();
-  }
+  
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
+  
+  cancel.onClick = dialog.close;
 
   ok.onClick = okClick;
 
@@ -162,7 +167,7 @@ function main() {
     }
 
     reopenPnl();
-    win.close();
+    dialog.close();
   }
 
   function renameLayers(_layers) {
@@ -178,7 +183,7 @@ function main() {
   }
 
   function renameItems() {
-    var count = convertToNum(countInp.text);
+    var count = convertToNum(countInp.text, 1);
     for (var i = 0, sLen = selection.length; i < sLen; i++) {
       var item = selection[i];
       if (!chkFind.value) item.name = nameInp.text;
@@ -206,7 +211,7 @@ function main() {
     });
   }
   
-  win.show();
+  dialog.show();
 }
 
 // Set title & placeholder for input
@@ -261,6 +266,17 @@ function isSymbol(item) {
 function reopenPnl() {
   app.executeMenuCommand('AdobeLayerPalette1'); // close
   app.executeMenuCommand('AdobeLayerPalette1'); // open
+  redraw();
+}
+
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 try {

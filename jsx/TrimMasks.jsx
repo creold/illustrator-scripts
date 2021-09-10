@@ -1,77 +1,83 @@
 /*
   TrimMasks.jsx for Adobe Illustrator
-  Description: Automatic trimming of all clipping groups in a document using Pathfinder > Trim. 
+  Description: Automatic trimming of all clipping groups in a document using Pathfinder > Crop
   Date: March, 2020
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   0.1 Initial version.
-  0.2 Added "SAVE_FILLED_CLIPMASK" boolean flag for save the filled mask path, fixed the live text masks.
+  0.2 Added "isSaveMask" boolean flag for save the filled mask path, fixed the live text masks.
   0.3 Fixed a cropping bug when is even-odd fill-rule
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
-// Global variables
-var AI_VER = parseInt(app.version),
-    ACTION_SET = 'Trim-Mask',
-    ACTION_NAME = 'Trim-Mask',
-    ACTION_PATH = Folder.myDocuments + '/Adobe Scripts/',
-    LANG_ERR_DOC = { en: 'Error\nOpen a document and try again',
-                     ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-    LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
-                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-    SAVE_FILLED_CLIPMASK = true, // true — save the filled mask path when trimming, false - not save
-    OVER_GROUPS = 10, // When the number of clip groups >, full-screen mode is enabled
-    clipCounter = 0,
-    itemAttr = { mOpacity: 100, mBlending: BlendModes.NORMAL };
-    
-
-if (!Folder(ACTION_PATH).exists) Folder(ACTION_PATH).create();
-
 function main() {
-  if (documents.length == 0) {
-    alert(LANG_ERR_DOC);
+  var CFG = {
+        aiVers: parseInt(app.version),
+        actionSet: 'Trim-Mask',
+        actionName: 'Trim-Mask',
+        actionPath: Folder.myDocuments + '/Adobe Scripts/',
+        isSaveMask: true, // true — save the filled mask path when trimming, false - not save
+        over: 10 // When the number of clip groups >, full-screen mode is enabled
+      },
+      LANG = {
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
+                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' }
+      },
+      itemAttr = { 
+        mOpacity: 100,
+        mBlending: BlendModes.NORMAL
+      };
+
+  if (!documents.length) {
+    alert(LANG.errDoc);
     return;
   }
 
-  if (AI_VER < 16) {
-    alert(LANG_ERR_VER);
+  if (CFG.aiVers < 16) {
+    alert(LANG.errVers);
     return;
   }
 
   if (selection.typename == 'TextRange') return;
 
-  var doc = app.activeDocument,
-      userScreen = doc.views[0].screenMode;
+  if (!Folder(CFG.actionPath).exists) Folder(CFG.actionPath).create();
 
-  // Generate action Pathfinder > Crop
-  var actionStr =   
+  var doc = app.activeDocument,
+      userView = doc.views[0].screenMode;
+
+  // Generate action
+  var actionStr =
     ['   /version 3',
-    '/name [' + ACTION_SET.length + ' ' + ascii2Hex(ACTION_SET) + ']',
+    '/name [' + CFG.actionSet.length + ' ' + ascii2Hex(CFG.actionSet) + ']',
     '/actionCount 1',
     '/action-1 {',
-    '/name [' + ACTION_NAME.length + ' ' + ascii2Hex(ACTION_NAME) + ']',
+    '/name [' + CFG.actionName.length + ' ' + ascii2Hex(CFG.actionName) + ']',
     '  /keyIndex 0',
     '  /colorIndex 0',
     '  /isOpen 1',
@@ -98,27 +104,25 @@ function main() {
     '  }',
     '}'].join('');
 
-  createAction(actionStr, ACTION_SET, ACTION_PATH);
+  createAction(actionStr, CFG.actionSet, CFG.actionPath);
 
   if (selection.length == 0) app.executeMenuCommand('selectall');
-  var groups = getGroups(selection);
-  clipCount(groups);
+  var groups = getGroups(selection),
+      clipCounter = countClipGroups(groups);
   // When the number of clip groups >, full-screen mode is enabled
-  if (clipCounter > OVER_GROUPS) doc.views[0].screenMode = ScreenMode.FULLSCREEN;
+  if (clipCounter > CFG.over) doc.views[0].screenMode = ScreenMode.FULLSCREEN;
 
   try {
-    processing(groups);
-  } catch (e) {
-    // showError(e);
-  }
-  
-  app.unloadAction(ACTION_SET, '');
+    processing(groups, itemAttr, CFG.isSaveMask, CFG.actionSet, CFG.actionName);
+  } catch (e) {}
+
+  app.unloadAction(CFG.actionSet, '');
   deselect();
-  doc.views[0].screenMode = userScreen;
+  doc.views[0].screenMode = userView;
   app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
 }
 
-function createAction (str, set, path) {
+function createAction(str, set, path) {
   var f = new File('' + path + '/' + set + '.aia');
   f.open('w');
   f.write(str);
@@ -148,29 +152,31 @@ function isGroup(item) {
 }
 
 // Count all clipping groups
-function clipCount(items) {
+function countClipGroups(items) {
+  var counter = 0;
   for (var i = 0, iLen = items.length; i < iLen; i++) {
-    if (isGroup(items[i]) && items[i].clipped) clipCounter++;
-    if (isGroup(items[i]) && !items[i].clipped) clipCount(items[i].pageItems);
+    if (isGroup(items[i]) && items[i].clipped) counter++;
+    if (isGroup(items[i]) && !items[i].clipped) counter +=   countClipGroups(items[i].pageItems);
   }
+  return counter;
 }
 
-function processing(items) {
+function processing(items, attr, isSaveMask, actionSet, actionName) {
   var currItem;
   for (var i = 0, iLen = items.length; i < iLen; i++) {
     deselect();
     currItem = items[i];
     if (isGroup(currItem) && currItem.clipped) {
       fixFillRule(currItem);
-      trim(currItem, SAVE_FILLED_CLIPMASK);
+      trim(currItem, attr, isSaveMask, actionSet, actionName);
     }
     if (isGroup(currItem) && !currItem.clipped) {
       if (currItem.pageItems.length == 1 && isGroup(currItem.pageItems[0])) {
         var singleItem = currItem.pageItems[0];
         singleItem.moveBefore(currItem);
-        trim(singleItem, SAVE_FILLED_CLIPMASK);
+        trim(singleItem, attr, isSaveMask, actionSet, actionName);
       } else {
-        processing(currItem.pageItems);
+        processing(currItem.pageItems, attr, isSaveMask, actionSet, actionName);
       }
     }
   }
@@ -178,7 +184,7 @@ function processing(items) {
 
 function deselect() {
   selection = null;
-  app.redraw();
+  redraw();
 }
 
 // If Attributes > Even-Odd is true, then the Pathfinder > Crop has an incorrect result
@@ -191,35 +197,36 @@ function fixFillRule(item) {
   }
 }
 
-function trim(item, isSaveMask) {
+function trim(item, attr, isSaveMask, actionSet, actionName) {
   // Save opacity & blendingMode properties
-  if (item.opacity < 100) itemAttr.mOpacity = item.opacity;
-  if (item.blendingMode != BlendModes.NORMAL) itemAttr.mBlending = item.blendingMode;
-  
+  if (item.opacity < 100) attr.mOpacity = item.opacity;
+  if (item.blendingMode != BlendModes.NORMAL) attr.mBlending = item.blendingMode;
+
   // If <clip group> contains live text
   outlineText(item);
-  
+
   // Trick for Compound path created from groups of paths
   item.selected = true;
   compoundPathsNormalize(selection);
-  
-  if (isSaveMask) { 
-    duplicateFilledMask(item, itemAttr.mOpacity, itemAttr.mBlending);
+
+  if (isSaveMask) {
+    duplicateFilledMask(item, attr.mOpacity, attr.mBlending);
   }
-  
+
   item.selected = true;
-    // Because the duplicate mask is select behind
+  // Because the duplicate mask is select behind
   if (isSaveMask) selection = selection[0];
-  app.doScript(ACTION_NAME, ACTION_SET);
+  app.doScript(actionName, actionSet);
 
   if (selection.length > 0) {
     // Restore opacity to child path
-    if (itemAttr.mOpacity < 100) selection[0].opacity = itemAttr.mOpacity;
+    if (attr.mOpacity < 100) selection[0].opacity = attr.mOpacity;
     // Restore blendingMode to child path
-    if (itemAttr.mBlending != BlendModes.NORMAL) selection[0].blendingMode = itemAttr.mBlending;
+    if (attr.mBlending != BlendModes.NORMAL) selection[0].blendingMode = attr.mBlending;
   }
 
-  itemAttr = { mOpacity: 100, mBlending: BlendModes.NORMAL };
+  attr.mOpacity = 100;
+  attr.mBlending = BlendModes.NORMAL;
 }
 
 function outlineText(group) {
@@ -227,7 +234,7 @@ function outlineText(group) {
     for (var i = 0, piLen = group.pageItems.length; i < piLen; i++) {
       var currItem = group.pageItems[i],
           itemType = currItem.typename;
-      if (itemType === 'TextFrame') { 
+      if (itemType === 'TextFrame') {
         var textColor = currItem.textRange.fillColor;
         currItem.selected = true;
         app.executeMenuCommand('outline');
@@ -246,9 +253,7 @@ function outlineText(group) {
       }
       if (isGroup(currItem)) outlineText(currItem);
     }
-  } catch (e) {
-    // showError(e);
-  }
+  } catch (e) {}
 }
 
 function ungroup(items) {
@@ -292,7 +297,7 @@ function duplicateFilledMask(group, opacity, blending) {
           itemType = currItem.typename,
           zeroPath = (itemType === 'CompoundPathItem') ? currItem.pathItems[0] : currItem;
 
-      if ((itemType === 'PathItem' || itemType === 'CompoundPathItem') && 
+      if ((itemType === 'PathItem' || itemType === 'CompoundPathItem') &&
           zeroPath.clipping && zeroPath.filled) {
         var maskClone = currItem.duplicate(group, ElementPlacement.PLACEAFTER);
             // Restore opacity to child path
@@ -301,18 +306,10 @@ function duplicateFilledMask(group, opacity, blending) {
             if (blending != BlendModes.NORMAL) maskClone.blendingMode = blending;
       }
     }
-    app.redraw();
-  } catch (e) {
-    // showError(e);
-  }
-}
-
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+    redraw();
+  } catch (e) {}
 }
 
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

@@ -12,63 +12,69 @@
   Description: Zooms active view to all object(s) in a document or to selection.
   Used code from FitArtboardToArt.jsx by Darryl Zurn
 
-  Versions:
-  1.0 Initial version.
-  1.1 Fixed zoom in text editing mode.
+  Release notes:
+  1.0 Initial version
+  1.1 Fixed zoom in text editing mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
-
-//Global variables
-var lockedItems = [],
-    lockedLayers = [],
-    SCALE_RATIO = .75; // Zoom ratio in document window;
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
-  if (documents.length == 0) {
-    alert('Error\nOpen a document and try again.');
+  var SCRIPT = {
+        name: 'Zoom \u0026 Center',
+        version: 'v.1.1'
+      },
+      CFG = {
+        ratio: .75, // Zoom ratio in document window
+        limit: 4000 // The amount of objects, when the script can run slowly
+      };
+
+  if (!documents.length) {
+    alert('Error\nOpen a document and try again');
     return;
   }
 
-  var doc = app.activeDocument;
+  var doc = app.activeDocument,
+      lockedItems = [],
+      lockedLayers = [];
 
-  if (doc.pageItems.length == 0) return;
+  if (!doc.pageItems.length) return;
 
   // Create Main Window
-  var dialog = new Window('dialog', 'Zoom \u0026 Center', undefined);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'fill'];
 
   // Zoom to locked item checkbox
-  var option = dialog.add('panel', undefined, 'What objects to include');
+  var option = dialog.add('panel', undefined, 'Zoom in');
       option.orientation = 'column';
       option.alignChildren = ['fill', 'fill'];
-      option.margins = [20, 20, 10, 10];
+      option.margins = [10, 20, 10, 10];
   var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
-      zoomLock = option.add('radiobutton', undefined, 'All except hidden'),
+      zoomLock = option.add('radiobutton', undefined, 'Not including hidden'),
       zoomAll = option.add('radiobutton', undefined, 'All in document');
       zoomVis.active = true;
       zoomVis.value = true;
 
   // If the number of objects is large, the script can run slowly. 
   // The number depends on the performance of the computer 
-  var chckCount = getCountObj(doc);
-  if (chckCount > 4000) {
+  var objCounter = getCountObj(doc);
+  if (objCounter > CFG.limit) {
       var warning = dialog.add('panel');
       warning.orientation = 'column';
       warning.margins = 5;
-      var warningTxt = warning.add('statictext', undefined, 
-                      'Found ' + chckCount + 
-                      ' objects.\nIf you choose option 2 or 3 \nthe script can run slowly.', 
-                      {multiline: true});
+      var warningTxt = warning.add('statictext', undefined, { multiline: true });
+      warningTxt.text = 'The document has over ' + CFG.limit + ' objects. The script can run slowly';
       warningTxt.justify = "center";
   }
 
@@ -78,7 +84,7 @@ function main() {
       btns.margins = [0, 10, 0, 0];
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
       cancel.helpTip = 'Press Esc to Close';
-  var ok = btns.add('button', undefined, 'OK', {name: 'ok'});
+  var ok = btns.add('button', undefined, 'Ok', {name: 'ok'});
       ok.helpTip = 'Press Enter to Run';
       ok.active = true;
 
@@ -93,12 +99,15 @@ function main() {
   });
   // End access key shortcut
 
-  cancel.onClick = function () { dialog.close(); }
+  cancel.onClick = dialog.close;
   ok.onClick = okClick;
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 www.sergosokin.ru');
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
-      copyright.enabled = false;
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   function okClick() {
     if (zoomVis.value) {
@@ -106,11 +115,11 @@ function main() {
       calcBounds(selection);
       selection = null;
     } else if (zoomLock.value) {
-      saveItemsState(doc);
+      saveItemsState(doc, lockedItems, lockedLayers);
       app.executeMenuCommand('selectall');
       calcBounds(selection);
       selection = null;
-      restoreItemsState(doc);
+      restoreItemsState(doc, lockedItems, lockedLayers);
     } else if (zoomAll.value) {
       // The VisibleBounds rect is in this order: 0 - left, 1 - right, 2 - top, 3 - bottom
       var myVisibleBounds = doc.pageItems[0].visibleBounds;
@@ -127,7 +136,7 @@ function main() {
       lr_y = myVisibleBounds[3];
     }
       
-    zoom();
+    zoom(CFG.ratio);
     dialog.close();
   }
 
@@ -136,10 +145,10 @@ function main() {
   if (selection.typename === 'TextRange') {
     var selTextFrames = getActiveTextFrames();
     calcBounds(selTextFrames);
-    zoom();
+    zoom(CFG.ratio);
   } else if (selection.length > 0) {
     calcBounds(selection);
-    zoom();
+    zoom(CFG.ratio);
   } else {
     dialog.center();
     dialog.show();
@@ -197,7 +206,7 @@ function calcBounds(sel) {
   }
 }
 
-function zoom() {
+function zoom(ratio) {
   var doc = app.activeDocument;
   // Get x,y/x,y Matrix for 100% view
   doc.views[0].zoom = 1;
@@ -227,36 +236,36 @@ function zoom() {
   }
 
   // And scale to that proportion minus a little bit.
-  doc.views[0].zoom = zF * SCALE_RATIO;
+  doc.views[0].zoom = zF * ratio;
 }
 
 // Save information about locked Layers, pageItems
-function saveItemsState(target) {
+function saveItemsState(target, _items, _layers) {
   for (var i = 0, lyrLen = target.layers.length; i < lyrLen; i++) {
     if (target.layers[i].locked) {
       target.layers[i].locked = false;
-      lockedLayers.push(i);
+      _layers.push(i);
     }
   }
 
   for (var j = 0, piLen = target.pageItems.length; j < piLen; j++) {
     var currItem = target.pageItems[j];
     if (currItem.locked && !currItem.hidden && currItem.layer.visible) {
-      lockedItems.push(j);
+      _items.push(j);
       currItem.locked = false;
     }
   }
 }
 
 // Restoring locked Layers, pageItems
-function restoreItemsState(target) {
-  for (var i = 0, iLen = lockedItems.length; i < iLen; i++) {
-    var idx = lockedItems[i];
+function restoreItemsState(target, _items, _layers) {
+  for (var i = 0, iLen = _items.length; i < iLen; i++) {
+    var idx = _items[i];
     target.pageItems[idx].locked = true;
   }
 
-  for (var j = 0, lyrLen = lockedLayers.length; j < lyrLen; j++) {
-    var idx = lockedLayers[j];
+  for (var j = 0, lyrLen = _layers.length; j < lyrLen; j++) {
+    var idx = _layers[j];
     target.layers[idx].locked = true;
   }
 }
@@ -265,13 +274,17 @@ function getCountObj(target) {
   return target.pageItems.length;
 }
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

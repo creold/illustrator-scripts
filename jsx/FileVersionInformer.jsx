@@ -1,7 +1,6 @@
 ﻿/* 
   FileVersionInformer.jsx for Adobe Illustrator
-  Description: Script for collecting information about the version of .ai & .eps files 
-               in selected folder & subfolder
+  Description: Script for collecting information about the version of .ai & .eps files in selected folder & subfolder
   Date: December, 2017
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -9,41 +8,40 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CS6 (Win), CC 2017 (Mac).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
-
-var sourceFolder;
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
+	var progCounter = 1,
+			files = [],
+			sourceFolder = Folder.selectDialog('Select the folder with Illustrator .ai, .eps files');
+	
 	// Progress bar
-	var win = new Window("palette", "FileVersionInformer", [150, 150, 600, 260]);
-	win.pnl = win.add("panel", [10, 10, 440, 100], undefined);
-	win.pnl.progBar = win.pnl.add("progressbar", [20, 35, 410, 60], 0, 100);
-	win.pnl.progBarLabel = win.pnl.add("statictext", [20, 20, 320, 35], "0%");
-	var progCount = 1;
-	var files = [];
-	var sourceFolder = Folder.selectDialog('Select the folder with Illustrator .ai, .eps files');
+	var win = new Window('palette', 'FileVersionInformer', [150, 150, 600, 260]);
+	win.pnl = win.add('panel', [10, 10, 440, 100], undefined);
+	win.pnl.progBar = win.pnl.add('progressbar', [20, 35, 410, 50], 0, 100);
+	win.pnl.progBarLabel = win.pnl.add('statictext', [20, 20, 320, 35], '0%');
 
 	if (sourceFolder != null) {
 		var resultFile = new File(sourceFolder.path + '/' + sourceFolder.name + '/FileVersionInformer.txt');
-		resultFile.encoding = "UTF8";
-		if (resultFile != null) {
-			resultFile.remove();
-		}
+		resultFile.encoding = 'UTF8';
+		if (resultFile != null) resultFile.remove();
 
 		files = getSubfolderFiles(sourceFolder);
 
@@ -56,35 +54,36 @@ function main() {
 			resultFile.writeln("------------------");
 			for (var i = 0, fLen = files.length; i < fLen; i++) {
 				// Change Progress bar
-				win.pnl.progBar.value = progCount * (100 / fLen);
+				win.pnl.progBar.value = progCounter * (100 / fLen);
 				win.pnl.progBarLabel.text = win.pnl.progBar.value.toFixed(0) + "%";
 				win.update();
 				// Writing current file name and Illustrator version
 				resultFile.writeln("File '" + decodeURI(files[i].name) + "' saved as " + getVersion(files[i]));
-				progCount++;
+				progCounter++;
 			}
 			resultFile.writeln();
 			resultFile.close();
 			alert('Script is done\nLook "FileVersionInformer.txt" in source folder');
 		} else {
-			alert('No matching files found.');
+			alert('No matching files found');
 		}
 	}
 }
 
 function getSubfolderFiles(folder) {
-	var filelist = folder.getFiles();
-	var files = [];
+	var filesList = folder.getFiles(),
+			files = [];
 
-	for (var i = 0, fLen = filelist.length; i < fLen; i++) {
-		if (filelist[i] instanceof Folder) {
-			files = files.concat(getSubfolderFiles(filelist[i]));
-		} else if (filelist[i] instanceof File) {
-			if (filelist[i].name.indexOf(".ai") > -1 || filelist[i].name.indexOf(".eps") > -1) {
-				files.push(filelist[i]);
+	for (var i = 0, fLen = filesList.length; i < fLen; i++) {
+		if (filesList[i] instanceof Folder) {
+			files = files.concat(getSubfolderFiles(filesList[i]));
+		} else if (filesList[i] instanceof File) {
+			if (filesList[i].name.indexOf('.ai') > -1 || filesList[i].name.indexOf('.eps') > -1) {
+				files.push(filesList[i]);
 			}
 		}
 	}
+
 	return files;
 }
 
@@ -92,10 +91,10 @@ function getSubfolderFiles(folder) {
 function getVersion(targetFile) {
 	if (targetFile.open() == false) return null;
 
-	var lineVersion = '';
-	var outVersion = '';
-	var getVers = 0;
-	var counter = 0;
+	var lineVersion = '',
+			outVersion = '',
+			getVers = 0,
+			counter = 0;
 
 	while (!targetFile.eof) {
 		lineVersion = targetFile.readln();
@@ -114,22 +113,15 @@ function getVersion(targetFile) {
 
 			counter++;
 			// For .eps files search second 'Creator' string
-			if (counter > 1) {
-				break;
-			}
+			if (counter > 1) break;
 		}
 	}
 	targetFile.close();
-	return outVersion;
-}
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+	return outVersion;
 }
 
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

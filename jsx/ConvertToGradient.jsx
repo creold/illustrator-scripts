@@ -9,38 +9,43 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   0.1 Initial version
   0.1.1 Performance optimization
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
-// Global variables
-var SCRIPT_NAME = 'ConvertToGradient',
-    SCRIPT_VERSION = 'v.0.1.1',
-    DLG_OPACITY = .96; // UI window opacity. Range 0-1
-
-var fillBad = 0,
-    channel = new Array();
+var fillBad = 0;
 
 function main() {
+  var SCRIPT = {
+        name: 'ConvertToGradient',
+        version: 'v.0.1.1'
+      },
+      CFG = {
+        uiOpacity: .97 // UI window opacity. Range 0-1
+      },
+      channel = [];
+
   if (!documents.length) {
     alert('Error\nOpen a document and try again');
     return;
@@ -67,11 +72,11 @@ function main() {
   }
 
   // Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.preferredSize.width = 174;
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'fill'];
-      dialog.opacity = DLG_OPACITY;
+      dialog.opacity = CFG.uiOpacity;
 
   // Value fields
   var shiftPanel = dialog.add('panel', undefined, 'Gradient Shift');
@@ -142,14 +147,14 @@ function convertToGradient(obj, shift, angle, max, shiftEnd) {
         break;
       case 'PathItem':
         if (obj.filled == true && chkFillType(obj) == true) {
-          applyGradient(obj, shift, angle, max, shiftEnd);
+          applyGradient(obj, shift, angle, max, shiftEnd, channel);
         } else {
           fillBad++;
         }
         break;
       case 'CompoundPathItem':
         if (obj.pathItems[0].filled == true && chkFillType(obj.pathItems[0]) == true) {
-          applyGradient(obj.pathItems[0], shift, angle, max, shiftEnd);
+          applyGradient(obj.pathItems[0], shift, angle, max, shiftEnd, channel);
         } else {
           fillBad++;
         }
@@ -161,7 +166,7 @@ function convertToGradient(obj, shift, angle, max, shiftEnd) {
 }
 
 // Apply gradient to items
-function applyGradient(obj, shift, angle, max, shiftEnd) {
+function applyGradient(obj, shift, angle, max, shiftEnd, channel) {
   var currentColor = (obj.fillColor.typename == 'SpotColor') ? obj.fillColor.spot.color : obj.fillColor;
   var startColor = (isRgbDoc()) ? new RGBColor() : new CMYKColor();
   var endColor = (isRgbDoc()) ? new RGBColor() : new CMYKColor();

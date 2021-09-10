@@ -7,76 +7,84 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
-  0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run.
-  1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel.
-  1.1 Minor improvements.
+  Release notes:
+  0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run
+  1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel
+  1.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
-// Global variables
-var SCRIPT_NAME = 'SplitPath',
-    SCRIPT_VERSION = 'v.1.1';
-    AI_VER = parseInt(app.version);
-
-// EN-RU localized messages
-var LANG_ERR_DOC = { en: 'Error\nOpen a document and try again.',
-                     ru: 'Ошибка\nОткройте документ и запустите скрипт.'},
-    LANG_ERR_SELECT = { en: 'Error\nPlease, select two or more objects.',
-                        ru: 'Ошибка\nВыделите 2 или более объекта.'},
-    LANG_ERR_VER = { en: 'Error\nSorry, script only works in Illustrator CS6 and above.',
-                     ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше.'},
-    LANG_ERR_FILL = { en: 'Error\nPlease, fill the mask object in any color.',
-                      ru: 'Ошибка\nДобавьте объекту для вырезания любую заливку цветом.'},
-    LANG_ERR_INTERSECT_O = { en: 'Error\nTo use Intersect add in selection atleast one opened path.', 
-                             ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 незамкнутую линию.'},
-    LANG_ERR_INTERSECT_C = { en: 'Error\nTo use Intersect add in selection atleast one closed path.',
-                             ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 замкнутую линию.'},
-    LANG_MINUS = { en: 'Minus Front', ru: 'Минус верхний'},
-    LANG_INTERSECT = { en: 'Intersect', ru: 'Пересечение'},
-    LANG_OK = { en: 'Ok', ru: 'Готово'},
-    LANG_CANCEL = { en: 'Cancel', ru: 'Отмена'};
-
-var isFilled = isOpened = isClosed = false;
-
 function main() {
-  if (documents.length == 0) {
-    alert(LANG_ERR_DOC);
+  var SCRIPT = {
+        name: 'SplitPath',
+        version: 'v.1.1'
+      },
+      CFG = {
+        aiVers: parseInt(app.version),
+      },
+      LANG = { 
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        errSel: { en: 'Error\nPlease, select two or more objects',
+                  ru: 'Ошибка\nВыделите 2 или более объекта' },
+        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
+                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
+        errFill: { en: 'Error\nPlease, fill the mask object in any color',
+                  ru: 'Ошибка\nДобавьте объекту для вырезания любую заливку цветом'},
+        errOpen: { en: 'Error\nTo use Intersect add in selection atleast one opened path', 
+                  ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 незамкнутую линию'},
+        errClose: { en: 'Error\nTo use Intersect add in selection atleast one closed path',
+                    ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 замкнутую линию'},
+        minus: { en: 'Minus Front', ru: 'Минус верхний'},
+        intersect: { en: 'Intersect', ru: 'Пересечение'},
+        cancel: { en: 'Cancel', ru: 'Отмена' },
+        ok: { en: 'Ok', ru: 'Готово' }
+      };
+
+  if (CFG.aiVers < 16) {
+    alert(LANG.errVers);
     return;
   }
 
-  if (selection.length == 0 || selection.typename == 'TextRange') {
-    alert(LANG_ERR_SELECT);
+  if (!documents.length) {
+    alert(LANG.errDoc);
     return;
   }
 
-  if (AI_VER < 16) {
-    alert(LANG_ERR_VER);
+  if (!selection.length || selection.typename == 'TextRange') {
+    alert(LANG.errSel);
     return;
   }
 
-  checkFill(selection);
-  
+  var info = {
+        isFilled: false,
+        isClosed: false,
+        isOpened: false
+      };
+  checkFill(selection, info);
+
   // Create Main Window
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChild = ['fill', 'center'];
 
@@ -84,20 +92,23 @@ function main() {
   var method = dialog.add('group');
       method.orientation = 'row';
       method.margins = [0, 10, 0, 10];
-  var minusRadio = method.add('radiobutton', undefined, LANG_MINUS);
+  var minusRadio = method.add('radiobutton', undefined, LANG.minus);
       minusRadio.active = true;
       minusRadio.value = true;
-  var intersectRadio = method.add('radiobutton', undefined, LANG_INTERSECT);
+  var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
 
   // Buttons
   var btns = dialog.add('group');
       btns.orientation = 'row';
-  var cancel = btns.add('button', undefined, LANG_CANCEL, {name: 'cancel'});
-  var ok = btns.add('button', undefined, LANG_OK, {name: 'ok'});
+  var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
+  var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, sergosokin.ru');
-  copyright.justify = 'center';
-  copyright.enabled = false;
+  var copyright = dialog.add('statictext', undefined, '© Sergey Osokin. Visit Github');
+      copyright.justify = 'center';
+  
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   // Begin access key shortcut
   dialog.addEventListener('keydown', function(kd) {
@@ -112,32 +123,33 @@ function main() {
   ok.onClick = okClick;
   
   function okClick() {
-    if (!isFilled) {
-      alert(LANG_ERR_FILL);
+    if (!info.isFilled) {
+      alert(LANG.errFill);
       return;
     }
 
-    if (intersectRadio.value && !isOpened) {
-      alert(LANG_ERR_INTERSECT_O);
+    if (intersectRadio.value && !info.isOpened) {
+      alert(LANG.errOpen);
       return;
     }
 
-    if (intersectRadio.value && !isClosed) {
-      alert(LANG_ERR_INTERSECT_C);
+    if (intersectRadio.value && !info.isClosed) {
+      alert(LANG.errClose);
       return;
     }
 
     try {
-      if (minusRadio.value) { minusFront(); }
-      else { intersect(); }
-    } catch (e) {
-      // showError(e);
-    }
+      if (minusRadio.value) { 
+        minusFront();
+      } else {
+        intersect(SCRIPT.name);
+      }
+    } catch (e) {}
 
     dialog.close();
   }
 
-  cancel.onClick = function () { dialog.close(); }
+  cancel.onClick = dialog.close;
 
   dialog.center();
   dialog.show();
@@ -150,18 +162,18 @@ function minusFront() {
 }
 
 // Intersect method
-function intersect() {
+function intersect(name) {
   var saveSel = [],
       saveFill = [];
 
   releaseGroups(selection);
   saveState(saveSel, saveFill);
-  addTopRectangle();
+  addTopRectangle(name);
 
   selection = null;
   restore(saveFill);
 
-  rectIntersect = activeDocument.pageItems.getByName(SCRIPT_NAME);
+  rectIntersect = activeDocument.pageItems.getByName(name);
   rectIntersect.selected = true;
   
   // Create a intersect mask
@@ -180,7 +192,7 @@ function intersect() {
 }
 
 // Searching unfilled objects
-function checkFill(arr) {
+function checkFill(arr, attr) {
   for (var i = 0, aLen = arr.length; i < aLen; i++) {
     var currItem = arr[i];
     try {
@@ -189,22 +201,20 @@ function checkFill(arr) {
           checkFill(currItem.pageItems);
           break;
         case 'PathItem':
-          if (currItem.filled) { isFilled = true; }
-          if (currItem.closed) { isClosed = true; }
-          if (!currItem.closed) { isOpened = true; }
+          if (currItem.filled) attr.isFilled = true;
+          if (currItem.closed) attr.isClosed = true;
+          if (!currItem.closed) attr.isOpened = true;
           break;
         case 'CompoundPathItem':
-          if (currItem.pathItems[0].filled && currItem.pathItems[0].closed) { isFilled = true; }
-          if (currItem.pathItems[0].closed) { isClosed = true; }
-          if (!currItem.pathItems[0].closed) { isOpened = true; }
+          if (currItem.pathItems[0].filled && currItem.pathItems[0].closed) attr.isFilled = true;
+          if (currItem.pathItems[0].closed) attr.isClosed = true;
+          if (!currItem.pathItems[0].closed) attr.isOpened = true;
           break;
         default:
           break;
       }
     } catch (e) { }
   }
-
-  return [isFilled, isClosed, isOpened];
 }
 
 function getChildAll(arr) {
@@ -277,7 +287,7 @@ function cutPaths() {
   app.executeMenuCommand('ungroup');
 }
 
-function addTopRectangle() {
+function addTopRectangle(name) {
   if (selection instanceof Array) {
     // Used code from FitArtboardToArt.jsx by Darryl Zurn
     var initBounds = selection[0].visibleBounds;
@@ -304,7 +314,7 @@ function addTopRectangle() {
       height = initBounds[1] - initBounds[3] + 2;
 
   var rect = activeDocument.activeLayer.pathItems.rectangle(top, left, width, height);
-  rect.name = SCRIPT_NAME;
+  rect.name = name;
   rect.filled = true;
   rect.strokeColor = new NoColor();
 }
@@ -315,12 +325,16 @@ function restore(arr) {
   }
 }
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

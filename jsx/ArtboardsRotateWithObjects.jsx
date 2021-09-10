@@ -1,31 +1,32 @@
 /*
-    Artboards_Rotate_With_Objects.jsx for Adobe Illustrator
-    Description: Script to rotate 90 degrees an document artboards with all the objects on it.
-    Requirements: Adobe Illustrator CS6 and above
-    Date: October, 2018
-    Authors: Alexander Ladygin, email: i@ladygin.pro
-                Sergey Osokin, email: hi@sergosokin.ru
+  Artboards_Rotate_With_Objects.jsx for Adobe Illustrator
+  Description: Script to rotate 90 degrees an document artboards with all the objects on it.
+  Requirements: Adobe Illustrator CS6 and above
+  Date: October, 2018
+  Authors: Alexander Ladygin, email: i@ladygin.pro
+              Sergey Osokin, email: hi@sergosokin.ru
 
-    Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-    Versions:
-    0.1 Initial version. Do not rotate locked, hidden items
-    1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
-    1.1 Added rotate angle: 90 CW or 90 CCW.
-    1.2 Fix issues.
+  Release notes:
+  0.1 Initial version. Do not rotate locked, hidden items
+  1.0 Added GUI: the choice of current artboard or all. Now script can rotate locked, hidden objects
+  1.1 Added rotate angle: 90 CW or 90 CCW.
+  1.2 Fix issues.
 
-    NOTICE:
-    Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
-    This script is provided "as is" without warranty of any kind.
-    Free to use, not for sale.
+  NOTICE:
+  Tested with Adobe Illustrator CC 2017/2018 (Mac), CS6 (Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale.
 
-    Released under the MIT license.
-    http://opensource.org/licenses/mit-license.php
+  Released under the MIT license.
+  http://opensource.org/licenses/mit-license.php
 
-    Check other author's scripts: https://github.com/creold
+  heck other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 var SCRIPT_NAME = 'ARWO',

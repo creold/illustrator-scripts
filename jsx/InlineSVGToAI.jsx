@@ -1,7 +1,7 @@
 /*
   InlineSVGToAI.jsx for Adobe Illustrator
   Description: The script inserts the svg code as an object from the clipboard into the Adobe Illustrator.
-               Adobe Illustrator v.22.1 (March, 2018) can insert svg graphics without a script.
+                Adobe Illustrator v.22.1 (March, 2018) can insert svg graphics without a script
   Date: 2018
   Requirements: Adobe Illustrator CC 2014+
   Author: Alexander Ladygin, email: i@ladygin.pro
@@ -16,17 +16,18 @@
 
   NOTICE:
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 */
 
 //@target illustrator
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 
 function main() {
-  if (documents.length == 0) {
+  if (!documents.length) {
     alert("Error\nOpen a document and try again.");
     return;
   }
@@ -95,14 +96,7 @@ function uiDialog() {
   return win;
 }
 
-
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
-}
-
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}

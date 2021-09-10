@@ -7,34 +7,38 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  Versions:
+  Release notes:
   0.1 Initial version
   0.1.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+  - via Donatty https://donatty.com/sergosokin
   - via PayPal http://www.paypal.me/osokin/usd
-  - via QIWI https://qiwi.com/n/OSOKIN​
-  - via YooMoney https://yoomoney.ru/to/410011149615582​
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018/2019 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
-
-var SCRIPT_NAME = 'Export Selection As Ai',
-    SCRIPT_VERSION = 'v.0.1.1';
+app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 // Main function
 function main() {
+  var SCRIPT = {
+        name: 'Export Selection As Ai',
+        version: 'v.0.1.1'
+      };
+
   if (!documents.length) {
     alert('Error\nOpen a document and try again');
     return;
@@ -56,7 +60,7 @@ function main() {
   }
 
   // Create dialog box
-  var dialog = new Window('dialog', SCRIPT_NAME + ' ' + SCRIPT_VERSION);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.alignChildren = 'center';
 
   var outPnl = dialog.add('panel', undefined, 'Output folder');
@@ -78,7 +82,7 @@ function main() {
   var symbol = separatorPnl.add('edittext', undefined, separator);
       symbol.characters = 4;
       symbol.enabled = false;
-  
+
   var prgPnl = dialog.add('panel', undefined, 'Progress');
       prgPnl.margins = uiMargin;
   var progBar = prgPnl.add('progressbar', [20, 15, 276, 20], 0, 100);
@@ -95,9 +99,12 @@ function main() {
   var btnCancel = btnGroup.add('button', undefined, 'Cancel', { name: 'cancel' });
   var btnExport = btnGroup.add('button', undefined, 'Export', { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin, github.com/creold');
+  var copyright = dialog.add('statictext', undefined, '© Sergey Osokin. Visit Github');
       copyright.justify = 'center';
-      copyright.enabled = false;
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   // Click functions
   separateChk.onClick = function () {
@@ -112,14 +119,12 @@ function main() {
     }
   }
 
-  btnCancel.onClick = function () {
-    dialog.close();
-  }
+  btnCancel.onClick = dialog.close;
 
   btnExport.onClick = start;
-  
+
   function start() {
-    var colorSpace = app.activeDocument.documentColorSpace;
+    var colorSpace = activeDocument.documentColorSpace;
     outFolder = decodeURI(lblOutFolder.text);
 
     if (isEmpty(outFolder.toString())) {
@@ -162,9 +167,9 @@ function main() {
   dialog.show();
 }
 
+// Get document name without extension
 function getDocName(doc) {
   var name = decodeURI(doc.name);
-  name = name.replace(/\s/g, '_'); // Replace all space symbols
   // Remove filename extension
   var lastDot = name.lastIndexOf('.');
   if (lastDot > -1) return name.slice(0, lastDot);
@@ -212,13 +217,18 @@ function copyObjectsTo(objects, doc, separate) {
   }
 }
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
+
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}
