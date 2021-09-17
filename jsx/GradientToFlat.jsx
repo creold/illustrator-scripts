@@ -31,36 +31,35 @@
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 $.localize = true; // Enabling automatic localization
 
-var defs = {
-      isFill: true, // Convert fill color
-      isStroke: true, // Convert stroke color
-      dlgOpacity: 0.96 // UI window opacity. Range 0-1
-    },
-    lang = {
-      errDoc: { en: 'Error\nOpen a document and try again',
-                ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-      errSel: { en: 'Error\nPlease, select one or more paths',
-                ru: 'Ошибка\nВыделите 1 или более объектов' },
-      fill: { en: 'F\u0332ill', ru: 'Заливка' },
-      stroke: { en: 'S\u0332troke', ru: 'Обводка' },
-      cancel: { en: 'Cancel', ru: 'Отмена' },
-      ok: { en: 'Ok', ru: 'Готово' }
-    };
-
 // Main function
 function main() {
   var SCRIPT = {
         name: 'Gradient To Flat',
         version: 'v.0.1'
+      },
+      CFG = {
+        isFill: true, // Convert fill color
+        isStroke: true, // Convert stroke color
+        uiOpacity: 0.96 // UI window opacity. Range 0-1
+      },
+      LANG = {
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        errSel: { en: 'Error\nPlease, select one or more paths',
+                  ru: 'Ошибка\nВыделите 1 или более объектов' },
+        fill: { en: 'F\u0332ill', ru: 'Заливка' },
+        stroke: { en: 'S\u0332troke', ru: 'Обводка' },
+        cancel: { en: 'Cancel', ru: 'Отмена' },
+        ok: { en: 'Ok', ru: 'Готово' }
       };
 
   if (!documents.length) {
-    alert(lang.errDoc);
+    alert(LANG.errDoc);
     return;
   }
 
   if (!selection.length || selection.typename == 'TextRange') {
-    alert(lang.errSel);
+    alert(LANG.errSel);
     return;
   }
 
@@ -75,21 +74,21 @@ function main() {
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
       dialog.margins = 20;
-      dialog.opacity = defs.dlgOpacity;
+      dialog.opacity = CFG.uiOpacity;
 
   var options = dialog.add('group');
       options.orientation = isCyrillicUi() ? 'column' : 'row';
       options.alignChildren = ['left', 'center'];
       options.spacing = 20;
 
-  var isFill = options.add('checkbox', undefined, lang.fill);
-      isFill.value = defs.isFill;
+  var isFill = options.add('checkbox', undefined, LANG.fill);
+      isFill.value = CFG.isFill;
       isFill.active = true;
-  var isStroke = options.add('checkbox', undefined, lang.stroke);
-      isStroke.value = defs.isStroke;
+  var isStroke = options.add('checkbox', undefined, LANG.stroke);
+      isStroke.value = CFG.isStroke;
 
-  var btnCancel = dialog.add('button', undefined, lang.cancel, {name: 'cancel'});
-  var btnConvert = dialog.add('button', undefined, lang.ok, {name: 'ok'});
+  var btnCancel = dialog.add('button', undefined, LANG.cancel, {name: 'cancel'});
+  var btnConvert = dialog.add('button', undefined, LANG.ok, {name: 'ok'});
 
   var copyright = dialog.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';

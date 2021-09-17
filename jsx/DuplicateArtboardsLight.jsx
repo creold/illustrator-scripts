@@ -273,7 +273,6 @@ function main() {
    * Save input data to file
    */
   function saveSettings() {
-    // FIXME: вылет скрипта на файле test-4.ai без записи настроек
     if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
     var $file = new File(SETTINGS.folder + SETTINGS.name);
     $file.encoding = 'UTF-8';
@@ -435,7 +434,7 @@ function fillZero(number, size) {
 
 /**
  * Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
- * @param {number*} abIdx - current artboard index
+ * @param {number} abIdx - current artboard index
  * @return {object} absolute coordinates of the artboard
  */
 function getArtboardCoordinates(abIdx, lyrName) {
@@ -503,11 +502,12 @@ function isOverCnvsBounds(coord, copies, spacing, max) {
 /**
  * Duplicate the selected artboard. Based on the idea of @Silly-V
  * @param {number} thisAbIdx - current artboard index
+ * @param {object} items - collection of items on the artboard
  * @param {number} spacing - distance between copies
  * @param {string} suffix - copy name suffix
- * @param {number} count - current copy number
+ * @param {number} counter - current copy number
  */
-function duplicateArtboard(thisAbIdx, items, spacing, suffix, count) {
+function duplicateArtboard(thisAbIdx, items, spacing, suffix, counter) {
   var doc = activeDocument,
       thisAb = doc.artboards[thisAbIdx],
       thisAbRect = thisAb.artboardRect,
@@ -517,7 +517,7 @@ function duplicateArtboard(thisAbIdx, items, spacing, suffix, count) {
       abWidth = thisAbRect[2] - thisAbRect[0];
 
 	var newAb = doc.artboards.add(thisAbRect);
-  if (count === 0) {
+  if (counter === 0) {
     newAb.artboardRect = [
       thisAbRect[2] + spacing,
       thisAbRect[1],
@@ -542,12 +542,12 @@ function duplicateArtboard(thisAbIdx, items, spacing, suffix, count) {
   // Move copied items to the new artboard
   for (var i = 0, dLen = dupArr.length; i < dLen; i++) {
     var pos = isDocCoords ? dupArr[i].position : doc.convertCoordinate(dupArr[i].position, docCoordSystem, abCoordSystem);
-    dupArr[i].position = [pos[0] + (abWidth + spacing) * (count + 1), pos[1]];
+    dupArr[i].position = [pos[0] + (abWidth + spacing) * (counter + 1), pos[1]];
   }
 }
 
 /**
- * Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
+ * Duplicate all items
  * @param {object} collection - selected items on active artboard
  * @return {array} arr - duplicated items
  */
@@ -617,7 +617,7 @@ function convertUnits(value, newUnit) {
       value = parseFloat(value) * 10;
   } else if ((unit === 'mm') && (newUnit === 'in')) {
       value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (bnewUnit === 'pt'))) {
+  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
       value = parseFloat(value) * 2.83464566929134 * 10;
   } else if ((unit === 'cm') && (newUnit === 'mm')) {
       value = parseFloat(value) / 10;

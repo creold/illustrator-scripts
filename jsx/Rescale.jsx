@@ -223,7 +223,7 @@ function convertUnits(value, newUnit) {
       value = parseFloat(value) * 10;
   } else if ((unit === 'mm') && (newUnit === 'in')) {
       value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (bnewUnit === 'pt'))) {
+  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
       value = parseFloat(value) * 2.83464566929134 * 10;
   } else if ((unit === 'cm') && (newUnit === 'mm')) {
       value = parseFloat(value) / 10;
