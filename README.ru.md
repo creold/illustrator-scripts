@@ -13,6 +13,7 @@
 ### 📜 Алфавитный список
 * [ArtboardsRotateWithObjects.jsx]   
 * [ConvertToGradient.jsx] `(upd, 10.09.2021)`  
+* [CycleColors.jsx] `(new, 15.11.2021)`  
 * [DuplicateArtboardsLight.jsx] `(upd, 10.09.2021)`  
 * [Export-selection-as-AI.jsx] `(upd, 10.09.2021)`     
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
@@ -32,26 +33,27 @@
 * [TrimMasks.jsx] `(upd, 10.09.2021)`  
 * [Zoom-and-center.jsx] `(upd, 10.09.2021)`  
 
-[ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
-[ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
-[DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts#duplicateartboardslight
-[Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts#export-selection-as-ai 
-[ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
-[FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts#fileversioninformer
-[GradientToFlat.jsx]: https://github.com/creold/illustrator-scripts#gradienttoflat
-[InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts#inlinesvgtoai
-[NamedItemsFinder.jsx]: https://github.com/creold/illustrator-scripts#named-items-finder
-[PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts#points-move-random
-[RandomScribble.jsx]: https://github.com/creold/illustrator-scripts#randomscribble
-[RenameItems.jsx]: https://github.com/creold/illustrator-scripts#renameitems
-[Rescale.jsx]: https://github.com/creold/illustrator-scripts#rescale
-[ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts#resizetosize
-[SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts#selectonlypoints
-[SelectPointsByType.jsx]: https://github.com/creold/illustrator-scripts#selectpointsbytype
-[SplitPath.jsx]: https://github.com/creold/illustrator-scripts#splitpath
-[StrokeColorFromFill.jsx]: https://github.com/creold/illustrator-scripts#strokecolorfromfill
-[TrimMasks.jsx]: https://github.com/creold/illustrator-scripts#trimmasks
-[Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts#zoom-and-center
+[ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#artboardsrotatewithobjects-12
+[ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#converttogradient
+[CycleColors.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#cyclecolors
+[DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#duplicateartboardslight
+[Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#export-selection-as-ai 
+[ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#extungroup-v12
+[FileVersionInformer.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#fileversioninformer
+[GradientToFlat.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#gradienttoflat
+[InlineSVGToAI.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#inlinesvgtoai
+[NamedItemsFinder.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#named-items-finder
+[PointsMoveRandom.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#points-move-random
+[RandomScribble.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#randomscribble
+[RenameItems.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#renameitems
+[Rescale.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#rescale
+[ResizeToSize.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#resizetosize
+[SelectOnlyPoints.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#selectonlypoints
+[SelectPointsByType.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#selectpointsbytype
+[SplitPath.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#splitpath
+[StrokeColorFromFill.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#strokecolorfromfill
+[TrimMasks.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#trimmasks
+[Zoom-and-center.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#zoom-and-center
 
 ### ▶️ Как запускать скрипты
 
@@ -125,6 +127,24 @@
 3. Введите числовые значения
 
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
+</a> 
+
+## CycleColors
+
+Меняет местами цвета заливки и обводки выделенных объектов по порядку их расположения в панели Layers. Сохраняет толщину обводок, но если у объекта нет обводки, то копирует с другого объекта. Если ваши выделенные объекты хаотичны, то может показаться, что кнопки `Forward` и `Backward` переносят цвет случайным образом.  Кнопка `Revert` не возвращает кастомные кисти, пунктир, применённый к обводке. Вы можете использовать стандартную отмену истории после закрытия диалога.
+
+### Использование
+
+1. Выберите объекты
+2. Запустите скрипт `File → Scripts → CycleColors`
+3. Введите шаг переноса цвета
+4. Выберите какие цвета переносить
+5. Нажмите на одну из кнопок действия
+
+![CycleColors](https://i.ibb.co/3zk9Jgs/Cycle-Colors.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">

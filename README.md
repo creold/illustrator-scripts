@@ -13,6 +13,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 ### 📜 Alphabetical list of scripts
 * [ArtboardsRotateWithObjects.jsx]   
 * [ConvertToGradient.jsx] `(upd, 10.09.2021)`  
+* [CycleColors.jsx] `(new, 15.11.2021)`  
 * [DuplicateArtboardsLight.jsx] `(upd, 10.09.2021)`  
 * [Export-selection-as-AI.jsx] `(upd, 10.09.2021)`     
 * [ExtUngroup.jsx] `(upd, 25.11.2019)`   
@@ -34,6 +35,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
+[CycleColors.jsx]: https://github.com/creold/illustrator-scripts#cyclecolors
 [DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts#duplicateartboardslight
 [Export-selection-as-AI.jsx]: https://github.com/creold/illustrator-scripts#export-selection-as-ai 
 [ExtUngroup.jsx]: https://github.com/creold/illustrator-scripts#extungroup-v12
@@ -125,6 +127,24 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 3. Enter a numeric values in input fields
 
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
+</a> 
+
+## CycleColors
+
+Swaps the fill and stroke colors of the selected objects in the Layers panel. Preserves the weight of the strokes, but if the object has no stroke, it copies from another object. If your selected objects are chaotic, you may think that the `Forward` and `Backward` buttons move color randomly. The `Revert` button don't return custom brushes, the dashed settings applied to the stroke. You can use the native command `Undo` after closing the dialog box.
+
+### Использование
+
+1. Select objects
+2. Run script `File → Scripts → CycleColors`
+3. Enter the amount of shift steps
+4. Select options
+5. Click one of the action buttons
+
+![CycleColors](https://i.ibb.co/3zk9Jgs/Cycle-Colors.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
