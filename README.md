@@ -134,9 +134,9 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 
 ## CycleColors
 
-Swaps the fill and stroke colors of the selected objects in the Layers panel. Preserves the weight of the strokes, but if the object has no stroke, it copies from another object. If your selected objects are chaotic, you may think that the `Forward` and `Backward` buttons move color randomly. The `Revert` button don't return custom brushes, the dashed settings applied to the stroke. You can use the native command `Undo` after closing the dialog box.
+Swaps the fill and stroke colors of the selected objects in order they have in the Layers panel. Preserves the weight of the strokes, but if an object has no stroke, the script copies one from another object. If your selected objects are in non-consecutive order, you may think that the `Forward` and `Backward` buttons move colors randomly. The `Revert` button doesn't return custom brushes and dash settings applied to strokes, but you You can use the native command `Undo` after closing the dialog box.
 
-### Использование
+### Usage
 
 1. Select objects
 2. Run script `File → Scripts → CycleColors`

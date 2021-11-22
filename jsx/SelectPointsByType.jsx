@@ -10,7 +10,8 @@
   1.0 Initial version. Tolerance for broken points handles 0..180 degrees
   1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
   2.0 Added more points type. Minor improvements
-  2.1 Added Ortho points. Minor improvements
+  2.1.0 Added Ortho points. Minor improvements
+  2.1.1 UI improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,13 +38,14 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectPointsByType',
-        version: 'v.2.1'
+        version: 'v.2.1.1'
       },
       CFG = {
         aiVers: parseInt(app.version),
         minAngle: 0, // Degrees range for the Tolerance
         maxAngle: 180, // Degrees range for the Tolerance
         cosTolerance: -0.999999, // Correction of coordinate inaccuracy
+        btnHeight: 40, // Height of buttons with icons
         uiOpacity: .96 // UI window opacity. Range 0-1
       },
       ICNS = { // Binary icons data
@@ -98,26 +100,32 @@ function main() {
       btns.alignChildren = ['fill','center'];
 
   var bezierBtn = btns.add('iconbutton', undefined, icoBezier, {style:'button', toggle:true});
+      bezierBtn.preferredSize.height = CFG.btnHeight;
       bezierBtn.text = 'Bezier  ';
       bezierBtn.helpTip = 'Select Bezier (Smooth) \npoints (with handles).\nShortcut Alt + 1';
 
   var orthoBtn = btns.add('iconbutton', undefined, icoOrtho, {style:'button', toggle:true});
+      orthoBtn.preferredSize.height = CFG.btnHeight;
       orthoBtn.text = 'Ortho   ';
       orthoBtn.helpTip = 'Select Ortho (Smooth) \npoints (with handles along axis).\nShortcut Alt + 2';
 
   var flushBtn = btns.add('iconbutton', undefined, icoFlush, {style:'button', toggle:true});
+      flushBtn.preferredSize.height = CFG.btnHeight;
       flushBtn.text = 'Flush   ';
       flushBtn.helpTip = 'Select Flush points\n(with 1 handle along the straight \nsegment). Shorcut Alt + 3';
 
   var cornerBtn = btns.add ('iconbutton', undefined, icoCorner, {style:'button', toggle:true});
+      cornerBtn.preferredSize.height = CFG.btnHeight;
       cornerBtn.text = 'Corner ';
       cornerBtn.helpTip = 'Select Corner points (without\none or both handles or with\nhandles at the angle).\nShortcut Alt + 4';
 
   var brokenBtn = btns.add ('iconbutton', undefined, icoBroken, {style:'button', toggle:true});
+      brokenBtn.preferredSize.height = CFG.btnHeight;
       brokenBtn.text = 'Broken ';
       brokenBtn.helpTip = 'Select Broken (Pseudo-Smooth) points\n(with handles at the angle).\nShorcut Alt + 5';
 
   var flatBtn = btns.add('iconbutton', undefined, icoFlat, {style:'button', toggle:true});
+      flatBtn.preferredSize.height = CFG.btnHeight;
       flatBtn.text = 'Flat      ';
       flatBtn.helpTip = 'Select Flat points on straight paths\n(without handles).\nShorcut Alt + 6';
 
@@ -139,6 +147,8 @@ function main() {
   var selPoints = dialog.add('statictext', undefined);
       selPoints.text = 'Selected Points: ' + calcSelectedPoints(selPaths);
       selPoints.justify = 'center';
+
+  var closeBtn = dialog.add('button', undefined, 'Close', { name: 'cancel' });
 
   var copyright = dialog.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
@@ -186,6 +196,8 @@ function main() {
   isShowBox.onClick = function () {
     app.executeMenuCommand('AI Bounding Box Toggle');
   }
+
+  closeBtn.onClick = dialog.close;
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
