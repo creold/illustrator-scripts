@@ -12,6 +12,7 @@
 
 ### 📜 Алфавитный список
 * [ArtboardsRotateWithObjects.jsx]   
+* [ChangeOpacity.jsx] `(new, 12.12.2021)`  
 * [ConvertToGradient.jsx] `(upd, 10.09.2021)`  
 * [CycleColors.jsx] `(new, 15.11.2021)`  
 * [DuplicateArtboardsLight.jsx] `(upd, 10.09.2021)`  
@@ -34,6 +35,7 @@
 * [Zoom-and-center.jsx] `(upd, 10.09.2021)`  
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#artboardsrotatewithobjects-12
+[ChangeOpacity.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#changeopacity
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#converttogradient
 [CycleColors.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#cyclecolors
 [DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts/blob/master/README.ru.md#duplicateartboardslight
@@ -109,6 +111,23 @@
 3. Выберите опции
 
 ![ArtboardsRotateWithObjects](https://i.ibb.co/YtV4nc6/demo-Artboards-Rotate-With-Objects.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">
+</a> 
+
+## ChangeOpacity
+
+Задаёт точное значение непрозрачности (Opacity) выбранных объектов. Со знаком плюс или минус впереди числа произойдёт сдвиг относительно текущего значения у каждого объекта. Внутри групп масок (Clipping Group) не меняет непрозрачность самой маски. Но можно учитывать маски, если в коде поменять `inclMask: false` на `true`. 
+
+### Использование
+
+1. Выберите объекты
+2. Запустите скрипт `File → Scripts → ChangeOpacity`
+3. Введите точное значение непрозрачности или дельту со знаком + или -
+4. Выберите `Change group content`, если в группах хотите менять непрозрачность внутренних объектов, а не групп
+
+![ChangeOpacity](https://i.ibb.co/zP3Vkww/Change-Opacity.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="126" height="43" src="https://i.ibb.co/qCf5vNR/download-ru.png"">

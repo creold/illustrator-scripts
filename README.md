@@ -12,6 +12,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 
 ### 📜 Alphabetical list of scripts
 * [ArtboardsRotateWithObjects.jsx]   
+* [ChangeOpacity.jsx] `(new, 12.12.2021)`  
 * [ConvertToGradient.jsx] `(upd, 10.09.2021)`  
 * [CycleColors.jsx] `(new, 15.11.2021)`  
 * [DuplicateArtboardsLight.jsx] `(upd, 10.09.2021)`  
@@ -34,6 +35,7 @@ The descriptions for each file can be found in the file's header text. Test envi
 * [Zoom-and-center.jsx] `(upd, 10.09.2021)`  
 
 [ArtboardsRotateWithObjects.jsx]: https://github.com/creold/illustrator-scripts#artboardsrotatewithobjects-12
+[ChangeOpacity.jsx]: https://github.com/creold/illustrator-scripts#changeopacity
 [ConvertToGradient.jsx]: https://github.com/creold/illustrator-scripts#converttogradient
 [CycleColors.jsx]: https://github.com/creold/illustrator-scripts#cyclecolors
 [DuplicateArtboardsLight.jsx]: https://github.com/creold/illustrator-scripts#duplicateartboardslight
@@ -109,6 +111,23 @@ Script to rotate 90 degrees an document artboards with all the objects on it.
 3. Select the options in the dialog box
 
 ![ArtboardsRotateWithObjects](https://i.ibb.co/YtV4nc6/demo-Artboards-Rotate-With-Objects.gif) 
+
+<a href="http://bit.ly/2M0j95N">
+  <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
+</a> 
+
+## ChangeOpacity
+
+Set the exact Opacity value of the selected objects. The plus or minus sign before a number will shift relative to the current value at each object. Inside Clipping Groups does not change the Opacity of the mask itself. But you can add masks if you change `inclMask: false` to `true` in the code. 
+
+### Usage
+
+1. Select objects
+2. Run script `File → Scripts → ChangeOpacity`
+3. Enter the exact Opacity value or delta with a + or - sign
+4. Select `Change group content`if you want to change the Opacity of internal objects in groups
+
+![ChangeOpacity](https://i.ibb.co/zP3Vkww/Change-Opacity.gif) 
 
 <a href="http://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/tzzhPH5/download-en.png">
