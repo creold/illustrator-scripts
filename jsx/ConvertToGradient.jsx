@@ -12,6 +12,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Performance optimization
+  0.1.2 Bug fixes
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -39,12 +40,11 @@ var fillBad = 0;
 function main() {
   var SCRIPT = {
         name: 'ConvertToGradient',
-        version: 'v.0.1.1'
+        version: 'v.0.1.2'
       },
       CFG = {
         uiOpacity: .97 // UI window opacity. Range 0-1
-      },
-      channel = [];
+      };
 
   if (!documents.length) {
     alert('Error\nOpen a document and try again');
@@ -57,19 +57,10 @@ function main() {
   }
 
   var doc = app.activeDocument,
-      maxValue = 0,
+      maxValue = isRgbDoc() ? 255 : 100,
       shiftValue = 0,
       angleValue = 0,
       gShiftEnd = 0;
-
-  // Get initial data
-  if (isRgbDoc()) {
-    maxValue = 255;
-    channel = ['red', 'green', 'blue'];
-  } else {
-    maxValue = 100;
-    channel = ['cyan', 'magenta', 'yellow', 'black'];
-  }
 
   // Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -118,9 +109,11 @@ function main() {
       angleValue = Number(gAngle.text);
     }
 
+    var channel = isRgbDoc() ? ['red', 'green', 'blue'] : ['cyan', 'magenta', 'yellow', 'black'];
+
     // Start conversion
     for (var i = 0, selLen = selection.length; i < selLen; i++) {
-      convertToGradient(selection[i], shiftValue, angleValue, maxValue, gShiftEnd);
+      convertToGradient(selection[i], shiftValue, angleValue, channel, maxValue, gShiftEnd);
     }
     if (fillBad > 0) {
       alert('Fill an ' + fillBad + ' objects with flat color ' +
@@ -137,7 +130,7 @@ function main() {
 }
 
 // Search items in selection
-function convertToGradient(obj, shift, angle, max, shiftEnd) {
+function convertToGradient(obj, shift, angle, channel, max, shiftEnd) {
   try {
     switch (obj.typename) {
       case 'GroupItem':
@@ -146,14 +139,14 @@ function convertToGradient(obj, shift, angle, max, shiftEnd) {
         }
         break;
       case 'PathItem':
-        if (obj.filled == true && chkFillType(obj) == true) {
+        if (obj.filled && chkFillType(obj)) {
           applyGradient(obj, shift, angle, max, shiftEnd, channel);
         } else {
           fillBad++;
         }
         break;
       case 'CompoundPathItem':
-        if (obj.pathItems[0].filled == true && chkFillType(obj.pathItems[0]) == true) {
+        if (obj.pathItems[0].filled && chkFillType(obj.pathItems[0])) {
           applyGradient(obj.pathItems[0], shift, angle, max, shiftEnd, channel);
         } else {
           fillBad++;
@@ -168,8 +161,8 @@ function convertToGradient(obj, shift, angle, max, shiftEnd) {
 // Apply gradient to items
 function applyGradient(obj, shift, angle, max, shiftEnd, channel) {
   var currentColor = (obj.fillColor.typename == 'SpotColor') ? obj.fillColor.spot.color : obj.fillColor;
-  var startColor = (isRgbDoc()) ? new RGBColor() : new CMYKColor();
-  var endColor = (isRgbDoc()) ? new RGBColor() : new CMYKColor();
+  var startColor = isRgbDoc() ? new RGBColor() : new CMYKColor();
+  var endColor = isRgbDoc() ? new RGBColor() : new CMYKColor();
 
   // For Grayscale mode color is set individually
   if (currentColor.typename == 'GrayColor') {
@@ -230,13 +223,7 @@ function chkFillType(obj) {
       return true;
 }
 
-function showError(err) {
-  alert(err + ': on line ' + err.line, 'Script Error', true);
-}
-
 // Run script
 try {
   main();
-} catch (e) {
-  // showError(e);
-}
+} catch (e) {}
