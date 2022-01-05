@@ -16,6 +16,7 @@
 ### [Artboard](md/Artboard.ru.md)  
 Скрипты для создания и управления артбордами.
 
+* BatchRenamer
 * DuplicateArtboards
 * MoveArtboards
 * RenameArtboardAsLayer
