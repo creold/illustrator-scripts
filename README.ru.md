@@ -33,7 +33,7 @@
 * GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
-* StrokeColorFromFill
+* StrokeColorFromFill `(upd, 12.01.2022)`
 
 ### [Draw](md/Draw.ru.md) 
 Скрипты, которые что-либо рисуют.
@@ -102,7 +102,7 @@
 
 * Zoom And Center
 
-## ▶️ Как запускать скрипты
+## Как запускать скрипты
 
 #### Вариант 1 — Установка 
 
@@ -157,6 +157,9 @@
 ## 🤝 Развитие
 
 Нашли ошибку? [Создайте запрос](https://github.com/creold/illustrator-scripts/issues) на Github или напишите мне на почту.
+
+## 🔬 Блог
+Советы, трюки и баги при написании скриптов для Adobe Illustrator: [English](https://aiscripts.medium.com), [Русский](https://ais.sergosokin.ru/blog/).
 
 ## ✉️ Контакты
 Email <hi@sergosokin.ru>  

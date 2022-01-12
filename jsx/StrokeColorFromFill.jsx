@@ -12,6 +12,7 @@
   0.2 Added changing the color shift value with the Up/Down keys
   0.3 Added color interpolation to get the Stroke color from the gradient
   0.3.1 Minor improvements
+  0.3.2 Added conversion of spot tint to color
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -43,7 +44,7 @@ function main() {
       CFG = {
         aiVers: parseInt(app.version),
         os: $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
-        isRgb: (activeDocument.documentColorSpace == DocumentColorSpace.RGB) ? true : false,
+        isRgb: (activeDocument.documentColorSpace === DocumentColorSpace.RGB) ? true : false,
         uiOpacity: .97, // UI window opacity. Range 0-1
         spotConvert: false,
         preview: true,
@@ -74,7 +75,7 @@ function main() {
     return;
   }
 
-  if (!selection.length || selection.typename == 'TextRange') {
+  if (!selection.length || selection.typename === 'TextRange') {
     alert(LANG.errSel);
     return;
   }
@@ -282,11 +283,20 @@ function applyColor(obj, shift, max, keys, isRgb, isSpotRplc) {
       currColor,
       delta = 0;
 
-  if (_fill.typename == 'GradientColor') _fill = interpolateColor(isRgb, _fill.gradient);
-  currColor = (_fill.typename == 'SpotColor' && isSpotRplc) ? _fill.spot.color : _fill;
+  if (_fill.typename === 'GradientColor') _fill = interpolateColor(isRgb, _fill.gradient);
+
+  currColor = _fill;
+
+  if (_fill.typename === 'SpotColor' && isSpotRplc) {
+    if (_fill.tint === 100) {
+      currColor = _fill.spot.color; 
+    } else {
+      currColor = tint2process(_fill, isRgb);
+    }
+  }
 
   // For Grayscale mode color is set individually
-  if (currColor.typename == 'GrayColor') {
+  if (currColor.typename === 'GrayColor') {
     sColor = new GrayColor();
     var grayColor = Math.round(currColor.gray),
         grayDelta = grayColor - shift;
@@ -297,7 +307,7 @@ function applyColor(obj, shift, max, keys, isRgb, isSpotRplc) {
   }
 
   // For Spot or Global color is set individually
-  if (currColor.typename == 'SpotColor' && !isSpotRplc) {
+  if (currColor.typename === 'SpotColor' && !isSpotRplc) {
     sColor = new SpotColor();
     var spotColor = currColor.spot,
         spotDelta = currColor.tint - shift;
@@ -324,6 +334,24 @@ function applyColor(obj, shift, max, keys, isRgb, isSpotRplc) {
   if (obj.stroked) obj.strokeColor = sColor;
 }
 
+// Convert Spot color tint to process color
+function tint2process(fill, isRgb) {
+  var sColor = fill.spot.color,
+      value = 1 - fill.tint / 100,
+      newColor = isRgb ? new RGBColor() : new CMYKColor();
+  if (isRgb) {
+    newColor.red = sColor.red + (255 - sColor.red) * value;
+    newColor.green = sColor.green + (255 - sColor.green) * value;
+    newColor.blue = sColor.blue + (255 - sColor.blue) * value;
+  } else {
+    newColor.cyan = sColor.cyan * (1 - value);
+    newColor.magenta = sColor.magenta * (1 - value);
+    newColor.yellow = sColor.yellow * (1 - value);
+    newColor.black = sColor.black * (1 - value);
+  }
+  return newColor;
+}
+
 // Color interpolation by moody allen (moodyallen7@gmail.com)
 function interpolateColor(isRgb, color) {
   var gStopsLength = color.gradientStops.length,
@@ -346,8 +374,8 @@ function interpolateColor(isRgb, color) {
 
 function hasColorFill(obj) {
   var _type = obj.fillColor.typename;
-  if (_type == 'RGBColor' || _type == 'CMYKColor' || _type == 'GrayColor' ||
-      _type == 'SpotColor' || _type == 'GradientColor') return true;
+  if (_type === 'RGBColor' || _type === 'CMYKColor' || _type === 'GrayColor' ||
+      _type === 'SpotColor' || _type === 'GradientColor') return true;
   return false;
 }
 

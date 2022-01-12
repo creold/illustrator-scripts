@@ -30,7 +30,7 @@ Click the links to learn more about the scripts in the selected category.
 * GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
-* StrokeColorFromFill
+* StrokeColorFromFill `(upd, 12.01.2022)`
 
 ### [Draw](md/Draw.md) 
 * NumeratesPoints
@@ -81,7 +81,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [View](md/View.md)  
 * Zoom And Center
 
-## ▶️ How to run scripts
+## How to run scripts
 
 #### Variant 1 — Install 
 
@@ -136,6 +136,9 @@ Don't forget sharing link with a friend 🙂
 ## 🤝 Contribute
 
 Found a bug? Please [submit a new issues](https://github.com/creold/illustrator-scripts/issues) on GitHub.
+
+## 🔬 Blog
+Tips, tricks and scripts bugs for Adobe Illustrator: [English](https://aiscripts.medium.com), [Русский](https://ais.sergosokin.ru/blog/).
 
 ## ✉️ Contact
 Email <hi@sergosokin.ru>  
