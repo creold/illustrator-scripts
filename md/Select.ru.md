@@ -11,7 +11,7 @@
 * SelectOnlyPoints
 * SelectPointsByType
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 
@@ -57,7 +57,7 @@
 
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 

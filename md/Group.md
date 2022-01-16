@@ -11,7 +11,7 @@
 * MoveToGroup
 * TrimMasks
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
@@ -45,7 +45,7 @@ If you want to save the fill of the mask mask after trimming, open the script fi
 
 ![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 

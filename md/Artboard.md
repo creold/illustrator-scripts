@@ -13,7 +13,7 @@
 * RenameArtboardAsSize
 * RenameArtboardAsTopObj
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
@@ -70,7 +70,7 @@ The script renames each Artboard by the custom name of the first visible unlocke
 
 ![RenameArtboardAsTopObj](https://i.ibb.co/WPmf14B/Rename-Artboard-As-Top-Obj.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 

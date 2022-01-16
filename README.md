@@ -93,7 +93,7 @@ Click the links to learn more about the scripts in the selected category.
 	- RU lang: `C:\Program Files\Adobe\Adobe Illustrator [версия]\Стили\ru_RU\Сценарии\`
 3. Restart Illustrator
 
-[Download archive]: http://bit.ly/2M0j95N
+[Download archive]: https://bit.ly/2M0j95N
 
 #### Variant 2 — Drag & Drop
 Drag and drop the script file (JS or JSX) into Adobe Illustrator Window

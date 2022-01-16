@@ -12,7 +12,7 @@
 * StrokesWeightUp
 * StrokesWeightDown
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 
@@ -48,7 +48,7 @@
 
 ![StrokesWeight](https://i.ibb.co/kKXhnxN/Strokes-Weight.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 

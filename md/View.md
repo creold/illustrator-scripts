@@ -8,7 +8,7 @@
 ## 📜 Scripts
 * Zoom And Center
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
@@ -20,7 +20,7 @@ If you want a different scale ratio, open the script file with a text editor and
 
 ![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 

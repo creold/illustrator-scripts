@@ -9,7 +9,7 @@
 * NumeratesPoints
 * RandomScribble
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
@@ -25,7 +25,7 @@ Creates random paths with a specified number of points. These can be random stra
 
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 

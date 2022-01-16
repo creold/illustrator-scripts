@@ -9,7 +9,7 @@
 * Export selection as AI
 * ExportToDXF
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a>  
 
@@ -26,7 +26,7 @@
 
 ![ExportToDXF](https://i.ibb.co/xqhxjp0/Export-To-DXF.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 

@@ -114,7 +114,7 @@
 	- Русскоязычная версия: `C:\Program Files\Adobe\Adobe Illustrator [версия]\Стили\ru_RU\Сценарии\`
 3. Перезапустите программу
 
-[Скачайте архив]: http://bit.ly/2M0j95N 
+[Скачайте архив]: https://bit.ly/2M0j95N 
 
 #### Вариант 2 — Drag & Drop
 Перетащите файл скрипта из папки напрямую в окно Adobe Illustrator.  

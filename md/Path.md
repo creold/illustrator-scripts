@@ -9,7 +9,7 @@
 * Points Move Random
 * SplitPath
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
@@ -33,7 +33,7 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
 
-<a href="http://bit.ly/2M0j95N">
+<a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
 
