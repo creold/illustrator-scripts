@@ -60,6 +60,7 @@
 Скрипты, управляющие выбранными объектами.
 
 * MakeEnvelopesWithTops
+* RememberSelectionLayers `(new, 22.01.2022)`
 * RenameItems
 * Rescale
 * ResizeOnLargerSide

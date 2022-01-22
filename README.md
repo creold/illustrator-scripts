@@ -49,6 +49,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 * MakeEnvelopesWithTops
+* RememberSelectionLayers `(new, 22.01.2022)`
 * RenameItems
 * Rescale
 * ResizeOnLargerSide

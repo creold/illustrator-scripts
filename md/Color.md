@@ -13,7 +13,7 @@
 * GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
-* StrokeColorFromFill
+* StrokeColorFromFill `(upd, 12.01.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">

@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * MakeEnvelopesWithTops
+* RememberSelectionLayers `(new, 22.01.2022)`
 * RenameItems
 * Rescale
 * ResizeOnLargerSide
@@ -22,6 +23,12 @@
 Distorts the selected bottom object by the top selected objects separately. Similar to the multiple run of the command `Object > Envelope Distort > Make with Top Object`.
 
 ![MakeEnvelopesWithTops](https://i.ibb.co/N24Lmy7/Make-Envelopes-With-Tops.gif)
+
+## RememberSelectionLayers
+
+Moves objects to their original layers. The information must be saved. The objects are moved to the top of the layer.
+
+![RememberSelectionLayers](https://i.ibb.co/SJq5rj9/Remember-Selection-Layers.gif)
 
 ## RenameItems
 

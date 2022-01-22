@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * MakeEnvelopesWithTops
+* RememberSelectionLayers `(new, 22.01.2022)`
 * RenameItems
 * Rescale
 * ResizeOnLargerSide
@@ -22,6 +23,12 @@
 Искажает выбранный нижний объект по форме верхних по отдельности. Аналогичен множественному выполнению команды `Object > Envelope Distort > Make with Top Object`.
 
 ![MakeEnvelopesWithTops](https://i.ibb.co/N24Lmy7/Make-Envelopes-With-Tops.gif)
+
+## RememberSelectionLayers
+
+Перемещает объекты в их оригинальные слои. Предварительно информацию необходимо сохранить. Объекты переносятся в начало слоя.
+
+![RememberSelectionLayers](https://i.ibb.co/SJq5rj9/Remember-Selection-Layers.gif)
 
 ## RenameItems
 
