@@ -8,7 +8,7 @@
 ## 📜 Scripts
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(new, 22.01.2022)`
-* RenameItems
+* RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
@@ -32,9 +32,9 @@ Moves objects to their original layers. The information must be saved. The objec
 
 ## RenameItems
 
-Script to batch rename selected items with many options or simple rename one selected item / active layer.      
+Script to batch rename selected items or their parent layers with many options or simple rename one selected item / active layer.      
 
-![RenameItems](https://i.ibb.co/Gkcqt8D/demo-Rename-Items.gif)
+![RenameItems](https://i.ibb.co/SND9vbK/Rename-Items.gif)
 
 ## Rescale
 

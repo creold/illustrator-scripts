@@ -61,7 +61,7 @@
 
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(new, 22.01.2022)`
-* RenameItems
+* RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
@@ -70,7 +70,7 @@
 ### [Path](md/Path.ru.md)  
 Скрипты, изменяющие пути.
 
-* Points Move Random
+* Points Move Random `(upd, 17.02.2022)`
 * SplitPath
 
 ### [Select](md/Select.ru.md)  

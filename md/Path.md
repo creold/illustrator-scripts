@@ -6,7 +6,7 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* Points Move Random
+* Points Move Random `(upd, 17.02.2022)`
 * SplitPath
 
 <a href="https://bit.ly/2M0j95N">

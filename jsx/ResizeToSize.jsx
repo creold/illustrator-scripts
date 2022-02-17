@@ -354,7 +354,7 @@ function addRadio(place, x, y, info) {
   rb.helpTip = info;
 
   return rb;
-};
+}
 
 // Get scale ratio
 function getRatio(item, side, size, isW, isBnds, isUniform){

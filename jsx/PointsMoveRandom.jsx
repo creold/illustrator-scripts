@@ -11,6 +11,7 @@
   0.1 Initial version
   0.2 Added deselect some anchors, move handles
   0.3 Added step, saving settings. Minor improvements
+  0.3.1 Fixed 'Fixed H' and 'Fixed V' options and entering identical from / to range
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -20,7 +21,7 @@
   - via PayPal http://www.paypal.me/osokin/usd
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -37,7 +38,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Points Move Random',
-        version: 'v.0.3'
+        version: 'v.0.3.1'
       },
       CFG = {
         move: 1,
@@ -50,7 +51,7 @@ function main() {
       },
       MSG = {
         errDoc: 'Error\nOpen a document and try again',
-        errSel: 'Error\nPlease select atleast one object',
+        errSel: 'Error\nPlease select atleast one path with points',
         errStepZero: 'Error\nThe step must be greater than 0',
         errStepOut: 'Error\nThe step is out of range: '
       };
@@ -60,14 +61,10 @@ function main() {
     return;
   }
 
-  var doc = app.activeDocument,
-      selPaths = [],
-      selPoints = [];
+  var selPaths = getPaths(selection),
+      selPoints = getPoints(selPaths);
 
-  getPaths(selection, selPaths);
-  getPoints(selPaths, selPoints);
-
-  if (!selPaths.length) {
+  if (!selPoints.length) {
     alert(MSG.errSel);
     return;
   }
@@ -75,13 +72,13 @@ function main() {
   selection = null;
   redraw();
 
-  buildGUI(selPoints, SCRIPT, CFG, SETTINGS, MSG);
+  showUI(selPoints, SCRIPT, CFG, SETTINGS, MSG);
 }
 
-function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
+function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   var undoCounter = 0,
       newPoints = [],
-      tempPoints = [],
+      tmpChance = 0,
       isRandChanged = false;
 
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -96,20 +93,18 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   // HORIZONTAL INPUT
   var hGroup = rangePnl.add('group');
-      hGroup.orientation = 'row';
       hGroup.alignChildren = ['left','center'];
 
   var hGroupTitle = hGroup.add('statictext', undefined, 'Horizontal');
 
   var hRangeGroup = hGroup.add('group');
-      hRangeGroup.orientation = 'row';
       hRangeGroup.alignChildren = ['left','center'];
 
   var hFromVal = hRangeGroup.add('edittext', undefined, -1 * CFG.move);
       hFromVal.characters = 5;
       hFromVal.active = true;
 
-  var hGroupSubtitle = hRangeGroup.add('statictext', undefined, 'to');
+  hRangeGroup.add('statictext', undefined, 'to');
 
   var hToVal = hRangeGroup.add('edittext', undefined, CFG.move);
       hToVal.characters = 5;
@@ -119,20 +114,18 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   // VERTICAL INPUT
   var vGroup = rangePnl.add('group');
-      vGroup.orientation = 'row';
       vGroup.alignChildren = ['left','center'];
       vGroup.spacing = 28;
 
-  var vGroupTitle = vGroup.add('statictext', undefined, 'Vertical');
+  vGroup.add('statictext', undefined, 'Vertical');
 
   var vRangeGroup = vGroup.add('group');
-      vRangeGroup.orientation = 'row';
       vRangeGroup.alignChildren = ['left','center'];
 
   var vFromVal = vRangeGroup.add('edittext', undefined, -1 * CFG.move);
       vFromVal.characters = 5;
 
-  var vGroupSubtitle = vRangeGroup.add('statictext', undefined, 'to');
+  vRangeGroup.add('statictext', undefined, 'to');
 
   var vToVal = vRangeGroup.add('edittext', undefined, CFG.move);
       vToVal.characters = 5;
@@ -142,7 +135,6 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   // STEP INPUT
   var step = rangePnl.add('group');
-      step.orientation = 'row';
 
   var stepTitle = step.add('statictext', [0, 0, 200, 30]);
       stepTitle.text = 'Step for random value, ' + getDocUnit() + ' (> 0)';
@@ -156,7 +148,6 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       options.alignChildren = ['left','center'];
 
   var randOption = options.add('group');
-      randOption.orientation = 'row';
       randOption.alignChildren = ['center','center'];
 
   var isRandPoint = randOption.add('checkbox');
@@ -167,7 +158,7 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       chanceInp.characters = 4;
       chanceInp.enabled = false;
 
-  var percent = randOption.add('statictext', undefined, '%');
+  randOption.add('statictext', undefined, '%');
 
   var isHandles = options.add('checkbox');
       isHandles.text = 'M\u0332ove only points handles'; // Unicode underlined M
@@ -178,18 +169,18 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   }
 
   // BUTTONS
-  var buttons = dialog.add('group');
-      buttons.orientation = 'row';
-      buttons.alignChildren = ['center','top'];
+  var btns = dialog.add('group');
+      btns.orientation = 'row';
+      btns.alignChildren = ['center','top'];
 
-  var close = buttons.add('button', undefined, 'Close', {name: 'cancel'});
+  var close = btns.add('button', undefined, 'Close', {name: 'cancel'});
       close.helpTip = 'Press Esc to Close';
 
-  var revert = buttons.add('button', undefined, 'R\u0332evert'); // Unicode underlined R
+  var revert = btns.add('button', undefined, 'R\u0332evert'); // Unicode underlined R
       revert.helpTip = 'Press Alt+R to Revert';
       revert.enabled = false;
 
-  var apply = buttons.add('button', undefined, 'A\u0332pply', {name: 'ok'}); // Unicode underlined A
+  var apply = btns.add('button', undefined, 'A\u0332pply', {name: 'ok'}); // Unicode underlined A
       apply.helpTip = 'Press Alt+A to Apply';
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
@@ -202,15 +193,15 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   close.onClick = dialog.close;
   dialog.onClose = saveSettings;
 
-  isHFixed.onClick = function () { hFromVal.enabled = !hFromVal.enabled; }
-  isVFixed.onClick = function () { vFromVal.enabled = !vFromVal.enabled; }
+  isHFixed.onClick = function () { hFromVal.enabled = this.value; }
+  isVFixed.onClick = function () { vFromVal.enabled = this.value; }
 
   // Restore original points state
   revert.onClick = function() {
     selection = null;
     if (undoCounter) {
       while (undoCounter--) undo();
-      newPoints = tempPoints = [];
+      newPoints = [];
       isRandChanged = false;
       undoCounter = 0;
       revert.enabled = false;
@@ -273,7 +264,7 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   }
 
   function start() {
-    if (convertToNum(stepInp.text, 0) == 0) {
+    if (convertToNum(stepInp.text, 0) === 0) {
       alert(MSG.errStepZero);
       return;
     }
@@ -281,8 +272,7 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
     var range = [],
         chanceVal,
         stepVal,
-        tempMinMax,
-        tempChance,
+        tmpMinMax,
         errStepMsg = '';
 
     // Validation of numeric inputs
@@ -295,14 +285,14 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
     // Swap values if the start are greater than the end
     if (range[1] < range[0]) {
-      tempMinMax = range[0];
+      tmpMinMax = range[0];
       range[0] = hFromVal.text = range[1];
-      range[1] = hToVal.text = tempMinMax;
+      range[1] = hToVal.text = tmpMinMax;
     }
     if (range[3] < range[2]) {
-      tempMinMax = range[2];
+      tmpMinMax = range[2];
       range[2] = vFromVal.text = range[3];
-      range[3] = vToVal.text = tempMinMax;
+      range[3] = vToVal.text = tmpMinMax;
     }
 
     if (chanceVal < 0) chanceVal = chanceInp.text = 0;
@@ -310,23 +300,25 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
     if (stepVal < 0) stepVal = stepInp.text = CFG.step;
     // Check that the step don't out of the range
-    if (stepVal + range[0] > range[1]) { errStepMsg += hGroupTitle.text + ', '; }
-    if (stepVal + range[2] > range[3]) { errStepMsg += vGroupTitle.text + ', '; }
-    if (errStepMsg.length !== 0) {
+    if (range[0] !== range[1] && (stepVal + range[0]) > range[1])
+      errStepMsg += 'Horizontal, ';
+    if (range[2] !== range[3] && (stepVal + range[2]) > range[3])
+      errStepMsg += 'Vertical, ';
+    if (errStepMsg.length) {
       alert(MSG.errStepOut + errStepMsg.slice(0, -2));
       return;
     }
 
     // Get random points
-    if (isRandPoint.value && (!isRandChanged || tempChance !== chanceVal)) {
+    if (isRandPoint.value && (!isRandChanged || tmpChance !== chanceVal)) {
       newPoints = [];
-      tempPoints = shuffle(points);
-      var shuffledLength = tempPoints.length * chanceVal / 100;
+      shuffle(points);
+      var shuffledLength = Math.ceil(points.length * chanceVal / 100);
       for (var j = 0; j < shuffledLength; j++) {
-        newPoints.push(tempPoints[j]);
+        newPoints.push(points[j]);
       }
       isRandChanged = true;
-      tempChance = chanceVal;
+      tmpChance = chanceVal;
       redraw();
     }
 
@@ -346,7 +338,7 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
     );
 
     redraw();
-  };
+  }
 
   function saveSettings() {
     if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
@@ -381,13 +373,16 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
         if (typeof pref != 'undefined') {
           hFromVal.text = pref.horizFrom;
           hToVal.text = pref.horizTo;
-          isHFixed.value = (pref.isHorizFixed == true);
+          isHFixed.value = pref.isHorizFixed;
+          hFromVal.enabled = !pref.isHorizFixed;
           vFromVal.text = pref.vertFrom;
           vToVal.text = pref.vertTo;
-          isVFixed.value = (pref.isVertFixed == true);
+          isVFixed.value = pref.isVertFixed;
+          vFromVal.enabled = !pref.isVertFixed;
           stepInp.text = pref.step;
-          isHandles.value = (pref.isHandles == true);
-          isRandPoint.value = (pref.isRandomPoint == true);
+          isHandles.value = pref.isHandles;
+          isRandPoint.value = pref.isRandomPoint;
+          chanceInp.enabled = pref.isRandomPoint;
           chanceInp.text = pref.chance;
         }
       } catch (e) {}
@@ -396,38 +391,35 @@ function buildGUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 }
 
 // Get single items from selection
-function getPaths(collection, arr) {
-  for (var i = 0, len = collection.length; i < len; i++) {
-    var currItem = collection[i];
-    try {
-      switch (currItem.typename) {
-        case 'GroupItem':
-          getPaths(currItem.pageItems, arr);
-          break;
-        case 'PathItem':
-          arr.push(currItem);
-          break;
-        case 'CompoundPathItem':
-          getPaths(currItem.pathItems, arr);
-          break;
-        default:
-          currItem.selected = false;
-          break;
-      }
-    } catch (e) {}
+function getPaths(collection) {
+  var out = [];
+  for (var i = 0; i < collection.length; i++) {
+    var item = collection[i];
+    if (item.pageItems && item.pageItems.length) {
+      out = [].concat(out, getPaths(item.pageItems));
+    } else if (/compound/i.test(item.typename) && item.pathItems) {
+      out = [].concat(out, getPaths(item.pathItems));
+    } else if (/pathitem/i.test(item.typename)) {
+      out.push(item);
+    } else {
+      item.selected = false;
+    }
   }
+  return out;
 }
 
 // Get selected points on paths
-function getPoints(collection, arr) {
+function getPoints(collection) {
+  var out = [];
   for (var i = 0, len = collection.length; i < len; i++) {
     if (collection[i].pathPoints.length > 1) {
       var points = collection[i].pathPoints;
       for (var j = 0, pLen = points.length; j < pLen; j++) {
-        if (isSelected(points[j])) arr.push(points[j]);
+        if (isSelected(points[j])) out.push(points[j]);
       }
     }
   }
+  return out;
 }
 
 // Check current Point is selected
@@ -462,10 +454,8 @@ function shuffle(arr) {
 
 // The max and min values is included
 function getRandomInRange(min, max, step) {
-  var range, randNum;
-  range = ((max - min) / step);
-  randNum = Math.round(Math.random() * range) * step + min;
-  return randNum;
+  var range = (max - min) / step;
+  return Math.round(Math.random() * range) * step + min;
 }
 
 // Move points
@@ -473,8 +463,8 @@ function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) 
   var deltaX, deltaY;
 
   for (var i = 0, pLen = points.length; i < pLen; i++) {
-    deltaX = isHFixed ? x2 : getRandomInRange(x1, x2, step);
-    deltaY = isVFixed ? y2 : getRandomInRange(y1, y2, step);
+    deltaX = (isHFixed || x1 == x2) ? x2 : getRandomInRange(x1, x2, step);
+    deltaY = (isVFixed || y1 == y2) ? y2 : getRandomInRange(y1, y2, step);
 
     deltaX = convertUnits(deltaX + getDocUnit(), 'px');
     deltaY = convertUnits(deltaY + getDocUnit(), 'px');
@@ -486,7 +476,7 @@ function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) 
         rightDirection = [rightDirection[0] + deltaX, rightDirection[1] + deltaY];
       } else { // Mirror move the handles
         leftDirection = [anchor[0] + (leftDirection[0] - anchor[0]) - deltaX,
-                         anchor[1] + (leftDirection[1] - anchor[1]) - deltaY];
+                          anchor[1] + (leftDirection[1] - anchor[1]) - deltaY];
         rightDirection = [anchor[0] + (rightDirection[0] - anchor[0]) + deltaX,
                           anchor[1] + (rightDirection[1] - anchor[1]) + deltaY];
       }

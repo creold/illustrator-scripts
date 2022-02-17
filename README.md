@@ -50,14 +50,14 @@ Click the links to learn more about the scripts in the selected category.
 ### [Item](md/Item.md)  
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(new, 22.01.2022)`
-* RenameItems
+* RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
 * RoundCoordinates
 
 ### [Path](md/Path.md)  
-* Points Move Random
+* Points Move Random `(upd, 17.02.2022)`
 * SplitPath
 
 ### [Select](md/Select.md)  

@@ -188,7 +188,7 @@ function main() {
     redraw();
     namedItems = []; // Clear for collect new items
     if (typeof search == 'undefined') outputResult();
-  };
+  }
 
   isZoom.onClick = function() {
     zoomRatioInp.onChange();
@@ -213,7 +213,7 @@ function main() {
     if (isInLocked.value) restoreLayersState(layersState);
     saveSettings();
     dialog.close();
-  };
+  }
 
   // Displaying search results for navigation
   function outputResult() {
@@ -280,8 +280,7 @@ function main() {
 
   // Select list items and zoom to them contents
   function selectListItem() {
-    var selListItems = [], // Array of selected list rows
-        tmpItems = [],  // Array of the found items
+    var tmpItems = [],  // Array of the found items
         tmpState = [], //  Initial state of the found items
         itemPrntGp; // Topmost parent Group of item
 
@@ -313,7 +312,7 @@ function main() {
 
         saveItemsState(tmpItems, tmpState);
         resItems[i].selected = true;
-      };
+      }
     }
     
     var ratio = convertToNum(zoomRatioInp.text, CFG.zoomRatio);
@@ -372,8 +371,8 @@ function main() {
 
 /**
  * Collect items with any type
- * @param {object} collection source array of items
- * @param {array} arr output array of items
+ * @param {object} collection - source array of items
+ * @param {array} arr - output array of items
  */
 function getItems(collection, arr) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -394,8 +393,8 @@ function getItems(collection, arr) {
 
 /**
  * Get items in visible & unlocked Layers & Sublayers
- * @param {object} _layers source layers
- * @param {array} arr output array of items
+ * @param {object} _layers - source layers
+ * @param {array} arr - output array of items
  */
 function getLayersItems(_layers, arr) {
   for (var i = 0, len = _layers.length; i < len; i++) {
@@ -413,8 +412,8 @@ function getLayersItems(_layers, arr) {
 
 /**
  * Collect items with names & TextFrames with contents
- * @param {array} collection source array of items
- * @return {array} output array of named items
+ * @param {array} collection - source array of items
+ * @return {array} arr - output array of named items
  */
 function getNamedItems(collection) {
   var currItem,
@@ -434,10 +433,10 @@ function getNamedItems(collection) {
 
 /**
  * Get name matches
- * @param {string} str search string
- * @param {array} collection source array of named items
- * @param {boolean} option the value of the text search checkbox
- * @return {array} array of matches
+ * @param {string} str - search string
+ * @param {array} collection - source array of named items
+ * @param {boolean} option - the value of the text search checkbox
+ * @return {array} arr - array of matches
  */
 function getByName(str, collection, option) {
   var currItem,
@@ -459,8 +458,8 @@ function getByName(str, collection, option) {
 
 /**
  * Save locked & hidden state of pageItems
- * @param {array} collection source array of matched items with childrens
- * @param {object} state output array of objects
+ * @param {array} collection - source array of matched items with childrens
+ * @param {object} state - output array of objects
  */
 function saveItemsState(collection, state) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -477,7 +476,7 @@ function saveItemsState(collection, state) {
 
 /**
  * Restore locked & hidden pageItems
- * @param {object} state source items
+ * @param {object} state
  */
 function restoreItemsState(state) {
   for (var i = 0, len = state.length; i < len; i++) {
@@ -489,8 +488,8 @@ function restoreItemsState(state) {
 
 /**
  * Save information about locked & hidden layers & sublayers
- * @param {object} _layers source layers
- * @param {array} arr output array of objects
+ * @param {object} _layers - source layers
+ * @param {array} arr - output array of objects
  */
 function saveLayersState(_layers, arr) {
   for (var i = 0, len = _layers.length; i < len; i++) {
@@ -505,7 +504,7 @@ function saveLayersState(_layers, arr) {
 
 /**
  * Unlock & show all layers & sublayers
- * @param {object} collection source layers & sublayers
+ * @param {object} collection - source layers & sublayers
  */
 function resetLayersState(collection) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -516,7 +515,7 @@ function resetLayersState(collection) {
 
 /**
  * Restore locked & hidden states of layers & sublayers
- * @param {object} collection source layers & sublayers
+ * @param {object} collection - source layers & sublayers
  */
 function restoreLayersState(collection) {
   for (var i = 0, len = collection.length; i < len; i++) {
@@ -527,7 +526,7 @@ function restoreLayersState(collection) {
 
 /**
  * Get the topmost parent Group via recursion
- * @param {object} item source item
+ * @param {object} item - source item
  * @return {object} topmost group or the object itself
  */
 function getTopGroup(item) {
@@ -540,9 +539,9 @@ function getTopGroup(item) {
 
 /**
  * Get the topmost parent state via recursion
- * @param {object} item source item
- * @param {object} _layers collection of doc layers & sublayers
- * @param {array} arr boolean values of item state
+ * @param {object} item - source item
+ * @param {object} _layers - collection of doc layers & sublayers
+ * @param {array} arr - boolean values of item state
  */
 function checkParentState(item, _layers, arr) {
   var prnt = item.parent;
@@ -571,8 +570,8 @@ function checkParentState(item, _layers, arr) {
 
 /**
  * Get the first full word by matching characters
- * @param {object} item source item
- * @param {string} str entered characters
+ * @param {object} item - source item
+ * @param {string} str - entered characters
  * @return {string} return full word between whitespaces
  */
 function getFirstWord(item, str) {
@@ -591,37 +590,10 @@ function getFirstWord(item, str) {
 }
 
 /**
- * Get visible bounds of selected items
- * Based on script 'Zoom and Center to Selection v2' by John Wundes (http://www.wundes.com)
- * @param {object} collection selected items
- */
-function calcBounds(collection) {
-  // If object is a (collection of) object(s) not a text field.
-  if (collection instanceof Array) {
-    // Initialize vars
-    var initBounds = collection[0].visibleBounds,
-        ul_x = initBounds[0];
-        ul_y = initBounds[1];
-        lr_x = initBounds[2];
-        lr_y = initBounds[3];
-
-    // Check rest of group if any
-    for (var i = 1, len = collection.length; i < len; i++) {
-      var groupBounds = collection[i].visibleBounds;
-      if (groupBounds[0] < ul_x) ul_x = groupBounds[0];
-      if (groupBounds[1] > ul_y) ul_y = groupBounds[1];
-      if (groupBounds[2] > lr_x) lr_x = groupBounds[2];
-      if (groupBounds[3] < lr_y) lr_y = groupBounds[3];
-    }
-  }
-
-  return [ul_x, ul_y, lr_x, lr_y];
-}
-
-/**
  * Zoom to selected items
  * Based on script 'Zoom and Center to Selection v2' by John Wundes (http://www.wundes.com)
- * @param {number} ratio scale ratio
+ * @param {number} ratio - scale ratio
+ * @param {boolean} isZoom - use scale ratio
  */
 function zoom(ratio, isZoom) {
   var doc = activeDocument;
@@ -658,8 +630,36 @@ function zoom(ratio, isZoom) {
 }
 
 /**
+ * Get visible bounds of selected items
+ * Based on script 'Zoom and Center to Selection v2' by John Wundes (http://www.wundes.com)
+ * @param {object} collection - selected items
+ */
+function calcBounds(collection) {
+  // If object is a (collection of) object(s) not a text field.
+  if (collection instanceof Array) {
+    // Initialize vars
+    var initBounds = collection[0].visibleBounds,
+        ul_x = initBounds[0];
+        ul_y = initBounds[1];
+        lr_x = initBounds[2];
+        lr_y = initBounds[3];
+
+    // Check rest of group if any
+    for (var i = 1, len = collection.length; i < len; i++) {
+      var groupBounds = collection[i].visibleBounds;
+      if (groupBounds[0] < ul_x) ul_x = groupBounds[0];
+      if (groupBounds[1] > ul_y) ul_y = groupBounds[1];
+      if (groupBounds[2] > lr_x) lr_x = groupBounds[2];
+      if (groupBounds[3] < lr_y) lr_y = groupBounds[3];
+    }
+  }
+
+  return [ul_x, ul_y, lr_x, lr_y];
+}
+
+/**
  * Check item type
- * @param {object} item source item
+ * @param {object} item - source item
  * @return {boolean}
  */
 function isSymbol(item) {
@@ -668,7 +668,7 @@ function isSymbol(item) {
 
 /**
  * Check item type
- * @param {object} item source item
+ * @param {object} item - source item
  * @return {boolean}
  */
 function isNotEmptyText(item) {
@@ -677,7 +677,7 @@ function isNotEmptyText(item) {
 
 /**
  * Check for multiple words in the string
- * @param {string} str user input
+ * @param {string} str - user input
  * @return {boolean}
  */
 function hasWhiteSpace(str) {
