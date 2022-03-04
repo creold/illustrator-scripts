@@ -7,6 +7,8 @@
 
 ## 📜 Scripts
 * NamedItemsFinder
+* SelectAllLayersAbove `(new, 21.02.2022)`
+* SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches
 * SelectOnlyPoints
 * SelectPointsByType
@@ -24,6 +26,12 @@ Search items in the document by name and zoom to them contents. Inspired by Phot
 </a>
 
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif)
+
+## SelectAllLayersAbove
+
+The SelectAllLayersAbove script selects objects in all layers above the active layer. And the SelectAllLayersBelow script is in the layers below. If something is selected in the document, the parent layer of the selected object becomes active. Otherwise, the active layer is the layer that is selected in the Layers panel. Change `var isInclActive = false` in the code to `true` so that objects in the source layer are also selected.
+
+![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
 
 ## SelectBySwatches
 

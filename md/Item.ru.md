@@ -7,7 +7,7 @@
 
 ## 📜 Scripts
 * MakeEnvelopesWithTops
-* RememberSelectionLayers `(new, 22.01.2022)`
+* RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide

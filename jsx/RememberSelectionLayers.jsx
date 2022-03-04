@@ -11,6 +11,7 @@
   Release notes:
   0.1 Initial version
   0.2 Works with matching layer names
+  0.3 Tags used for data
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,16 +37,23 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Remember Selection Layers',
-        version: 'v.0.2'
+        version: 'v.0.3'
       },
       CFG = {
-        keyLyr: 'layer=',
-        keyIdx: 'idx=',
+        keyLyr: 'lyrParent',
+        keyIdx: 'lyrIdx',
         uiOpacity: .98 // UI window opacity. Range 0-1
       };
 
-  if (!documents.length) return;
-  if (selection.length == 0 || selection.typename == 'TextRange') return;
+  if (!documents.length) {
+    alert('Error\nOpen a document and try again');
+    return;
+  }
+
+  if (selection.length == 0 || selection.typename == 'TextRange') {
+    alert('Error\nPlease, select one or more items');
+    return;
+  }
 
   // DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -62,87 +70,52 @@ function main() {
   var copyright = dialog.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
-  saveBtn.onClick = save;
-  restoreBtn.onClick = restore;
-  clearBtn.onClick = clear;
+  saveBtn.onClick = function () {
+    save(CFG.keyLyr, CFG.keyIdx);
+    dialog.close();
+  }
+
+  restoreBtn.onClick = function () {
+    restore(CFG.keyLyr, CFG.keyIdx);
+    dialog.close();
+  }
+  
+  clearBtn.onClick = function () {
+    clear(CFG.keyLyr, CFG.keyIdx);
+    dialog.close();
+  }
+
   cancel.onClick = dialog.close;
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
   });
 
-  function save() {
-    for (var i = selection.length - 1; i >= 0; i--) {
-      var currItem = selection[i],
-          itemLayer = (currItem.layer.parent.typename === 'Layer') ? currItem.layer.parent : currItem.layer,
-          layerIdx = 0,
-          same = getSameLayers(itemLayer.name);
-      
-      removeNote(currItem, CFG.keyLyr);
-
-      for (var j = same.length - 1; j >= 0; j--) {
-        if (same[j] === itemLayer) {
-          layerIdx = j;
-          break;
-        }
-      }
-
-      currItem.note += CFG.keyLyr + itemLayer.name + ';' + CFG.keyIdx + layerIdx + ';';
-    }
-
-    dialog.close();
-  }
-
-  function restore() {
-    var reLayer = new RegExp(CFG.keyLyr + '(.+)', 'g'),
-        reIdx = new RegExp(CFG.keyIdx + '(.+)', 'g');
-
-    for (var i = selection.length - 1; i >= 0; i--) {
-      var currItem = selection[i];
-      if (currItem.note.match(CFG.keyLyr) !== null) {
-        var layerName = currItem.note.split(';')[0].replace(reLayer, '$1'),
-            layerIdx = currItem.note.split(';')[1].replace(reIdx, '$1');
-        moveToLayer(currItem, layerName, parseInt(layerIdx));
-      }
-      removeNote(currItem, CFG.keyLyr);
-    }
-
-    dialog.close();
-  }
-
-  function clear() {
-    var regexp = new RegExp(CFG.keyLyr + '(.+)', 'g');
-
-    for (var i = selection.length - 1; i >= 0; i--) {
-      var currItem = selection[i];
-      removeNote(currItem, CFG.keyLyr);
-    }
-
-    dialog.close();
-  }
-
   dialog.center();
   dialog.show();
 }
 
-// Remove keyword from Note in Attributes panel
-function removeNote(item, key) {
-  var regexp = new RegExp(key + '(.+);', 'g');
-  item.note = item.note.replace(regexp, '');
+// Save layer data to tags
+function save(keyLyr, keyIdx) {
+  for (var i = selection.length - 1; i >= 0; i--) {
+    var currItem = selection[i],
+        itemLyr = getParentLayer(currItem),
+        same = getSameLayers(itemLyr.name),
+        lyrIdx = same.length - 1;
+
+    while (itemLyr !== same[lyrIdx]) {
+      lyrIdx--;
+    }
+
+    addTag(currItem, keyLyr, itemLyr.name);
+    addTag(currItem, keyIdx, lyrIdx);
+  }
 }
 
-// Move selected item to original Layer by name
-function moveToLayer(item, name, idx) {
-  var same = getSameLayers(name);
-  if (item.layer == same[idx]) return;
-  try {
-    var state = [same[idx].visible, same[idx].locked];
-    same[idx].visible = true;
-    same[idx].locked = false;
-    item.move(same[idx], ElementPlacement.PLACEATBEGINNING);
-    same[idx].visible = state[0];
-    same[idx].locked = state[1];
-  } catch (e) {}
+// Get the parent layer for item
+function getParentLayer(item) {
+  if (item.parent.typename === 'Document') return item;
+  else return getParentLayer(item.parent);
 }
 
 // Get all top-level layers with this name
@@ -156,6 +129,73 @@ function getSameLayers(name) {
   }
 
   return out;
+}
+
+// Add custom tag to item
+function addTag(item, key, value) {
+  var tag = item.tags.add();
+  tag.name = key;
+  tag.value = value;
+}
+
+// Restore items to their original layers
+function restore(keyLyr, keyIdx) {
+  var docSel = selection;
+
+  for (var i = docSel.length - 1; i >= 0; i--) {
+    var currItem = docSel[i],
+        lyrName = getTagValue(currItem, keyLyr),
+        lyrIdx = getTagValue(currItem, keyIdx);
+
+    if (lyrName.length && lyrIdx.length) {
+      moveToLayer(currItem, lyrName, parseInt(lyrIdx));
+      removeTag(currItem, keyLyr);
+      removeTag(currItem, keyIdx);
+    }
+  }
+}
+
+// Get the key value
+function getTagValue(item, key) {
+  try {
+    var tag = item.tags.getByName(key);
+    return tag.value;
+  } catch (e) {
+    return '';
+  }
+}
+
+// Delete tags with layer data
+function clear(keyLyr, keyIdx) {
+  for (var i = selection.length - 1; i >= 0; i--) {
+    var currItem = selection[i];
+    removeTag(currItem, keyLyr);
+    removeTag(currItem, keyIdx);
+  }
+}
+
+// Remove item tag
+function removeTag(item, key) {
+  try {
+    var tag = item.tags.getByName(key);
+    tag.remove();
+  } catch (e) {}
+}
+
+// Move selected item to original Layer by name
+function moveToLayer(item, name, idx) {
+  var same = getSameLayers(name);
+
+  if (item.layer == same[idx]) return;
+
+  try {
+    var state = [same[idx].visible, same[idx].locked];
+    same[idx].visible = true;
+    same[idx].locked = false;
+    item.move(same[idx], ElementPlacement.PLACEATBEGINNING);
+    same[idx].visible = state[0];
+    same[idx].locked = state[1];
+  } catch (e) {}
 }
 
 // Open link in browser

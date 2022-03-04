@@ -60,7 +60,7 @@
 Скрипты, управляющие выбранными объектами.
 
 * MakeEnvelopesWithTops
-* RememberSelectionLayers `(new, 22.01.2022)`
+* RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide
@@ -77,6 +77,8 @@
 Скрипты для выбора объектов в документе.
 
 * NamedItemsFinder
+* SelectAllLayersAbove `(new, 21.02.2022)`
+* SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches
 * SelectOnlyPoints
 * SelectPointsByType

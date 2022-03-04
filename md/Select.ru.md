@@ -7,6 +7,8 @@
 
 ## 📜 Scripts
 * NamedItemsFinder
+* SelectAllLayersAbove `(new, 21.02.2022)`
+* SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches
 * SelectOnlyPoints
 * SelectPointsByType
@@ -24,6 +26,12 @@
 </a>
 
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif)
+
+## SelectAllLayersAbove
+
+Скрипт SelectAllLayersAbove выбирает объекты во всех слоях выше активного. SelectAllLayersBelow - в слоях ниже. Если в документе что-то выбрано, активным будет считаться родительский слой выбранного объекта. В ином случае - слой, который подсвечен в панели Layers. Поменяйте значение `var isInclActive = false` в коде на `true`, чтобы выделились объекты и в исходном слое.
+
+![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
 
 ## SelectBySwatches
 

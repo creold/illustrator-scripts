@@ -49,7 +49,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 * MakeEnvelopesWithTops
-* RememberSelectionLayers `(new, 22.01.2022)`
+* RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 17.02.2022)`
 * Rescale
 * ResizeOnLargerSide
@@ -62,6 +62,8 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Select](md/Select.md)  
 * NamedItemsFinder
+* SelectAllLayersAbove `(new, 21.02.2022)`
+* SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches
 * SelectOnlyPoints
 * SelectPointsByType
