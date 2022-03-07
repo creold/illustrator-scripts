@@ -10,6 +10,7 @@
   Release notes:
   0.1 Initial version
   0.2 Added custom zoom checkbox & saving settings
+  0.2.1 Added a linked image search
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -19,7 +20,7 @@
   - via PayPal http://www.paypal.me/osokin/usd
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -36,7 +37,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Named Items Finder',
-        version: 'v.0.2'
+        version: 'v.0.2.1'
       },
       CFG = {
         zoomRatio: 0.1, // Zoom ratio in document window
@@ -69,7 +70,9 @@ function main() {
         locked: { en: 'Locked', ru: 'Заблокирован'},
         search: { en: 'Search', ru: 'Найти'},
         wait: { en: 'Waiting...', ru: 'Ожидайте...'},
-        close: { en: 'Close', ru: 'Закрыть'}
+        close: { en: 'Close', ru: 'Закрыть'},
+        link: { en: '<Linked File>', ru: '<Связанный файл>'},
+        image: { en: '<Image>', ru: '<Изображение>'}
       };
 
   if (!documents.length) {
@@ -236,14 +239,14 @@ function main() {
       }
     }
 
-    resItems = getByName(nameInp.text, namedItems, isInText.value);
+    resItems = getByName(nameInp.text, LANG.link, LANG.image, namedItems, isInText.value);
 
     // Create listbox rows from search results
     var newListItem;
     for (var i = 0, len = resItems.length; i < len; i++) {
       // If search only text contents
       if (isInText.value) {
-        if (nameInp.text !== '') {
+        if (!isEmpty(nameInp.text)) {
           newListItem = listbox.add('item', resItems[i].layer.name);
           // Show all entered text
           if (hasWhiteSpace(nameInp.text)) {
@@ -257,8 +260,12 @@ function main() {
       } else {
         newListItem = listbox.add('item', resItems[i].layer.name);
         // Trick for get Symbol name
-        if (isSymbol(resItems[i]) && resItems[i].name == '') {
+        if (isSymbol(resItems[i]) && isEmpty(resItems[i].name)) {
           newListItem.subItems[0].text = resItems[i].symbol.name;
+        } else if (isLink(resItems[i]) && isEmpty(resItems[i].name)) {
+          newListItem.subItems[0].text = LANG.link;
+        } else if (isImage(resItems[i]) && isEmpty(resItems[i].name)) {
+          newListItem.subItems[0].text = LANG.image;
         } else {
           newListItem.subItems[0].text = resItems[i].name;
         }
@@ -376,15 +383,15 @@ function main() {
  */
 function getItems(collection, arr) {
   for (var i = 0, len = collection.length; i < len; i++) {
-    var currItem = collection[i];
+    var item = collection[i];
     try {
-      switch (currItem.typename) {
+      switch (item.typename) {
         case 'GroupItem':
-          arr.push(currItem);
-          getItems(currItem.pageItems, arr);
+          arr.push(item);
+          getItems(item.pageItems, arr);
           break;
         default:
-          arr.push(currItem);
+          arr.push(item);
           break;
       }
     } catch (e) {}
@@ -413,47 +420,57 @@ function getLayersItems(_layers, arr) {
 /**
  * Collect items with names & TextFrames with contents
  * @param {array} collection - source array of items
- * @return {array} arr - output array of named items
+ * @return {array} out - output array of named items
  */
 function getNamedItems(collection) {
-  var currItem,
-      arr = [];
+  var item,
+      out = [];
   for (var i = 0, len = collection.length; i < len; ++i) {
-    currItem = collection[i];
-    if (isSymbol(currItem)) {
-      arr.push(currItem);
-    } else if (isNotEmptyText(currItem)) {
-      arr.push(currItem);
-    } else if (currItem.name !== '') {
-      arr.push(currItem);
+    item = collection[i];
+    if (!isEmpty(item.name) || isSymbol(item) || isLink(item) ||
+        isImage(item) || isNotEmptyText(item)) {
+      out.push(item);
     }
   }
-  return arr;
+  return out;
+}
+
+/**
+ * Check empty string
+ * @param {object} str - input string
+ * @return {boolean}
+ */
+function isEmpty(str) {
+  return str.length == 0;
 }
 
 /**
  * Get name matches
  * @param {string} str - search string
+ * @param {string} link - default caption for linked file
+ * @param {string} image - default caption for embed file
  * @param {array} collection - source array of named items
  * @param {boolean} option - the value of the text search checkbox
- * @return {array} arr - array of matches
+ * @return {array} out - array of matches
  */
-function getByName(str, collection, option) {
-  var currItem,
-      arr = [],
+function getByName(str, link, image, collection, option) {
+  var item,
+      out = [],
       regexp = new RegExp(str, 'i'); // Case insensitive search
   for (var i = 0, len = collection.length; i < len; i++) {
-    currItem = collection[i];
+    item = collection[i];
     if (option) {
-      if (isNotEmptyText(currItem) && currItem.contents.match(regexp)) arr.push(currItem);
+      if (isNotEmptyText(item) && item.contents.match(regexp)) out.push(item);
     } else {
-      if ((isSymbol(currItem) && currItem.name == '' && currItem.symbol.name.match(regexp)) ||
-          (currItem.name.match(regexp) && currItem.name !== '')) {
-        arr.push(currItem);
+      if ((isSymbol(item) && isEmpty(item.name) && item.symbol.name.match(regexp)) ||
+          (isLink(item) && isEmpty(item.name) && ('' + link).match(regexp)) ||
+          (isImage(item) && isEmpty(item.name) && ('' + image).match(regexp)) ||
+          (!isEmpty(item.name)  && item.name.match(regexp))) {
+        out.push(item);
       }
     }
   }
-  return arr;
+  return out;
 }
 
 /**
@@ -463,14 +480,14 @@ function getByName(str, collection, option) {
  */
 function saveItemsState(collection, state) {
   for (var i = 0, len = collection.length; i < len; i++) {
-    var currItem = collection[i];
+    var item = collection[i];
     state.push({
-      'item': currItem,
-      'vis': currItem.hidden,
-      'lock': currItem.locked
+      'item': item,
+      'vis': item.hidden,
+      'lock': item.locked
     });
-    currItem.locked = false;
-    currItem.hidden = false;
+    item.locked = false;
+    item.hidden = false;
   }
 }
 
@@ -658,12 +675,30 @@ function calcBounds(collection) {
 }
 
 /**
- * Check item type
+ * Check the symbol type
  * @param {object} item - source item
  * @return {boolean}
  */
 function isSymbol(item) {
   return item.typename === 'SymbolItem';
+}
+
+/**
+ * Check the placed art type
+ * @param {object} item - source item
+ * @return {boolean}
+ */
+function isLink(item) {
+  return item.typename === 'PlacedItem';
+}
+
+/**
+ * Check the image type
+ * @param {object} item - source item
+ * @return {boolean}
+ */
+function isImage(item) {
+  return item.typename === 'RasterItem';
 }
 
 /**

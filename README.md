@@ -61,7 +61,7 @@ Click the links to learn more about the scripts in the selected category.
 * SplitPath
 
 ### [Select](md/Select.md)  
-* NamedItemsFinder
+* NamedItemsFinder `(upd, 07.03.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches
