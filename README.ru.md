@@ -16,6 +16,7 @@
 ### [Artboard](md/Artboard.ru.md)  
 Скрипты для создания и управления артбордами.
 
+* ArtboardsFinder `(new, 08.03.2022)`
 * BatchRenamer
 * DuplicateArtboards
 * MoveArtboards

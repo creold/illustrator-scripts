@@ -6,6 +6,7 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
+* ArtboardsFinder `(new, 08.03.2022)`
 * BatchRenamer
 * DuplicateArtboardsLight
 * MoveArtboards
@@ -16,6 +17,12 @@
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
+
+## ArtboardsFinder
+
+Search for artboards by name or size and shows the selected artboards in the center of the window. Width and height in document units. Landscape, portrait, square artboards are displayed in descending order of size when searching by orientation.
+
+![ArtboardsFinder](https://i.ibb.co/VJXKjWQ/artboards-finder.gif)
 
 ## BatchRenamer
 
