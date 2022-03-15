@@ -66,7 +66,7 @@
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
-* RoundCoordinates
+* RoundCoordinates `(upd, 15.03.2022)`
 
 ### [Path](md/Path.ru.md)  
 Скрипты, изменяющие пути.

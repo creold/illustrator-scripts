@@ -12,7 +12,7 @@
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
-* RoundCoordinates
+* RoundCoordinates `(upd, 15.03.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
@@ -60,7 +60,7 @@
 
 ## RoundCoordinates
 
-Округляет координаты каждого выделенного объекта. Ориентиром для выравнивания будет выбранная контрольная точка из панели `Transform`. Скрипт учитывает единицы измерения документа.
+Округляет координаты каждого выделенного объекта. Ориентиром для выравнивания будет выбранная контрольная точка из панели `Transform`. Скрипт учитывает единицы измерения документа и толщину обводки, если включено `Preferences > Use Preview Bounds`. В файле скрипта можно изменить шаг округления координат CFG `step: 1`. Если шаг 0, то скрипт выровняет по сетке документа из `Preferences > Guides & Grid`.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 

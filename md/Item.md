@@ -12,7 +12,7 @@
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
-* RoundCoordinates
+* RoundCoordinates `(upd, 15.03.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
@@ -60,7 +60,7 @@ Adobe Illustrator has a Transform panel, but you cannot use it to transform seve
 
 ## RoundCoordinates
 
-The script rounds the coordinates of each selected object. The reference point gets from the `Transform` panel. Works with document units.
+The script rounds the coordinates of each selected object. The reference point gets from the `Transform` panel. The script aligns to the stroke if `Preferences > Use Preview Bounds` is enabled. In the script file, you can change the coordinate rounding step in the CFG `step: 1`. If the step is 0, the script aligns to the document grid from `Preferences > Guides & Grid`.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 

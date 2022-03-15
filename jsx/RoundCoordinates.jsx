@@ -10,6 +10,7 @@
   0.1 Initial version
   0.2.0 Supports clipping groups, align to reference point
   0.2.1 Uses the document ruler mode to get coordinates
+  0.3 Added rounding step
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -19,7 +20,7 @@
   - via PayPal http://www.paypal.me/osokin/usd
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -34,9 +35,13 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 $.localize = true; // Enabling automatic localization
 
 function main() {
-  var CFG = {
-        refPoint: app.preferences.getIntegerPreference('plugin/Transform/AnchorPoint'),
-        inclStroke: !app.preferences.getBooleanPreference('includeStrokeInBounds'),
+  var pref = app.preferences,
+      subdiv = pref.getIntegerPreference('Grid/Horizontal/Ticks'),
+      grid = pref.getRealPreference('Grid/Horizontal/Spacing'),
+      CFG = {
+        step: 1, // Step of coordinates rounding. Set it to zero to read from Preferences > Grid
+        refPoint: pref.getIntegerPreference('plugin/Transform/AnchorPoint'),
+        inclStroke: pref.getBooleanPreference('includeStrokeInBounds'),
       },
       LANG = {
         errDoc: { en: 'Error\nOpen a document and try again',
@@ -54,7 +59,7 @@ function main() {
     return;
   }
 
-  if (!selection.length || selection.typename == 'TextRange') {
+  if (!selection.length || selection.typename === 'TextRange') {
     alert(LANG.errSel);
     return;
   }
@@ -72,77 +77,23 @@ function main() {
 
   for (var i = 0, selLen = selection.length; i < selLen; i++) {
     var currItem = selection[i],
-        currBoundsPx = getVisibleBounds(currItem, CFG.inclStroke);
+        boundsPX = getVisibleBounds(currItem, CFG.inclStroke);
 
-    for (var j = 0; j < currBoundsPx.length; j++) {
-      bounds.push(convertUnits(currBoundsPx[j], getDocUnit()));
+    for (var j = 0; j < boundsPX.length; j++) {
+      bounds.push(convertUnits(boundsPX[j], getDocUnit()));
     }
-    
-    var delta = getDelta(CFG.refPoint, bounds);
+
+    var step = (CFG.step == 0) ? convertUnits(grid, getDocUnit()) / subdiv : CFG.step,
+        delta = calcDeltaByAxes(CFG.refPoint, bounds, step);
 
     // If has been replaced by the clipping mask bounds
-    currBoundsPx = CFG.inclStroke ? currItem.visibleBounds : currItem.geometricBounds;
-    currItem.position = [currBoundsPx[0] + delta.x, currBoundsPx[1] + delta.y];
+    boundsPX = currItem.geometricBounds;
+    currItem.position = [boundsPX[0] + delta.x, boundsPX[1] + delta.y];
 
     bounds = []; // Reset array
   }
 
   app.coordinateSystem = defCoordSys;
-}
-
-// Get the fractional part of the coordinates for the move
-function getDelta(point, bounds) {
-  var x = y = 0,
-      left = Math.round(bounds[0]) - bounds[0],
-      right = Math.round(bounds[2]) - bounds[2],
-      top = Math.round(bounds[1]) - bounds[1],
-      bottom = Math.round(bounds[3]) - bounds[3]
-      centerX = bounds[0] + (bounds[2] - bounds[0]) / 2,
-      centerY = bounds[1] + (bounds[3] - bounds[1]) / 2;
-
-  switch (point) {
-    case 0: // Left Top
-      x = left;
-      y = top;
-      break;
-    case 1: // Top Center
-      x = Math.round(centerX) - centerX;
-      y = top;
-      break;
-    case 2: // Top Right
-      x = right;
-      y = top;
-      break;
-    case 3: // Left Center
-      x = left;
-      y = Math.round(centerY) - centerY;
-      break;
-    case 4: // Center Center
-      x = Math.round(centerX) - centerX;
-      y = Math.round(centerY) - centerY;
-      break;
-    case 5: // Right Center
-      x = right;
-      y = Math.round(centerY) - centerY;
-      break;
-    case 6: // Left Bottom
-      x = left;
-      y = bottom;
-      break;
-    case 7: // Center Bottom
-      x = Math.round(centerX) - centerX;
-      y = bottom;
-      break;
-    case 8: // Bottom Right
-      x = right;
-      y = bottom;
-      break;
-  }
-
-  x = convertUnits(x + getDocUnit(), 'px');
-  y = convertUnits(y + getDocUnit(), 'px');
-
-  return { 'x': x, 'y': y };
 }
 
 // Get the bounds of the visible content
@@ -217,6 +168,81 @@ function compareBounds(itemBnds, currBnds) {
   ];
 }
 
+// Calculate the delta of the X, Y coordinates for the move
+function calcDeltaByAxes(point, bounds, step) {
+  var x = y = 0,
+      centerX = bounds[0] + (bounds[2] - bounds[0]) / 2,
+      centerY = bounds[1] + (bounds[3] - bounds[1]) / 2;
+
+  switch (point) {
+    case 0: // Left Top
+      x = getDelta(bounds[0], step);
+      y = getDelta(bounds[1], step);
+      break;
+    case 1: // Top Center
+      x = getDelta(centerX, step);
+      y = getDelta(bounds[1], step);
+      break;
+    case 2: // Top Right
+      x = getDelta(bounds[2], step);
+      y = getDelta(bounds[1], step);
+      break;
+    case 3: // Left Center
+      x = getDelta(bounds[0], step);
+      y = getDelta(centerY, step);
+      break;
+    case 4: // Center Center
+      x = getDelta(centerX, step);
+      y = getDelta(centerY, step);
+      break;
+    case 5: // Right Center
+      x = getDelta(bounds[2], step);
+      y = getDelta(centerY, step);
+      break;
+    case 6: // Left Bottom
+      x = getDelta(bounds[0], step);
+      y = getDelta(bounds[3], step);
+      break;
+    case 7: // Center Bottom
+      x = getDelta(centerX, step);
+      y = getDelta(bounds[3], step);
+      break;
+    case 8: // Bottom Right
+      x = getDelta(bounds[2], step);
+      y = getDelta(bounds[3], step);
+      break;
+  }
+
+  x = convertUnits(x + getDocUnit(), 'px');
+  y = convertUnits(y + getDocUnit(), 'px');
+
+  return { 'x': x, 'y': y };
+}
+
+// Get the delta
+function getDelta(n, step) {
+  var f = Math.round(n) - n; // The fractional digits
+  return f + (sign(n) * getClosestInt(Math.abs(n), step) - trunc(f + n));
+}
+
+// Get the closest integer
+function getClosestInt(a, b) {
+	var x = trunc(a / b);
+	if (!(a % b)) return a;
+	return (b * (x + 1) - a) < (a - b * x) ? b * (x + 1) : b * x;
+}
+
+// Return the integer part of a number
+function trunc(n) {
+	n = +n;
+	return (n - n % 1) || (!isFinite(n) || n === 0 ? n : n < 0 ? -0 : 0);
+}
+
+// Return number sign
+function sign(n) {
+  return n ? (n < 0 ? -1 : 1) : 0;
+}
+
 // Units conversion
 function getDocUnit() {
   var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
@@ -232,7 +258,7 @@ function getUnits(value, def) {
   try {
     return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
   } catch (e) {}
-};
+}
 
 function convertUnits(value, newUnit) {
   if (value === undefined) return value;

@@ -55,7 +55,7 @@ Click the links to learn more about the scripts in the selected category.
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
-* RoundCoordinates
+* RoundCoordinates `(upd, 15.03.2022)`
 
 ### [Path](md/Path.md)  
 * Points Move Random `(upd, 17.02.2022)`
