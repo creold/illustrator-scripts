@@ -27,11 +27,11 @@
 ### [Color](md/Color.ru.md)  
 Скрипты для работы с цветом объектов.
 
+* AverageColors `(new, 27.03.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient
 * DistributeGradientStops
-* GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
 * StrokeColorFromFill `(upd, 12.01.2022)`

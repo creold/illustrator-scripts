@@ -24,31 +24,36 @@ Click the links to learn more about the scripts in the selected category.
 * RenameArtboardAsTopObj
 
 ### [Color](md/Color.md)  
+
+* AverageColors `(new, 27.03.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient
 * DistributeGradientStops
-* GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
 * StrokeColorFromFill `(upd, 12.01.2022)`
 
 ### [Draw](md/Draw.md) 
+
 * NumeratesPoints
 * RandomScribble
 
 ### [Export](md/Export.md)  
+
 * Export selection as AI
 * ExportToDXF
 
 
 ### [Group | Mask](md/Group.md)  
+
 * CenterClipsToArtboards
 * ExtUngroup
 * MoveToGroup
 * TrimMasks
 
 ### [Item](md/Item.md)  
+
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 17.02.2022)`
@@ -58,10 +63,12 @@ Click the links to learn more about the scripts in the selected category.
 * RoundCoordinates `(upd, 15.03.2022)`
 
 ### [Path](md/Path.md)  
+
 * Points Move Random `(upd, 17.02.2022)`
 * SplitPath
 
 ### [Select](md/Select.md)  
+
 * NamedItemsFinder `(upd, 07.03.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
@@ -70,6 +77,7 @@ Click the links to learn more about the scripts in the selected category.
 * SelectPointsByType
 
 ### [Style](md/Style.md)  
+
 * ChangeOpacity
 * GrayscaleToOpacity
 * OpacityMaskClip
@@ -77,12 +85,14 @@ Click the links to learn more about the scripts in the selected category.
 * StrokesWeightDown
 
 ### [Utility](md/Utility.md)  
+
 * FileVersionInformer
 * ObjectsCounter
 * SaveAllDocs
 * SyncGlobalColorsNames
 
 ### [View](md/View.md)  
+
 * Zoom And Center
 
 ## How to run scripts

@@ -6,11 +6,11 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
+* AverageColors `(new, 27.03.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient
 * DistributeGradientStops
-* GradientToFlat
 * RemoveGradientStops
 * ReverseGradientColor
 * StrokeColorFromFill `(upd, 12.01.2022)`
@@ -18,6 +18,17 @@
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
+
+## AverageColors
+
+Averages the colors of selected objects or separately inside groups or gradients. The script skips objects without color or with a pattern. If nothing is selected, the script process all groups in the document. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
+
+Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
+
+* <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
+* <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
+
+![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif) 
 
 ## ConvertToGradient
 
