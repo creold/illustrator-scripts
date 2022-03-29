@@ -8,7 +8,7 @@
 ## 📜 Scripts
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 17.02.2022)`
+* RenameItems `(upd, 29.03.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize
@@ -34,7 +34,7 @@
 
 Массово переименовывает выбранные объекты или их родительские слои. Если объекты не выбраны, то скрипт переименовывает активный слой.      
 
-![RenameItems](https://i.ibb.co/SND9vbK/Rename-Items.gif)
+![RenameItems](https://i.ibb.co/YWwCB0n/rename-items.gif)
 
 ## Rescale
 

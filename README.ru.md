@@ -62,7 +62,7 @@
 
 * MakeEnvelopesWithTops
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 17.02.2022)`
+* RenameItems `(upd, 29.03.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize

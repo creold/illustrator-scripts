@@ -1,19 +1,21 @@
+
 /*
   RenameItems.jsx for Adobe Illustrator
-  Description: Script to batch rename selected items with many options 
+  Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer
   Date: December, 2019
   Author: Sergey Osokin, email: hi@sergosokin.ru
-  
+
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  
+
   Release notes:
   1.0 Initial version.
   1.0 New option Find and replace string in all Layer names
   1.2 Recursive search in Sublayers names
   1.3 Renaming of the parent Symbol
   1.4 Renaming the parent layers of the selected items
-  
+  1.5 Added placeholders. New UI
+
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via YooMoney https://yoomoney.ru/to/410011149615582
@@ -25,10 +27,10 @@
   Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
-  
+
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
-  
+
   Check other author's scripts: https://github.com/creold
 */
 
@@ -38,19 +40,18 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.4'
+        version: 'v.1.5'
       },
-      CFG = {
-        aiVers: parseInt(app.version),
-        counter: 1,
-        enter: 'Enter name',
-        rplc: 'Replace in name'
+      PH = {
+        name: '{n}', // Put current name
+        numUp: '{nu}', // Put ascending numeration
+        numDown: '{nd}' // Put descending numeration
       },
       SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
       };
-      
+
   if (!documents.length) {
     alert('Error\nOpen a document and try again.');
     return;
@@ -58,123 +59,119 @@ function main() {
 
   var doc = activeDocument,
       aLayer = doc.activeLayer,
-      uLayers = getUniqueLayers(selection),
-      placeholder = getPlaceholder();
+      uniqLayers = getUniqueLayers(selection),
+      isMultiSel = selection.length > 1;
 
   // Dialog
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version, undefined);
+  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = ['fill', 'center'];
 
   // Target
   if (selection.length && selection.typename !== 'TextRange') {
-    var grpTarget = dialog.add('group'); 
-        grpTarget.alignChildren = ['fill', 'center'];
+    var grpTarget = dialog.add('group');
 
     var selRb = grpTarget.add('radiobutton', undefined, 'Selection');
         selRb.value = true;
-    var layerRb = grpTarget.add('radiobutton', undefined, 'Parent Layers');
+    var layerRb = grpTarget.add('radiobutton', undefined, 'Parent layer(s)');
   }
 
   // Name
-  var grpName = dialog.add('group'); 
+  var grpName = dialog.add('group');
       grpName.alignChildren = 'fill';
-      grpName.orientation = 'column'; 
+      grpName.orientation = 'column';
 
-  var nameTitle = grpName.add('statictext', undefined, 'Enter name'); 
-  var nameInp = grpName.add('edittext', [0, 0, 170, 30], placeholder); 
+  var nameTitle = grpName.add('statictext', undefined, 'Rename ');
+      nameTitle.text += isMultiSel ? selection.length + ' items to' : 'to';
+
+  var nameInp = grpName.add('edittext', undefined, getPlaceholder());
       nameInp.active = true;
 
-  // Extra option for Symbol
-  if (selection.length == 1 && isSymbol(selection[0])) {
-    var isRplcSym = dialog.add('checkbox', undefined, 'Rename parent symbol');
+  // Option for Symbol
+  if (selection.length === 1 && isSymbol(selection[0])) {
+    var isReplcSym = dialog.add('checkbox', undefined, 'Rename parent symbol');
   }
 
-  //  Add more options for multiple selection or layers
-  if (selection.length > 1 || (selection.length == 0 && hasMultiLayer())) {
-    var isFindRplc = dialog.add('checkbox', undefined, 'Find and replace in all');
-    isFindRplc.helpTip = 'Enter the part of the name you want to replace.\n' + 
-                        'E.g.: if you enter MY, it will replace all\n' +
-                        'the MY occurrences in the names.'; 
-    
+  // Options for multiple selection or layers
+  if (isMultiSel || (!selection.length && isMultiLayer())) {
     // Replace
-    var grpRplc = dialog.add('group'); 
-        grpRplc.orientation = 'row';
-        grpRplc.enabled = false;
+    var grpReplc = dialog.add('group');
+        grpReplc.alignChildren = 'fill';
+        grpReplc.orientation = 'column';
 
-    grpRplc.add('statictext', undefined, 'Search string'); 
-    var rplcInp = grpRplc.add('edittext', undefined, ''); 
-        rplcInp.characters = 16;
+    grpReplc.add('statictext', undefined, 'Find what (optional)');
 
-    // Toggle Find & Replace input
-    isFindRplc.onClick = function () {
-      grpRplc.enabled = this.value;
-      nameTitle.text = this.value ? CFG.rplc : CFG.enter;
-    }
+    var replcInp = grpReplc.add('edittext', undefined, '');
+        replcInp.helpTip = 'Enter the part of the name\nyou want to replace';
 
-    if (selection.length > 1) { 
-      var isAutonum = dialog.add('checkbox', undefined, 'Ascending numbering'); 
-          isAutonum.helpTip = 'Eg: name-1, name-2, name-3'; 
-          isAutonum.value = true;
-
-      var grpNum = dialog.add('group');
-          grpNum.orientation = 'row';
-
-      // Separator
-      grpNum.add('statictext', undefined, 'Separator'); 
-      var sprtInp = grpNum.add('edittext', undefined, '-'); 
-          sprtInp.helpTip = 'E.g.: name-1, name-2, name-3'
-          sprtInp.preferredSize.width = 40;
-
-      // Numeration
-      grpNum.add('statictext', undefined, 'Start from'); 
-      var countInp = grpNum.add('edittext', undefined, CFG.counter); 
-          countInp.preferredSize.width = 40;
-
-      // Toggle Auto-increment naming inputs
-      isAutonum.onClick = function () {
-        grpNum.enabled = this.value;
-      }
-
-      countInp.onChange = function () { 
-        this.text = convertToNum(countInp.text, 1);
-      }
-
-      shiftInputNumValue(countInp);
+    if (!selection.length) {
+      var isAllLayers = dialog.add('checkbox', undefined, 'Replace in all doc layers');
+      isAllLayers.helpTip = 'Top-level layers and sublayers';
     }
   }
-  
+
+  // Placeholders
+  if (isMultiSel) {
+    dialog.add('statictext', undefined, 'Click to add placeholder:');
+
+    var grpPH = dialog.add('group');
+        grpPH.orientation = 'row';
+        grpPH.spacing = 5;
+
+    var namePH = grpPH.add('statictext', undefined, 'Name');
+    putPlaceholder(namePH, PH.name);
+
+    grpPH.add('statictext', undefined, '|'); // Separator
+
+    var ascNumPH = grpPH.add('statictext', undefined, 'Number \u2191');
+    putPlaceholder(ascNumPH, PH.numUp);
+
+    grpPH.add('statictext', undefined, '|'); // Separator
+
+    var descNumPH = grpPH.add('statictext', undefined, 'Number \u2193');
+    putPlaceholder(descNumPH, PH.numDown);
+    
+    // Numeration
+    var grpNum = dialog.add('group');
+    grpNum.add('statictext', undefined, 'Start number at');
+    var countInp = grpNum.add('edittext', undefined, 1);
+        countInp.preferredSize.width = 40;
+
+    countInp.onChange = function () {
+      this.text = sconvertToInt(countInp.text, 1);
+    }
+
+    shiftInputNumValue(countInp);
+  }
+
   // Buttons
-  var btns = dialog.add('group'); 
-      btns.alignChildren = ['fill','center'];
+  var btns = dialog.add('group');
+      btns.alignChildren = ['fill', 'center'];
 
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
       cancel.helpTip = 'Press Esc to Close';
   var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
       ok.helpTip = 'Press Enter to Run';
-  
+
   // Copyright block
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
-  
+
   loadSettings();
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold');
   });
-  
-  if (selRb !== undefined && selection.length > 1 && uLayers.length < 2) {
+
+  // Сhange the amount in the title
+  if (!isUndefined(selRb)) {
+    if (layerRb.value) nameTitle.text = nameTitle.text.replace(/\d+/g, uniqLayers.length);
     selRb.onClick = function () {
-      isFindRplc.enabled = true;
-      isAutonum.enabled = true;
-      grpNum.enabled = isAutonum.value;
-      grpRplc.enabled = isFindRplc.value;
+      nameTitle.text = nameTitle.text.replace(/\d+/g, selection.length);
     }
     layerRb.onClick = function () {
-      isFindRplc.enabled = false;
-      isAutonum.enabled = false;
-      grpNum.enabled = false;
-      grpRplc.enabled = false;
+      nameTitle.text = nameTitle.text.replace(/\d+/g, uniqLayers.length);
+      if (!isUndefined(isReplcSym)) isReplcSym.value = false;
     }
   }
 
@@ -183,55 +180,63 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
+    var name = nameInp.text,
+        replc = !isUndefined(replcInp) ? replcInp.text : '';
+  
+    if (isEmpty(name) && isEmpty(replc)) {
+      dialog.close();
+      return;
+    }
+
     switch (selection.length) {
-      case 0: // empty selection
-        if (isFindRplc.value && rplcInp.text.length > 0) {
-          renameLayers(doc.layers, rplcInp.text, nameInp.text);
+      case 0: // Empty selection
+        if (isAllLayers.value) {
+          replaceLayers(doc.layers, replc, name);
         } else {
-          aLayer.name = nameInp.text;
+          if (isEmpty(replc)) {
+            aLayer.name = name;
+          } else {
+            aLayer.name = aLayer.name.replaceAll(replc, name);
+          }
         }
         break;
-      case 1: // one object was selected
+      case 1: // One item
         if (selRb.value) {
-          selection[0].name = nameInp.text;
-          if (isRplcSym !== undefined && isRplcSym.value) { 
-            selection[0].symbol.name = nameInp.text;
+          if (!isUndefined(isReplcSym) && isReplcSym.value) {
+            selection[0].symbol.name = name;
+          } else {
+            selection[0].name = name;
           }
         } else {
-          getTopLayer(selection[0]).name = nameInp.text;
+          getTopLayer(selection[0]).name = name;
         }
         break;
-      default: // multiple objects were selected
-        if (layerRb !== undefined && layerRb.value) {
-          rename(uLayers);
+      default: // Multiple items
+        if (!isUndefined(selRb) && selRb.value) {
+          rename(selection, name, replc, countInp.text, PH);
         } else {
-          rename(selection);
+          rename(uniqLayers, name, replc, countInp.text, PH);
         }
         break;
     }
-
-    if (CFG.aiVers <= 23) reloadLayers();
-
+  
+    // AI doesn't update in realtime the Layers panel until CC 2020
+    if (parseInt(app.version) <= 23) reloadLayers();
+  
     saveSettings();
     dialog.close();
   }
 
-  // Rename selection or parent layers
-  function rename(target) {
-    var counter = convertToNum(countInp.text, 1);
-    for (var i = 0, len = target.length; i < len; i++) {
-      var item = target[i];
-      if (isFindRplc.enabled && isFindRplc.value && rplcInp.text.length > 0) {
-        item.name = item.name.replaceAll(rplcInp.text, nameInp.text);
-      } else {
-        item.name = nameInp.text;
-      }
-      if (isAutonum.enabled && isAutonum.value) item.name += sprtInp.text + counter;
-      if (item.typename === 'Layer' && !nameInp.text.length && !isFindRplc.value) item.name = counter;
-      counter++;
-    }
+  // Put placeholder symbols to input
+  function putPlaceholder(obj, str) {
+    obj.addEventListener('mousedown', function () {
+      replcInp.active = true;
+      nameInp.text += str;
+      nameInp.active = true;
+    });
   }
 
+  // Use Up / Down arrow keys (+ Shift) for change value
   function shiftInputNumValue(item) {
     item.addEventListener('keydown', function (kd) {
       var step;
@@ -254,11 +259,9 @@ function main() {
     $file.open('w');
     var pref = {};
     if (!isUndefined(selRb)) pref.selection = selRb.value;
-    if (!isUndefined(isFindRplc)) pref.replace = isFindRplc.value;
-    if (!isUndefined(rplcInp)) pref.mask = rplcInp.text;
-    if (!isUndefined(isAutonum)) pref.autonum = isAutonum.value;
-    if (!isUndefined(sprtInp)) pref.separator = sprtInp.text;
+    if (!isUndefined(replcInp)) pref.pattern = replcInp.text;
     if (!isUndefined(countInp)) pref.number = countInp.text;
+    if (!isUndefined(isAllLayers)) pref.layers = isAllLayers.value;
     var data = pref.toSource();
     $file.write(data);
     $file.close();
@@ -276,18 +279,12 @@ function main() {
         if (typeof pref != 'undefined') {
           if (!isUndefined(selRb) && !isUndefined(pref.selection))
             pref.selection ? selRb.value = true : layerRb.value = true;
-          if (!isUndefined(isFindRplc) && !isUndefined(pref.replace))
-            isFindRplc.value = pref.replace;
-            grpRplc.enabled = pref.replace;
-          if (!isUndefined(rplcInp) && !isUndefined(pref.mask))
-            rplcInp.text = pref.mask;
-          if (!isUndefined(isAutonum) && !isUndefined(pref.autonum))
-            isAutonum.value = pref.autonum;
-            grpNum.enabled = pref.autonum;
-          if (!isUndefined(sprtInp) && !isUndefined(pref.separator))
-            sprtInp.text = pref.separator;
+          if (!isUndefined(replcInp) && !isUndefined(pref.pattern))
+            replcInp.text = pref.pattern;
           if (!isUndefined(countInp) && !isUndefined(pref.number))
             countInp.text = pref.number;
+          if (!isUndefined(isAllLayers) && !isUndefined(pref.layers))
+            isAllLayers.value = pref.layers;
         }
       } catch (e) {}
     }
@@ -300,18 +297,18 @@ function main() {
 // Get unique layers for selected items
 function getUniqueLayers(collection) {
   if (!collection.length) return [];
-  var raw = [];
-  raw.push(getTopLayer(collection[collection.length - 1]));
+
+  var raw = [getTopLayer(collection[collection.length - 1])];
+
   for (var i = collection.length - 1; i >= 0; i--) {
     var iLayer = getTopLayer(collection[i]);
-    if (iLayer !== raw[raw.length - 1]) {
-      raw.push(iLayer);
-    } 
+    if (iLayer !== raw[raw.length - 1]) raw.push(iLayer);
   }
-	return raw.reverse();
+
+  return raw.reverse();
 }
 
-// Get topmost parent layer
+// Get top-level parent layer
 function getTopLayer(item) {
   if (item.parent.typename === 'Document') {
     return item;
@@ -322,54 +319,74 @@ function getTopLayer(item) {
 
 // Get name placeholder
 function getPlaceholder() {
-  if (selection.typename === 'TextRange') return '';
-  var str;
+  var str = '';
+  
+  if (selection.typename === 'TextRange') return str;
+
   switch (selection.length) {
     case 0: // Empty selection
       str = activeDocument.activeLayer.name;
       break;
-    case 1: // One object
+    case 1: // One item
       if (isSymbol(selection[0]) && selection[0].name == '') {
         str = selection[0].symbol.name;
       } else {
         str = selection[0].name;
       }
       break;
-    default: // Multiple objects
-      str = '';
-      break;
   }
+
   return str;
 }
 
 // The document has multiple layers or sublayers
-function hasMultiLayer() {
+function isMultiLayer() {
   var _layers = activeDocument.layers;
   return _layers.length > 1 || _layers[0].layers.length > 0;
 }
 
-function renameLayers(_layers, mask, rplc) {
+// Find and replace in top-level layers and sublayers
+function replaceLayers(_layers, pattern, replc) {
+  if (isEmpty(pattern)) return;
+
   for (var i = 0, lyrLen = _layers.length; i < lyrLen; i++) {
     var iLayer = _layers[i];
-    if (iLayer.layers.length > 0) renameLayers(iLayer.layers, mask, rplc);
-    var newName = iLayer.name.replaceAll(mask, rplc);
-    if (newName !== iLayer.name) iLayer.name = newName;
+
+    if (iLayer.layers.length > 0) {
+      replaceLayers(iLayer.layers, pattern, replc);
+    }
+
+    var newName = iLayer.name.replaceAll(pattern, replc);
+    iLayer.name = newName;
   }
 }
 
-String.prototype.replaceAll = function(search, replacement) {
-  return this.replace(new RegExp(search, 'g'), replacement);
-};
+// Rename selection or parent layers
+function rename(target, pattern, replc, counter, ph) {
+  var min = counter * 1,
+      max = target.length + min - 1;
 
-function convertToNum(str, def) {
+  for (var i = 0, len = target.length; i < len; i++) {
+    var newName = '',
+        item = target[i];
+
+    newName = pattern.replaceAll(ph.name, item.name);
+    newName = newName.replaceAll(ph.numUp, fillZero(min + i, max.toString().length));
+    newName = newName.replaceAll(ph.numDown, fillZero(max - i, max.toString().length));
+
+    if (!isEmpty(replc)) {
+      item.name = item.name.replaceAll(replc, newName);
+    } else {
+      item.name = newName;
+    }
+  }
+}
+
+// Convert a string to an integer
+function sconvertToInt(str, def) {
   // Remove unnecessary characters
-  str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
-  str = str.split('.');
-  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  // Remove duplicate Minus
-  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  str = str.replace(/[^\d]/g, '');
+  if (isNaN(str) || !str.length) return parseFloat(def);
   return parseFloat(str);
 }
 
@@ -378,16 +395,33 @@ function isSymbol(item) {
   return item.typename === 'SymbolItem';
 }
 
-// Update Layers panel for CC 2019 and older
-function reloadLayers() {
-  app.executeMenuCommand('AdobeLayerPalette1');
-  redraw();
-  app.executeMenuCommand('AdobeLayerPalette1');
+// Replace all occurrences
+String.prototype.replaceAll = function(pattern, replc) {
+  return this.replace(new RegExp(pattern, 'g'), replc);
+};
+
+// Check empty string
+function isEmpty(str) {
+  return !str || !str.length;
+}
+
+// Add zero before number
+function fillZero(number, size) {
+  var minus = (number < 0) ? '-' : '',
+      str = '00000000000' + Math.abs(number);
+  return minus + str.slice(str.length - size);
 }
 
 // Check for undefined
 function isUndefined(el) {
   return typeof el == 'undefined';
+}
+
+// Update Layers panel for CC 2019 and older
+function reloadLayers() {
+  app.executeMenuCommand('AdobeLayerPalette1');
+  redraw();
+  app.executeMenuCommand('AdobeLayerPalette1');
 }
 
 // Open link in browser
