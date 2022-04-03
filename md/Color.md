@@ -61,12 +61,6 @@ Distributes uniform spacing between all the gradients stops without changing the
 
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
 
-## GradientToFlat
-
-Convert a gradient to an interpolated solid color. Options sortcuts <kbd>F</kbd>, <kbd>S</kbd>.
-
-![GradientToFlat](https://i.ibb.co/yn1j852/demo-Gradient-To-Flat.gif)
-
 ## RemoveGradientStops
 
 Removes intermediate color stops of gradient fill and stroke for selected objects.

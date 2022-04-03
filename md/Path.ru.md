@@ -8,6 +8,7 @@
 ## 📜 Scripts
 * Points Move Random `(upd, 17.02.2022)`
 * SplitPath
+* SubtractTopPath `(new, 03.04.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
@@ -32,6 +33,12 @@
 </a>
 
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
+
+## SubtractTopPath
+
+Вырезает верхнюю выбранную фигуру из лежащих под ней. Стандартная панель Pathfinder в Illustrator пока не умеет этого. Поменяйте значение `isRmvTop` на `false`, чтобы после вырезания объект не удалился. `isUseFS: true` ускоряет обработку при большом количестве объектов.
+
+![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">

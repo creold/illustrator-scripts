@@ -66,6 +66,7 @@ Click the links to learn more about the scripts in the selected category.
 
 * Points Move Random `(upd, 17.02.2022)`
 * SplitPath
+* SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.md)  
 

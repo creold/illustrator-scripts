@@ -32,9 +32,9 @@ Moves objects to their original layers. The information must be saved. The objec
 
 ## RenameItems
 
-Script to batch rename selected items or their parent layers with many options or simple rename one selected item / active layer.      
+Script to batch rename selected items or their parent layers with many options or simple rename one selected item / active layer. The find and replace function supports RegExp.      
 
-![RenameItems](https://i.ibb.co/YWwCB0n/rename-items.gif)
+![RenameItems](https://i.ibb.co/9T8TfQv/rename-items.gif)
 
 ## Rescale
 

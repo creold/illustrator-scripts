@@ -67,12 +67,6 @@
 
 ![GradientToFlat](https://i.ibb.co/yn1j852/demo-Gradient-To-Flat.gif)
 
-## RemoveGradientStops
-
-Удаляет промежуточные цветовые точки градиентной заливки и обводки у выделенных объектов.
-
-![RemoveGradientStops](https://i.ibb.co/cv6wgPq/remove-Gradient-Stops.gif)
-
 ## ReverseGradientColor
 
 Зеркально переворачивает цвета градиента: каждую точку (Color stop) вместе с прозрачностью. Само расположение точек сохраняется. Если градиент скопирован с другого объекта пипеткой (Eyedropper Tool), то Illustrator хранит связь между ним. В таком случае запуск скрипта приведет к разворачиванию всех скопированных градиентов. В таком случае, возможно, лучше использовать кнопку `Reverse Gradient` в стандартной панели Gradient. 

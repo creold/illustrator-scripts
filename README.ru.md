@@ -73,6 +73,7 @@
 
 * Points Move Random `(upd, 17.02.2022)`
 * SplitPath
+* SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.ru.md)  
 Скрипты для выбора объектов в документе.
