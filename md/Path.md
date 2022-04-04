@@ -8,6 +8,7 @@
 ## 📜 Scripts
 * Points Move Random `(upd, 17.02.2022)`
 * SplitPath
+* SubtractTopPath `(new, 03.04.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
@@ -33,15 +34,15 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
 
+## SubtractTopPath
+
+Subtracts the top selected shape from all the shapes below it. Pathfinder panel in Adobe Illustrator does not do it. Change the value of `isRmvTop` to `false` to keep the original shape. The `isUseFS: true` speeds up processing with a large number of objects. Align Stroke to Inside / Outside doesn't work correctly. Apply `Object > Path > Outline Stroke` before running the script.
+
+![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
+
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
-
-## SubtractTopPath
-
-Subtracts the top selected shape from all the shapes below it. Pathfinder panel in Adobe Illustrator does not do it. Change the value of `isRmvTop` to `false` to keep the original shape. The `isUseFS: true` speeds up processing with a large number of objects.
-
-![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
 
 ## 💸 Donate
 You can support my work on new scripts via [PayPal], [ЮMoney] or [Donatty].  
