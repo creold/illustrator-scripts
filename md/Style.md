@@ -34,6 +34,17 @@ The script activates `Clip` checkbox in `Transparency > Opacity Mask`.
 
 ![OpacityMaskClip](https://i.ibb.co/k0CBJKq/Opacity-Mask-Clip.gif)
 
+## RandomStrokeWidth
+
+Sets random stroke width of selected objects in a range with steps. The stroke unit is taken from `Preferences > Units > Stroke`. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
+
+Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
+
+* <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
+* <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
+
+![RandomStrokeWidth](https://i.ibb.co/PQN1qkV/Random-Stroke-Width.gif) 
+
 ## StrokesWeight
 
 * StrokesWeightDown.jsx

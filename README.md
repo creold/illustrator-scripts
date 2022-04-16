@@ -82,6 +82,7 @@ Click the links to learn more about the scripts in the selected category.
 * ChangeOpacity
 * GrayscaleToOpacity
 * OpacityMaskClip
+* RandomStrokeWidth `(new, 16.04.2022)`
 * StrokesWeightUp
 * StrokesWeightDown
 

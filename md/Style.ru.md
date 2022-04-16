@@ -9,6 +9,7 @@
 * ChangeOpacity
 * GrayscaleToOpacity
 * OpacityMaskClip
+* RandomStrokeWidth `(new, 16.04.2022)`
 * StrokesWeightUp
 * StrokesWeightDown
 
@@ -33,6 +34,17 @@
 Активирует чекбокс `Clip` в панели `Transparency > Opacity Mask` для выделенных объектов с масками прозрачности.
 
 ![OpacityMaskClip](https://i.ibb.co/k0CBJKq/Opacity-Mask-Clip.gif)
+
+## RandomStrokeWidth
+
+Применяет случайное значение из диапазона с заданным шагом к толщине обводки выбранных объектов. Единицы измерения берет из `Preferences > Units > Stroke`. Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`.   
+
+Эти режимы меняются без правки кода, если удерживать клавишу Alt при запуске:
+
+* <kbd>Alt</kbd> + `CFG.showUI: false` — появится диалог
+* <kbd>Alt</kbd> + `CFG.showUI: true` — скрипт сработает с последними использованными опциями
+
+![RandomStrokeWidth](https://i.ibb.co/PQN1qkV/Random-Stroke-Width.gif) 
 
 ## StrokesWeight
 

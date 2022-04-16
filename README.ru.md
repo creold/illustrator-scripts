@@ -91,6 +91,7 @@
 * ChangeOpacity
 * GrayscaleToOpacity
 * OpacityMaskClip
+* RandomStrokeWidth `(new, 16.04.2022)`
 * StrokesWeightUp
 * StrokesWeightDown
 
