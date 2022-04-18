@@ -26,6 +26,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [Color](md/Color.md)  
 
 * AverageColors `(new, 27.03.2022)`
+* ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient

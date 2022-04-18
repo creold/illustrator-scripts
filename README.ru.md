@@ -28,6 +28,7 @@
 Скрипты для работы с цветом объектов.
 
 * AverageColors `(new, 27.03.2022)`
+* ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient

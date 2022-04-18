@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * AverageColors `(new, 27.03.2022)`
+* ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
 * CycleColors
 * CycleGradient
@@ -29,6 +30,12 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 * <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
 
 ![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif) 
+
+## ColorBlindSimulator
+
+Simulates color vision deficiency of 8 types. You can recolor objects or use only a preview. Adobe is limited to viewing two types in the `View > Proof Setup` menu and cannot apply colors. The script supports: paths, compound paths, text, fills and strokes. You can change the gamma correction in `CFG.gamma: 2.2` and activate the default preview `CFG.defPreview: true`.
+
+![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
 
 ## ConvertToGradient
 

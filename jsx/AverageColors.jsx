@@ -1,4 +1,4 @@
-/*
+ƒ/*
   AverageColors.jsx for Adobe Illustrator
   Description: Averages the colors of selected objects or separately inside groups or gradients
               Hold Alt on launch to show dialog if showUI: false
@@ -262,7 +262,7 @@ function getPaths(collection, isIsolateGrp) {
   forEach(collection, function(e) {
     if (e.pageItems && e.pageItems.length && !isIsolateGrp) {
       out = [].concat(out, getPaths(e.pageItems));
-    } else if (/compound/i.test(e.typename) && e.pathItems) {
+    } else if (/compound/i.test(e.typename) && e.pathItems.length) {
       out = [].concat(out, getPaths(e.pathItems));
     } else if (/pathitem/i.test(e.typename)) {
       out.push(e);

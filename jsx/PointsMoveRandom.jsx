@@ -397,7 +397,7 @@ function getPaths(collection) {
     var item = collection[i];
     if (item.pageItems && item.pageItems.length) {
       out = [].concat(out, getPaths(item.pageItems));
-    } else if (/compound/i.test(item.typename) && item.pathItems) {
+    } else if (/compound/i.test(item.typename) && item.pathItems.length) {
       out = [].concat(out, getPaths(item.pathItems));
     } else if (/pathitem/i.test(item.typename)) {
       out.push(item);
@@ -454,8 +454,10 @@ function shuffle(arr) {
 
 // The max and min values is included
 function getRandomInRange(min, max, step) {
-  var range = (max - min) / step;
-  return Math.round(Math.random() * range) * step + min;
+  var range = ((step % 1 == 0 ? 1 : 0) + max - min) / step,
+      n = Math.random() * range;
+  n = (step % 1 == 0) ? Math.floor(n) : Math.round(n);
+  return n * step + min;
 }
 
 // Move points
