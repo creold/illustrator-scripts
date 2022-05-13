@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * MakeEnvelopesWithTops
+* MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 29.03.2022)`
 * Rescale
@@ -23,6 +24,17 @@
 Distorts the selected bottom object by the top selected objects separately. Similar to the multiple run of the command `Object > Envelope Distort > Make with Top Object`.
 
 ![MakeEnvelopesWithTops](https://i.ibb.co/N24Lmy7/Make-Envelopes-With-Tops.gif)
+
+## MirrorMove
+
+Mirror movement the object or points using the last values of the `Object > Transform > Move...` or last move with the mouse / keyboard. Extends the native `Object > Transform > Transform Again`. Axes: XY, X, Y. Movement ratio — the ratio of how much distance to move relative to the previous one (1 = the same). It has two modes: silent and dialog. Changing in `CFG.showUI`.   
+
+Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
+
+* <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
+* <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
+
+![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif) 
 
 ## RememberSelectionLayers
 

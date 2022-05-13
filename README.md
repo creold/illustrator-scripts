@@ -56,6 +56,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [Item](md/Item.md)  
 
 * MakeEnvelopesWithTops
+* MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 29.03.2022)`
 * Rescale

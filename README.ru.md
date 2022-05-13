@@ -62,6 +62,7 @@
 Скрипты, управляющие выбранными объектами.
 
 * MakeEnvelopesWithTops
+* MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 29.03.2022)`
 * Rescale
