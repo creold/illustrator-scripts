@@ -193,8 +193,8 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   close.onClick = dialog.close;
   dialog.onClose = saveSettings;
 
-  isHFixed.onClick = function () { hFromVal.enabled = this.value; }
-  isVFixed.onClick = function () { vFromVal.enabled = this.value; }
+  isHFixed.onClick = function () { hFromVal.enabled = !this.value; }
+  isVFixed.onClick = function () { vFromVal.enabled = !this.value; }
 
   // Restore original points state
   revert.onClick = function() {

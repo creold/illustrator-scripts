@@ -17,6 +17,7 @@
       Addedd save and load user settings
       Added placeholders for batch rename 
   1.1 Minor improvements
+  1.1.1 Fixed load user settings
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -586,8 +587,8 @@ function main() {
         $file.close();
         if (typeof pref != 'undefined') {
           loadSettingsString(abs, absTabData, pref.abs.split(';'));
-          loadSettingsString(abs, lyrsTabData, pref.layers.split(';'));
-          loadSettingsString(abs, pathsTabData, pref.paths.split(';'));
+          loadSettingsString(lyrs, lyrsTabData, pref.layers.split(';'));
+          loadSettingsString(paths, pathsTabData, pref.paths.split(';'));
           tabPnl.selection = isNaN(pref.tab) ? 0 : pref.tab * 1;
         }
       } catch (e) {}
@@ -729,7 +730,7 @@ function getStartingNum(cfgPh, obj, objPh) {
 // Find and replace in old name
 function findAndReplace(cfgPh, obj, idx) {
   var outName = obj.state[idx][1];
-  if (obj.isFind && (!obj.find.length || obj.find !== '')) {
+  if (obj.isFind && (obj.find.length || obj.find !== '')) {
     if (obj.find.match(cfgPh.name) != null) {
       outName = obj.rplc;
     } else {

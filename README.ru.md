@@ -17,7 +17,7 @@
 Скрипты для создания и управления артбордами.
 
 * ArtboardsFinder `(new, 08.03.2022)`
-* BatchRenamer
+* BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
 * MoveArtboards
 * RenameArtboardAsLayer

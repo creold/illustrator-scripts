@@ -16,7 +16,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [Artboard](md/Artboard.md)  
 
 * ArtboardsFinder `(new, 08.03.2022)`
-* BatchRenamer
+* BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
 * MoveArtboards
 * RenameArtboardAsLayer
