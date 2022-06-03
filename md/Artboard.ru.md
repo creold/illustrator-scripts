@@ -9,6 +9,7 @@
 * ArtboardsFinder `(new, 08.03.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboardsLight
+* FitArtboardsToArtwork `(new, 03.06.2022)`
 * MoveArtboards
 * RenameArtboardAsLayer
 * RenameArtboardAsSize
@@ -52,6 +53,12 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 </a>
 
 ![DuplicateArtboardsLight](https://i.ibb.co/rF92HpV/demo-Duplicate-Artboards-Light.gif) 
+
+## FitArtboardsToArtwork
+
+Масштабирует артборды по размеру видимого незаблокированного контента с отступами.
+
+![FitArtboardsToArtwork](https://i.ibb.co/SJJh5Hc/Fit-Artboards-To-Artwork.gif) 
 
 ## MoveArtboards
 

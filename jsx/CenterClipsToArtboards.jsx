@@ -222,7 +222,7 @@ function isClippingPath(item) {
   var clipText = (item.typename === 'TextFrame' &&
                   item.textRange.characterAttributes.fillColor == '[NoColor]' &&
                   item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (item.typename === 'CompoundPathItem' && clipItem.pathItems[0].clipping) ||
+  return (item.typename === 'CompoundPathItem' && item.pathItems[0].clipping) ||
           item.clipping || clipText;
 }
 
