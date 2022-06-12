@@ -12,7 +12,7 @@
 * RenameItems `(upd, 29.03.2022)`
 * Rescale
 * ResizeOnLargerSide
-* ResizeToSize
+* ResizeToSize `(upd, 12.06.2022)`
 * RoundCoordinates `(upd, 15.03.2022)`
 
 <a href="https://bit.ly/2M0j95N">
@@ -62,13 +62,13 @@ Resize of the selected objects to the specified amount on the larger side. Works
 
 ## ResizeToSize
 
-Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with <kbd>Alt</kbd> + underlined key or digit.      
+Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with <kbd>Q</kbd> + underlined key or digit. Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey: 'Q'`.
 
 <a href="https://youtu.be/PN3dAf6rac8">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![ResizeToSize](https://i.ibb.co/FxPGDM2/demo-Resize-To-Size.gif)
+![ResizeToSize](https://i.ibb.co/q0Ktmfm/Resize-To-Size.gif)
 
 ## RoundCoordinates
 
@@ -81,15 +81,12 @@ The script rounds the coordinates of each selected object. The reference point g
 </a> 
 
 ## 💸 Donate
-You can support my work on new scripts via [PayPal], [ЮMoney] or [Donatty].  
+You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
 
-[PayPal]: https://paypal.me/osokin/3usd
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
-
-<a href="https://paypal.me/osokin/3usd">
-  <img width="147" height="40" src="https://i.ibb.co/Z8Wd8Sn/paypal-badge.png" >
-</a>
+[DonatePay]: https://new.donatepay.ru/@osokin
+[PayPal]: https://paypal.me/osokin/5usd
 
 <a href="https://yoomoney.ru/to/410011149615582">
   <img width="147" height="40" src="https://i.ibb.co/448NHjM/yoomoney-badge.png" >
@@ -97,6 +94,10 @@ You can support my work on new scripts via [PayPal], [ЮMoney] or [Donatty].
 
 <a href="https://donatty.com/sergosokin">
   <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
+</a>
+
+<a href="https://new.donatepay.ru/@osokin">
+  <img width="147" height="40" src="https://i.ibb.co/x1Yrn3K/donatepay-badge.png" >
 </a>
 
 ## 🤝 Contribute

@@ -1,7 +1,7 @@
 /*
   RandomScribble.jsx for Adobe Illustrator
   Description: Create random path (scribble) with a given number of points
-  Date: July, 2021
+  Date: June, 2022
   Original Idea: @femkeblanco https://community.adobe.com/t5/illustrator/any-easy-way-to-make-a-random-lines-like-this-one/td-p/12169984
   Modification: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -9,13 +9,15 @@
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed "Illustrator quit unexpectedly" error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -36,7 +38,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Random Scribble',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         points: 4, // Default amount of the path points
@@ -45,14 +47,16 @@ function main() {
         tension: 0.5, // Default curve tension
         minTension: 0, // Minimum curve tension
         maxTension: 1, // Maximum curve tension
+        modKey: 'Q', // User modifier key for shortcuts
         dlgOpacity: 0.97 // UI window opacity. Range 0-1
       },
       LANG = {
         errDoc: { en: 'Error\nOpen a document and try again', ru: 'Ошибка\nОткройте документ и запустите скрипт' },
         amount: { en: 'Amount of points', ru: 'Количество точек' },
         tension: { en: 'Curve tension', ru: 'Натяжение кривой' },
-        close: { en: 'Close path', ru: 'Замкнуть линию' },
-        random: { en: 'Randomize', ru: 'Сгенерировать' },
+        close: { en: 'C\u0332lose path', ru: 'Замкнуть линию' },
+        random: { en: 'R\u0332andomize', ru: 'Сгенерировать' },
+        hint: { en: 'Quick access with ', ru: 'Быстрый доступ ' },
         cancel: { en: 'Cancel', ru: 'Отмена' },
         ok: { en: 'Ok', ru: 'Готово' }
       };
@@ -83,13 +87,14 @@ function main() {
   // DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
+      dialog.alignChildren = 'fill';
       dialog.spacing = 10;
       dialog.margins = 16;
       dialog.opacity = CFG.dlgOpacity;
 
   var pointsTitle = dialog.add('statictext', undefined, LANG.amount);
   var pointsLbl = dialog.add('edittext', undefined, CFG.points);
+      pointsLbl.active = true;
   
   var tensionTitle = dialog.add('statictext', undefined, LANG.tension);
   var tensionGrp = dialog.add('group');
@@ -102,13 +107,19 @@ function main() {
       isClosed.value = CFG.isClosed ? true : false;
 
   var randomize = dialog.add('button', undefined, LANG.random);
-      randomize.active = true;
   var ok = dialog.add('button', undefined, LANG.ok, {name: 'ok'});
   var cancel = dialog.add('button', undefined, LANG.cancel, {name: 'cancel'});
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 github.com/creold');
+  var hint = dialog.add('statictext', undefined, LANG.hint + CFG.modKey + ' + R');
+      hint.justify = 'center';
+      hint.enabled = false;
+
+  var copyright = dialog.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
-      copyright.enabled = false;
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   dialog.onShow = function () {
     process(container, lines, pointsLbl.text, isClosed.value, CFG.stroke, currTension);
@@ -167,16 +178,29 @@ function main() {
     redraw();
   }
 
-  // Access key shortcut
-  pointsLbl.addEventListener('keydown', function(kd) {
-    if (kd.altKey) { kd.preventDefault(); };
-  });
+  // Shortcut listener
+  var keysList = new RegExp('^[' + CFG.modKey + 'RC]$', 'i');
+  var keys = {};
+
+  // Block size input
+  blockInput(pointsLbl);
+  blockInput(tensionLbl);
 
   dialog.addEventListener('keydown', function(kd) {
-    if (kd.altKey) {
-      var key = kd.keyName;
-      if (key.match(/R/)) randomize.notify();
-    };
+    var key = kd.keyName;
+    if (!key) return; // non-English layout
+    if (keysList.test(key)) keys[kd.keyName] = true;   
+    if (keys[CFG.modKey]) {
+      for (var k in keys) {
+        if (k == 'R') randomize.notify();
+        if (k == 'C') isClosed.notify();
+      }
+    }
+  });
+
+  dialog.addEventListener('keyup', function(kd) {
+    var key = kd.keyName;
+    if (key && keysList.test(key)) delete keys[kd.keyName];
   });
 
   cancel.onClick = function () { 
@@ -185,6 +209,15 @@ function main() {
   }
 
   ok.onClick = dialog.close;
+
+  function blockInput(item) {
+    item.addEventListener('keydown', function(kd) {
+      if (kd.keyName && kd.keyName.match(CFG.modKey))
+        keys[kd.keyName] = true;
+      if (keys[CFG.modKey])
+        kd.preventDefault(); 
+    });
+  }
 
   dialog.center();
   dialog.show();
@@ -399,6 +432,7 @@ function removeLines(arr) {
  * @return {number} 
  */
 function convertToNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   // Remove duplicate Point
@@ -406,6 +440,19 @@ function convertToNum(str, def) {
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
   if (isNaN(str) || str.length == 0) return parseFloat(def);
   return parseFloat(str);
+}
+
+/**
+ * Open link in browser
+ * @param {string} url - website adress
+ */
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 // Run script

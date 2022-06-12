@@ -1,7 +1,7 @@
 /*
   SelectBySwatches.jsx for Adobe Illustrator
   Description: Select objects if the stroke color matches the selected swatches
-  Date:  July, 2021
+  Date: June, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,13 +9,15 @@
   Release notes:
   0.1 Initial version
   0.2 Added a dialog for selecting fills or strokes
+  0.2.1 Fixed "Illustrator quit unexpectedly" error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -36,7 +38,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectBySwatches',
-        version: 'v.0.2'
+        version: 'v.0.2.1'
       },
       CFG = {
         keyword: '%selswatch%',
@@ -72,7 +74,7 @@ function main() {
   // Dialog
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
+      dialog.alignChildren = 'fill';
       dialog.spacing = 10;
       dialog.margins = 16;
       dialog.opacity = CFG.dlgOpacity;

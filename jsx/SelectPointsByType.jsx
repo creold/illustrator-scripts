@@ -1,7 +1,7 @@
 /*
   SelectPointsByType.jsx for Adobe Illustrator
   Description: Selects points on the selected paths according to their type
-  Date: May, 2020
+  Date: June, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,13 +12,15 @@
   2.0 Added more points type. Minor improvements
   2.1.0 Added Ortho points. Minor improvements
   2.1.1 UI improvements
+  2.1.2 Fixed "Illustrator quit unexpectedly" error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -38,7 +40,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectPointsByType',
-        version: 'v.2.1.1'
+        version: 'v.2.1.2'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -46,7 +48,8 @@ function main() {
         maxAngle: 180, // Degrees range for the Tolerance
         cosTolerance: -0.999999, // Correction of coordinate inaccuracy
         btnHeight: 40, // Height of buttons with icons
-        uiOpacity: .96 // UI window opacity. Range 0-1
+        modKey: 'Q', // User modifier key for shortcuts
+        uiOpacity: .97 // UI window opacity. Range 0-1
       },
       ICNS = { // Binary icons data
         bezierNormal: "\u0089PNG\r\n\x1A\n\x00\x00\x00\rIHDR\x00\x00\x00!\x00\x00\x00$\b\x06\x00\x00\x00\x07)S\u00DC\x00\x00\x00\x19tEXtSoftware\x00Adobe ImageReadyq\u00C9e<\x00\x00\x02\x0BIDATx\u00DA\u00ECV\u00BDR\u00C2@\x10^\x18g\u00A4\u00D2he\u00C7\u00D9h\x1B\u009F\x00\x1C{\u00C4'@\u009E@}\x01DZ\x0B\u00C0\x07P\x18\x1F\x00\u00B0\u00B4!tZ\x11;\u00C7\u00C6X\u00D2H\u00AC(\u00E3n\u00B2@\u0092\u00E1\u009F\u00CBU\u00EC\u00CC\u00CE\u00E5\u0092K\u00EE\u00CB\u00EE\u00B7\u00DF-\u00C0\u00C66\x16\u00B4\u00D82\u008B\u009D\x12\x14qH\u00F1\u00B4\x1E+@M)Z\x04PvZ\u0097\u008E3\u00E8{N\u00D7%\u00B8V\x0B\u00E2A8\x01# \u00F7\u00FB\u00DF2\u00BE\x1D_x\u00E5\u00AE\b\u00CE\x13\x1A\u00C0\u00F6\u008EP\x0B\u00E2\u00C70\u00A0g\u008E\u00E7\x1FH\x07\u00DB\u0092\u00C2\u0089\u00AD%\u00D6\u00DE\u00C0\u00F3Y\x03\u008E2\u0082A\u0098\u00EE=\u00D5\u00D5\u00C1\x04\u00D5q  WX\x1D\u00A7\u0091\u0082\u00C0\u00CD\u00D2\u00BC\x19\u00B9\u008DN\x7Fn\u00E2\u00C66?o\u00E0p\u0087sS*\b\u00DE\u00B8\u008C\u00AE\u00CFx\u00A7\u0089^\u00E5\u00EB\x1C\u0082\u00C8\u00CB&\u00A6\u0098\x03\u0080,\u008B\u00DE\u00A6t\u00D05\x02\u00D7dG\u0082>\u00D8\u00E7\u00A9\u00C5\u00DEAO2\u00B8I\x00+\u00E8-Z\u008BQ\u00B1\u00A4p\x02\u0081d9\u00F7\u00D6\x14\u009E\u00DC\u00A2\u00A7G7\u008Fq\u00F9\x01b\u00FB\u00C4,\u00F5\u00CC\u00BC2)'\u00B9Fw\u009CN1\u00A8\u00A2\u00F54I\u00B9\u0088N\u00AC\u00FC\u00E1+\u00B8)\u00A8@2\x15b\u0094\x1B ]\t\b\u00B6?T\u00CC\u00E0\x1Do\u009E[\u0096\u00AC\u00B15R\" \u00B1\u00D7\u0085\u00CC\u00A3\x06\u00C9\u00B4'\u00E3\u00AF#\x01\u00B5\u00B9\u008CkS\u00B8E\u00D1\u00D2\u00F0\u0099\u00B1\x16\u0088\x11\x10\u00AFTu\u009F\u00B0\u0085mXeC\x1B\u0092\u009A\u00C8\x7F\u00B26\u00880Yq8g@\u008B\u00A6\u00E3\u0090\"\x15\u0097X45\u008E\u00C4!:\u00A9\u00A81c\u00AD\u00CD\u00CA\x0BR#\u00C1\u00D1x\"\u00E1\u00C2\u00BFk\u0086\u00B4%\u0090\u009EUEm\u00E1\x13\u0096\x0F6PR\x1DS@\x10\x17\u00BA>\"V\u00FDQQ\u00A5\u00A4m\u00E7\u00AD<\u00EEA=\x05\u00CD\u00AA\x04 \u00DCM\u00C3\u00CDp\u00C9=q#S\u00CC\u00B0i\u00A0Mh\u0086#\u0096\u00ED\u00F0yb\u00C2\u00D7\u008B\x15h\u0086\u00DF\u00E9\u0088q[\x01i\u008D\u00EE|\x1B\u00FC^\u008C\u009Aa:G\u00A8C\u00F7\u00FA\r\u00F5\u00C6\u00A5*`c\x1B[\u00D1\u00FE\x05\x18\x00<F\u00EDJ\\\u00EF\u00C5\x17\x00\x00\x00\x00IEND\u00AEB`\u0082",
@@ -85,7 +88,7 @@ function main() {
   // START DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill','center'];
+      dialog.alignChildren = 'fill';
       dialog.opacity = CFG.uiOpacity;
 
   var icoBezier = ScriptUI.newImage(ICNS.bezierNormal, ICNS.bezierDisabled, ICNS.bezierNormal, ICNS.bezierNormal),
@@ -97,7 +100,7 @@ function main() {
 
   var btns = dialog.add('group');
       btns.orientation = 'column';
-      btns.alignChildren = ['fill','center'];
+      btns.alignChildren = 'fill';
 
   var bezierBtn = btns.add('iconbutton', undefined, icoBezier, {style:'button', toggle:true});
       bezierBtn.preferredSize.height = CFG.btnHeight;
@@ -132,13 +135,14 @@ function main() {
   // TOLERANCE
   var tolerance = dialog.add('group');
       tolerance.orientation = 'row';
-      tolerance.alignChildren = ['left','center'];
+      tolerance.alignChildren = 'left';
 
   var tolTitle = tolerance.add('statictext', undefined, 'Angle Tolerance, \u00b0');
 
   var tolValue = tolerance.add('edittext', undefined, '180');
       tolValue.characters = 4;
       tolValue.helpTip = 'Tolerance angle in degrees\nbetween handles\nfor Corner & Broken points';
+      tolValue.active = true;
 
   var isShowBox = dialog.add('checkbox', undefined, 'Hide Bounding Box');
       isShowBox.value = !app.preferences.getBooleanPreference('showBoundingBox');
@@ -150,26 +154,46 @@ function main() {
 
   var closeBtn = dialog.add('button', undefined, 'Close', { name: 'cancel' });
 
+
+  var hint = dialog.add('statictext', undefined, 'Quick access with ' + CFG.modKey + ' + 1-6');
+      hint.justify = 'center';
+      hint.enabled = false;
+
   var copyright = dialog.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
-  // Dialog shortcuts Alt key + digits
+  // Shortcut listener
+  var keysList = new RegExp('^[' + CFG.modKey + '1-6]$', 'i');
+  var keys = {};
+
+  // Block size input
   tolValue.addEventListener('keydown', function(kd) {
-    if (kd.altKey) kd.preventDefault();
+    if (kd.keyName && kd.keyName.match(CFG.modKey))
+      keys[kd.keyName] = true;
+    if (keys[CFG.modKey])
+      kd.preventDefault(); 
   });
 
   dialog.addEventListener('keydown', function(kd) {
-    if (kd.keyName === 'Enter' && (brokenBtn.value || cornerBtn.value)) {
-      run();
+    var key = kd.keyName;
+    if (!key) return; // non-English layout
+    if (keysList.test(key)) keys[kd.keyName] = true;
+    
+    if (keys[CFG.modKey]) {
+      for (var k in keys) {
+        if (k == 1)  bezierBtn.notify();
+        if (k == 2)  orthoBtn.notify();
+        if (k == 3)  flushBtn.notify();
+        if (k == 4)  cornerBtn.notify();
+        if (k == 5)  brokenBtn.notify();
+        if (k == 6)  flatBtn.notify();
+      }
     }
-    if (kd.altKey) {
-      if (kd.keyName.match(/1/)) bezierBtn.notify();
-      if (kd.keyName.match(/2/)) orthoBtn.notify();
-      if (kd.keyName.match(/3/)) flushBtn.notify();
-      if (kd.keyName.match(/4/)) cornerBtn.notify();
-      if (kd.keyName.match(/5/)) brokenBtn.notify();
-      if (kd.keyName.match(/6/)) flatBtn.notify();
-    }
+  });
+
+  dialog.addEventListener('keyup', function(kd) {
+    var key = kd.keyName;
+    if (key && keysList.test(key)) delete keys[kd.keyName];
   });
 
   for (var i = 0; i < btns.children.length; i++) {
@@ -303,6 +327,7 @@ function calcSelectedPoints(paths) {
  * @return {number}
  */
 function convertToNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   // Remove duplicate Point

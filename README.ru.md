@@ -19,7 +19,7 @@
 * ArtboardsFinder `(new, 08.03.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
-* FitArtboardsToArtwork `(new, 03.06.2022)`
+* FitArtboardsToArtwork `(upd, 12.06.2022)`
 * MoveArtboards
 * RenameArtboardAsLayer
 * RenameArtboardAsSize
@@ -42,7 +42,7 @@
 Скрипты, которые что-либо рисуют.
 
 * NumeratesPoints
-* RandomScribble
+* RandomScribble `(upd, 12.06.2022)`
 
 ### [Export](md/Export.ru.md)  
 Скрипты для экспорта документов.
@@ -68,14 +68,14 @@
 * RenameItems `(upd, 29.03.2022)`
 * Rescale
 * ResizeOnLargerSide
-* ResizeToSize
+* ResizeToSize `(upd, 12.06.2022)`
 * RoundCoordinates `(upd, 15.03.2022)`
 
 ### [Path](md/Path.ru.md)  
 Скрипты, изменяющие пути.
 
-* Points Move Random `(upd, 17.02.2022)`
-* SplitPath
+* Points Move Random `(upd, 12.06.2022)`
+* SplitPath `(upd, 12.06.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.ru.md)  
@@ -84,9 +84,9 @@
 * NamedItemsFinder `(upd, 07.03.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches
+* SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType
+* SelectPointsByType `(upd, 12.06.2022)`
 
 ### [Style](md/Style.ru.md)  
 Скрипты, стилизующие объекты.
@@ -109,7 +109,7 @@
 ### [View](md/View.ru.md)  
 Скрипты для просмотра документа
 
-* Zoom And Center
+* Zoom And Center `(upd, 12.06.2022)`
 
 ## Как запускать скрипты
 
@@ -135,7 +135,7 @@
 [LAScripts]: https://ladygin.pro/products/lascripts/
 
 ## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty], [DonatePay]. PayPal временно недоступен
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен
 
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin

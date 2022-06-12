@@ -18,7 +18,7 @@ Click the links to learn more about the scripts in the selected category.
 * ArtboardsFinder `(new, 08.03.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
-* FitArtboardsToArtwork `(new, 03.06.2022)`
+* FitArtboardsToArtwork `(upd, 12.06.2022)`
 * MoveArtboards
 * RenameArtboardAsLayer
 * RenameArtboardAsSize
@@ -39,7 +39,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [Draw](md/Draw.md) 
 
 * NumeratesPoints
-* RandomScribble
+* RandomScribble `(upd, 12.06.2022)`
 
 ### [Export](md/Export.md)  
 
@@ -62,13 +62,13 @@ Click the links to learn more about the scripts in the selected category.
 * RenameItems `(upd, 29.03.2022)`
 * Rescale
 * ResizeOnLargerSide
-* ResizeToSize
+* ResizeToSize `(upd, 12.06.2022)`
 * RoundCoordinates `(upd, 15.03.2022)`
 
 ### [Path](md/Path.md)  
 
-* Points Move Random `(upd, 17.02.2022)`
-* SplitPath
+* Points Move Random `(upd, 12.06.2022)`
+* SplitPath `(upd, 12.06.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.md)  
@@ -76,9 +76,9 @@ Click the links to learn more about the scripts in the selected category.
 * NamedItemsFinder `(upd, 07.03.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches
+* SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType
+* SelectPointsByType `(upd, 12.06.2022)`
 
 ### [Style](md/Style.md)  
 
@@ -98,7 +98,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [View](md/View.md)  
 
-* Zoom And Center
+* Zoom And Center `(upd, 12.06.2022)`
 
 ## How to run scripts
 
@@ -124,7 +124,7 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [LAScripts]: https://ladygin.pro/products/lascripts/
 
 ## 💸 Donate
-You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. PayPal is temporarily unavailable
+You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
 
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin

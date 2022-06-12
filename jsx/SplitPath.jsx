@@ -2,7 +2,7 @@
   SplitPath.jsx for Adobe Illustrator
   Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
   Requirements: Adobe Illustrator CS6 and above
-  Date: August, 2018
+  Date: June, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,13 +11,15 @@
   0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run
   1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel
   1.1 Minor improvements
+  1.1.1 Fixed "Illustrator quit unexpectedly" error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -37,7 +39,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'SplitPath',
-        version: 'v.1.1'
+        version: 'v.1.1.1'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -86,7 +88,7 @@ function main() {
   // Create Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChild = ['fill', 'center'];
+      dialog.alignChildren = 'fill';
 
   // Split method
   var method = dialog.add('group');
@@ -100,6 +102,7 @@ function main() {
   // Buttons
   var btns = dialog.add('group');
       btns.orientation = 'row';
+      btns.alignment = 'center';
   var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
   var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
@@ -112,11 +115,9 @@ function main() {
 
   // Begin access key shortcut
   dialog.addEventListener('keydown', function(kd) {
-    if (kd.altKey) {
-      var key = kd.keyName;
-      if (key.match(/1/)) minusRadio.notify();
-      if (key.match(/2/)) intersectRadio.notify();
-    };
+    var key = kd.keyName;
+    if (key.match(/1/)) minusRadio.notify();
+    if (key.match(/2/)) intersectRadio.notify();
   });
   // End access key shortcut
 

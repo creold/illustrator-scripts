@@ -89,12 +89,12 @@
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
-
 ## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty] или [PayPal]
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен
 
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
+[DonatePay]: https://new.donatepay.ru/@osokin
 [PayPal]: https://paypal.me/osokin/5usd
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -105,8 +105,8 @@
   <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
 </a>
 
-<a href="https://paypal.me/osokin/3usd">
-  <img width="147" height="40" src="https://i.ibb.co/Z8Wd8Sn/paypal-badge.png" >
+<a href="https://new.donatepay.ru/@osokin">
+  <img width="147" height="40" src="https://i.ibb.co/x1Yrn3K/donatepay-badge.png" >
 </a>
 
 ## 🤝 Развитие

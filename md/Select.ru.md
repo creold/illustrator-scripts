@@ -9,9 +9,9 @@
 * NamedItemsFinder `(upd, 07.03.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches
+* SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType
+* SelectPointsByType `(upd, 12.06.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
@@ -54,14 +54,15 @@
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">
 </a>
 
-Горячие клавиши:
-
-* Bezier <kbd>Alt</kbd>+<kbd>1</kbd>
-* Ortho <kbd>Alt</kbd>+<kbd>2</kbd>
-* Flush <kbd>Alt</kbd>+<kbd>3</kbd>
-* Corner <kbd>Alt</kbd>+<kbd>4</kbd>
-* Broken <kbd>Alt</kbd>+<kbd>5</kbd>
-* Flat <kbd>Alt</kbd>+<kbd>6</kbd>
+**Горячие клавиши:**   
+Вместо <kbd>Q</kbd> можно задать свою клавишу-модификатор в коде `modKey: 'Q'`.
+   
+* Bezier <kbd>Q</kbd> + <kbd>1</kbd>
+* Ortho <kbd>Q</kbd> + <kbd>2</kbd>
+* Flush <kbd>Q</kbd> + <kbd>3</kbd>
+* Corner <kbd>Q</kbd> + <kbd>4</kbd>
+* Broken <kbd>Q</kbd> + <kbd>5</kbd>
+* Flat <kbd>Q</kbd> + <kbd>6</kbd>
 
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
 
@@ -70,10 +71,11 @@
 </a> 
 
 ## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty] или [PayPal]
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен
 
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
+[DonatePay]: https://new.donatepay.ru/@osokin
 [PayPal]: https://paypal.me/osokin/5usd
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -84,8 +86,8 @@
   <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
 </a>
 
-<a href="https://paypal.me/osokin/3usd">
-  <img width="147" height="40" src="https://i.ibb.co/Z8Wd8Sn/paypal-badge.png" >
+<a href="https://new.donatepay.ru/@osokin">
+  <img width="147" height="40" src="https://i.ibb.co/x1Yrn3K/donatepay-badge.png" >
 </a>
 
 ## 🤝 Развитие

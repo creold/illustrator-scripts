@@ -15,13 +15,15 @@
   Release notes:
   1.0 Initial version
   1.1 Fixed zoom in text editing mode
+  1.2 Fixed "Illustrator quit unexpectedly" error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   Check other author's scripts: https://github.com/creold
 */
@@ -32,7 +34,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Zoom \u0026 Center',
-        version: 'v.1.1'
+        version: 'v.1.2'
       },
       CFG = {
         ratio: .75, // Zoom ratio in document window
@@ -53,12 +55,12 @@ function main() {
   // Create Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'fill'];
+      dialog.alignChildren = 'fill';
 
   // Zoom to locked item checkbox
   var option = dialog.add('panel', undefined, 'Zoom in');
       option.orientation = 'column';
-      option.alignChildren = ['fill', 'fill'];
+      option.alignChildren = 'fill';
       option.margins = [10, 20, 10, 10];
   var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
       zoomLock = option.add('radiobutton', undefined, 'Not including hidden'),
@@ -90,12 +92,10 @@ function main() {
 
   // Begin access key shortcut
   dialog.addEventListener('keydown', function(kd) {
-    if (kd.altKey) {
-      var key = kd.keyName;
-      if (key.match(/1/)) zoomVis.notify();
-      if (key.match(/2/)) zoomLock.notify();
-      if (key.match(/3/)) zoomAll.notify();
-    };
+    var key = kd.keyName;
+    if (key.match(/1/)) zoomVis.notify();
+    if (key.match(/2/)) zoomLock.notify();
+    if (key.match(/3/)) zoomAll.notify();
   });
   // End access key shortcut
 

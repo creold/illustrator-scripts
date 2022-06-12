@@ -1,8 +1,7 @@
 /*
   PointsMoveRandom.jsx for Adobe Illustrator
   Description: Random movement of selected points in an user range
-  Requirements: Adobe Illustrator CS6 and above
-  Date: May, 2020
+  Date: June, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,13 +11,15 @@
   0.2 Added deselect some anchors, move handles
   0.3 Added step, saving settings. Minor improvements
   0.3.1 Fixed 'Fixed H' and 'Fixed V' options and entering identical from / to range
+  0.4 Fixed "Illustrator quit unexpectedly" error. Updated units conversion
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
@@ -38,12 +39,14 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Points Move Random',
-        version: 'v.0.3.1'
+        version: 'v.0.4'
       },
       CFG = {
         move: 1,
         chance: 50,
-        step: 1.0
+        step: 1.0,
+        docUnits: getUnits(),
+        modKey: 'Q', // User modifier key for shortcuts
       },
       SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
@@ -83,22 +86,22 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
+      dialog.alignChildren = 'fill';
 
   // RANGE PANEL
-  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + getDocUnit());
+  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + CFG.docUnits);
       rangePnl.orientation = 'column';
-      rangePnl.alignChildren = ['left', 'center'];
+      rangePnl.alignChildren = 'left';
       rangePnl.margins = [10, 20, 10, 5];
 
   // HORIZONTAL INPUT
   var hGroup = rangePnl.add('group');
-      hGroup.alignChildren = ['left','center'];
+      hGroup.alignChildren = 'left';
 
   var hGroupTitle = hGroup.add('statictext', undefined, 'Horizontal');
 
   var hRangeGroup = hGroup.add('group');
-      hRangeGroup.alignChildren = ['left','center'];
+      hRangeGroup.alignChildren = 'left';
 
   var hFromVal = hRangeGroup.add('edittext', undefined, -1 * CFG.move);
       hFromVal.characters = 5;
@@ -108,19 +111,20 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var hToVal = hRangeGroup.add('edittext', undefined, CFG.move);
       hToVal.characters = 5;
+      hToVal.active = true;
 
   var isHFixed = hRangeGroup.add('checkbox', undefined, 'Fixed H\u0332'); // Unicode underlined H
       isHFixed.helpTip = 'Press Alt+H to enable';
 
   // VERTICAL INPUT
   var vGroup = rangePnl.add('group');
-      vGroup.alignChildren = ['left','center'];
+      vGroup.alignChildren = 'left';
       vGroup.spacing = 28;
 
   vGroup.add('statictext', undefined, 'Vertical');
 
   var vRangeGroup = vGroup.add('group');
-      vRangeGroup.alignChildren = ['left','center'];
+      vRangeGroup.alignChildren = 'left';
 
   var vFromVal = vRangeGroup.add('edittext', undefined, -1 * CFG.move);
       vFromVal.characters = 5;
@@ -137,7 +141,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   var step = rangePnl.add('group');
 
   var stepTitle = step.add('statictext', [0, 0, 200, 30]);
-      stepTitle.text = 'Step for random value, ' + getDocUnit() + ' (> 0)';
+      stepTitle.text = 'Step for random value, ' + CFG.docUnits + ' (> 0)';
 
   var stepInp = step.add('edittext', undefined, CFG.step);
       stepInp.characters = 5;
@@ -145,16 +149,16 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   // OPTIONS
   var options = dialog.add('group');
       options.orientation = 'column';
-      options.alignChildren = ['left','center'];
+      options.alignChildren = 'left';
 
   var randOption = options.add('group');
-      randOption.alignChildren = ['center','center'];
+      randOption.alignChildren = 'center';
 
   var isRandPoint = randOption.add('checkbox');
       isRandPoint.text = 'S\u0332elect some of the points randomly'; // Unicode underlined S
       isRandPoint.helpTip = 'Press Alt+S to enable';
 
-  var chanceInp = randOption.add('edittext', undefined, '50');
+  var chanceInp = randOption.add('edittext', undefined, CFG.chance);
       chanceInp.characters = 4;
       chanceInp.enabled = false;
 
@@ -168,12 +172,16 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
     chanceInp.enabled = !chanceInp.enabled;
   }
 
+  var hint = dialog.add('statictext', undefined, 'Quick access with ' + CFG.modKey + ' + underlined key');
+      hint.justify = 'center';
+      hint.enabled = false;
+
   // BUTTONS
   var btns = dialog.add('group');
       btns.orientation = 'row';
-      btns.alignChildren = ['center','top'];
+      btns.alignment = 'center';
 
-  var close = btns.add('button', undefined, 'Close', {name: 'cancel'});
+  var close = btns.add('button', undefined, 'C\u0332lose', {name: 'cancel'});
       close.helpTip = 'Press Esc to Close';
 
   var revert = btns.add('button', undefined, 'R\u0332evert'); // Unicode underlined R
@@ -216,7 +224,9 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   shiftInputNumValue(vToVal);
   shiftInputNumValue(chanceInp);
 
-  // Begin Apply shortcut
+  // Shortcut listener
+  var keysList = new RegExp('^[' + CFG.modKey + 'HVSMRA]$', 'i');
+  var keys = {};
   for (var i = 0; i < rangePnl.children.length; i++) {
     blockInput(rangePnl.children[i]);
   }
@@ -224,16 +234,25 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   blockInput(stepInp);
 
   dialog.addEventListener('keydown', function(kd) {
-    if (kd.altKey) {
-      if (kd.keyName.match(/A/)) apply.notify();
-      if (kd.keyName.match(/H/)) isHFixed.notify();
-      if (kd.keyName.match(/M/)) isHandles.notify();
-      if (kd.keyName.match(/S/)) isRandPoint.notify();
-      if (kd.keyName.match(/R/)) revert.notify();
-      if (kd.keyName.match(/V/)) isVFixed.notify();
+    var key = kd.keyName;
+    if (!key) return; // non-English layout
+    if (keysList.test(key)) keys[kd.keyName] = true;
+    if (keys[CFG.modKey]) {
+      for (var k in keys) {
+        if (k == 'H') isHFixed.notify();
+        if (k == 'V') isVFixed.notify();
+        if (k == 'S') isRandPoint.notify();
+        if (k == 'M') isHandles.notify();
+        if (k == 'R') revert.notify();
+        if (k == 'A') apply.notify();
+      }
     }
   });
-  // End Apply shortcut
+
+  dialog.addEventListener('keyup', function(kd) {
+    var key = kd.keyName;
+    if (key && keysList.test(key)) delete keys[kd.keyName];
+  });
 
   apply.onClick = start;
 
@@ -244,7 +263,10 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   function blockInput(item) {
     item.addEventListener('keydown', function(kd) {
-      if (kd.altKey) kd.preventDefault();
+      if (kd.keyName && kd.keyName.match(CFG.modKey))
+        keys[kd.keyName] = true;
+      if (keys[CFG.modKey])
+        kd.preventDefault(); 
     });
   }
 
@@ -326,7 +348,8 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
     undoCounter++;
 
     // Start move
-    movePoint(isRandPoint.value ? newPoints : points,
+    movePoint(
+      isRandPoint.value ? newPoints : points,
       range[0],
       range[1],
       range[2],
@@ -334,7 +357,8 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       isHFixed.value,
       isVFixed.value,
       isHandles.value,
-      stepVal
+      stepVal,
+      CFG.docUnits
     );
 
     redraw();
@@ -429,6 +453,7 @@ function isSelected(point) {
 
 // Convert any input data to a number
 function convertToNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   // Remove duplicate Point
@@ -461,15 +486,15 @@ function getRandomInRange(min, max, step) {
 }
 
 // Move points
-function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) {
+function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step, units) {
   var deltaX, deltaY;
 
   for (var i = 0, pLen = points.length; i < pLen; i++) {
     deltaX = (isHFixed || x1 == x2) ? x2 : getRandomInRange(x1, x2, step);
     deltaY = (isVFixed || y1 == y2) ? y2 : getRandomInRange(y1, y2, step);
 
-    deltaX = convertUnits(deltaX + getDocUnit(), 'px');
-    deltaY = convertUnits(deltaY + getDocUnit(), 'px');
+    deltaX = convertUnits(deltaX, units, 'px');
+    deltaY = convertUnits(deltaY, units, 'px');
 
     with (points[i]) {
       if (!isHandles) { // Move the anchor and handles
@@ -486,64 +511,33 @@ function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step) 
   }
 }
 
-// Units conversion
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+// Get active document ruler units
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-};
-
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-      value = parseFloat(value) / 72;
-  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if ((unit === 'mm') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 10;
-  } else if ((unit === 'mm') && (newUnit === 'in')) {
-      value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if ((unit === 'cm') && (newUnit === 'mm')) {
-      value = parseFloat(value) / 10;
-  } else if ((unit === 'cm') && (newUnit === 'in')) {
-      value = parseFloat(value) * 2.54;
-  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 72;
-  } else if ((unit === 'in') && (newUnit === 'mm')) {
-      value = parseFloat(value) * 25.4;
-  } else if ((unit === 'in') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+// Units conversion
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 // Open link in browser

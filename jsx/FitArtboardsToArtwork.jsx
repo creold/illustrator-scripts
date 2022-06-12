@@ -113,13 +113,13 @@ var SCRIPT = {
 
   // Artboards
   var absPnl = dialog.add('panel', undefined, 'Source');
-  absPnl.orientation = 'row';
-  absPnl.alignChildren = ['fill', 'top'];
-  absPnl.margins = [10, 15, 10, 10];
+      absPnl.orientation = 'row';
+      absPnl.alignChildren = ['fill', 'top'];
+      absPnl.margins = [10, 15, 10, 10];
 
-  var allRb = absPnl.add('radiobutton', undefined, 'All artboards');
-      allRb.value = true;
   var activeRb = absPnl.add('radiobutton', undefined, 'Active artboard');
+      activeRb.value = true;
+  var allRb = absPnl.add('radiobutton', undefined, 'All artboards');
 
   var btns = dialog.add('group');
       btns.alignChildren = ['center', 'top'];
@@ -146,10 +146,10 @@ var SCRIPT = {
     var doc = app.activeDocument,
         margins = {};
 
-    margins.top = convertUnits( convertToNum(topInp.text), units, 'px');
-    margins.bottom = isEqual.value ? margins.top : convertUnits(convertToNum(bottomInp.text), units, 'px');
-    margins.left = isEqual.value ? margins.top : convertUnits(convertToNum(leftInp.text), units, 'px');
-    margins.right = isEqual.value ? margins.top : convertUnits(convertToNum(rightInp.text), units, 'px');
+    margins.top = convertUnits( convertToNum(topInp.text, CFG.margins), units, 'px');
+    margins.bottom = isEqual.value ? margins.top : convertUnits(convertToNum(bottomInp.text, CFG.margins), units, 'px');
+    margins.left = isEqual.value ? margins.top : convertUnits(convertToNum(leftInp.text, CFG.margins), units, 'px');
+    margins.right = isEqual.value ? margins.top : convertUnits(convertToNum(rightInp.text, CFG.margins), units, 'px');
 
     selection = null;
     redraw();
@@ -157,10 +157,11 @@ var SCRIPT = {
     if (allRb.value) {
       for (var i = 0, len = doc.artboards.length; i < len; i++) {
         doc.artboards.setActiveArtboardIndex(i);
-        resizeArtboard(doc.artboards[i], margins);
+        resizeArtboard(doc.artboards[i], i, margins);
       }
     } else {
-      resizeArtboard(doc.artboards[doc.artboards.getActiveArtboardIndex()], margins);
+      var idx = doc.artboards.getActiveArtboardIndex();
+      resizeArtboard(doc.artboards[idx], idx, margins);
     }
 
     dialog.close();
@@ -171,11 +172,11 @@ var SCRIPT = {
 }
 
 // Add margins to artboard
-function resizeArtboard(ab, margins) {
+function resizeArtboard(ab, idx, margins) {
   activeDocument.selectObjectsOnActiveArtboard();
   if (!selection.length) return;
 
-  executeMenuCommand('Fit Artboard to selected Art');
+  activeDocument.fitArtboardToSelectedArt(idx);
   selection = null;
 
   var rect = ab.artboardRect,
@@ -218,6 +219,7 @@ function convertUnits(value, currUnits, newUnits) {
 
 // Convert any input data to a number
 function convertToNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   // Remove duplicate Point
