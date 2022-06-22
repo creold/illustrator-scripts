@@ -446,6 +446,7 @@ function main () {
       } catch (e) {}
     }
   }
+
   dialog.center();
   dialog.show();
 }
@@ -528,7 +529,7 @@ function getSize(item, side, isVB) {
       isW = true, // width > heigth
       size;
 
-  if (item.isType('group') && item.clipped) {
+  if (isType(item, 'group') && item.clipped) {
     item = getMaskPath(item);
   }
 
@@ -564,17 +565,17 @@ function getMaskPath(group) {
 
 // Check clipping mask
 function isClippingPath(item) {
-  var clipText = (item.isType('text') &&
+  var clipText = (isType(item, 'text') &&
                   item.textRange.characterAttributes.fillColor == '[NoColor]' &&
                   item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (item.isType('compound') && item.pathItems[0].clipping) ||
+  return (isType(item, 'compound') && item.pathItems[0].clipping) ||
           item.clipping || clipText;
 }
 
-// Polyfill for checking the item typename by short name
-Object.prototype.isType = function (type) {
+// Check the item typename by short name
+function isType(item, type) {
   var regexp = new RegExp(type, 'i');
-  return regexp.test(this.typename);
+  return regexp.test(item.typename);
 }
 
 // Get resize ratio

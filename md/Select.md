@@ -12,6 +12,7 @@
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
 * SelectPointsByType `(upd, 12.06.2022)`
+* SelectRotatedItems `(new, 22.06.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
@@ -65,6 +66,12 @@ Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey
 * Flat <kbd>Q</kbd> + <kbd>6</kbd>
 
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
+
+## SelectRotatedItems
+
+Finds rotated objects in a selection or in a document. If `isSkipRight: true`, then objects rotated 90, 180, 270 degrees are ignored, if `false` value, then all objects with rotation angle different from 0 degrees are selected.
+
+![SelectRotatedItems](https://i.ibb.co/7YpGm9M/Select-Rotated-Items.gif)
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">

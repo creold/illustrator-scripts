@@ -12,6 +12,7 @@
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
 * SelectPointsByType `(upd, 12.06.2022)`
+* SelectRotatedItems `(new, 22.06.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
@@ -65,6 +66,12 @@
 * Flat <kbd>Q</kbd> + <kbd>6</kbd>
 
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
+
+## SelectRotatedItems
+
+Находит среди выбранных объектов или во всём документе те, что повёрнуты. Если в коде `isSkipRight: true`, то объекты повёрнутые на 90, 180, 270 градусов не учитываются, если значение `false`, то выбираются все объекты с углом поворота отличным от 0 градусов.
+
+![SelectRotatedItems](https://i.ibb.co/7YpGm9M/Select-Rotated-Items.gif)
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">

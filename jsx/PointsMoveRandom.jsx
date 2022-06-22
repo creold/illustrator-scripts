@@ -114,7 +114,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       hToVal.active = true;
 
   var isHFixed = hRangeGroup.add('checkbox', undefined, 'Fixed H\u0332'); // Unicode underlined H
-      isHFixed.helpTip = 'Press Alt+H to enable';
+      isHFixed.helpTip = 'Press ' + CFG.modKey + '+H to enable';
 
   // VERTICAL INPUT
   var vGroup = rangePnl.add('group');
@@ -135,7 +135,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       vToVal.characters = 5;
 
   var isVFixed = vRangeGroup.add('checkbox', undefined, 'Fixed V\u0332'); // Unicode underlined V
-      isVFixed.helpTip = 'Press Alt+V to enable';
+      isVFixed.helpTip = 'Press ' + CFG.modKey + '+V to enable';
 
   // STEP INPUT
   var step = rangePnl.add('group');
@@ -156,7 +156,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var isRandPoint = randOption.add('checkbox');
       isRandPoint.text = 'S\u0332elect some of the points randomly'; // Unicode underlined S
-      isRandPoint.helpTip = 'Press Alt+S to enable';
+      isRandPoint.helpTip = 'Press ' + CFG.modKey + '+S to enable';
 
   var chanceInp = randOption.add('edittext', undefined, CFG.chance);
       chanceInp.characters = 4;
@@ -166,7 +166,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var isHandles = options.add('checkbox');
       isHandles.text = 'M\u0332ove only points handles'; // Unicode underlined M
-      isHandles.helpTip = 'Press Alt+M to enable';
+      isHandles.helpTip = 'Press ' + CFG.modKey + '+M to enable';
 
   isRandPoint.onClick = function () {
     chanceInp.enabled = !chanceInp.enabled;
@@ -185,11 +185,11 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       close.helpTip = 'Press Esc to Close';
 
   var revert = btns.add('button', undefined, 'R\u0332evert'); // Unicode underlined R
-      revert.helpTip = 'Press Alt+R to Revert';
+      revert.helpTip = 'Press ' + CFG.modKey + '+R to Revert';
       revert.enabled = false;
 
   var apply = btns.add('button', undefined, 'A\u0332pply', {name: 'ok'}); // Unicode underlined A
-      apply.helpTip = 'Press Alt+A to Apply';
+      apply.helpTip = 'Press ' + CFG.modKey + '+A to Apply';
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';

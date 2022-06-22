@@ -87,6 +87,7 @@
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
 * SelectPointsByType `(upd, 12.06.2022)`
+* SelectRotatedItems `(new, 22.06.2022)`
 
 ### [Style](md/Style.ru.md)  
 Скрипты, стилизующие объекты.
