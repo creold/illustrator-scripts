@@ -62,6 +62,7 @@
 ### [Item](md/Item.ru.md)  
 Скрипты, управляющие выбранными объектами.
 
+* FitSelectionToArtboards `(new, 22.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
@@ -156,6 +157,7 @@
 </a>
 
 ## 🗣 Отзывы
+* *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts.* - Nitcho
 * *Sergey, these scripts of yours are great* — Terry Foxx   
 * *Wow. I just installed and successfully tested. Outstanding work!!!* — Zak Lay
 * *Попробовал ваш скрипт для экспорта выбранных объектов в отдельный Ai, работает замечательно* — Дмитрий

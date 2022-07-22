@@ -1,6 +1,6 @@
 /*
   FitArtboardsToArtwork.jsx for Adobe Illustrator
-  Description: Resize each artboard by editable artwork size with margins
+  Description: Resize each artboard by editable artwork size with paddings
   Date: June, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -37,7 +37,7 @@ var SCRIPT = {
       version: 'v.0.1'
     },
     CFG = {
-      margins: 10,
+      paddings: 10,
       isEqual: true,
       dlgOpacity: .97 // UI window opacity. Range 0-1
     };
@@ -54,13 +54,13 @@ var SCRIPT = {
       dialog.alignChildren = ['fill', 'fill'];
       dialog.opacity = CFG.dlgOpacity;
 
-  // Margins
-  var marginsPnl = dialog.add('panel', undefined, 'Margins, ' + units);
-      marginsPnl.alignChildren = ['left', 'bottom'];
-      marginsPnl.margins = 10;
+  // Paddings
+  var padPnl = dialog.add('panel', undefined, 'Paddings, ' + units);
+      padPnl.alignChildren = ['left', 'bottom'];
+      padPnl.margins = 10;
 
   // Wrapper
-  var wrapper = marginsPnl.add('group');
+  var wrapper = padPnl.add('group');
       wrapper.alignChildren = ['left', 'bottom'];
       wrapper.spacing = 10;
 
@@ -72,7 +72,7 @@ var SCRIPT = {
       top.spacing = 5;
 
   top.add('statictext', undefined, 'Top');
-  var topInp = top.add('edittext', undefined, CFG.margins);
+  var topInp = top.add('edittext', undefined, CFG.paddings);
 
   // Bottom
   var bottom = wrapper.add('group');
@@ -82,7 +82,7 @@ var SCRIPT = {
       bottom.spacing = 5;
 
   bottom.add('statictext', undefined, 'Bottom');
-  var bottomInp = bottom.add('edittext', undefined, CFG.margins);
+  var bottomInp = bottom.add('edittext', undefined, CFG.paddings);
 
   // Left
   var left = wrapper.add('group');
@@ -92,7 +92,7 @@ var SCRIPT = {
       left.spacing = 5;
 
   left.add('statictext', undefined, 'Left');
-  var leftInp = left.add('edittext', undefined, CFG.margins);
+  var leftInp = left.add('edittext', undefined, CFG.paddings);
 
   // Right
   var right = wrapper.add('group');
@@ -102,7 +102,7 @@ var SCRIPT = {
       right.spacing = 5;
 
   right.add('statictext', undefined, 'Right');
-  var rightInp = right.add('edittext', undefined, CFG.margins);
+  var rightInp = right.add('edittext', undefined, CFG.paddings);
 
   var isEqual = wrapper.add('checkbox');
       isEqual.value = CFG.isEqual;
@@ -144,12 +144,12 @@ var SCRIPT = {
 
   function okClick() {
     var doc = app.activeDocument,
-        margins = {};
+        paddings = {};
 
-    margins.top = convertUnits( convertToNum(topInp.text, CFG.margins), units, 'px');
-    margins.bottom = isEqual.value ? margins.top : convertUnits(convertToNum(bottomInp.text, CFG.margins), units, 'px');
-    margins.left = isEqual.value ? margins.top : convertUnits(convertToNum(leftInp.text, CFG.margins), units, 'px');
-    margins.right = isEqual.value ? margins.top : convertUnits(convertToNum(rightInp.text, CFG.margins), units, 'px');
+    paddings.top = convertUnits(topInp.text.toNum(CFG.paddings), units, 'px');
+    paddings.bottom = isEqual.value ? paddings.top : convertUnits(bottomInp.text.toNum(CFG.paddings), units, 'px');
+    paddings.left = isEqual.value ? paddings.top : convertUnits(leftInp.text.toNum(CFG.paddings), units, 'px');
+    paddings.right = isEqual.value ? paddings.top : convertUnits(rightInp.text.toNum(CFG.paddings), units, 'px');
 
     selection = null;
     redraw();
@@ -157,11 +157,11 @@ var SCRIPT = {
     if (allRb.value) {
       for (var i = 0, len = doc.artboards.length; i < len; i++) {
         doc.artboards.setActiveArtboardIndex(i);
-        resizeArtboard(doc.artboards[i], i, margins);
+        resizeArtboard(doc.artboards[i], i, paddings);
       }
     } else {
       var idx = doc.artboards.getActiveArtboardIndex();
-      resizeArtboard(doc.artboards[idx], idx, margins);
+      resizeArtboard(doc.artboards[idx], idx, paddings);
     }
 
     dialog.close();
@@ -171,8 +171,8 @@ var SCRIPT = {
   dialog.show();
 }
 
-// Add margins to artboard
-function resizeArtboard(ab, idx, margins) {
+// Add paddings to artboard
+function resizeArtboard(ab, idx, paddings) {
   activeDocument.selectObjectsOnActiveArtboard();
   if (!selection.length) return;
 
@@ -185,7 +185,7 @@ function resizeArtboard(ab, idx, margins) {
       right = rect[2],
       bottom = rect[3];
 
-  ab.artboardRect = [left - margins.left, top + margins.top, right + margins.right, bottom - margins.bottom];
+  ab.artboardRect = [left - paddings.left, top + paddings.top, right + paddings.right, bottom - paddings.bottom];
 }
 
 // Get active document ruler units
@@ -217,17 +217,15 @@ function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Convert any input data to a number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
-  // Remove unnecessary characters
-  str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
+// Polyfill for convert any string to a number
+String.prototype.toNum = function (def) {
+  var str = this;
+  if (!def) def = 1;
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  // Remove duplicate Minus
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
+  if (isNaN(str) || !str.length) return parseFloat(def);
   return parseFloat(str);
 }
 

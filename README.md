@@ -56,6 +56,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 
+* FitSelectionToArtboards `(new, 22.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
@@ -145,6 +146,7 @@ You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. [P
 </a>
 
 ## 🗣 Testimonials
+* *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts.* - Nitcho
 * *Sergey, these scripts of yours are great* — Terry Foxx   
 * *Wow. I just installed and successfully tested. Outstanding work!!!* — Zak Lay
 * *Tried your script to export selected objects to separate Ai, works smartly* — Dmitry

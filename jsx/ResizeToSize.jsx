@@ -294,7 +294,6 @@ function main () {
     } catch (e) {}
     // Restore Scale Corners pref
     preferences.setIntegerPreference('policyForPreservingCorners', CFG.isScaleCorner);
-    saveSettings();
   }
 
   // Resize preview
@@ -390,6 +389,7 @@ function main () {
       if (isShowFail) selection = result;
     }
     isUndo = false;
+    saveSettings();
     dialog.close();
   }
 

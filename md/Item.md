@@ -6,6 +6,7 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
+* FitSelectionToArtboards `(new, 22.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
@@ -18,6 +19,12 @@
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
+
+## FitSelectionToArtboards
+
+Places selected objects in the center of artboards and optionally fit the largest side of each object to the size of the artboard. When scaling objects, you can set internal paddings from the artboard bounds. With the `Rename artboards...` option enabled, artboards get names from the objects placed on them.
+
+![FitSelectionToArtboards](https://i.ibb.co/YT0qPWL/Fit-Selection-To-Artboards.gif)
 
 ## MakeEnvelopesWithTops
 
