@@ -202,6 +202,7 @@ function main() {
     }
 
     selection = null;
+    redraw();
     unlockLayers(doc.layers);
     removeNote(doc.layers, CFG.lKey, CFG.hKey); // Сlear Note after previous run
     saveItemsState(doc.layers, CFG.lKey, CFG.hKey);

@@ -127,6 +127,7 @@ function main() {
 // Processing clipping groups for each artboard
 function processing(idx, isAlignMask, isTotal) {
   selection = null;
+  redraw();
   activeDocument.artboards.setActiveArtboardIndex(idx);
   activeDocument.selectObjectsOnActiveArtboard();
 

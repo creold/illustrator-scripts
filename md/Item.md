@@ -22,7 +22,9 @@
 
 ## FitSelectionToArtboards
 
-Places selected objects in the center of artboards and optionally fit the largest side of each object to the size of the artboard. When scaling objects, you can set internal paddings from the artboard bounds. With the `Rename artboards...` option enabled, artboards get names from the objects placed on them.
+Places selected objects in the center of artboards and optionally fit the largest side of each object to the size of the artboard. When scaling objects, you can set internal paddings from the artboard bounds. With the `Rename artboards...` option enabled, artboards get names from the objects placed on them.   
+
+The Lite version (FitSelectionToArtboards-Lite.jsx) in silent mode aligns and fit one selected object to the active artboard if it is contained on it. If you edit `CFG.isContains:false` in the code, the object outside the active artboard will be placed in it.
 
 ![FitSelectionToArtboards](https://i.ibb.co/YT0qPWL/Fit-Selection-To-Artboards.gif)
 

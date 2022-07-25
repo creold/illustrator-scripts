@@ -210,6 +210,7 @@ function main() {
 
     if (rbAbs.value) {
       selection = null;
+      redraw();
       for (var i = 0, abLen = absRange.length; i < abLen; i++) {
         var idx = absRange[i];
         var abName = doc.artboards[idx].name.replace(/\s/g, separator);
@@ -217,6 +218,7 @@ function main() {
         doc.selectObjectsOnActiveArtboard();
         exportDXF(rootDest + abName, exportOptions);
         selection = null;
+        redraw();
       }
       doc.artboards.setActiveArtboardIndex(currBoardIdx);
     }
