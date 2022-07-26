@@ -66,7 +66,7 @@
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 29.03.2022)`
+* RenameItems `(upd, 26.07.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize `(upd, 12.06.2022)`

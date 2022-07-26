@@ -10,7 +10,7 @@
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 29.03.2022)`
+* RenameItems `(upd, 26.07.2022)`
 * Rescale
 * ResizeOnLargerSide
 * ResizeToSize `(upd, 12.06.2022)`
@@ -24,7 +24,7 @@
 
 Places selected objects in the center of artboards and optionally fit the largest side of each object to the size of the artboard. When scaling objects, you can set internal paddings from the artboard bounds. With the `Rename artboards...` option enabled, artboards get names from the objects placed on them.   
 
-The Lite version (FitSelectionToArtboards-Lite.jsx) in silent mode aligns and fit one selected object to the active artboard if it is contained on it. If you edit `CFG.isContains:false` in the code, the object outside the active artboard will be placed in it.
+The Lite version (FitSelectionToArtboards-Lite.jsx) in silent mode aligns and fit topmost selected object to the active artboard if it is contained on it. If you edit `CFG.isContains:false` in the code, the object outside the active artboard will be placed in it.
 
 ![FitSelectionToArtboards](https://i.ibb.co/YT0qPWL/Fit-Selection-To-Artboards.gif)
 
@@ -53,7 +53,7 @@ Moves objects to their original layers. The information must be saved. The objec
 
 ## RenameItems
 
-Script to batch rename selected items or their parent layers with many options or simple rename one selected item / active layer. The find and replace function supports RegExp.      
+Script to batch rename selected items or their parent layers with many options or simple rename one selected item / active layer / artboard. The find and replace function supports RegExp.      
 
 ![RenameItems](https://i.ibb.co/9T8TfQv/rename-items.gif)
 
