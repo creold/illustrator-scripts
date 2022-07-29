@@ -8,13 +8,15 @@
 
   Release notes:
   0.1 Initial version
+  0.1.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
@@ -34,13 +36,14 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Artboards Finder',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         defZoom: 0.75, // Zoom ratio in document window
         minZoom: 0.1, // Minimal zoom ratio
         width: 280, // Units: px
         rows: 6, // Amount of rows in listbox
+        units: getUnits(), // Active document units
         uiOpacity: .97 // UI window opacity. Range 0-1
       },
       SETTINGS = {
@@ -52,8 +55,8 @@ function main() {
                   ru: 'Ошибка\nОткройте документ и запустите скрипт' },
         method: { en: 'Search method', ru: 'Метод поиска'},
         byName: { en: 'By name', ru: 'По имени'},
-        byWidth: { en: 'By width, ' + getDocUnit(), ru: 'По ширине, ' + getDocUnit()},
-        byHeight: { en: 'By height, ' + getDocUnit(), ru: 'По высоте, ' + getDocUnit()},
+        byWidth: { en: 'By width, ' + CFG.units, ru: 'По ширине, ' + CFG.units},
+        byHeight: { en: 'By height, ' + CFG.units, ru: 'По высоте, ' + CFG.units},
         byName: { en: 'By name', ru: 'По имени'},
         landscape: { en: 'Landscape', ru: 'Альбомные'},
         portrait: { en: 'Portrait', ru: 'Портретные'},
@@ -173,7 +176,7 @@ function main() {
 
     for (var i = 0; i < filterPnl.children.length; i++) {
       if (filterPnl.children[i].value) {
-        resAbs = getAbsByFilter(i, userInp.text);
+        resAbs = getAbsByFilter(i, userInp.text, CFG.units);
         break;
       }
     }
@@ -263,11 +266,11 @@ function main() {
 
 /**
  * Add radiobutton to the dialog
- * @param {object} place - button container
- * @param {number} x - column
- * @param {number} y - row
- * @param {string} label - button caption
- * @return {object} rb - radiobutton
+ * @param {Object} place - Button container
+ * @param {number} x - Column
+ * @param {number} y - Row
+ * @param {string} label - Button caption
+ * @return {Object} rb - Radiobutton
  */
 function addRadio(place, x, y, label) {
   var rb = place.add('radiobutton', undefined, label),
@@ -285,11 +288,12 @@ function addRadio(place, x, y, label) {
 
 /**
  * Get input string matches
- * @param {number} key - search method
- * @param {string} str - search string
- * @return {array} out - array of matches
+ * @param {number} key - Search method
+ * @param {string} str - Search string
+ * @param {string} units - Document units
+ * @return {Array} out - Array of matches
  */
-function getAbsByFilter(key, str) {
+function getAbsByFilter(key, str, units) {
   var out = [],
       regexp;
 
@@ -298,8 +302,8 @@ function getAbsByFilter(key, str) {
         abWidth = ab.artboardRect[2] - ab.artboardRect[0],
         abHeight = Math.abs(ab.artboardRect[1] - ab.artboardRect[3]);
 
-    abWidth = convertUnits(abWidth + 'px', getDocUnit());
-    abHeight = convertUnits(abHeight + 'px', getDocUnit());
+    abWidth = convertUnits(abWidth, 'px', units);
+    abHeight = convertUnits(abHeight, 'px', units);
 
     switch (key) {
       case 0:
@@ -338,11 +342,11 @@ function getAbsByFilter(key, str) {
 
 /**
  * Add found artboard
- * @param {array} arr - array of artboards
+ * @param {Array} arr - Array of artboards
  * @param {number} i - index
- * @param {object} ab - artboard
- * @param {number} width - artboard width
- * @param {number} height - artboard height
+ * @param {Object} ab - Artboard
+ * @param {number} width - Artboard width
+ * @param {number} height - Artboard height
  */
 function push(arr, i, ab, width, height) {
   arr.push({
@@ -356,9 +360,9 @@ function push(arr, i, ab, width, height) {
 /**
  * Zoom to selected artboards
  * Based on script by John Wundes (http://www.wundes.com)
- * @param {array} abs - selected artboards
- * @param {number} ratio - scale ratio
- * @param {boolean} isZoom - use scale ratio
+ * @param {Array} abs - Selected artboards
+ * @param {number} ratio - Scale ratio
+ * @param {boolean} isZoom - Use scale ratio
  */
 function zoom(abs, ratio, isZoom) {
   var doc = activeDocument;
@@ -395,8 +399,8 @@ function zoom(abs, ratio, isZoom) {
 
 /**
  * Get visible bounds of selected artboards
- * @param {array} abs - selected artboards
- * @return {array} summary artboards bounds
+ * @param {Array} abs - Selected artboards
+ * @return {Array} Summary artboards bounds
  */
 function calcBounds(abs) {
   var initBnds = abs[0].artboardRect,
@@ -417,84 +421,48 @@ function calcBounds(abs) {
 }
 
 /**
- * Units conversion by Alexander Ladygin
- * @return {string} document ruler units
+ * Get active document ruler units
+ * @return {string} Shortened units
  */
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
 /**
- * @param {string} value - input data
- * @param {string} def - default units
- * @return {string} input data units
+ * Convert units of measurement
+ * @param {string} value - Numeric data
+ * @param {string} curUnits - Document units 
+ * @param {string} newUnits - Final units
+ * @return {number} Converted value 
  */
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-}
-
-/**
- * Сonvert to the specified units of measurement
- * @param {string} value - input data
- * @param {string} newUnit - specified units
- * @return {number} converted data 
- */
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if ((unit === 'px' || unit === 'pt') && newUnit === 'mm') {
-    value = parseFloat(value) / 2.83464566929134;
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'cm') {
-    value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'in') {
-    value = parseFloat(value) / 72;
-  } else if (unit === 'mm' && (newUnit === 'px' || newUnit === 'pt')) {
-    value = parseFloat(value) * 2.83464566929134;
-  } else if (unit === 'mm' && newUnit === 'cm') {
-    value = parseFloat(value) * 10;
-  } else if (unit === 'mm' && newUnit === 'in') {
-    value = parseFloat(value) / 25.4;
-  } else if (unit === 'cm' && (newUnit === 'px' || newUnit === 'pt')) {
-    value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if (unit === 'cm' && newUnit === 'mm') {
-    value = parseFloat(value) / 10;
-  } else if (unit === 'cm' && newUnit === 'in') {
-    value = parseFloat(value) * 2.54;
-  } else if (unit === 'in' && (newUnit === 'px' || newUnit === 'pt')) {
-    value = parseFloat(value) * 72;
-  } else if (unit === 'in' && newUnit === 'mm') {
-    value = parseFloat(value) * 25.4;
-  } else if (unit === 'in' && newUnit === 'cm') {
-    value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 /**
  * Convert any input data to a number
- * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
- * @return {number} 
+ * @param {string} str - Input data
+ * @param {number} def - Default value if the input data don't contain numbers
+ * @return {number}
  */
 function convertToNum(str, def) {
   // Remove unnecessary characters
@@ -508,7 +476,7 @@ function convertToNum(str, def) {
 
 /**
 * Open link in browser
-* @param {string} url - website adress
+* @param {string} url - Website adress
 */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');

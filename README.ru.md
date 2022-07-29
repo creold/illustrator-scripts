@@ -16,7 +16,7 @@
 ### [Artboard](md/Artboard.ru.md)  
 Скрипты для создания и управления артбордами.
 
-* ArtboardsFinder `(new, 08.03.2022)`
+* ArtboardsFinder `(new, 29.07.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
 * FitArtboardsToArtwork `(upd, 12.06.2022)`
@@ -62,7 +62,7 @@
 ### [Item](md/Item.ru.md)  
 Скрипты, управляющие выбранными объектами.
 
-* FitSelectionToArtboards `(new, 22.07.2022)`
+* FitSelectionToArtboards `(upd, 29.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`

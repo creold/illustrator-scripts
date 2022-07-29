@@ -15,7 +15,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Artboard](md/Artboard.md)  
 
-* ArtboardsFinder `(new, 08.03.2022)`
+* ArtboardsFinder `(upd, 29.07.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboards
 * FitArtboardsToArtwork `(upd, 12.06.2022)`
@@ -56,7 +56,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 
-* FitSelectionToArtboards `(new, 22.07.2022)`
+* FitSelectionToArtboards `(upd, 29.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`

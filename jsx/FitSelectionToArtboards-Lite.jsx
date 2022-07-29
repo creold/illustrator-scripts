@@ -36,7 +36,7 @@ function main() {
   var CFG = {
         visBnds: true,
         isScaleStroke: true,
-        isContains: true,
+        isContains: false,
         tag: 'artboard'
       };
 

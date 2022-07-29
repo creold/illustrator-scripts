@@ -108,7 +108,7 @@ function main() {
         grpReplc.alignChildren = 'fill';
         grpReplc.orientation = 'column';
 
-    grpReplc.add('statictext', undefined, 'Find what (optional)');
+    grpReplc.add('statictext', undefined, 'Search for (optional)');
 
     var replcInp = grpReplc.add('edittext', undefined, '');
         replcInp.helpTip = 'Enter the part of the name\nyou want to replace';
@@ -122,24 +122,15 @@ function main() {
 
   // Placeholders
   if (isMultiSel) {
-    dialog.add('statictext', undefined, 'Click to add placeholder:');
+    dialog.add('statictext', undefined, 'Click to add placeholder');
 
     var grpPH = dialog.add('group');
         grpPH.orientation = 'row';
-        grpPH.spacing = 5;
+        grpPH.spacing = 10;
 
-    var namePH = grpPH.add('statictext', undefined, 'Name');
-    putPlaceholder(namePH, PH.name);
-
-    grpPH.add('statictext', undefined, '|'); // Divider
-
-    var ascNumPH = grpPH.add('statictext', undefined, 'Number \u2191');
-    putPlaceholder(ascNumPH, PH.numUp);
-
-    grpPH.add('statictext', undefined, '|'); // Divider
-
-    var descNumPH = grpPH.add('statictext', undefined, 'Number \u2193');
-    putPlaceholder(descNumPH, PH.numDown);
+    putPlaceholder('Name', [54, 20], grpPH, PH.name);
+    putPlaceholder('Num \u2191', [54, 20], grpPH, PH.numUp);
+    putPlaceholder('Num \u2193', [54, 20], grpPH, PH.numDown);
     
     // Numeration
     var grpNum = dialog.add('group');
@@ -308,12 +299,37 @@ function main() {
   }
 
   // Put placeholder symbols to input
-  function putPlaceholder(obj, str) {
-    obj.addEventListener('mousedown', function () {
+  function putPlaceholder(name, size, parent, value) {
+    var uiTheme = preferences.getRealPreference('uiBrightness'),
+        ph = parent.add('iconbutton', undefined, undefined);
+
+    ph.text = name;
+    ph.size = size;
+    if (uiTheme <= .5) {
+      ph.contour = ph.graphics.newPen(ph.graphics.PenType.SOLID_COLOR, [1, 1, 1, .4], 2);
+      ph.textPen = ph.graphics.newPen(ph.graphics.PenType.SOLID_COLOR, [1, 1, 1, .7], 1);
+    } else {
+      ph.contour = ph.graphics.newPen(ph.graphics.PenType.SOLID_COLOR, [0, 0, 0, .4], 2);
+      ph.textPen = ph.graphics.newPen(ph.graphics.PenType.SOLID_COLOR, [0, 0, 0, .6], 1);
+    }
+    ph.onDraw = drawBtn;
+
+    ph.onClick = function () {
       replcInp.active = true;
-      nameInp.text += str;
+      nameInp.text += value;
       nameInp.active = true;
-    });
+      nameInp.textselection = nameInp.text;
+    }
+  }
+
+  // Draw button
+  function drawBtn() {
+    with(this) {
+      graphics.drawOSControl();
+      graphics.rectPath(0, 0, size[0], size[1]);
+      graphics.strokePath(contour);
+      if (text) graphics.drawString(text, textPen, (size[0] - graphics.measureString(text, graphics.font, size[0])[0]) / 2, 3, graphics.font);
+    }
   }
 
   // Use Up / Down arrow keys (+ Shift) for change value

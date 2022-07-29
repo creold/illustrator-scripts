@@ -6,7 +6,7 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* FitSelectionToArtboards `(new, 22.07.2022)`
+* FitSelectionToArtboards `(upd, 29.07.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(new, 13.05.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
@@ -24,7 +24,12 @@
 
 Places selected objects in the center of artboards and optionally fit the largest side of each object to the size of the artboard. When scaling objects, you can set internal paddings from the artboard bounds. With the `Rename artboards...` option enabled, artboards get names from the objects placed on them.   
 
-The Lite version (FitSelectionToArtboards-Lite.jsx) in silent mode aligns and fit topmost selected object to the active artboard if it is contained on it. If you edit `CFG.isContains:false` in the code, the object outside the active artboard will be placed in it.
+It has two modes: silent and dialog. Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
+
+* <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
+* <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options   
+
+The Lite version (FitSelectionToArtboards-Lite.jsx) in silent mode aligns and fit topmost selected object to the active artboard. If the `CFG.isContains:true` flag is changed in its code, then the selected object will be processed only if it was contained on the artboard.
 
 ![FitSelectionToArtboards](https://i.ibb.co/YT0qPWL/Fit-Selection-To-Artboards.gif)
 
@@ -36,9 +41,7 @@ Distorts the selected bottom object by the top selected objects separately. Simi
 
 ## MirrorMove
 
-Mirror movement the object or points using the last values of the `Object > Transform > Move...` or last move with the mouse / keyboard. Extends the native `Object > Transform > Transform Again`. Axes: XY, X, Y. Movement ratio — the ratio of how much distance to move relative to the previous one (1 = the same). It has two modes: silent and dialog. Changing in `CFG.showUI`.   
-
-Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
+Mirror movement the object or points using the last values of the `Object > Transform > Move...` or last move with the mouse / keyboard. Extends the native `Object > Transform > Transform Again`. Axes: XY, X, Y. Movement ratio — the ratio of how much distance to move relative to the previous one (1 = the same). It has two modes: silent and dialog. Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
 
 * <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
 * <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options

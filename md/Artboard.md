@@ -6,7 +6,7 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* ArtboardsFinder `(new, 08.03.2022)`
+* ArtboardsFinder `(upd, 29.07.2022)`
 * BatchRenamer `(upd, 13.05.2022)`
 * DuplicateArtboardsLight
 * FitArtboardsToArtwork `(upd, 12.06.2022)`

@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.2 Added more options
+  0.3 Added silent mode when holding the Alt key
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -35,16 +36,17 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main() {
   var SCRIPT = {
         name: 'Fit Selection To Artboards',
-        version: 'v.0.2'
+        version: 'v.0.3'
       },
       CFG = {
         paddings: 0,
-        all: true,
-        visBnds: preferences.getBooleanPreference('includeStrokeInBounds'),
-        isFit: true,
-        isRename: false,
+        isAll: true, // Fit to all empty artboards
+        isVisBnds: preferences.getBooleanPreference('includeStrokeInBounds'), // Visual bounds
+        isFit: true, // Resize selection
+        isRename: false, // Rename artboards as items
         isScaleStroke: preferences.getBooleanPreference('scaleLineWeight'),
         units: getUnits(), // Active document units
+        showUI : true,    // Silent mode or dialog
         dlgMargins: [10, 15, 10, 8],
         dlgOpacity: .97 // UI window opacity. Range 0-1
       };
@@ -63,111 +65,131 @@ function main() {
     return;
   }
 
-  // Dialog
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.alignChildren = ['fill', 'fill'];
-      dialog.opacity = CFG.dlgOpacity;
+  var isAltPressed = false;
+  if (ScriptUI.environment.keyboardState.altKey) isAltPressed = true;
+
+  if ((CFG.showUI && !isAltPressed) || (!CFG.showUI && isAltPressed)) { // Show dialog
+    invokeUI(SCRIPT, CFG);
+  } else { // Silent mode with the default settings
+    process(CFG);
+  }
+}
+
+// Show UI
+function invokeUI(title, cfg) {
+  var dlg = new Window('dialog', title.name + ' ' + title.version);
+      dlg.alignChildren = ['fill', 'fill'];
+      dlg.opacity = cfg.dlgOpacity;
 
   // Artboards
-  var absPnl = dialog.add('panel', undefined, 'Artboard');
+  var absPnl = dlg.add('panel', undefined, 'Artboard');
       absPnl.orientation = 'row';
-      absPnl.margins = CFG.dlgMargins;
+      absPnl.margins = cfg.dlgMargins;
 
   var allRb = absPnl.add('radiobutton', undefined, 'All empty');
   var activeRb = absPnl.add('radiobutton', undefined, 'Active');
-  CFG.all ? allRb.value = true : activeRb.value = true;
+  cfg.isAll ? allRb.value = true : activeRb.value = true;
 
   // Resize
-  var fitPnl = dialog.add('panel', undefined, 'Resize selection');
+  var fitPnl = dlg.add('panel', undefined, 'Resize selection');
       fitPnl.orientation = 'row';
       fitPnl.spacing = 45;
-      fitPnl.margins = CFG.dlgMargins;
+      fitPnl.margins = cfg.dlgMargins;
 
   var fitRb = fitPnl.add('radiobutton', undefined, 'Yes');
   var noFitRb = fitPnl.add('radiobutton', undefined, 'No');
-  CFG.isFit ? fitRb.value = true : noFitRb.value = true;
+  cfg.isFit ? fitRb.value = true : noFitRb.value = true;
 
   // Bounds
-  var bndsPnl = dialog.add('panel', undefined, 'Selection bounds');
+  var bndsPnl = dlg.add('panel', undefined, 'Selection bounds');
       bndsPnl.orientation = 'row';
-      bndsPnl.margins = CFG.dlgMargins;
+      bndsPnl.margins = cfg.dlgMargins;
       bndsPnl.spacing = 25;
 
   var visRb = bndsPnl.add('radiobutton', undefined, 'Visible');
   var geomRb = bndsPnl.add('radiobutton', undefined, 'Geometric');
-  CFG.visBnds ? visRb.value = true : geomRb.value = true;
+  cfg.isVisBnds ? visRb.value = true : geomRb.value = true;
 
   // Paddings
-  var padGrp = dialog.add('group');
+  var padGrp = dlg.add('group');
       padGrp.alignChildren = ['fill', 'center'];
 
-  padGrp.add('statictext', undefined, 'Paddings, ' + CFG.units);
-  var padInp = padGrp.add('edittext', undefined, CFG.paddings);
+  padGrp.add('statictext', undefined, 'Paddings, ' + cfg.units);
+  var padInp = padGrp.add('edittext', undefined, cfg.paddings);
       padInp.preferredSize.width = 80;
 
-  var isRename = dialog.add('checkbox', undefined, 'Rename artboards as items');
-      isRename.value = CFG.isRename;
+  var isRename = dlg.add('checkbox', undefined, 'Rename artboards as items');
+      isRename.value = cfg.isRename;
 
-  var btns = dialog.add('group');
+  var btns = dlg.add('group');
       btns.alignChildren = 'fill';
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
   var ok = btns.add('button', undefined, 'Ok', {name: 'ok'});
 
-  var copyright = dialog.add('statictext', undefined, 'Visit Github');
+  var copyright = dlg.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
   });
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = dlg.close;
   ok.onClick = okClick;
 
   function okClick() {
-    var doc = app.activeDocument,
-        docAbs = doc.artboards,
-        abIdx = docAbs.getActiveArtboardIndex(),
-        abBnds = docAbs[abIdx].artboardRect,
-        docSel = selection,
-        item = docSel[0],
-        paddings = convertUnits(padInp.text.toNum(CFG.paddings), CFG.units, 'px'),
-        coord = app.coordinateSystem;
-
-    app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
-
-    if (activeRb.value) {
-      if (fitRb.value) {
-        fitToArtboard(item, abBnds, visRb.value, CFG.isScaleStroke, paddings);
-      }
-      centerToArtboard(item, abBnds, CFG.isFlipY);
-      if (isRename.value) {
-        renameArtboard(item, docAbs[abIdx]);
-      }
-    } else {
-      var emptyAbs = getEmptyArtboards(doc),
-          len = Math.min(emptyAbs.length, docSel.length);
-
-      for (var i = 0; i < len; i++) {
-        item = docSel[i];
-        abBnds = docAbs[emptyAbs[i]].artboardRect;
-        docAbs.setActiveArtboardIndex(emptyAbs[i]);
-        if (fitRb.value) {
-          fitToArtboard(item, abBnds, visRb.value, CFG.isScaleStroke, paddings);
-        }
-        centerToArtboard(item, abBnds, CFG.isFlipY);
-        if (isRename.value) {
-          renameArtboard(item, docAbs[emptyAbs[i]]);
-        }
-      }
-    }
-
-    app.coordinateSystem = coord;
-    selection = docSel;
-    dialog.close();
+    cfg.paddings = convertUnits(padInp.text.toNum(cfg.paddings), cfg.units, 'px');
+    cfg.isAll = allRb.value;
+    cfg.isFit = fitRb.value;
+    cfg.isVisBnds = visRb.value;
+    cfg.isRename = isRename.value;
+    process(cfg);
+    dlg.close();
   }
 
-  dialog.center();
-  dialog.show();
+  dlg.center();
+  dlg.show();
+}
+
+// Run processing
+function process(cfg) {
+  var doc = app.activeDocument,
+      docAbs = doc.artboards,
+      abIdx = docAbs.getActiveArtboardIndex(),
+      abBnds = docAbs[abIdx].artboardRect,
+      docSel = selection,
+      item = docSel[0],
+      coord = app.coordinateSystem;
+
+  app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
+
+  if (!cfg.isAll) {
+    if (cfg.isFit) {
+      fitToArtboard(item, abBnds, cfg.isVisBnds, cfg.isScaleStroke, cfg.paddings);
+    }
+    centerToArtboard(item, abBnds, cfg.isFlipY);
+    if (cfg.isRename) {
+      renameArtboard(item, docAbs[abIdx]);
+    }
+  } else {
+    var emptyAbs = getEmptyArtboards(doc),
+        len = Math.min(emptyAbs.length, docSel.length);
+
+    for (var i = 0; i < len; i++) {
+      item = docSel[i];
+      abBnds = docAbs[emptyAbs[i]].artboardRect;
+      docAbs.setActiveArtboardIndex(emptyAbs[i]);
+      if (cfg.isFit) {
+        fitToArtboard(item, abBnds, cfg.isVisBnds, cfg.isScaleStroke, cfg.paddings);
+      }
+      centerToArtboard(item, abBnds, cfg.isFlipY);
+      if (cfg.isRename) {
+        renameArtboard(item, docAbs[emptyAbs[i]]);
+      }
+    }
+  }
+
+  app.coordinateSystem = coord;
+  selection = docSel;
 }
 
 // Get the ruler units of the active document

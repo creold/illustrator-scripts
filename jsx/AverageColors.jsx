@@ -13,10 +13,11 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
@@ -38,7 +39,7 @@ function main() {
         name    : 'Average Colors',
         version : 'v.0.1'
       },
-      СFG = {
+      CFG = {
         isIsolateGrp  : false,   // Process groups separately
         isGradient    : false,  // Process only gradients to solid colors
         isFill        : true,   // Averaging fills
@@ -63,13 +64,13 @@ function main() {
     isAltPressed = true;
   }
 
-  if ((СFG.showUI && !isAltPressed) || (!СFG.showUI && isAltPressed)) { // Show dialog
-    invokeUI(SCRIPT, СFG, SETTINGS);
-  } else if (СFG.showUI && isAltPressed) { // Silent mode with the latest settings
+  if ((CFG.showUI && !isAltPressed) || (!CFG.showUI && isAltPressed)) { // Show dialog
+    invokeUI(SCRIPT, CFG, SETTINGS);
+  } else if (CFG.showUI && isAltPressed) { // Silent mode with the latest settings
     var params = loadSettings(SETTINGS);
     if (params.length) process(params[0], params[1], params[2], params[3]);
   } else { // Silent mode with the default settings
-    process(СFG.isIsolateGrp, СFG.isGradient, СFG.isFill, СFG.isStroke);
+    process(CFG.isIsolateGrp, CFG.isGradient, CFG.isFill, CFG.isStroke);
   }
 }
 

@@ -13,10 +13,11 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via Donatty https://donatty.com/sergosokin
-  - via PayPal http://www.paypal.me/osokin/usd
+  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -152,8 +153,9 @@ function main() {
 
   abDescr.addEventListener('mousedown', function () {
     inputX.active = true;
-    dialog.update();
     abInput.text = CFG.allAbs;
+    abInput.active = true;
+    abInput.textselection = abInput.text;
   });
 
   dialog.onClose = function () {
