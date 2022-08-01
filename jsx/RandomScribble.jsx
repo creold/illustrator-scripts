@@ -142,7 +142,7 @@ function main() {
   }
 
   tensionLbl.onChange = function () {
-    currTension = convertToNum(this.text, CFG.tension);
+    currTension = convertToAbsNum(this.text, CFG.tension);
     if (currTension > CFG.maxTension) {
       currTension = CFG.maxTension;
       this.text = CFG.maxTension;
@@ -259,7 +259,7 @@ function getItems(collection, arr) {
  * @param {number} tension - tension of the point handles
  */
 function process(container, arr, points, isClosed, stroke, tension) {
-  points = parseInt( convertToNum(points, 2) );
+  points = parseInt( convertToAbsNum(points, 2) );
   if (points < 2) points = 2;
   for (var i = 0; i < container.length; i++) {
     var line = new Line(container[i], isClosed, stroke, tension);
@@ -426,20 +426,18 @@ function removeLines(arr) {
 }
 
 /**
- * Convert any input data to a number
+ * Convert string to absolute number
  * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
- * @return {number} 
+ * @param {number} def - default value if the string don't contain digits
+ * @return {number}
  */
-function convertToNum(str, def) {
+function convertToAbsNum(str, def) {
   if (arguments.length == 1 || !def) def = 1;
-  // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**

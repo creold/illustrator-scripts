@@ -1,7 +1,7 @@
 /*
   StrokesWeightDown.jsx for Adobe Illustrator
   Description: Reduces the weight of the strokes of the selected paths relative to the current weight
-  Date: September, 2021
+  Date: August, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.2 Gets the app preferences of the stroke units
+  0.2.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -98,7 +99,7 @@ function decreaseWeight(item, units, isRound) {
       break;
   }
 
-  weight = convertUnits(weight + 'pt', unitsKey);
+  weight = convertUnits(weight, 'pt', unitsKey);
   var tWeight = 0;
   
   if (weight <= 0.01) {
@@ -113,68 +114,12 @@ function decreaseWeight(item, units, isRound) {
     tWeight = (isRound ? roundNum(weight, 0) : weight) - 1.0;
   }
 
-  item.strokeWidth = convertUnits(tWeight + unitsKey, 'pt');
+  item.strokeWidth = convertUnits(tWeight, unitsKey, 'pt');
 }
 
-// Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
-}
-
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-};
-
-// Сonvert to the specified units of measurement
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-      value = parseFloat(value) / 72;
-  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if ((unit === 'mm') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 10;
-  } else if ((unit === 'mm') && (newUnit === 'in')) {
-      value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if ((unit === 'cm') && (newUnit === 'mm')) {
-      value = parseFloat(value) / 10;
-  } else if ((unit === 'cm') && (newUnit === 'in')) {
-      value = parseFloat(value) * 2.54;
-  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 72;
-  } else if ((unit === 'in') && (newUnit === 'mm')) {
-      value = parseFloat(value) * 25.4;
-  } else if ((unit === 'in') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 // Get stroke weight to fixed point number

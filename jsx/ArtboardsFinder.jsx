@@ -155,8 +155,8 @@ function main() {
 
   // Changing the zoom ratio
   zoomInp.onChange = function () {
-    if (convertToNum(this.text, CFG.defZoom) > 1) this.text = 1;
-    if (convertToNum(this.text, CFG.defZoom) < CFG.minZoom) this.text = CFG.minZoom;
+    if (convertToAbsNum(this.text, CFG.defZoom) > 1) this.text = 1;
+    if (convertToAbsNum(this.text, CFG.defZoom) < CFG.minZoom) this.text = CFG.minZoom;
     selectListItem();
   }
 
@@ -181,13 +181,13 @@ function main() {
       }
     }
 
-    if (landscapeRb.value || squareRb.value) {
+    if (widthRb.value || landscapeRb.value || squareRb.value) {
       resAbs.sort(function (a, b) {
         return a.width - b.width;
       }).reverse();
     }
 
-    if (portraitRb.value) {
+    if (heightRb.value || portraitRb.value) {
       resAbs.sort(function (a, b) {
         return a.height - b.height;
       }).reverse();
@@ -217,7 +217,7 @@ function main() {
 
     activeDocument.artboards.setActiveArtboardIndex(first);
 
-    var ratio = convertToNum(zoomInp.text, CFG.defZoom);
+    var ratio = convertToAbsNum(zoomInp.text, CFG.defZoom);
     zoom(abs, ratio, isZoom.value);
   }
 
@@ -294,8 +294,7 @@ function addRadio(place, x, y, label) {
  * @return {Array} out - Array of matches
  */
 function getAbsByFilter(key, str, units) {
-  var out = [],
-      regexp;
+  var out = [];
 
   for (var i = 0, len = activeDocument.artboards.length; i < len; i++) {
     var ab = activeDocument.artboards[i],
@@ -308,18 +307,16 @@ function getAbsByFilter(key, str, units) {
     switch (key) {
       case 0:
       default:
-        regexp = new RegExp(str, 'i');
+        var regexp = new RegExp(str, 'i');
         if (ab.name.match(regexp))
           push(out, i, ab, abWidth, abHeight);
         break;
       case 1:
-        regexp = new RegExp('^' + str);
-        if ((''+ abWidth).match(regexp))
+        if (abWidth.toFixed(2).match(str))
           push(out, i, ab, abWidth, abHeight);
         break;
       case 2:
-        regexp = new RegExp('^' + str);
-        if ((''+ abHeight).match(regexp))
+        if (abHeight.toFixed(2).match(str))
           push(out, i, ab, abWidth, abHeight);
         break;
       case 3:
@@ -459,19 +456,18 @@ function convertUnits(value, currUnits, newUnits) {
 }
 
 /**
- * Convert any input data to a number
+ * Convert string to absolute number
  * @param {string} str - Input data
- * @param {number} def - Default value if the input data don't contain numbers
+ * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToNum(str, def) {
-  // Remove unnecessary characters
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**

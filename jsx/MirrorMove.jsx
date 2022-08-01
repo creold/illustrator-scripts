@@ -133,7 +133,7 @@ function invokeUI(title, cfg, cfgFile) {
   ok.onClick = function() {
     var params = [
           xyRb.value ? 'XY' : (xRb.value ? 'X' : 'Y'),
-          convertToNum(ratioInp.text, cfg.ratio)
+          convertToAbsNum(ratioInp.text, cfg.ratio)
         ];
 
     saveSettings(cfgFile, params);
@@ -338,19 +338,18 @@ function move(item, pos1, pos2, isX, isY, ratio) {
 }
 
 /**
- * Convert any input data to a number
+ * Convert string to absolute number
  * @param {string} str - Input data
- * @param {number} def - Default value if the input data don't contain numbers
- * @return {number} Cleared number
+ * @param {number} def - Default value if the string don't contain digits
+ * @return {number}
  */
-function convertToNum(str, def) {
-  // Remove unnecessary characters
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**

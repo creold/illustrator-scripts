@@ -45,7 +45,7 @@ function main() {
         move: 1,
         chance: 50,
         step: 1.0,
-        docUnits: getUnits(),
+        units: getUnits(), // Active document units
         modKey: 'Q', // User modifier key for shortcuts
       },
       SETTINGS = {
@@ -89,7 +89,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       dialog.alignChildren = 'fill';
 
   // RANGE PANEL
-  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + CFG.docUnits);
+  var rangePnl = dialog.add('panel', undefined, 'Random move range, ' + CFG.units);
       rangePnl.orientation = 'column';
       rangePnl.alignChildren = 'left';
       rangePnl.margins = [10, 20, 10, 5];
@@ -141,7 +141,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   var step = rangePnl.add('group');
 
   var stepTitle = step.add('statictext', [0, 0, 200, 30]);
-      stepTitle.text = 'Step for random value, ' + CFG.docUnits + ' (> 0)';
+      stepTitle.text = 'Step for random value, ' + CFG.units + ' (> 0)';
 
   var stepInp = step.add('edittext', undefined, CFG.step);
       stepInp.characters = 5;
@@ -358,7 +358,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       isVFixed.value,
       isHandles.value,
       stepVal,
-      CFG.docUnits
+      CFG.units
     );
 
     redraw();
@@ -451,18 +451,15 @@ function isSelected(point) {
   return point.selected == PathPointSelection.ANCHORPOINT;
 }
 
-// Convert any input data to a number
+// Convert string to number
 function convertToNum(str, def) {
   if (arguments.length == 1 || !def) def = 1;
-  // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  // Remove duplicate Minus
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 // Shuffle array
@@ -535,7 +532,7 @@ function getUnits() {
   return 'px'; // Default
 }
 
-// Units conversion
+// Convert units of measurement
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }

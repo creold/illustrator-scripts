@@ -475,6 +475,11 @@ function getUnits() {
   return 'px'; // Default
 }
 
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
+}
+
 // Generate radiobutton
 function addRadio(place, x, y, info) {
   var rb = place.add('radiobutton', undefined, x),
@@ -500,27 +505,21 @@ function getItems(collection) {
 }
 
 // Polyfill forEach() for Array
-Array.prototype.forEach = function (callback) {
-  for (var i = 0; i < this.length; i++) callback(this[i], i, this);
+if (!Array.prototype.forEach) {
+  Array.prototype.forEach = function (callback) {
+    for (var i = 0; i < this.length; i++) callback(this[i], i, this);
+  }
 }
 
-// Convert any input data to a number
+// Convert string to number
 function convertToNum(str, def) {
   if (arguments.length == 1 || !def) def = 1;
-  // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  // Remove duplicate Minus
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
-}
-
-// Convert units of measurement
-function convertUnits(value, currUnits, newUnits) {
-  return UnitValue(value, currUnits).as(newUnits);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 // Get current item size

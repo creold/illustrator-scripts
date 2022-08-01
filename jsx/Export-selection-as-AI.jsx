@@ -183,9 +183,12 @@ function isEmpty(str) {
 }
 
 // Remove whitespaces from start and end of string
-String.prototype.trim = function () {
-  return this.replace(/^\s+|\s+$/g, '');
+if (!String.prototype.trim) {
+  String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g, '');
+  }
 }
+
 
 // Copy selection to a new document, and save it as an AI file
 function saveSelection(objects, file, color, fitArtboard, separate) {

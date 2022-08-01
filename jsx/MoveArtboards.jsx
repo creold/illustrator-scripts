@@ -2,7 +2,7 @@
   MoveArtboards.jsx for Adobe Illustrator
   Description: Script for moving artboards range with artwork along the X and Y axis
   Requirements: Adobe Illustrator CS6 and later
-  Date: October, 2020
+  Date: August, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -10,6 +10,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Minor improvements
+  0.2 Added more units (yards, meters, etc.) support if the document is saved
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,10 +38,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.1.1'
+        version: 'v.0.2'
       },
       CFG = {
         aiVers: parseInt(app.version),
+        units: getUnits(), // Active document units
         tmpLyr: 'ARTBOARD_NUMBERS',
         abs: '1, 2-4',
         allAbs: '%all',
@@ -109,7 +111,7 @@ function main() {
   var abDescr = abPanel.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
       abDescr.justify = 'left';
 
-  var shiftPanel = dialog.add('panel', undefined, LANG.shift + ', ' + getDocUnit());
+  var shiftPanel = dialog.add('panel', undefined, LANG.shift + ', ' + CFG.units);
       shiftPanel.orientation = 'column';
       shiftPanel.alignChildren = ['left','center'];
       shiftPanel.margins = CFG.uiMargins;
@@ -176,8 +178,8 @@ function main() {
     var tmpRange = abInput.text,
         absRange = [], // Range of artboards indexes
         extremeCoord = [], // Range of min & max artboards coordinates
-        shiftX = convertUnits((inputX.text * 1) + getDocUnit(), 'px'), // Convert value to document units
-        shiftY = convertUnits((inputY.text * 1) + getDocUnit(), 'px'); // Convert value to document units
+        shiftX = convertUnits(inputX.text * 1, CFG.units, 'px'),
+        shiftY = convertUnits(inputY.text * 1, CFG.units, 'px');
 
     // Prepare
     tmpRange = tmpRange.replace(/\s/g, ''); // Remove whitespaces
@@ -410,17 +412,15 @@ function moveArtboard(ab, items, shiftX, shiftY) {
   }
 }
 
-// Convert any input data to a number
+// Convert string to number
 function convertToNum(str, def) {
-  // Remove unnecessary characters
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  // Remove duplicate Minus
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 // Save information about locked & hidden pageItems
@@ -498,71 +498,42 @@ function intersect(arr1, arr2) {
 }
 
 // Polyfill indexOf() for Array
-Array.prototype.indexOf = function (item) {
-  for (var i = 0, len = this.length; i < len; i++ ) {
-    if ( this[i] === item ) return i;
-  }
-  return -1;
-}
-
-// Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
-}
-
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-};
-
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
+if (!Array.prototype.indexOf) {
+  Array.prototype.indexOf = function (item) {
+    for (var i = 0, len = this.length; i < len; i++ ) {
+      if ( this[i] === item ) return i;
     }
+    return -1;
   }
+}
 
-  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-      value = parseFloat(value) / 72;
-  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if ((unit === 'mm') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 10;
-  } else if ((unit === 'mm') && (newUnit === 'in')) {
-      value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if ((unit === 'cm') && (newUnit === 'mm')) {
-      value = parseFloat(value) / 10;
-  } else if ((unit === 'cm') && (newUnit === 'in')) {
-      value = parseFloat(value) * 2.54;
-  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 72;
-  } else if ((unit === 'in') && (newUnit === 'mm')) {
-      value = parseFloat(value) * 25.4;
-  } else if ((unit === 'in') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 25.4;
+// Get active document ruler units
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
   }
-  return parseFloat(value);
+  return 'px'; // Default
+}
+
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 // Open link in browser

@@ -53,7 +53,7 @@ function main () {
   
   // Prepare value
   if (!newSize.length) return;
-  newSize = newSize.toNum(CFG.size);
+  newSize = convertToAbsNum(newSize, CFG.size);
   if (newSize == 0) return;
   newSize = convertUnits(newSize, CFG.units, 'px');
 
@@ -62,12 +62,12 @@ function main () {
         bnds, width, height, largeSide, ratio;
 
     // Calc ratio
-    if (item.isType('text')) {
+    if (isType(item, 'text')) {
       var txtClone = item.duplicate(),
           txtOutline = txtClone.createOutline();
       bnds = CFG.isBounds ? txtOutline.visibleBounds : txtOutline.geometricBounds;
       txtOutline.remove();
-    } else if (item.isType('group') && item.clipped) {
+    } else if (isType(item, 'group') && item.clipped) {
       bnds = CFG.isBounds ? getMaskPath(item).visibleBounds : getMaskPath(item).geometricBounds;
     } else {
       bnds = CFG.isBounds ? item.visibleBounds : item.geometricBounds;
@@ -112,22 +112,20 @@ function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Polyfill for convert any string to number
-String.prototype.toNum = function (def) {
-  var str = this;
-  if (!def) def = 1;
+// Convert string to absolute number
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
   if (isNaN(str) || !str.length) return parseFloat(def);
-  return parseFloat(str);
+  else return parseFloat(str);
 }
 
-// Polyfill for checking the item typename by short name
-Object.prototype.isType = function (type) {
+// Check the item typename by short name
+function isType(item, type) {
   var regexp = new RegExp(type, 'i');
-  return regexp.test(this.typename);
+  return regexp.test(item.typename);
 }
 
 // Get clipping path in group
@@ -140,10 +138,10 @@ function getMaskPath(group) {
 
 // Check clipping property
 function isClippingPath(item) {
-  var clipText = (item.isType('text') &&
+  var clipText = (isType(item, 'text') &&
     item.textRange.characterAttributes.fillColor == '[NoColor]' &&
     item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (item.isType('compound') && item.pathItems[0].clipping) ||
+  return (isType(item, 'compound') && item.pathItems[0].clipping) ||
     item.clipping || clipText;
 }
 

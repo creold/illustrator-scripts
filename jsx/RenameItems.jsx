@@ -464,9 +464,11 @@ function isSymbol(item) {
 }
 
 // Replace all occurrences
-String.prototype.replaceAll = function(pattern, replc) {
-  return this.replace(new RegExp(pattern, 'g'), replc);
-};
+if (!String.prototype.replaceAll) {
+  String.prototype.replaceAll = function(pattern, replc) {
+    return this.replace(new RegExp(pattern, 'g'), replc);
+  };
+}
 
 // Check empty string
 function isEmpty(str) {

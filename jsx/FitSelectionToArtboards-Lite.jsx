@@ -123,7 +123,7 @@ function removeTag(item, key) {
 // Fit the item to the size of the artboard
 function fitToArtboard(item, abBnds, isVisBnds, isStroke) {
   var orig = item;
-  if (item.isType('group') && item.clipped) {
+  if (isType(item, 'group') && item.clipped) {
     item = getMaskPath(item);
   }
 
@@ -155,7 +155,7 @@ function centerToArtboard(item, abBnds, isFlipY) {
         w: 0
       };
 
-  if (item.isType('group') && item.clipped) {
+  if (isType(item, 'group') && item.clipped) {
     var mask = getMaskPath(item);
     bnds = mask.geometricBounds,
     itemSize.inLeft = bnds[0];
@@ -189,17 +189,17 @@ function getMaskPath(group) {
 
 // Check the clipping mask
 function isClippingPath(item) {
-  var clipText = (item.isType('text') &&
+  var clipText = (isType(item, 'text') &&
                   item.textRange.characterAttributes.fillColor == '[NoColor]' &&
                   item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (item.isType('compound') && item.pathItems[0].clipping) ||
+  return (isType(item, 'compound') && item.pathItems[0].clipping) ||
           item.clipping || clipText;
 }
 
-// Polyfill for checking the item typename by short name
-Object.prototype.isType = function (type) {
+// Check the item typename by short name
+function isType(item, type) {
   var regexp = new RegExp(type, 'i');
-  return regexp.test(this.typename);
+  return regexp.test(item.typename);
 }
 
 try {

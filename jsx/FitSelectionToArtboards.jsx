@@ -137,7 +137,7 @@ function invokeUI(title, cfg) {
   ok.onClick = okClick;
 
   function okClick() {
-    cfg.paddings = convertUnits(padInp.text.toNum(cfg.paddings), cfg.units, 'px');
+    cfg.paddings = convertUnits( convertToAbsNum(padInp.text, cfg.paddings), cfg.units, 'px');
     cfg.isAll = allRb.value;
     cfg.isFit = fitRb.value;
     cfg.isVisBnds = visRb.value;
@@ -221,22 +221,20 @@ function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Polyfill for convert any string to a number
-String.prototype.toNum = function (def) {
-  var str = this;
-  if (!def) def = 1;
+// Convert string to absolute number
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
   if (isNaN(str) || !str.length) return parseFloat(def);
-  return parseFloat(str);
+  else return parseFloat(str);
 }
 
 // Fit the item to the size of the artboard
 function fitToArtboard(item, abBnds, isVisBnds, isStroke, paddings) {
   var orig = item;
-  if (item.isType('group') && item.clipped) {
+  if (isType(item, 'group') && item.clipped) {
     item = getMaskPath(item);
   }
 
@@ -268,7 +266,7 @@ function centerToArtboard(item, abBnds, isFlipY) {
         w: 0
       };
 
-  if (item.isType('group') && item.clipped) {
+  if (isType(item, 'group') && item.clipped) {
     var mask = getMaskPath(item);
     bnds = mask.geometricBounds,
     itemSize.inLeft = bnds[0];
@@ -302,10 +300,10 @@ function getMaskPath(group) {
 
 // Check the clipping mask
 function isClippingPath(item) {
-  var clipText = (item.isType('text') &&
+  var clipText = (isType(item, 'text') &&
                   item.textRange.characterAttributes.fillColor == '[NoColor]' &&
                   item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (item.isType('compound') && item.pathItems[0].clipping) ||
+  return (isType(item, 'compound') && item.pathItems[0].clipping) ||
           item.clipping || clipText;
 }
 
@@ -313,9 +311,9 @@ function isClippingPath(item) {
 function renameArtboard(item, ab) {
   var name = '';
 
-  if (item.isType('text') && isEmpty(item.name) && !isEmpty(item.contents)) {
+  if (isType(item, 'text') && isEmpty(item.name) && !isEmpty(item.contents)) {
     name = item.contents.slice(0, 100);
-  } else if (item.isType('symbol') && isEmpty(item.name)) {
+  } else if (isType(item, 'symbol') && isEmpty(item.name)) {
     name = item.symbol.name;
   } else {
     name = item.name;
@@ -341,10 +339,10 @@ function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
 }
 
-// Polyfill for checking the item typename by short name
-Object.prototype.isType = function (type) {
+// Check the item typename by short name
+function isType(item, type) {
   var regexp = new RegExp(type, 'i');
-  return regexp.test(this.typename);
+  return regexp.test(item.typename);
 }
 
 // Open link in browser

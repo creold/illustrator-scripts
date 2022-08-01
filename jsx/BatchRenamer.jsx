@@ -1,7 +1,7 @@
 /*
   BatchRenamer.jsx for Adobe Illustrator
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders
-  Date: January, 2022
+  Date: August, 2022
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -18,6 +18,7 @@
       Added placeholders for batch rename 
   1.1 Minor improvements
   1.1.1 Fixed load user settings
+  1.2 Added more units (yards, meters, etc.) support if the document is saved
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -51,7 +52,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.1'
+        version:  'v.1.2'
       },
       CFG = {
         os:         $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
@@ -745,7 +746,8 @@ function findAndReplace(cfgPh, obj, idx) {
 
 // Replace the placeholders in the suffix or prefix with text
 function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
-  var width = height = 0,
+  var units = getUnits();
+      width = height = 0,
       color = (activeDocument.documentColorSpace == DocumentColorSpace.RGB) ? 'RGB' : 'CMYK';
 
   switch (target[0].typename) {
@@ -766,8 +768,8 @@ function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
       break;
   }
   
-  width = (convertUnits(width + 'px', getDocUnit())).toFixed(cfg.precision);
-  height = (convertUnits(height + 'px', getDocUnit())).toFixed(cfg.precision);
+  width = ( convertUnits(width, 'px', units) ).toFixed(cfg.precision);
+  height = ( convertUnits(height, 'px', units) ).toFixed(cfg.precision);
 
   for (var prop in ph) {
     var reg = new RegExp(ph[prop], 'gi');
@@ -775,7 +777,7 @@ function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
       var val;
       switch (ph[prop]) {
         case ph.u:
-          val = getDocUnit();
+          val = units;
           break;
         case ph.d:
           val = getTodayDate();
@@ -853,64 +855,33 @@ function isClippingPath(item) {
           item.clipping || clipText;
 }
 
-// Units conversion by Alexander Ladygin (https://github.com/alexander-ladygin)
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+// Get active document ruler units
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-}
-
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if ((unit === 'px' || unit === 'pt') && newUnit === 'mm') {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'cm') {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'in') {
-      value = parseFloat(value) / 72;
-  } else if (unit === 'mm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if (unit === 'mm' && newUnit === 'cm') {
-      value = parseFloat(value) * 10;
-  } else if (unit === 'mm' && newUnit === 'in') {
-      value = parseFloat(value) / 25.4;
-  } else if (unit === 'cm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if (unit === 'cm' && newUnit === 'mm') {
-      value = parseFloat(value) / 10;
-  } else if (unit === 'cm' && newUnit === 'in') {
-      value = parseFloat(value) * 2.54;
-  } else if (unit === 'in' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 72;
-  } else if (unit === 'in' && newUnit === 'mm') {
-      value = parseFloat(value) * 25.4;
-  } else if (unit === 'in' && newUnit === 'cm') {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 // Open link in browser

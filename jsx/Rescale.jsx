@@ -3,7 +3,7 @@
   Description: Automatic scaling of objects to the desired size.
                 If you draw a line on top with the length or height of the desired object,
                 'Old Size' will be filled automatically
-  Date: November, 2019
+  Date: August, 2022
   Author: Nick Grabowski, @Grabovvski
   Co-author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -16,6 +16,7 @@
   0.2.2 Fixed decimal separator bug
   0.2.3 Minor improvements
   0.2.4 Minor improvements
+  0.3 Added more units (yards, meters, etc.) support if the document is saved
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -42,10 +43,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main () {
   var SCRIPT = {
         name: 'Rescale',
-        version: 'v.0.2.4'
+        version: 'v.0.3'
       },
       CFG = {
         aiVers: parseInt(app.version),
+        units: getUnits(), // Active document units
         size: 1,
         scaleCorner: app.preferences.getIntegerPreference('policyForPreservingCorners'),
         scaleStrokes: app.preferences.getBooleanPreference('scaleLineWeight')
@@ -69,7 +71,7 @@ function main () {
 
   var oldSizePnl = dialog.add('group {alignment: "center"}');
       oldSizePnl.orientation = 'row';
-      oldSizePnl.add('statictext', undefined, 'Old size, ' + getDocUnit() + ':');
+      oldSizePnl.add('statictext', undefined, 'Old size, ' + CFG.units + ':');
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
       oSizeTxt.characters = 6;
@@ -77,7 +79,7 @@ function main () {
 
   var newSizePnl = dialog.add('group {alignment: "center"}');
       newSizePnl.orientation = 'row';
-      newSizePnl.add('statictext', undefined, 'New size, ' + getDocUnit() + ':');
+      newSizePnl.add('statictext', undefined, 'New size, ' + CFG.units + ':');
 
   var nSizeTxt = newSizePnl.add('edittext', undefined);
       nSizeTxt.characters = 6;
@@ -107,16 +109,16 @@ function main () {
   ok.onClick = okClick;
 
   oSizeTxt.onChange = function () {
-    this.text = convertToNum(this.text, CFG.size)
+    this.text = convertToAbsNum(this.text, CFG.size)
   };
   nSizeTxt.onChange = function () {
-    this.text = convertToNum(this.text, CFG.size)
+    this.text = convertToAbsNum(this.text, CFG.size)
   };
 
   var keyPath = selection[0];
   if (keyPath.typename === 'PathItem' && !keyPath.closed && keyPath.pathPoints.length == 2) {
     var keyPathLength = keyPath.length; // If you use a straight line to measure
-    oSizeTxt.text = (convertUnits(keyPathLength, getDocUnit())).toFixed(3);
+    oSizeTxt.text = (convertUnits(keyPathLength, 'px', CFG.units)).toFixed(4);
     nSizeTxt.active = true;
   } else {
     chkRmv.enabled = false;
@@ -128,8 +130,8 @@ function main () {
 
   function okClick() {
     try {
-      var oldSize = convertUnits(oSizeTxt.text * 1 + getDocUnit(), 'px'),
-          newSize = convertUnits(nSizeTxt.text * 1 + getDocUnit(), 'px'),
+      var oldSize = convertUnits(oSizeTxt.text * 1, CFG.units, 'px'),
+          newSize = convertUnits(nSizeTxt.text * 1, CFG.units, 'px'),
           ratio = (newSize / oldSize) * 100;
       // When old and new size are equal
       if (ratio == 100) {
@@ -180,75 +182,43 @@ function main () {
   }
 }
 
-// Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+// Get active document ruler units
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-};
-
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-      value = parseFloat(value) / 72;
-  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if ((unit === 'mm') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 10;
-  } else if ((unit === 'mm') && (newUnit === 'in')) {
-      value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if ((unit === 'cm') && (newUnit === 'mm')) {
-      value = parseFloat(value) / 10;
-  } else if ((unit === 'cm') && (newUnit === 'in')) {
-      value = parseFloat(value) * 2.54;
-  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 72;
-  } else if ((unit === 'in') && (newUnit === 'mm')) {
-      value = parseFloat(value) * 25.4;
-  } else if ((unit === 'in') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Convert any input data to a number
-function convertToNum(str, def) {
-  // Remove unnecessary characters
+// Convert string to absolute number
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 // Open link in browser

@@ -37,6 +37,7 @@ var SCRIPT = {
       version: 'v.0.1'
     },
     CFG = {
+      units: getUnits(), // Active document units
       paddings: 10,
       isEqual: true,
       dlgOpacity: .97 // UI window opacity. Range 0-1
@@ -47,15 +48,13 @@ var SCRIPT = {
     return;
   }
 
-  var units = getUnits();
-
   // Dialog
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.alignChildren = ['fill', 'fill'];
       dialog.opacity = CFG.dlgOpacity;
 
   // Paddings
-  var padPnl = dialog.add('panel', undefined, 'Paddings, ' + units);
+  var padPnl = dialog.add('panel', undefined, 'Paddings, ' + CFG.units);
       padPnl.alignChildren = ['left', 'bottom'];
       padPnl.margins = 10;
 
@@ -146,10 +145,10 @@ var SCRIPT = {
     var doc = app.activeDocument,
         paddings = {};
 
-    paddings.top = convertUnits(topInp.text.toNum(CFG.paddings), units, 'px');
-    paddings.bottom = isEqual.value ? paddings.top : convertUnits(bottomInp.text.toNum(CFG.paddings), units, 'px');
-    paddings.left = isEqual.value ? paddings.top : convertUnits(leftInp.text.toNum(CFG.paddings), units, 'px');
-    paddings.right = isEqual.value ? paddings.top : convertUnits(rightInp.text.toNum(CFG.paddings), units, 'px');
+    paddings.top = convertUnits( convertToAbsNum(topInp.text, CFG.paddings), CFG.units, 'px' );
+    paddings.bottom = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(bottomInp.text, CFG.paddings), CFG.units, 'px' );
+    paddings.left = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(leftInp.text, CFG.paddings), CFG.units, 'px' );
+    paddings.right = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(rightInp.text, CFG.paddings), CFG.units, 'px' );
 
     selection = null;
     redraw();
@@ -217,16 +216,14 @@ function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Polyfill for convert any string to a number
-String.prototype.toNum = function (def) {
-  var str = this;
-  if (!def) def = 1;
+// Convert string to absolute number
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
   if (isNaN(str) || !str.length) return parseFloat(def);
-  return parseFloat(str);
+  else return parseFloat(str);
 }
 
 // Open link in browser

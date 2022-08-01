@@ -3,13 +3,14 @@
   Description: Sets random stroke width of selected objects in a range with steps
               Hold Alt on launch to show dialog if showUI: false
               or run in silent mode with the latest settings if showUI: true
-  Date: April, 2022
+  Date: August, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
+  0.1.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -163,13 +164,13 @@ function invokeUI(title, cfg, cfgFile, paths) {
       copyright.justify = 'center';
 
   minInp.onChange = maxInp.onChange = stepInp.onChange = function() {
-    this.text = convertToNum(this.text, 0);
+    this.text = convertToAbsNum(this.text, 0);
   }
 
   isAutoVal.onClick = function() {
-    minInp.text = convertToNum(autoVal.minW.toFixed(3), cfg.minWidth);
-    maxInp.text = convertToNum(autoVal.maxW.toFixed(3), cfg.maxWidth);
-    stepInp.text = convertToNum(autoVal.step.toFixed(3), cfg.step);
+    minInp.text = convertToAbsNum(autoVal.minW.toFixed(3), cfg.minWidth);
+    maxInp.text = convertToAbsNum(autoVal.maxW.toFixed(3), cfg.maxWidth);
+    stepInp.text = convertToAbsNum(autoVal.step.toFixed(3), cfg.step);
     minInp.enabled = !this.value;
     maxInp.enabled = !this.value;
     stepInp.enabled = !this.value;
@@ -179,9 +180,9 @@ function invokeUI(title, cfg, cfgFile, paths) {
 
   ok.onClick = function() {
     var params = [
-          convertToNum(minInp.text, cfg.minWidth),
-          convertToNum(maxInp.text, cfg.maxWidth),
-          convertToNum(stepInp.text, cfg.step),
+          convertToAbsNum(minInp.text, cfg.minWidth),
+          convertToAbsNum(maxInp.text, cfg.maxWidth),
+          convertToAbsNum(stepInp.text, cfg.step),
           isAutoVal.value,
         ];
 
@@ -251,8 +252,8 @@ function loadSettings(cfgFile) {
  */
 function getAutoValues(paths, units) {
   var arr = getStrokeWidth(paths),
-      min = convertUnits( Math.min.apply(null, arr) + 'pt', units );
-      max = convertUnits( Math.max.apply(null, arr) + 'pt', units );
+      min = convertUnits( Math.min.apply(null, arr), 'pt', units );
+      max = convertUnits( Math.max.apply(null, arr), 'pt', units );
   var delta = max - min;
   if (delta == 0) {
     step = 0;
@@ -302,9 +303,9 @@ function process(paths, minW, maxW, step, isAuto, units) {
   var paths = getPaths(selection);
 
   // Convert values to system units
-  minW = convertUnits(minW + units, 'pt');
-  maxW = convertUnits(maxW + units, 'pt');
-  step = convertUnits(step + units, 'pt');
+  minW = convertUnits(minW, units, 'pt');
+  maxW = convertUnits(maxW, units, 'pt');
+  step = convertUnits(step, units, 'pt');
 
   var defColor = {};
   if (activeDocument.documentColorSpace == DocumentColorSpace.RGB) {
@@ -393,93 +394,29 @@ function forEach(collection, fn) {
 }
 
 /**
- * Convert any input data to a number
+ * Convert string to absolute number
  * @param {string} str - Input data
- * @param {number} def - Default value if the input data don't contain numbers
+ * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToNum(str, def) {
-  // Remove unnecessary characters
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**
- * Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
- * @return {string} document ruler units
+ * Convert units of measurement
+ * @param {string} value - Numeric data
+ * @param {string} curUnits - Document units 
+ * @param {string} newUnits - Final units
+ * @return {number} Converted value 
  */
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
-}
-
-/**
- * @param {string} value - input data
- * @param {string} def - default units
- * @return {string} input data units
- */
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-}
-
-/**
- * Сonvert to the specified units of measurement
- * @param {string} value - input data
- * @param {string} newUnit - specified units
- * @return {number} converted data
- */
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if ((unit === 'px' || unit === 'pt') && newUnit === 'mm') {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'cm') {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'in') {
-      value = parseFloat(value) / 72;
-  } else if (unit === 'mm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if (unit === 'mm' && newUnit === 'cm') {
-      value = parseFloat(value) * 10;
-  } else if (unit === 'mm' && newUnit === 'in') {
-      value = parseFloat(value) / 25.4;
-  } else if (unit === 'cm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if (unit === 'cm' && newUnit === 'mm') {
-      value = parseFloat(value) / 10;
-  } else if (unit === 'cm' && newUnit === 'in') {
-      value = parseFloat(value) * 2.54;
-  } else if (unit === 'in' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 72;
-  } else if (unit === 'in' && newUnit === 'mm') {
-      value = parseFloat(value) * 25.4;
-  } else if (unit === 'in' && newUnit === 'cm') {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 /**

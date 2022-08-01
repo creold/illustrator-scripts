@@ -95,8 +95,8 @@ function main () {
 
   /**
   * Use Up / Down arrow keys (+ Shift) for change value
-  * @param {object} item - input text field
-  * @param {number} min - minimal input value
+  * @param {Object} item - Input text field
+  * @param {number} min - Minimal input value
   */
   function shiftInputNumValue(item, min, max) {
     item.addEventListener('keydown', function (kd) {
@@ -138,25 +138,25 @@ function main () {
 }
 
 /**
- * Convert any input data to a number
- * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
+ * Convert string to number
+ * @param {string} str - Input data
+ * @param {number} def - Default value if the string don't contain digits
  * @return {number} 
  */
 function convertToNum(str, def) {
-  // Remove unnecessary characters
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**
  * Get items from selection
- * @param {object} collection - collection of items
- * @return {array} arr - output array of single items
+ * @param {object} collection - Collection of items
+ * @return {array} arr - Output array of single items
  */
 function getItems(collection, arr, inclMask) {
   for (var i = 0, iLen = collection.length; i < iLen; i++) {
@@ -176,7 +176,7 @@ function getItems(collection, arr, inclMask) {
 
 /**
  * Check clipping mask
- * @param {object} item - item inside clipping group
+ * @param {Object} item - Item inside clipping group
  * @return {boolean} item is clipping mask
  */
 function isClippingPath(item) {
@@ -189,9 +189,9 @@ function isClippingPath(item) {
 
 /**
  * Set opacity value
- * @param {array} items - array of items
- * @param {string} sign - plus or minus sign
- * @param {number} value - opacity value
+ * @param {Array} items - Array of items
+ * @param {string} sign - Plus or minus sign
+ * @param {number} value - Opacity value
  */
 function changeOpacity(items, sign, value) {
   var zeroOpacity = [];

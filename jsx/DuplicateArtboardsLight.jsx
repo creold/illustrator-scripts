@@ -13,6 +13,7 @@
   0.2.1 Fixed script didn't run if the layers were locked
   0.2.2 Performance optimization
   0.3 Fixed copying all objects into one layer
+  0.4 Added more units (yards, meters, etc.) support if the document is saved
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -41,10 +42,11 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Duplicate Atboards Light',
-        version: 'v.0.3'
+        version: 'v.0.4'
       },
       CFG = {
         aiVers: parseInt(app.version),
+        units: getUnits(), // Active document units
         copies: 0, // Default amount of copies
         spacing: 20, // Default spacing between copies (doc units)
         minSpacing: 0, // The spacing can't be < 0
@@ -119,7 +121,7 @@ function main() {
   var titlesGroup = fieldGroup.add('group');
       titlesGroup.orientation = 'column';
   var copiesTitle = titlesGroup.add('statictext', CFG.uiTitle, LANG.copies);
-      titlesGroup.add('statictext', CFG.uiTitle, LANG.spacing + ', ' + getDocUnit());
+      titlesGroup.add('statictext', CFG.uiTitle, LANG.spacing + ', ' + CFG.units);
 
   var inputsGroup = fieldGroup.add('group');
       inputsGroup.orientation = 'column';
@@ -142,14 +144,14 @@ function main() {
 
   loadSettings();
 
-  spacing = convertUnits( convertToNum(spacingVal.text, CFG.minSpacing) + getDocUnit(), 'px' );
+  spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
   currAbIdx = doc.artboards.getActiveArtboardIndex();
 
   var abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
   var overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
 
   copiesTitle.text = LANG.copies + overCnvsSize.copies + ')';
-  if (convertToNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
+  if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
     copiesVal.text = overCnvsSize.copies;
   }
 
@@ -159,12 +161,12 @@ function main() {
   // Change listeners
   spacingVal.onChange = function () {
     recalcCopies();
-    this.text = convertToNum(this.text, CFG.spacing);
+    this.text = convertToAbsNum(this.text, CFG.spacing);
   }
 
   copiesVal.onChange = function () {
     recalcCopies();
-    this.text = convertToNum(this.text, CFG.copies);
+    this.text = convertToAbsNum(this.text, CFG.copies);
   }
 
   copiesVal.onChanging = spacingVal.onChanging = recalcCopies;
@@ -191,9 +193,9 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    copies = copiesVal.text = Math.round( convertToNum(copiesVal.text, CFG.copies) );
-    spacing = spacingVal.text = convertToNum(spacingVal.text, CFG.spacing);
-    spacing = convertUnits(spacing + getDocUnit(), 'px');
+    copies = copiesVal.text = Math.round( convertToAbsNum(copiesVal.text, CFG.copies) );
+    spacing = spacingVal.text = convertToAbsNum(spacingVal.text, CFG.spacing);
+    spacing = convertUnits(spacing, CFG.units, 'px');
 
     var userView = doc.views[0].screenMode;
     if (copies == 0) {
@@ -235,15 +237,15 @@ function main() {
    * Recalculate the maximum amount of copies at a given spacing
    */
   function recalcCopies() {
-    spacing = convertUnits( convertToNum(spacingVal.text, CFG.minSpacing) + getDocUnit(), 'px' );
+    spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
     currAbIdx = doc.artboards.getActiveArtboardIndex();
     abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
     overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
     copiesTitle.text = LANG.copies + overCnvsSize.copies + ')';
-    if (convertToNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
+    if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
       copiesVal.text = overCnvsSize.copies;
     }
-    if (convertToNum(copiesVal.text, CFG.copies) < 0) {
+    if (convertToAbsNum(copiesVal.text, CFG.copies) < 0) {
       copiesVal.text = 0;
     }
   }
@@ -258,13 +260,13 @@ function main() {
       var step;
       ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
       if (kd.keyName == 'Down') {
-        this.text = convertToNum(this.text, min) - step;
+        this.text = convertToAbsNum(this.text, min) - step;
         if (this.text * 1 < min) this.text = min;
         recalcCopies();
         kd.preventDefault();
       }
       if (kd.keyName == 'Up') {
-        this.text = convertToNum(this.text, min) + step;
+        this.text = convertToAbsNum(this.text, min) + step;
         recalcCopies();
         kd.preventDefault();
       }
@@ -310,7 +312,7 @@ function main() {
 
 /**
  * Unlock all Layers & Sublayers
- * @param {object} _layers - the collection of layers
+ * @param {Object} _layers - Layers collection
  */
 function unlockLayers(_layers) {
   for (var i = 0, len = _layers.length; i < len; i++) {
@@ -321,9 +323,9 @@ function unlockLayers(_layers) {
 
 /**
  * Remove keyword from Note in Attributes panel
- * @param {object} _layers - the collection of layers
- * @param {string} lKey - keyword for locked items
- * @param {string} hKey - keyword for hidden items
+ * @param {Object} _layers - Layers collection
+ * @param {string} lKey - Keyword for locked items
+ * @param {string} hKey - Keyword for hidden items
  */
 function removeNote(_layers, lKey, hKey) {
   var regexp = new RegExp(lKey + '|' + hKey, 'gi');
@@ -345,9 +347,9 @@ function removeNote(_layers, lKey, hKey) {
 
 /**
  * Save information about locked & hidden pageItems & layers
- * @param {object} _layers - the collection of layers
- * @param {string} lKey - keyword for locked items
- * @param {string} hKey - keyword for hidden items
+ * @param {Object} _layers - Layers collection
+ * @param {string} lKey - Keyword for locked items
+ * @param {string} hKey - Keyword for hidden items
  */
 function saveItemsState(_layers, lKey, hKey) {
   var allItems = [];
@@ -374,9 +376,9 @@ function saveItemsState(_layers, lKey, hKey) {
 
 /**
  * Restoring locked & hidden pageItems & layers
- * @param {object} _layers - the collection of layers
- * @param {string} lKey - keyword for locked items
- * @param {string} hKey - keyword for hidden items
+ * @param {Object} _layers - Layers collection
+ * @param {string} lKey - Keyword for locked items
+ * @param {string} hKey - Keyword for hidden items
  */
 function restoreItemsState(_layers, lKey, hKey) {
   var allItems = [],
@@ -403,8 +405,8 @@ function restoreItemsState(_layers, lKey, hKey) {
 
 /**
  * Collect items
- * @param {object} obj - collection of items
- * @param {array} arr - output array with childrens
+ * @param {(Object|Array)} obj - Items collection
+ * @param {Array} arr - Output array with childrens
  */
 function getItems(obj, arr) {
   for (var i = 0, len = obj.length; i < len; i++) {
@@ -425,9 +427,9 @@ function getItems(obj, arr) {
 
 /**
  * Add zero to the file name before the indexes are less then size
- * @param {number} number - copy number
- * @param {number} size - length of the amount of copies
- * @return {string} copy number with pre-filled zeros
+ * @param {number} number - Copy number
+ * @param {number} size - Length of the amount of copies
+ * @return {string} Copy number with pre-filled zeros
  */
 function fillZero(number, size) {
   var str = '000000000' + number;
@@ -436,8 +438,8 @@ function fillZero(number, size) {
 
 /**
  * Trick with temp pathItem to get the absolute coordinate of the artboard. Thanks to @moodyallen
- * @param {number} abIdx - current artboard index
- * @return {object} absolute coordinates of the artboard
+ * @param {number} abIdx - Current artboard index
+ * @return {Object} Absolute coordinates of the artboard
  */
 function getArtboardCoordinates(abIdx, lyrName) {
   var doc = activeDocument,
@@ -483,10 +485,10 @@ function getArtboardCoordinates(abIdx, lyrName) {
 
 /**
  * Find out if the amount of copies over the canvas width
- * @param {object} coord - coordinates of the selected artboard
- * @param {number} copies - amount of copies
- * @param {number} spacing - distance between copies
- * @return {object} information about the extreme possible artboard
+ * @param {Object} coord - Coordinates of the selected artboard
+ * @param {number} copies - Amount of copies
+ * @param {number} spacing - Distance between copies
+ * @return {Object} Information about the extreme possible artboard
  */
 function isOverCnvsBounds(coord, copies, spacing, max) {
   var lastAbRight = coord.right + (spacing + coord.right - coord.left) * copies,
@@ -503,11 +505,11 @@ function isOverCnvsBounds(coord, copies, spacing, max) {
 
 /**
  * Duplicate the selected artboard. Based on the idea of @Silly-V
- * @param {number} thisAbIdx - current artboard index
- * @param {object} items - collection of items on the artboard
- * @param {number} spacing - distance between copies
- * @param {string} suffix - copy name suffix
- * @param {number} counter - current copy number
+ * @param {number} thisAbIdx - Current artboard index
+ * @param {Object} items - Collection of items on the artboard
+ * @param {number} spacing - Distance between copies
+ * @param {string} suffix - Copy name suffix
+ * @param {number} counter - Current copy number
  */
 function duplicateArtboard(thisAbIdx, items, spacing, suffix, counter) {
   var doc = activeDocument,
@@ -550,8 +552,8 @@ function duplicateArtboard(thisAbIdx, items, spacing, suffix, counter) {
 
 /**
  * Duplicate all items
- * @param {object} collection - selected items on active artboard
- * @return {array} arr - duplicated items
+ * @param {Object} collection - Selected items on active artboard
+ * @return {Array} arr - Duplicated items
  */
 function getDuplicates(collection) {
   var arr = [];
@@ -562,98 +564,61 @@ function getDuplicates(collection) {
 }
 
 /**
- * Units conversion. Thanks for help Alexander Ladygin (https://github.com/alexander-ladygin)
- * @return {string} document ruler units
+ * Get active document ruler units
+ * @return {string} Shortened units
  */
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
 /**
- * @param {string} value - input data
- * @param {string} def - default units
- * @return {string} input data units
+ * Convert units of measurement
+ * @param {string} value - Numeric data
+ * @param {string} curUnits - Document units 
+ * @param {string} newUnits - Final units
+ * @return {number} Converted value 
  */
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-};
-
-/**
- * Сonvert to the specified units of measurement
- * @param {string} value - input data
- * @param {string} newUnit - specified units
- * @return {number} converted data
- */
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'mm')) {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'cm')) {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if (((unit === 'px') || (unit === 'pt')) && (newUnit === 'in')) {
-      value = parseFloat(value) / 72;
-  } else if ((unit === 'mm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if ((unit === 'mm') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 10;
-  } else if ((unit === 'mm') && (newUnit === 'in')) {
-      value = parseFloat(value) / 25.4;
-  } else if ((unit === 'cm') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if ((unit === 'cm') && (newUnit === 'mm')) {
-      value = parseFloat(value) / 10;
-  } else if ((unit === 'cm') && (newUnit === 'in')) {
-      value = parseFloat(value) * 2.54;
-  } else if ((unit === 'in') && ((newUnit === 'px') || (newUnit === 'pt'))) {
-      value = parseFloat(value) * 72;
-  } else if ((unit === 'in') && (newUnit === 'mm')) {
-      value = parseFloat(value) * 25.4;
-  } else if ((unit === 'in') && (newUnit === 'cm')) {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 /**
- * Convert any input data to a number
- * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
+ * Convert string to absolute number
+ * @param {string} str - Input data
+ * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToNum(str, def) {
-  // Remove unnecessary characters
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**
 * Open link in browser
-* @param {string} url - website adress
+* @param {string} url - Website adress
 */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');

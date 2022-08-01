@@ -107,7 +107,7 @@ function main() {
   });
 
   stepsInp.onChange = function () {
-    this.text = convertToNum(this.text, 1);
+    this.text = convertToAbsNum(this.text, 1);
     if (this.text * 1 === 0) this.text = 1;
     if (this.text * 1 > selItems.length - 1) this.text = selItems.length - 1;
   }
@@ -155,9 +155,9 @@ function main() {
 
 /**
  * Get items from selection
- * @param {object} collection - collection of items
- * @return {array} arr - output array of single items
- * @return {array} tmp - output array of temporary paths in compounds
+ * @param {(Object|Array)} collection - Collection of items
+ * @return {Array} arr - Single items
+ * @return {Array} tmp - Temporary paths in compounds
  */
 function getItems(collection, arr, tmp) {
   for (var i = 0, iLen = collection.length; i < iLen; i++) {
@@ -187,11 +187,11 @@ function getItems(collection, arr, tmp) {
 
 /**
  * Rearrange colors in the selection
- * @param {array} items - array of items
- * @param {string} steps - amount of color shift steps
- * @param {string} direction - color shift direction
- * @param {boolean} isStroke - change the color of the strokes
- * @param {boolean} isFill - change the color of the fills
+ * @param {Array} items - Array of items
+ * @param {string} steps - Amount of color shift steps
+ * @param {string} direction - Color shift direction
+ * @param {boolean} isStroke - Change the color of the strokes
+ * @param {boolean} isFill - Change the color of the fills
  */
 function processing(items, steps, direction, isStroke, isFill) {
   var shiftItems = [],
@@ -226,8 +226,8 @@ function processing(items, steps, direction, isStroke, isFill) {
 
 /**
  * Restore colors in the selection
- * @param {array} items - array of items
- * @param {array} colors - array of original colors
+ * @param {Array} items - Array of items
+ * @param {Array} colors - Array of original colors
  */
 function restoreColors(items, colors) {
   for (var i = 0, len = items.length; i < len; i++) {
@@ -240,8 +240,8 @@ function restoreColors(items, colors) {
 
 /**
  * Get color property from selection
- * @param {array} items - array of items
- * @return {array} arr - output array of color objects
+ * @param {Array} items - Array of items
+ * @return {Array} arr - Output array of color objects
  */
 function getColors(items, arr) {
   var noColor = new NoColor();
@@ -263,9 +263,9 @@ function getColors(items, arr) {
 
 /**
  * Shift array elements to the right
- * @param {array} arr - input array
- * @param {number} steps - amount of shift steps
- * @return {array} out - output shifted array
+ * @param {Array} arr - Input array
+ * @param {number} steps - Amount of shift steps
+ * @return {Array} out - Output shifted array
  */
 function shiftArrayForward(arr, steps) {
   for (var i = 0; i < steps; i++) {
@@ -275,9 +275,9 @@ function shiftArrayForward(arr, steps) {
 
 /**
  * Shift array elements to the left
- * @param {array} arr - input array
- * @param {number} steps - amount of shift steps
- * @return {array} out - output shifted array
+ * @param {Array} arr - Input array
+ * @param {number} steps - Amount of shift steps
+ * @return {Array} out - Output shifted array
  */
 function shiftArrayBackward(arr, steps) {
   for (var i = 0; i < steps; i++) {
@@ -287,7 +287,7 @@ function shiftArrayBackward(arr, steps) {
 
 /**
  * Shuffle array
- * @param {array} arr - input array
+ * @param {Array} arr - Input array
  */
 function shuffle(arr) {
   var j, tmp;
@@ -302,8 +302,8 @@ function shuffle(arr) {
 
 /**
  * Apply weight and color property
- * @param {object} item - selected item
- * @param {object} color - object with color parameters
+ * @param {Object} item - Selected item
+ * @param {Object} color - Object with color parameters
  */
 function applyStroke(item, color) {
   var noColor = new NoColor();
@@ -331,21 +331,23 @@ function applyStroke(item, color) {
 }
 
 /**
- * Convert any input data to a number
- * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
- * @return {number} 
+ * Convert string to absolute number
+ * @param {string} str - Input data
+ * @param {number} def - Default value if the string don't contain digits
+ * @return {number}
  */
-function convertToNum(str, def) {
-  // Remove unnecessary characters
-  str = str.replace(/[^\d]/g, '');
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+function convertToAbsNum(str, def) {
+  if (arguments.length == 1 || !def) def = 1;
+  str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
+  str = str.split('.');
+  str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**
  * Check TextRange typename
- * @param {object} item - item from selection
+ * @param {Object} item - Item from selection
  */
 function isText(item) {
   return item.typename === 'TextRange';
@@ -353,7 +355,7 @@ function isText(item) {
 
 /**
  * Open link in browser
- * @param {string} url - website adress
+ * @param {string} url - Website adress
  */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');

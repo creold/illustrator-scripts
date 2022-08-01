@@ -210,7 +210,7 @@ function main() {
 
   // Update selection after change tolerance angle
   tolValue.onChange = function() {
-    this.text = convertToNum(this.text, CFG.maxAngle);
+    this.text = convertToAbsNum(this.text, CFG.maxAngle);
     if (this.text * 1 > CFG.maxAngle) this.text = CFG.maxAngle;
     if (brokenBtn.value || cornerBtn.value) run();
   }
@@ -321,20 +321,18 @@ function calcSelectedPoints(paths) {
 }
 
 /**
- * Convert any input data to a number
- * @param {string} str - input data
- * @param {number} def - default value if the input data don't contain numbers
+ * Convert string to absolute number
+ * @param {string} str - Input data
+ * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToNum(str, def) {
+function convertToAbsNum(str, def) {
   if (arguments.length == 1 || !def) def = 1;
-  // Remove unnecessary characters
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
-  // Remove duplicate Point
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
-  if (isNaN(str) || str.length == 0) return parseFloat(def);
-  return parseFloat(str);
+  if (isNaN(str) || !str.length) return parseFloat(def);
+  else return parseFloat(str);
 }
 
 /**

@@ -1,7 +1,7 @@
 /*
   RoundCoordinates.jsx for Adobe Illustrator
   Description: The script rounds the coordinates of the center of the object
-  Date: June, 2020
+  Date: August, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +11,7 @@
   0.2.0 Supports clipping groups, align to reference point
   0.2.1 Uses the document ruler mode to get coordinates
   0.3 Added rounding step
+  0.4 Added more units (yards, meters, etc.) support if the document is saved
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -41,6 +42,7 @@ function main() {
       grid = pref.getRealPreference('Grid/Horizontal/Spacing'),
       CFG = {
         step: 1, // Step of coordinates rounding. Set it to zero to read from Preferences > Grid
+        units: getUnits(), // Active document units
         refPoint: pref.getIntegerPreference('plugin/Transform/AnchorPoint'),
         inclStroke: pref.getBooleanPreference('includeStrokeInBounds'),
       },
@@ -81,11 +83,11 @@ function main() {
         boundsPX = getVisibleBounds(currItem, CFG.inclStroke);
 
     for (var j = 0; j < boundsPX.length; j++) {
-      bounds.push(convertUnits(boundsPX[j], getDocUnit()));
+      bounds.push(convertUnits(boundsPX[j], 'px', CFG.units));
     }
 
-    var step = (CFG.step == 0) ? convertUnits(grid, getDocUnit()) / subdiv : CFG.step,
-        delta = calcDeltaByAxes(CFG.refPoint, bounds, step);
+    var step = (CFG.step == 0) ? convertUnits(grid, 'px', CFG.units) / subdiv : CFG.step,
+        delta = calcDeltaByAxes(CFG.refPoint, bounds, step, CFG.units);
 
     // If has been replaced by the clipping mask bounds
     boundsPX = currItem.geometricBounds;
@@ -170,7 +172,7 @@ function compareBounds(itemBnds, currBnds) {
 }
 
 // Calculate the delta of the X, Y coordinates for the move
-function calcDeltaByAxes(point, bounds, step) {
+function calcDeltaByAxes(point, bounds, step, units) {
   var x = y = 0,
       centerX = bounds[0] + (bounds[2] - bounds[0]) / 2,
       centerY = bounds[1] + (bounds[3] - bounds[1]) / 2;
@@ -214,8 +216,8 @@ function calcDeltaByAxes(point, bounds, step) {
       break;
   }
 
-  x = convertUnits(x + getDocUnit(), 'px');
-  y = convertUnits(y + getDocUnit(), 'px');
+  x = convertUnits(x, units, 'px');
+  y = convertUnits(y, units, 'px');
 
   return { 'x': x, 'y': y };
 }
@@ -244,64 +246,33 @@ function sign(n) {
   return n ? (n < 0 ? -1 : 1) : 0;
 }
 
-// Units conversion
-function getDocUnit() {
-  var unit = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  if (unit === 'Centimeters') unit = 'cm';
-  else if (unit === 'Millimeters') unit = 'mm';
-  else if (unit === 'Inches') unit = 'in';
-  else if (unit === 'Pixels') unit = 'px';
-  else if (unit === 'Points') unit = 'pt';
-  return unit;
+// Get active document ruler units
+function getUnits() {
+  if (!documents.length) return '';
+  switch (activeDocument.rulerUnits) {
+    case RulerUnits.Pixels: return 'px';
+    case RulerUnits.Points: return 'pt';
+    case RulerUnits.Picas: return 'pc';
+    case RulerUnits.Inches: return 'in';
+    case RulerUnits.Millimeters: return 'mm';
+    case RulerUnits.Centimeters: return 'cm';
+    case RulerUnits.Unknown: // Parse new units only for the saved doc
+      var xmp = activeDocument.XMPString;
+      // Example: <stDim:unit>Yards</stDim:unit>
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'Yards') return 'yd';
+      }
+      break;
+  }
+  return 'px'; // Default
 }
 
-function getUnits(value, def) {
-  try {
-    return 'px,pt,mm,cm,in,pc'.indexOf(value.slice(-2)) > -1 ? value.slice(-2) : def;
-  } catch (e) {}
-}
-
-function convertUnits(value, newUnit) {
-  if (value === undefined) return value;
-  if (newUnit === undefined) newUnit = 'px';
-  if (typeof value === 'number') value = value + 'px';
-  if (typeof value === 'string') {
-    var unit = getUnits(value),
-        val = parseFloat(value);
-    if (unit && !isNaN(val)) {
-      value = val;
-    } else if (!isNaN(val)) {
-      value = val;
-      unit = 'px';
-    }
-  }
-
-  if ((unit === 'px' || unit === 'pt') && newUnit === 'mm') {
-      value = parseFloat(value) / 2.83464566929134;
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'cm') {
-      value = parseFloat(value) / (2.83464566929134 * 10);
-  } else if ((unit === 'px' || unit === 'pt') && newUnit === 'in') {
-      value = parseFloat(value) / 72;
-  } else if (unit === 'mm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134;
-  } else if (unit === 'mm' && newUnit === 'cm') {
-      value = parseFloat(value) * 10;
-  } else if (unit === 'mm' && newUnit === 'in') {
-      value = parseFloat(value) / 25.4;
-  } else if (unit === 'cm' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 2.83464566929134 * 10;
-  } else if (unit === 'cm' && newUnit === 'mm') {
-      value = parseFloat(value) / 10;
-  } else if (unit === 'cm' && newUnit === 'in') {
-      value = parseFloat(value) * 2.54;
-  } else if (unit === 'in' && (newUnit === 'px' || newUnit === 'pt')) {
-      value = parseFloat(value) * 72;
-  } else if (unit === 'in' && newUnit === 'mm') {
-      value = parseFloat(value) * 25.4;
-  } else if (unit === 'in' && newUnit === 'cm') {
-      value = parseFloat(value) * 25.4;
-  }
-  return parseFloat(value);
+// Convert units of measurement
+function convertUnits(value, currUnits, newUnits) {
+  return UnitValue(value, currUnits).as(newUnits);
 }
 
 try {
