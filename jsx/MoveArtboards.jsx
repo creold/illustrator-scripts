@@ -11,6 +11,7 @@
   0.1 Initial version
   0.1.1 Minor improvements
   0.2 Added more units (yards, meters, etc.) support if the document is saved
+  0.2.1 Added custom RGB color (idxColor) for artboard indexes
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -38,12 +39,13 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.2'
+        version: 'v.0.2.1'
       },
       CFG = {
         aiVers: parseInt(app.version),
         units: getUnits(), // Active document units
-        tmpLyr: 'ARTBOARD_NUMBERS',
+        tmpLyr: 'ARTBOARD_INDEX',
+        idxColor: [255, 0, 0], // Artboard index color
         abs: '1, 2-4',
         allAbs: '%all',
         shift: 100,
@@ -160,16 +162,13 @@ function main() {
     abInput.textselection = abInput.text;
   });
 
-  dialog.onClose = function () {
-    // Remove temp layer with artboards numbers
-    try {
-      var layerToRm = doc.layers.getByName(CFG.tmpLyr);
-      layerToRm.remove();
-    } catch (e) {}
+  dialog.onShow = function () {
+    showAbIndex(CFG.tmpLyr, CFG.idxColor);
   }
 
-  drawAbsNumbers(CFG.tmpLyr);
-  redraw();
+  dialog.onClose = function () {
+    removeAbIndex(CFG.tmpLyr);
+  }
 
   cancel.onClick = dialog.close;
   ok.onClick = okClick;
@@ -267,9 +266,12 @@ function main() {
   }
 }
 
-// Numbering of artboards for the user
-function drawAbsNumbers(layer) {
+// Output artboard indexes as text
+function showAbIndex(layer, color) {
+  if (arguments.length == 1 || !color) color = [0, 0, 0];
+
   var doc = activeDocument,
+      idxColor = setRGBColor(color),
       tmpLayer;
 
   try {
@@ -279,21 +281,39 @@ function drawAbsNumbers(layer) {
     tmpLayer.name = layer;
   }
 
-  for (var i = 0, absLen = doc.artboards.length; i < absLen; i++)  {
+  for (var i = 0, len = doc.artboards.length; i < len; i++)  {
     doc.artboards.setActiveArtboardIndex(i);
     var currAb = doc.artboards[i],
         abWidth = currAb.artboardRect[2] - currAb.artboardRect[0],
         abHeight = currAb.artboardRect[1] - currAb.artboardRect[3],
         label = doc.textFrames.add(),
-        labelSize = (abWidth >= abHeight) ? abHeight : abWidth;
+        labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
     label.contents = i + 1;
-    label.textRange.characterAttributes.size = labelSize / 2;
-    label.position = [
-      currAb.artboardRect[0],
-      currAb.artboardRect[1]
-    ];
+    // 1296 pt limit for font size in Illustrator
+    label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
+    label.textRange.characterAttributes.fillColor = idxColor;
+    label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
     label.move(tmpLayer, ElementPlacement.PLACEATBEGINNING);
   }
+
+  redraw();
+}
+
+// Generate solid RGB color
+function setRGBColor(rgb) {
+  var c = new RGBColor();
+  c.red = rgb[0];
+  c.green = rgb[1];
+  c.blue = rgb[2];
+  return c;
+}
+
+// Remove temp layer with artboard indexes
+function removeAbIndex(layer) {
+  try {
+    var layerToRm = activeDocument.layers.getByName(layer);
+    layerToRm.remove();
+  } catch (e) {}
 }
 
 function collectArtboardItems(absRange) {

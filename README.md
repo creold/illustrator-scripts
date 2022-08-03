@@ -15,13 +15,13 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Artboard](md/Artboard.md)  
 
-* ArtboardsFinder `(upd, 29.07.2022)`
-* BatchRenamer `(upd, 13.05.2022)`
-* DuplicateArtboards
-* FitArtboardsToArtwork `(upd, 12.06.2022)`
-* MoveArtboards
+* ArtboardsFinder `(upd, 01.08.2022)`
+* BatchRenamer `(upd, 03.08.2022)`
+* DuplicateArtboards `(upd, 01.08.2022)`
+* FitArtboardsToArtwork `(upd, 01.08.2022)`
+* MoveArtboards `(upd, 03.08.2022)`
 * RenameArtboardAsLayer
-* RenameArtboardAsSize
+* RenameArtboardAsSize `(upd, 01.08.2022)`
 * RenameArtboardAsTopObj
 
 ### [Color](md/Color.md)  
@@ -29,7 +29,7 @@ Click the links to learn more about the scripts in the selected category.
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
-* CycleColors
+* CycleColors `(upd, 01.08.2022)`
 * CycleGradient
 * DistributeGradientStops
 * RemoveGradientStops
@@ -38,14 +38,13 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Draw](md/Draw.md) 
 
-* NumeratesPoints
-* RandomScribble `(upd, 12.06.2022)`
+* NumeratesPoints `(upd, 01.08.2022)`
+* RandomScribble `(upd, 01.08.2022)`
 
 ### [Export](md/Export.md)  
 
-* Export selection as AI
-* ExportToDXF
-
+* Export selection as AI `(upd, 01.08.2022)`
+* ExportToDXF `(upd, 01.08.2022)`
 
 ### [Group | Mask](md/Group.md)  
 
@@ -56,40 +55,40 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 
-* FitSelectionToArtboards `(upd, 29.07.2022)`
+* FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
-* MirrorMove `(new, 13.05.2022)`
+* MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 26.07.2022)`
-* Rescale
-* ResizeOnLargerSide
-* ResizeToSize `(upd, 12.06.2022)`
-* RoundCoordinates `(upd, 15.03.2022)`
+* Rescale `(upd, 01.08.2022)`
+* ResizeOnLargerSide `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 01.08.2022)`
+* RoundCoordinates `(upd, 01.08.2022)`
 
 ### [Path](md/Path.md)  
 
-* Points Move Random `(upd, 12.06.2022)`
+* Points Move Random `(upd, 01.08.2022)`
 * SplitPath `(upd, 12.06.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.md)  
 
-* NamedItemsFinder `(upd, 07.03.2022)`
+* NamedItemsFinder `(upd, 01.08.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType `(upd, 12.06.2022)`
+* SelectPointsByType `(upd, 01.08.2022)`
 * SelectRotatedItems `(new, 22.06.2022)`
 
 ### [Style](md/Style.md)  
 
-* ChangeOpacity
+* ChangeOpacity `(upd, 01.08.2022)`
 * GrayscaleToOpacity
 * OpacityMaskClip
-* RandomStrokeWidth `(new, 16.04.2022)`
-* StrokesWeightUp
-* StrokesWeightDown
+* RandomStrokeWidth `(upd, 01.08.2022)`
+* StrokesWeightUp `(upd, 01.08.2022)`
+* StrokesWeightDown `(upd, 01.08.2022)`
 
 ### [Utility](md/Utility.md)  
 

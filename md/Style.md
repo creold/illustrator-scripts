@@ -6,11 +6,12 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* ChangeOpacity
+* ChangeOpacity `(upd, 01.08.2022)`
 * GrayscaleToOpacity
 * OpacityMaskClip
-* StrokesWeightUp
-* StrokesWeightDown
+* RandomStrokeWidth `(upd, 01.08.2022)`
+* StrokesWeightUp `(upd, 01.08.2022)`
+* StrokesWeightDown `(upd, 01.08.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">

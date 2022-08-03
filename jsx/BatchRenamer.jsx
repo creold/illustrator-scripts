@@ -19,6 +19,7 @@
   1.1 Minor improvements
   1.1.1 Fixed load user settings
   1.2 Added more units (yards, meters, etc.) support if the document is saved
+  1.2.1 Added custom RGB color (idxColor) for artboard indexes
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -52,7 +53,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.2'
+        version:  'v.1.2.1'
       },
       CFG = {
         os:         $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
@@ -63,6 +64,7 @@ function main() {
         precision:  0, // Rounding the artboard or the path width and height to decimal places
         isFind:     false, // Default Find and Replace state
         tmpLyr:     'ARTBOARD_INDEX',
+        idxColor:   [255, 0, 0], // Artboard index color
         uiOpacity:  .97 // UI window opacity. Range 0-1
       },
       PH = { // Placeholders
@@ -211,7 +213,7 @@ function main() {
   loadSettings();
 
   dialog.onShow = function () {
-    showAbIndex(doc, CFG.tmpLyr);
+    showAbIndex(CFG.tmpLyr, CFG.idxColor);
     var delta = 20;
     setScrollMax(absTabData, delta);
     setScrollMax(lyrsTabData, delta);
@@ -231,7 +233,7 @@ function main() {
   }
 
   cancel.onClick = function () {
-    removeAbIndex(doc, CFG.tmpLyr);
+    removeAbIndex(CFG.tmpLyr);
     dialog.close();
   }
 
@@ -247,7 +249,7 @@ function main() {
   // DIALOG LOCAL FUNCTIONS
 
   function okClick() {
-    removeAbIndex(doc, CFG.tmpLyr);
+    removeAbIndex(CFG.tmpLyr);
     rename(doc.artboards, CFG, PH, abs, absPlaceholder);
     rename(doc.layers, CFG, PH, lyrs, lyrsPlaceholder);
     rename(selection, CFG, PH, paths, pathsPlaceholder);
@@ -621,15 +623,19 @@ function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
 }
 
-// Output the artboard number as text
-function showAbIndex(doc, lyrName) {
-  var tmpLayer;
-    
+// Output artboard indexes as text
+function showAbIndex(layer, color) {
+  if (arguments.length == 1 || !color) color = [0, 0, 0];
+
+  var doc = activeDocument,
+      idxColor = setRGBColor(color),
+      tmpLayer;
+
   try {
-    tmpLayer = doc.layers.getByName(lyrName);
+    tmpLayer = doc.layers.getByName(layer);
   } catch (e) {
     tmpLayer = doc.layers.add();
-    tmpLayer.name = lyrName;
+    tmpLayer.name = layer;
   }
 
   for (var i = 0, len = doc.artboards.length; i < len; i++)  {
@@ -642,6 +648,7 @@ function showAbIndex(doc, lyrName) {
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
+    label.textRange.characterAttributes.fillColor = idxColor;
     label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
     label.move(tmpLayer, ElementPlacement.PLACEATBEGINNING);
   }
@@ -649,10 +656,19 @@ function showAbIndex(doc, lyrName) {
   redraw();
 }
 
-// Remove temp layer with artboards numbers
-function removeAbIndex(doc, lyrName) {
+// Generate solid RGB color
+function setRGBColor(rgb) {
+  var c = new RGBColor();
+  c.red = rgb[0];
+  c.green = rgb[1];
+  c.blue = rgb[2];
+  return c;
+}
+
+// Remove temp layer with artboard indexes
+function removeAbIndex(layer) {
   try {
-    var layerToRm = doc.layers.getByName(lyrName);
+    var layerToRm = activeDocument.layers.getByName(layer);
     layerToRm.remove();
   } catch (e) {}
 }

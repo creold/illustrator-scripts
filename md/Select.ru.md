@@ -6,12 +6,12 @@
 [На главную](../README.ru.md)
 
 ## 📜 Scripts
-* NamedItemsFinder `(upd, 07.03.2022)`
+* NamedItemsFinder `(upd, 01.08.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType `(upd, 12.06.2022)`
+* SelectPointsByType `(upd, 01.08.2022)`
 * SelectRotatedItems `(new, 22.06.2022)`
 
 <a href="https://bit.ly/2M0j95N">

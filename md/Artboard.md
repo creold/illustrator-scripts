@@ -6,13 +6,13 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* ArtboardsFinder `(upd, 29.07.2022)`
-* BatchRenamer `(upd, 13.05.2022)`
-* DuplicateArtboardsLight
-* FitArtboardsToArtwork `(upd, 12.06.2022)`
-* MoveArtboards
+* ArtboardsFinder `(upd, 01.08.2022)`
+* BatchRenamer `(upd, 03.08.2022)`
+* DuplicateArtboards `(upd, 01.08.2022)`
+* FitArtboardsToArtwork `(upd, 01.08.2022)`
+* MoveArtboards `(upd, 03.08.2022)`
 * RenameArtboardAsLayer
-* RenameArtboardAsSize
+* RenameArtboardAsSize `(upd, 01.08.2022)`
 * RenameArtboardAsTopObj
 
 <a href="https://bit.ly/2M0j95N">

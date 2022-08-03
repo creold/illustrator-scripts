@@ -9,7 +9,7 @@
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
-* CycleColors
+* CycleColors `(upd, 01.08.2022)`
 * CycleGradient
 * DistributeGradientStops
 * RemoveGradientStops

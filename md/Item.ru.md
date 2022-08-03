@@ -6,15 +6,15 @@
 [На главную](../README.ru.md)
 
 ## 📜 Scripts
-* FitSelectionToArtboards `(upd, 29.07.2022)`
+* FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
-* MirrorMove `(new, 13.05.2022)`
+* MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 26.07.2022)`
-* Rescale
-* ResizeOnLargerSide
-* ResizeToSize `(upd, 12.06.2022)`
-* RoundCoordinates `(upd, 15.03.2022)`
+* Rescale `(upd, 01.08.2022)`
+* ResizeOnLargerSide `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 01.08.2022)`
+* RoundCoordinates `(upd, 01.08.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">

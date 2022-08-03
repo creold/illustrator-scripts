@@ -16,13 +16,13 @@
 ### [Artboard](md/Artboard.ru.md)  
 Скрипты для создания и управления артбордами.
 
-* ArtboardsFinder `(new, 29.07.2022)`
-* BatchRenamer `(upd, 13.05.2022)`
-* DuplicateArtboards
-* FitArtboardsToArtwork `(upd, 12.06.2022)`
-* MoveArtboards
+* ArtboardsFinder `(upd, 01.08.2022)`
+* BatchRenamer `(upd, 03.08.2022)`
+* DuplicateArtboards `(upd, 01.08.2022)`
+* FitArtboardsToArtwork `(upd, 01.08.2022)`
+* MoveArtboards `(upd, 03.08.2022)`
 * RenameArtboardAsLayer
-* RenameArtboardAsSize
+* RenameArtboardAsSize `(upd, 01.08.2022)`
 * RenameArtboardAsTopObj
 
 ### [Color](md/Color.ru.md)  
@@ -31,7 +31,7 @@
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
 * ConvertToGradient
-* CycleColors
+* CycleColors `(upd, 01.08.2022)`
 * CycleGradient
 * DistributeGradientStops
 * RemoveGradientStops
@@ -41,15 +41,14 @@
 ### [Draw](md/Draw.ru.md) 
 Скрипты, которые что-либо рисуют.
 
-* NumeratesPoints
-* RandomScribble `(upd, 12.06.2022)`
+* NumeratesPoints `(upd, 01.08.2022)`
+* RandomScribble `(upd, 01.08.2022)`
 
 ### [Export](md/Export.ru.md)  
 Скрипты для экспорта документов.
 
-* Export selection as AI
-* ExportToDXF
-
+* Export selection as AI `(upd, 01.08.2022)`
+* ExportToDXF `(upd, 01.08.2022)`
 
 ### [Group | Mask](md/Group.ru.md)  
 Скрипты для создания и управления группами, обтравочными масками.
@@ -61,44 +60,44 @@
 
 ### [Item](md/Item.ru.md)  
 Скрипты, управляющие выбранными объектами.
-
-* FitSelectionToArtboards `(upd, 29.07.2022)`
+ 
+* FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
-* MirrorMove `(new, 13.05.2022)`
+* MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
 * RenameItems `(upd, 26.07.2022)`
-* Rescale
-* ResizeOnLargerSide
-* ResizeToSize `(upd, 12.06.2022)`
-* RoundCoordinates `(upd, 15.03.2022)`
+* Rescale `(upd, 01.08.2022)`
+* ResizeOnLargerSide `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 01.08.2022)`
+* RoundCoordinates `(upd, 01.08.2022)`
 
 ### [Path](md/Path.ru.md)  
 Скрипты, изменяющие пути.
 
-* Points Move Random `(upd, 12.06.2022)`
+* Points Move Random `(upd, 01.08.2022)`
 * SplitPath `(upd, 12.06.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.ru.md)  
 Скрипты для выбора объектов в документе.
 
-* NamedItemsFinder `(upd, 07.03.2022)`
+* NamedItemsFinder `(upd, 01.08.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
 * SelectBySwatches `(upd, 12.06.2022)`
 * SelectOnlyPoints
-* SelectPointsByType `(upd, 12.06.2022)`
+* SelectPointsByType `(upd, 01.08.2022)`
 * SelectRotatedItems `(new, 22.06.2022)`
 
 ### [Style](md/Style.ru.md)  
 Скрипты, стилизующие объекты.
 
-* ChangeOpacity
+* ChangeOpacity `(upd, 01.08.2022)`
 * GrayscaleToOpacity
 * OpacityMaskClip
-* RandomStrokeWidth `(new, 16.04.2022)`
-* StrokesWeightUp
-* StrokesWeightDown
+* RandomStrokeWidth `(upd, 01.08.2022)`
+* StrokesWeightUp `(upd, 01.08.2022)`
+* StrokesWeightDown `(upd, 01.08.2022)`
 
 ### [Utility](md/Utility.ru.md)  
 Вспомогательные скрипты.
