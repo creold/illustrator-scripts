@@ -75,7 +75,7 @@ function main() {
 
   // Default variables for dialog box
   var doc = activeDocument,
-      fileName = getDocName(doc),
+      fileName = doc.name.replace(/\.[^\.]+$/, ''),
       exportOptions = getOptions(),
       separator = '-',
       outFolder = (doc.path != '') ? doc.path : Folder.desktop;
@@ -245,18 +245,6 @@ function main() {
   dialog.center();
   dialog.show();
 };
-
-/**
- * Get document name without extension
- * @param {object} doc - Adobe Illustrator document
- * @return {string} name without extension (symbols after point)
- */
-function getDocName(doc) {
-  var name = decodeURI(doc.name);
-  var lastDot = name.lastIndexOf('.');
-  if (lastDot > -1) return name.slice(0, lastDot);
-  return name;
-}
 
 /**
  * Check empty string

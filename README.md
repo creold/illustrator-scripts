@@ -1,14 +1,14 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Adobe Illustrator Scripts
 
-[![Behance](https://img.shields.io/badge/Behance-%40creold-0055FF.svg)](https://behance.net/creold) [![Instagram](https://img.shields.io/badge/Instagram-%40serg_osokin-8034B2.svg)](https://www.instagram.com/serg_osokin/) [![Yotube](https://img.shields.io/badge/-YouTube%20Channel-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Yotube](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
 ## 👨‍💻 Hi
 This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code.
 
-The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2021 (Windows), CC 2018-2021 (Mac OS).   
+The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022 (Windows), CC 2018-2022 (Mac OS).   
 
 ## 📜 Categories
 Click the links to learn more about the scripts in the selected category.
@@ -55,6 +55,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Item](md/Item.md)  
 
+* BatchTrace `(new, 15.08.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
@@ -101,6 +102,12 @@ Click the links to learn more about the scripts in the selected category.
 
 * Zoom And Center `(upd, 12.06.2022)`
 
+## How to download one script 
+1. Open the `.jsx` file in the directory
+2. Click to the `Raw` button in the right corner
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
+4. Delete `.txt` extension: `name.jsx.txt` > `name.jsx`
+
 ## How to run scripts
 
 #### Variant 1 — Install 
@@ -125,23 +132,28 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [LAScripts]: https://ladygin.pro/products/lascripts/
 
 ## 💸 Donate
-You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
+You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
 
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 [PayPal]: https://paypal.me/osokin/5usd
 
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
+</a>
+
 <a href="https://yoomoney.ru/to/410011149615582">
-  <img width="147" height="40" src="https://i.ibb.co/448NHjM/yoomoney-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
 </a>
 
 <a href="https://donatty.com/sergosokin">
-  <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
 </a>
 
 <a href="https://new.donatepay.ru/@osokin">
-  <img width="147" height="40" src="https://i.ibb.co/x1Yrn3K/donatepay-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
 </a>
 
 ## 🗣 Testimonials

@@ -47,7 +47,7 @@ function main() {
 
   // Default variables for dialog box
   var doc = app.activeDocument,
-      fileName = getDocName(doc),
+      fileName = doc.replace(/\.[^\.]+$/, ''),
       fileExt = '.ai',
       separator = '-',
       outFolder = (doc.path != '') ? doc.path : Folder.desktop,
@@ -166,15 +166,6 @@ function main() {
 
   dialog.center();
   dialog.show();
-}
-
-// Get document name without extension
-function getDocName(doc) {
-  var name = decodeURI(doc.name);
-  // Remove filename extension
-  var lastDot = name.lastIndexOf('.');
-  if (lastDot > -1) return name.slice(0, lastDot);
-  return name;
 }
 
 // Check empty string

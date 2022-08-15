@@ -1,11 +1,12 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Item | Adobe Illustrator Scripts
 
-[![Yotube](https://img.shields.io/badge/-YouTube%20Channel-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Yotube](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
+* BatchTrace `(new, 15.08.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
@@ -19,6 +20,17 @@
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
+
+## BatchTrace
+Batch tracing of selected placed and embedded images in a document or all images from a user-selected folder. The native menu `Object → Image Trace → Make` is available for one selected image. Recording the action will not help, because the trace preset are not saved in it. In Adobe Bridge, only the image folder can be traced: `Tools → Illustrator → Image Trace`. The speed of the script depends on the specifications of your PC, the tracing preset and the amount of images.
+
+Tweaks in the script code:
+
+* `CFG.extList` — a list of extensions to be processed from the folder. You can add your own or remove some to skip the script;
+* `CFG.isInclSubdir` — search for images in all subfolders (true) or only the root folder (false);
+* `CFG.isReverse` — reverse the order of the presets list (true), the user presets will be at the top.
+
+![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
 
 ## FitSelectionToArtboards
 
@@ -93,23 +105,28 @@ The script rounds the coordinates of each selected object. The reference point g
 </a> 
 
 ## 💸 Donate
-You can support my work on new scripts via [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
+You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
 
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 [PayPal]: https://paypal.me/osokin/5usd
 
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
+</a>
+
 <a href="https://yoomoney.ru/to/410011149615582">
-  <img width="147" height="40" src="https://i.ibb.co/448NHjM/yoomoney-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
 </a>
 
 <a href="https://donatty.com/sergosokin">
-  <img width="147" height="40" src="https://i.ibb.co/p2Qj9Fr/donatty-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
 </a>
 
 <a href="https://new.donatepay.ru/@osokin">
-  <img width="147" height="40" src="https://i.ibb.co/x1Yrn3K/donatepay-badge.png" >
+  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
 </a>
 
 ## 🤝 Contribute

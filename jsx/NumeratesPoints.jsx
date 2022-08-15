@@ -286,19 +286,22 @@ function main() {
     }
   }
 
-  function shiftInputNumValue(item) {
+  function shiftInputNumValue(item, min, max) {
     item.addEventListener('keydown', function (kd) {
-      var step;
-      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
-      if (kd.keyName == 'Down') {
-        this.text = Number(this.text) - step;
-        kd.preventDefault();
-        previewStart();
-      }
-      if (kd.keyName == 'Up') {
-        this.text = Number(this.text) + step;
-        kd.preventDefault();
-        previewStart();
+      var step = kd.shiftKey ? step = 10 : step = 1;
+      switch (kd.keyName) {
+        case 'Up': 
+          this.text = String(1 * this.text + step);
+          if (max && 1 * this.text > max) this.text = max;
+          kd.preventDefault();
+          previewStart();
+          break;
+        case 'Down':
+          this.text = String(1 * this.text - step);
+          if (min && 1 * this.text < min) this.text = min;
+          kd.preventDefault();
+          previewStart();
+          break;
       }
     });
   }
