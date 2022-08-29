@@ -37,6 +37,7 @@ function main() {
         version: 'v.1.2'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         ratio: .75, // Zoom ratio in document window
         limit: 4000 // The amount of objects, when the script can run slowly
       };
@@ -65,7 +66,7 @@ function main() {
   var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
       zoomLock = option.add('radiobutton', undefined, 'Not including hidden'),
       zoomAll = option.add('radiobutton', undefined, 'All in document');
-      zoomVis.active = true;
+      if (CFG.isMac) zoomVis.active = true;
       zoomVis.value = true;
 
   // If the number of objects is large, the script can run slowly. 
@@ -88,7 +89,6 @@ function main() {
       cancel.helpTip = 'Press Esc to Close';
   var ok = btns.add('button', undefined, 'Ok', {name: 'ok'});
       ok.helpTip = 'Press Enter to Run';
-      ok.active = true;
 
   // Begin access key shortcut
   dialog.addEventListener('keydown', function(kd) {

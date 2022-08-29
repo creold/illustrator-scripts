@@ -48,7 +48,7 @@ function main() {
   // Buttons
   var allBtn = dialog.add('button', undefined, 'All');
   var currBtn = dialog.add('button', undefined, 'Current', { name: 'ok' });
-  currBtn.active = true;
+  if (/mac/i.test($.os)) currBtn.active = true;
 
   allBtn.onClick = function () {
     for (var i = 0, len = doc.artboards.length; i < len; i++) {

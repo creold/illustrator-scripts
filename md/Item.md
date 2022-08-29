@@ -16,6 +16,7 @@
 * ResizeOnLargerSide `(upd, 01.08.2022)`
 * ResizeToSize `(upd, 01.08.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
+* SortLayerItems `(new, 29.08.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
@@ -103,6 +104,11 @@ The script rounds the coordinates of each selected object. The reference point g
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
 </a> 
+
+## SortLayerItems
+Sorts objects alphabetically inside layers. The sublayers are sorted with the objects and when you select `Include all sublayers` their contents too. The layer count is automatically updated. Objects without a name (in pointy brackets `<Group>`, `<Ellipse>`, etc.) are placed top / bottom.
+
+![SortLayerItems](https://i.ibb.co/R9wQS7t/Sort-Layer-Items.gif)
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

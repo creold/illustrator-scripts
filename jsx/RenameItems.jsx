@@ -17,6 +17,7 @@
   1.5 Added placeholders. New UI
   1.6 Added renaming of the active artboard.
       Saving the name input field when switching options
+  1.6.1 Fixed UI for Illustrator 26.4.1 on PC
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -43,7 +44,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6'
+        version: 'v.1.6.1'
       },
       PH = {
         name: '{n}', // Put current name
@@ -95,7 +96,7 @@ function main() {
       nameTitle.text += isMultiSel ? selection.length + ' items to' : 'to';
 
   var nameInp = grpName.add('edittext', undefined, '');
-      nameInp.active = true;
+      if (/mac/i.test($.os)) nameInp.active = true;
 
   // Option for Symbol
   if (selection.length === 1 && isSymbol(selection[0])) {
@@ -324,11 +325,14 @@ function main() {
 
   // Draw button
   function drawBtn() {
+    var isBrokenUpd = /26\.4/.test(app.version) && /win/i.test($.os),
+        ratio = isBrokenUpd ? 1.5 : 2,
+        y = isBrokenUpd ? -5 : 3;
     with(this) {
       graphics.drawOSControl();
       graphics.rectPath(0, 0, size[0], size[1]);
       graphics.strokePath(contour);
-      if (text) graphics.drawString(text, textPen, (size[0] - graphics.measureString(text, graphics.font, size[0])[0]) / 2, 3, graphics.font);
+      if (text) graphics.drawString(text, textPen, (size[0] - graphics.measureString(text, graphics.font, size[0])[0]) / ratio, y, graphics.font);
     }
   }
 

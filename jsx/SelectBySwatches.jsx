@@ -41,6 +41,7 @@ function main() {
         version: 'v.0.2.1'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         keyword: '%selswatch%',
         actionSet: 'SelBySwatch',
         actionName: 'SelectByNote',
@@ -80,7 +81,7 @@ function main() {
       dialog.opacity = CFG.dlgOpacity;
 
   var fillBtn = dialog.add('button', undefined, LANG.fill);
-      fillBtn.active = true;
+      if (CFG.isMac) fillBtn.active = true;
       fillBtn.helpTip = LANG.hotkeyFill;
   var strokeBtn = dialog.add('button', undefined, LANG.stroke);
       strokeBtn.helpTip = LANG.hotkeyStroke;

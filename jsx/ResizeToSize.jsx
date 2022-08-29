@@ -50,6 +50,7 @@ function main () {
         maxSize: 16383, // Illustrator canvas, px
         units: getUnits(),
         isAiCC: parseInt(version) > 16,
+        isMac: /mac/i.test($.os),
         isInclStroke: preferences.getBooleanPreference('includeStrokeInBounds'),
         isScaleCorner: preferences.getIntegerPreference('policyForPreservingCorners'),
         isScaleStroke: preferences.getBooleanPreference('scaleLineWeight'),
@@ -92,7 +93,7 @@ function main () {
       sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
 
   var sizeInp = sizeGrp.add('edittext', [0, 0, 70, 25], CFG.size);
-      sizeInp.active = true;
+      if (CFG.isMac) sizeInp.active = true;
 
   var relGrp = sizeGrp.add('group');
 

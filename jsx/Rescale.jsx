@@ -47,6 +47,7 @@ function main () {
       },
       CFG = {
         aiVers: parseInt(app.version),
+        isMac: /mac/i.test($.os),
         units: getUnits(), // Active document units
         size: 1,
         scaleCorner: app.preferences.getIntegerPreference('policyForPreservingCorners'),
@@ -75,7 +76,7 @@ function main () {
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
       oSizeTxt.characters = 6;
-      oSizeTxt.active = true;
+      if (CFG.isMac) oSizeTxt.active = true;
 
   var newSizePnl = dialog.add('group {alignment: "center"}');
       newSizePnl.orientation = 'row';
@@ -119,7 +120,7 @@ function main () {
   if (keyPath.typename === 'PathItem' && !keyPath.closed && keyPath.pathPoints.length == 2) {
     var keyPathLength = keyPath.length; // If you use a straight line to measure
     oSizeTxt.text = (convertUnits(keyPathLength, 'px', CFG.units)).toFixed(4);
-    nSizeTxt.active = true;
+    if (CFG.isMac) nSizeTxt.active = true;
   } else {
     chkRmv.enabled = false;
     chkRmv.value = false;

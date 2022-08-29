@@ -154,7 +154,7 @@ function invokeUI(title, cfg, cfgFile) {
       btns.orientation = 'column';
       btns.alignChildren = ['fill', 'center'];
 
-  var cancel = btns.add('button', undefined, 'Сancel', { name: 'cancel' });
+  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = btns.add('button', undefined, 'Ok',  { name: 'ok' });
 
   var copyright = dialog.add('statictext', undefined, 'Visit Github');

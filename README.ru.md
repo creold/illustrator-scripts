@@ -14,7 +14,7 @@
 По ссылкам описание и демонстрация скриптов в каждой категории.
 
 ### [Artboard](md/Artboard.ru.md)  
-Скрипты для создания и управления артбордами.
+Скрипты для создания и управления артбордами
 
 * ArtboardsFinder `(upd, 01.08.2022)`
 * BatchRenamer `(upd, 03.08.2022)`
@@ -26,7 +26,7 @@
 * RenameArtboardAsTopObj
 
 ### [Color](md/Color.ru.md)  
-Скрипты для работы с цветом объектов.
+Скрипты для работы с цветом объектов
 
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
@@ -39,19 +39,19 @@
 * StrokeColorFromFill `(upd, 12.01.2022)`
 
 ### [Draw](md/Draw.ru.md) 
-Скрипты, которые что-либо рисуют.
+Скрипты, которые что-либо рисуют
 
 * NumeratesPoints `(upd, 01.08.2022)`
 * RandomScribble `(upd, 01.08.2022)`
 
 ### [Export](md/Export.ru.md)  
-Скрипты для экспорта документов.
+Скрипты для экспорта документов
 
 * Export selection as AI `(upd, 01.08.2022)`
 * ExportToDXF `(upd, 01.08.2022)`
 
 ### [Group | Mask](md/Group.ru.md)  
-Скрипты для создания и управления группами, обтравочными масками.
+Скрипты для создания и управления группами, обтравочными масками
 
 * CenterClipsToArtboards
 * ExtUngroup
@@ -59,7 +59,7 @@
 * TrimMasks
 
 ### [Item](md/Item.ru.md)  
-Скрипты, управляющие выбранными объектами.
+Скрипты, управляющие выбранными объектами
  
 * BatchTrace `(new, 15.08.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
@@ -71,16 +71,17 @@
 * ResizeOnLargerSide `(upd, 01.08.2022)`
 * ResizeToSize `(upd, 01.08.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
+* SortLayerItems `(new, 29.08.2022)`
 
 ### [Path](md/Path.ru.md)  
-Скрипты, изменяющие пути.
+Скрипты, изменяющие пути
 
 * Points Move Random `(upd, 01.08.2022)`
 * SplitPath `(upd, 12.06.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.ru.md)  
-Скрипты для выбора объектов в документе.
+Скрипты для выбора объектов в документе
 
 * NamedItemsFinder `(upd, 01.08.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
@@ -91,7 +92,7 @@
 * SelectRotatedItems `(new, 22.06.2022)`
 
 ### [Style](md/Style.ru.md)  
-Скрипты, стилизующие объекты.
+Скрипты, стилизующие объекты
 
 * ChangeOpacity `(upd, 01.08.2022)`
 * GrayscaleToOpacity
@@ -101,7 +102,7 @@
 * StrokesWeightDown `(upd, 01.08.2022)`
 
 ### [Utility](md/Utility.ru.md)  
-Вспомогательные скрипты.
+Вспомогательные скрипты
 
 * FileVersionInformer
 * ObjectsCounter
@@ -168,6 +169,8 @@
 </a>
 
 ## 🗣 Отзывы
+* *I am very thankful for such a nice and useful scripts.
+It makes my life easy and more productive* - Rizwan Abuzar
 * *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts.* - Nitcho
 * *Sergey, these scripts of yours are great* — Terry Foxx   
 * *Wow. I just installed and successfully tested. Outstanding work!!!* — Zak Lay

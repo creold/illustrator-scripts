@@ -41,6 +41,7 @@ function main() {
         version: 'v.0.1.1'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         points: 4, // Default amount of the path points
         stroke: 1, // Default stroke width
         isClosed: true, // Default closed state of the path
@@ -94,7 +95,7 @@ function main() {
 
   var pointsTitle = dialog.add('statictext', undefined, LANG.amount);
   var pointsLbl = dialog.add('edittext', undefined, CFG.points);
-      pointsLbl.active = true;
+      if (CFG.isMac) pointsLbl.active = true;
   
   var tensionTitle = dialog.add('statictext', undefined, LANG.tension);
   var tensionGrp = dialog.add('group');

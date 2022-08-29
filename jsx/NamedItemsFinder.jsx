@@ -41,6 +41,7 @@ function main() {
         version: 'v.0.2.1'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         zoomRatio: 0.1, // Zoom ratio in document window
         width: 300, // Units: px
         rows: 7, // Amount of rows in listbox
@@ -105,7 +106,7 @@ function main() {
       dialog.opacity = CFG.uiOpacity;
 
   var nameInp = dialog.add('edittext', undefined, LANG.input);
-      nameInp.active = true;
+      if (CFG.isMac) nameInp.active = true;
 
   var listbox = dialog.add('listbox', [0, 0, CFG.width, 20 + 21 * CFG.rows], undefined,
       {

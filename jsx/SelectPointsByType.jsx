@@ -44,6 +44,7 @@ function main() {
       },
       CFG = {
         aiVers: parseInt(app.version),
+        isMac: /mac/i.test($.os),
         minAngle: 0, // Degrees range for the Tolerance
         maxAngle: 180, // Degrees range for the Tolerance
         cosTolerance: -0.999999, // Correction of coordinate inaccuracy
@@ -142,7 +143,7 @@ function main() {
   var tolValue = tolerance.add('edittext', undefined, '180');
       tolValue.characters = 4;
       tolValue.helpTip = 'Tolerance angle in degrees\nbetween handles\nfor Corner & Broken points';
-      tolValue.active = true;
+      if (CFG.isMac) tolValue.active = true;
 
   var isShowBox = dialog.add('checkbox', undefined, 'Hide Bounding Box');
       isShowBox.value = !app.preferences.getBooleanPreference('showBoundingBox');

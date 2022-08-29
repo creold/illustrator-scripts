@@ -42,6 +42,7 @@ function main() {
         version: 'v.0.4'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         move: 1,
         chance: 50,
         step: 1.0,
@@ -105,13 +106,12 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var hFromVal = hRangeGroup.add('edittext', undefined, -1 * CFG.move);
       hFromVal.characters = 5;
-      hFromVal.active = true;
 
   hRangeGroup.add('statictext', undefined, 'to');
 
   var hToVal = hRangeGroup.add('edittext', undefined, CFG.move);
       hToVal.characters = 5;
-      hToVal.active = true;
+      if (CFG.isMac) hToVal.active = true;
 
   var isHFixed = hRangeGroup.add('checkbox', undefined, 'Fixed H\u0332'); // Unicode underlined H
       isHFixed.helpTip = 'Press ' + CFG.modKey + '+H to enable';

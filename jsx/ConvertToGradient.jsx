@@ -44,6 +44,7 @@ function main() {
         version: 'v.0.1.2'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         uiOpacity: .97 // UI window opacity. Range 0-1
       };
 
@@ -74,7 +75,7 @@ function main() {
   var shiftPanel = dialog.add('panel', undefined, 'Gradient Shift');
       shiftPanel.alignChildren = ['fill', 'fill'];
   var gShift = shiftPanel.add('edittext', undefined, '10');
-      gShift.active = true;
+      if (CFG.isMac) gShift.active = true;
   var anglePanel = dialog.add('panel', undefined, 'Gradient Angle');
       anglePanel.alignChildren = ['fill', 'fill'];
   var gAngle = anglePanel.add('edittext', undefined, '0');

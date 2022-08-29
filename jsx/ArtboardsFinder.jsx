@@ -39,6 +39,7 @@ function main() {
         version: 'v.0.1.1'
       },
       CFG = {
+        isMac: /mac/i.test($.os),
         defZoom: 0.75, // Zoom ratio in document window
         minZoom: 0.1, // Minimal zoom ratio
         width: 280, // Units: px
@@ -96,7 +97,7 @@ function main() {
   var squareRb = addRadio(filterPnl, 1, 2, LANG.square);
 
   var userInp = dialog.add('edittext', undefined, LANG.input);
-      userInp.active = true;
+      if (CFG.isMac) userInp.active = true;
       userInp.preferredSize.width = CFG.width;
 
   // Search results

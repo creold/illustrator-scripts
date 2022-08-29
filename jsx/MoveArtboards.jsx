@@ -43,6 +43,7 @@ function main() {
       },
       CFG = {
         aiVers: parseInt(app.version),
+        isMac: /mac/i.test($.os),
         units: getUnits(), // Active document units
         tmpLyr: 'ARTBOARD_INDEX',
         idxColor: [255, 0, 0], // Artboard index color
@@ -110,6 +111,7 @@ function main() {
       abPanel.alignChildren = ['fill','center'];
       abPanel.margins = CFG.uiMargins;
   var abInput = abPanel.add('edittext', undefined, CFG.abs);
+      if (CFG.isMac) abInput.active = true;
   var abDescr = abPanel.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
       abDescr.justify = 'left';
 

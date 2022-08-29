@@ -43,6 +43,7 @@ function main() {
       },
       CFG = {
         aiVers: parseInt(app.version),
+        isMac: /mac/i.test($.os),
       },
       LANG = { 
         errDoc: { en: 'Error\nOpen a document and try again',
@@ -95,7 +96,7 @@ function main() {
       method.orientation = 'row';
       method.margins = [0, 10, 0, 10];
   var minusRadio = method.add('radiobutton', undefined, LANG.minus);
-      minusRadio.active = true;
+      if (CFG.isMac) minusRadio.active = true;
       minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
 

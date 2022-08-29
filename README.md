@@ -65,6 +65,7 @@ Click the links to learn more about the scripts in the selected category.
 * ResizeOnLargerSide `(upd, 01.08.2022)`
 * ResizeToSize `(upd, 01.08.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
+* SortLayerItems `(new, 29.08.2022)`
 
 ### [Path](md/Path.md)  
 
@@ -157,7 +158,9 @@ You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [Don
 </a>
 
 ## 🗣 Testimonials
-* *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts.* - Nitcho
+* *I am very thankful for such a nice and useful scripts.
+It makes my life easy and more productive* - Rizwan Abuzar
+* *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts* - Nitcho
 * *Sergey, these scripts of yours are great* — Terry Foxx   
 * *Wow. I just installed and successfully tested. Outstanding work!!!* — Zak Lay
 * *Tried your script to export selected objects to separate Ai, works smartly* — Dmitry

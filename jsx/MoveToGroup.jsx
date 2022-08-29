@@ -86,9 +86,7 @@ function main() {
 
         var rbTop = pnlTarget.add('radiobutton', undefined, LANG.top);
         var rbBottom = pnlTarget.add('radiobutton', undefined, LANG.bottom);
-            if ($.os.toLowerCase().indexOf('mac') >= 0) { // For Mac OS user
-              rbBottom.active = true;
-            }
+            if (/mac/i.test($.os)) rbBottom.active = true;
             rbBottom.value = true;
 
         var btns = dialog.add('group');
