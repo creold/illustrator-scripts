@@ -56,6 +56,7 @@ Click the links to learn more about the scripts in the selected category.
 ### [Item](md/Item.md)  
 
 * BatchTrace `(new, 15.08.2022)`
+* DuplicateToArtboards `(new, 02.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`

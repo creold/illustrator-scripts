@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * BatchTrace `(new, 15.08.2022)`
+* DuplicateToArtboards `(new, 02.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
@@ -32,6 +33,15 @@ Tweaks in the script code:
 * `CFG.isReverse` — reverse the order of the presets list (true), the user presets will be at the top.
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
+
+## DuplicateToArtboards
+Duplicates the objects selected on the active artboard to the same position on specific artboards. Artboard numbers are entered with a comma or hyphen. Empty input - objects are duplicated to all artboards except the original artboard. Enable `Preserve layers` if the selected objects are in different layers and should stay there.
+
+The color of temporary artboard indexes changes in the code `CFG.color: [255, 0, 0]`.
+
+[Feature Request on Illustrator Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/32146360--paste-on-selected-artboards)
+
+![DuplicateToArtboards](https://i.ibb.co/mJqLzHr/Duplicate-To-Artboards.gif)
 
 ## FitSelectionToArtboards
 

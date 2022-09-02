@@ -7,6 +7,7 @@
 
 ## 📜 Scripts
 * BatchTrace `(new, 15.08.2022)`
+* DuplicateToArtboards `(new, 02.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
@@ -32,6 +33,15 @@
 * `CFG.isReverse` — развернуть список пресетов (true), пользовательские будут наверху.
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
+
+## DuplicateToArtboards
+Дублирует выбранные на активном артборде объекты на ту же позицию в указанные артборды. Номера артбордов перечисляются через запятую или дефис. Пустая строка — объекты продублируются на все артборды, кроме исходного. Выберите `Preserve layers`, если объекты в разных слоях и должны там остаться.
+
+Цвет временных индексов артбордов меняется в коде `CFG.color: [255, 0, 0]`.
+
+[Голосование за функцию на Illustrator Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/32146360--paste-on-selected-artboards)
+
+![DuplicateToArtboards](https://i.ibb.co/mJqLzHr/Duplicate-To-Artboards.gif)
 
 ## FitSelectionToArtboards
 
