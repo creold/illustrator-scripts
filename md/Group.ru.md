@@ -8,7 +8,7 @@
 ## 📜 Scripts
 * CenterClipsToArtboards
 * ExtUngroup
-* MoveToGroup
+* MoveToGroup `(upd, 14.09.2022)`
 * TrimMasks
 
 <a href="https://bit.ly/2M0j95N">

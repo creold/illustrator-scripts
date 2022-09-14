@@ -6,7 +6,7 @@
 [На главную](../README.ru.md)
 
 ## 📜 Scripts
-* Zoom And Center 
+* Zoom And Center `(upd, 14.09.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">

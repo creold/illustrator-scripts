@@ -1,7 +1,7 @@
 ﻿/*
   ArtboardsFinder.jsx for Adobe Illustrator
   Description: Search and navigate to artboards by name or size
-  Date: March, 2022
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Minor improvements
+  0.1.2 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,10 +37,12 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Artboards Finder',
-        version: 'v.0.1.1'
+        version: 'v.0.1.2'
       },
       CFG = {
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         defZoom: 0.75, // Zoom ratio in document window
         minZoom: 0.1, // Minimal zoom ratio
         width: 280, // Units: px
@@ -78,6 +81,8 @@ function main() {
   }
 
   var resAbs = []; // Array of found artboards
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // Dialog
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -97,8 +102,12 @@ function main() {
   var squareRb = addRadio(filterPnl, 1, 2, LANG.square);
 
   var userInp = dialog.add('edittext', undefined, LANG.input);
-      if (CFG.isMac) userInp.active = true;
       userInp.preferredSize.width = CFG.width;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 8);
+  } else {
+    userInp.active = true;
+  }
 
   // Search results
   var listbox = dialog.add('listbox', [0, 0, CFG.width, 20 + 21 * CFG.rows], undefined,
@@ -285,6 +294,34 @@ function addRadio(place, x, y, label) {
   rb.bounds = [x, y, x + 120, y + 20];
 
   return rb;
+}
+
+/**
+ * Simulate keyboard keys on Windows OS via VBScript
+ * 
+ * This function is in response to a known ScriptUI bug on Windows.
+ * Basically, on some Windows Ai versions, when a ScriptUI dialog is
+ * presented and the active attribute is set to true on a field, Windows
+ * will flash the Windows Explorer app quickly and then bring Ai back
+ * in focus with the dialog front and center.
+ *
+ * @param {String} k - Key to simulate
+ * @param {Number} n - Number of times to simulate the keypress
+ */
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 /**

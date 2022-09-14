@@ -2,7 +2,7 @@
   SplitPath.jsx for Adobe Illustrator
   Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
   Requirements: Adobe Illustrator CS6 and above
-  Date: June, 2022
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,6 +12,7 @@
   1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel
   1.1 Minor improvements
   1.1.1 Fixed "Illustrator quit unexpectedly" error
+  1.1.2 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -39,10 +40,10 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'SplitPath',
-        version: 'v.1.1.1'
+        version: 'v.1.1.2'
       },
       CFG = {
-        aiVers: parseInt(app.version),
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
       },
       LANG = { 
@@ -86,6 +87,9 @@ function main() {
       };
   checkFill(selection, info);
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // Create Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -96,9 +100,13 @@ function main() {
       method.orientation = 'row';
       method.margins = [0, 10, 0, 10];
   var minusRadio = method.add('radiobutton', undefined, LANG.minus);
-      if (CFG.isMac) minusRadio.active = true;
       minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    minusRadio.active = true;
+  }
 
   // Buttons
   var btns = dialog.add('group');
@@ -155,6 +163,29 @@ function main() {
 
   dialog.center();
   dialog.show();
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Minus Front method

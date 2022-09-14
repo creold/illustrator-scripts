@@ -1,7 +1,7 @@
 /*
   ResizeToSize.jsx for Adobe Illustrator
   Description: Resize each selected object to the entered size
-  Date: June, 2022
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -16,6 +16,7 @@
   0.7 Fixed live preview bug. Minor improvements
   0.7.1 Code refactoring
   0.8 Added relative resize option. Minor improvements
+  0.8.1 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -42,15 +43,16 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main () {
   var SCRIPT = {
         name: 'Resize To Size',
-        version: 'v.0.8'
+        version: 'v.0.8.1'
       },
       CFG = {
         size: 100, // Default size value
         modKey: 'Q', // User modifier key for shortcuts
         maxSize: 16383, // Illustrator canvas, px
         units: getUnits(),
-        isAiCC: parseInt(version) > 16,
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isInclStroke: preferences.getBooleanPreference('includeStrokeInBounds'),
         isScaleCorner: preferences.getIntegerPreference('policyForPreservingCorners'),
         isScaleStroke: preferences.getBooleanPreference('scaleLineWeight'),
@@ -83,6 +85,9 @@ function main () {
       tmpPath,
       isUndo = false;
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -93,7 +98,11 @@ function main () {
       sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
 
   var sizeInp = sizeGrp.add('edittext', [0, 0, 70, 25], CFG.size);
-      if (CFG.isMac) sizeInp.active = true;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    sizeInp.active = true;
+  }
 
   var relGrp = sizeGrp.add('group');
 
@@ -161,7 +170,7 @@ function main () {
       isUniform.helpTip = 'Scale proportionally';
       isUniform.value = true;
 
-  if (CFG.isAiCC) { // Illustrator CS6 not support Live Shape
+  if (CFG.aiVers > 16) { // Illustrator CS6 not support Live Shape
     var isCorner = prefsColOne.add('checkbox', undefined, 'C\u0332orners'); // Unicode C̲
         isCorner.helpTip = 'Only works with Live Shape';
         isCorner.value = (CFG.isScaleCorner == 1) ? true : false;
@@ -346,7 +355,7 @@ function main () {
       }
     });
 
-    if (CFG.isAiCC) {
+    if (CFG.aiVers > 16) {
       preferences.setIntegerPreference('policyForPreservingCorners', isCorner.value ? 1 : 2);
     }
 
@@ -496,6 +505,29 @@ function addRadio(place, x, y, info) {
   return rb;
 }
 
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
+}
+
 // Get items array
 function getItems(collection) {
   var out = [];
@@ -506,10 +538,8 @@ function getItems(collection) {
 }
 
 // Polyfill forEach() for Array
-if (!Array.prototype.forEach) {
-  Array.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.length; i++) callback(this[i], i, this);
-  }
+Array.prototype.forEach = function (callback) {
+  for (var i = 0; i < this.length; i++) callback(this[i], i, this);
 }
 
 // Convert string to number

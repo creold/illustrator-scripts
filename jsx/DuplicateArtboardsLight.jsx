@@ -1,8 +1,8 @@
 /*
-  Duplicate_Artboards_Light.jsx for Adobe Illustrator
+  DuplicateArtboardsLight.jsx for Adobe Illustrator
   Description: Script for copying the selected Artboard with his artwork
   Requirements: Adobe Illustrator CS6 and later
-  Date: October, 2020
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -14,17 +14,12 @@
   0.2.2 Performance optimization
   0.3 Fixed copying all objects into one layer
   0.4 Added more units (yards, meters, etc.) support if the document is saved
+  0.4.1 Fixed input activation in Windows OS. Removed RU localization due to Adobe API bug
 
-  Donate (optional):
-  If you find this script helpful, you can buy me a coffee
-  - via DonatePay https://new.donatepay.ru/en/@osokin
-  - via Donatty https://donatty.com/sergosokin
-  - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
-  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
+  Buy Pro version: https://sergosokin.gumroad.com/l/dupartboards
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -37,15 +32,16 @@
 //@target illustrator
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
-$.localize = true; // Enabling automatic localization
 
 function main() {
   var SCRIPT = {
         name: 'Duplicate Atboards Light',
-        version: 'v.0.4'
+        version: 'v.0.4.1'
       },
       CFG = {
-        aiVers: parseInt(app.version),
+        aiVers: parseFloat(app.version),
+        isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         units: getUnits(), // Active document units
         copies: 0, // Default amount of copies
         spacing: 20, // Default spacing between copies (doc units)
@@ -64,28 +60,15 @@ function main() {
       SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
-      },
-      LANG = {
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
-                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-        warning: { en: 'The document has over ' + CFG.limit + ' objects. The script can run slowly',
-                  ru: 'В документе свыше ' + CFG.limit + ' объектов. Скрипт может работать медленно' },
-        ab: { en: 'Select artboard', ru: 'Выберите артборд' },
-        copies: { en: 'Copies (max ', ru: 'Копии (до ' },
-        spacing: { en: 'Spacing', ru: 'Расстояние' },
-        cancel: { en: 'Cancel', ru: 'Отмена' },
-        ok: { en: 'Ok', ru: 'Готово' }
       };
 
   if (CFG.aiVers < 16) {
-    alert(LANG.errVers);
+    alert('Error\nSorry, script only works in Illustrator CS6 and later');
     return;
   }
 
   if (!documents.length) {
-    alert(LANG.errDoc);
+    alert('Error\nOpen a document and try again');
     return;
   }
 
@@ -100,6 +83,9 @@ function main() {
     absArr.push((i + 1) + ': ' + doc.artboards[i].name);
   }
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -110,7 +96,7 @@ function main() {
   var abGroup = dialog.add('group');
       abGroup.orientation = 'column';
       abGroup.alignChildren = ['fill', 'top'];
-      abGroup.add('statictext', undefined, LANG.ab);
+      abGroup.add('statictext', undefined, 'Select artboard');
   var abIdx = abGroup.add('dropdownlist', CFG.uiTitle, absArr);
       abIdx.selection = currAbIdx;
 
@@ -120,24 +106,30 @@ function main() {
 
   var titlesGroup = fieldGroup.add('group');
       titlesGroup.orientation = 'column';
-  var copiesTitle = titlesGroup.add('statictext', CFG.uiTitle, LANG.copies);
-      titlesGroup.add('statictext', CFG.uiTitle, LANG.spacing + ', ' + CFG.units);
+  var copiesTitle = titlesGroup.add('statictext', CFG.uiTitle, 'Copies (max ');
+      titlesGroup.add('statictext', CFG.uiTitle, 'Spacing, ' + CFG.units);
 
   var inputsGroup = fieldGroup.add('group');
       inputsGroup.orientation = 'column';
   var copiesVal = inputsGroup.add('edittext', CFG.uiField, CFG.copies);
   var spacingVal = inputsGroup.add('edittext', CFG.uiField, CFG.spacing);
 
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 2);
+  } else {
+    copiesVal.active = true;
+  }
+
   if (doc.pageItems.length > CFG.limit) {
-    var warning = dialog.add('statictext', undefined, LANG.warning, { multiline: true });
+    var warning = dialog.add('statictext', undefined, 'The document has over ' + CFG.limit + ' objects. The script can run slowly', { multiline: true });
   }
 
   // Buttons
   var btnsGroup = dialog.add('group');
       btnsGroup.orientation = 'row';
       btnsGroup.alignChildren = ['fill', 'center'];
-  var cancel = btnsGroup.add('button', undefined, LANG.cancel, { name: 'cancel' });
-  var ok = btnsGroup.add('button', undefined, LANG.ok,  { name: 'ok' });
+  var cancel = btnsGroup.add('button', undefined, 'Cancel', { name: 'cancel' });
+  var ok = btnsGroup.add('button', undefined, 'Ok', { name: 'ok' });
 
   var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
@@ -150,7 +142,7 @@ function main() {
   var abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
   var overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
 
-  copiesTitle.text = LANG.copies + overCnvsSize.copies + ')';
+  copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
   if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
     copiesVal.text = overCnvsSize.copies;
   }
@@ -241,7 +233,7 @@ function main() {
     currAbIdx = doc.artboards.getActiveArtboardIndex();
     abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
     overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
-    copiesTitle.text = LANG.copies + overCnvsSize.copies + ')';
+    copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
     if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
       copiesVal.text = overCnvsSize.copies;
     }
@@ -308,6 +300,34 @@ function main() {
       } catch (e) {}
     }
   }
+}
+
+/**
+ * Simulate keyboard keys on Windows OS via VBScript
+ * 
+ * This function is in response to a known ScriptUI bug on Windows.
+ * Basically, on some Windows Ai versions, when a ScriptUI dialog is
+ * presented and the active attribute is set to true on a field, Windows
+ * will flash the Windows Explorer app quickly and then bring Ai back
+ * in focus with the dialog front and center.
+ *
+ * @param {String} k - Key to simulate
+ * @param {Number} n - Number of times to simulate the keypress
+ */
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 /**

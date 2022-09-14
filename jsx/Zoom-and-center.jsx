@@ -16,6 +16,7 @@
   1.0 Initial version
   1.1 Fixed zoom in text editing mode
   1.2 Fixed "Illustrator quit unexpectedly" error
+  1.2.1 Fixed radiobutton activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -34,10 +35,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Zoom \u0026 Center',
-        version: 'v.1.2'
+        version: 'v.1.2.1'
       },
       CFG = {
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         ratio: .75, // Zoom ratio in document window
         limit: 4000 // The amount of objects, when the script can run slowly
       };
@@ -53,6 +56,9 @@ function main() {
 
   if (!doc.pageItems.length) return;
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // Create Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -66,8 +72,13 @@ function main() {
   var zoomVis = option.add('radiobutton', undefined, 'Visible unlocked'),
       zoomLock = option.add('radiobutton', undefined, 'Not including hidden'),
       zoomAll = option.add('radiobutton', undefined, 'All in document');
-      if (CFG.isMac) zoomVis.active = true;
       zoomVis.value = true;
+
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    zoomVis.active = true;
+  }
 
   // If the number of objects is large, the script can run slowly. 
   // The number depends on the performance of the computer 
@@ -153,6 +164,29 @@ function main() {
     dialog.center();
     dialog.show();
   }
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 function getActiveTextFrames() {

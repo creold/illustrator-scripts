@@ -8,6 +8,7 @@
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -35,10 +36,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Duplicate To Artboards',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isPreserve: app.preferences.getBooleanPreference('layers/pastePreserve'), // Default Paste Remembers Layers
         color: [255, 0, 0], // RGB artboard index color
         tmpLyr: 'ARTBOARD_INDEX',
@@ -51,6 +54,9 @@ function main() {
 
   if (!isCorrectEnv('version:16', 'selection')) return;
   polyfills();
+
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // Dialog
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -68,7 +74,11 @@ function main() {
       absPnl.margins = [10, 15, 10, 10];
 
   var absInp = absPnl.add('edittext', undefined, 1);
-      if (CFG.isMac) absInp.active = true;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    absInp.active = true;
+  }
 
   var absDescr = absPnl.add('statictext', undefined, '(e.g. "1, 3-5" to export 1, 3, 4, 5)\nor enter nothing to use all', { multiline: true });
       absDescr.justify = 'left';
@@ -260,6 +270,29 @@ function polyfills() {
     }
     return arr;
   };
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Output artboard indexes as text

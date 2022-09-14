@@ -6,8 +6,8 @@
 [Back to homepage](../README.md)
 
 ## 📜 Scripts
-* Points Move Random `(upd, 01.08.2022)`
-* SplitPath `(upd, 12.06.2022)`
+* Points Move Random `(upd, 14.09.2022)`
+* SplitPath `(upd, 14.09.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 <a href="https://bit.ly/2M0j95N">

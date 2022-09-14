@@ -56,7 +56,7 @@ function main() {
         version:  'v.1.2.1'
       },
       CFG = {
-        os:         $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
+        isMac: /mac/i.test($.os),
         defTab:     0, // Default tab. 0 - Artboard, 1 - Layer, 2 - Path
         rows:       5, // Amount of visible rows
         listHeight: 5 * 32,
@@ -280,7 +280,7 @@ function main() {
           n.characters = 16;
 
       var suffHeader = header.add('group');
-      if (cfg.os === 'MAC') suffHeader.margins = [22, 0, 0, 0];
+      if (cfg.isMac) suffHeader.margins = [22, 0, 0, 0];
       else suffHeader.margins = [-2, 0, 0, 0];
       var s = suffHeader.add('statictext', undefined, txt.suffix);
     
@@ -293,13 +293,13 @@ function main() {
       var chkAllPre = headerAllPre.add('checkbox');
       
       var headerPrvw = selector.add('group');
-      if (cfg.os === 'MAC') headerPrvw.margins = [106, 0, 0, 0];
+      if (cfg.isMac) headerPrvw.margins = [106, 0, 0, 0];
       else headerPrvw.margins = [102, 0, 0, 0];
       var prvwTitle = headerPrvw.add('statictext', undefined, '');
           prvwTitle.characters = 17;
     
       var headerAllSuff = selector.add('group');
-      if (cfg.os === 'MAC') headerAllSuff.margins = [20, 0, 0, -6];
+      if (cfg.isMac) headerAllSuff.margins = [20, 0, 0, -6];
       else headerAllSuff.margins = [-16, 0, 0, -6];
       var chkAllSuff = headerAllSuff.add('checkbox');
 

@@ -3,7 +3,7 @@
   Description: Automatic scaling of objects to the desired size.
                 If you draw a line on top with the length or height of the desired object,
                 'Old Size' will be filled automatically
-  Date: August, 2022
+  Date: September, 2022
   Author: Nick Grabowski, @Grabovvski
   Co-author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -17,6 +17,7 @@
   0.2.3 Minor improvements
   0.2.4 Minor improvements
   0.3 Added more units (yards, meters, etc.) support if the document is saved
+  0.3.1 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -43,11 +44,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main () {
   var SCRIPT = {
         name: 'Rescale',
-        version: 'v.0.3'
+        version: 'v.0.3.1'
       },
       CFG = {
         aiVers: parseInt(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         units: getUnits(), // Active document units
         size: 1,
         scaleCorner: app.preferences.getIntegerPreference('policyForPreservingCorners'),
@@ -65,6 +67,8 @@ function main () {
   }
 
   var doc = activeDocument;
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -76,7 +80,11 @@ function main () {
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
       oSizeTxt.characters = 6;
-      if (CFG.isMac) oSizeTxt.active = true;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    oSizeTxt.active = true;
+  }
 
   var newSizePnl = dialog.add('group {alignment: "center"}');
       newSizePnl.orientation = 'row';
@@ -210,6 +218,29 @@ function getUnits() {
 // Convert units of measurement
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Convert string to absolute number

@@ -7,15 +7,15 @@
 
 ## 📜 Scripts
 * BatchTrace `(new, 15.08.2022)`
-* DuplicateToArtboards `(new, 02.09.2022)`
+* DuplicateToArtboards `(upd, 14.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 26.07.2022)`
-* Rescale `(upd, 01.08.2022)`
+* RenameItems `(upd, 14.09.2022)`
+* Rescale `(upd, 14.09.2022)`
 * ResizeOnLargerSide `(upd, 01.08.2022)`
-* ResizeToSize `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 14.09.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
 * SortLayerItems `(new, 29.08.2022)`
 
@@ -111,10 +111,6 @@
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
-</a> 
-
 ## SortLayerItems
 Сортирует объекты по алфавиту внутри слоёв. Подслои сортируются с объектами и при выборе `Include all sublayers` их содержимое тоже. Счётчик слоёв обновляется динамически. Объекты без имени (в угловых скобках `<Group>`, `<Ellipse>` и т.д.) помещаются вверх / вниз.
 
@@ -124,6 +120,9 @@
   <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
 </a> 
 
+<a href="https://bit.ly/2M0j95N">
+  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
+</a> 
 
 ## 💸 Поддержка
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен

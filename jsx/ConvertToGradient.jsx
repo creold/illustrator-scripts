@@ -1,7 +1,7 @@
 /*
   ConvertToGradient.jsx for Adobe Illustrator
   Description: Convert a flat process color into a matching gradient
-  Date: August, 2018
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Based on script by Saurabh Sharma (https://tutsplus.com/authors/saurabh-sharma), 2010
   What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. 
@@ -13,6 +13,7 @@
   0.1 Initial version
   0.1.1 Performance optimization
   0.1.2 Bug fixes
+  0.1.3 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -41,10 +42,12 @@ var fillBad = 0;
 function main() {
   var SCRIPT = {
         name: 'ConvertToGradient',
-        version: 'v.0.1.2'
+        version: 'v.0.1.3'
       },
       CFG = {
+        aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         uiOpacity: .97 // UI window opacity. Range 0-1
       };
 
@@ -64,6 +67,9 @@ function main() {
       angleValue = 0,
       gShiftEnd = 0;
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.preferredSize.width = 174;
@@ -75,7 +81,11 @@ function main() {
   var shiftPanel = dialog.add('panel', undefined, 'Gradient Shift');
       shiftPanel.alignChildren = ['fill', 'fill'];
   var gShift = shiftPanel.add('edittext', undefined, '10');
-      if (CFG.isMac) gShift.active = true;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    gShift.active = true;
+  }
   var anglePanel = dialog.add('panel', undefined, 'Gradient Angle');
       anglePanel.alignChildren = ['fill', 'fill'];
   var gAngle = anglePanel.add('edittext', undefined, '0');
@@ -129,6 +139,29 @@ function main() {
 
   dialog.center();
   dialog.show();
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Search items in selection

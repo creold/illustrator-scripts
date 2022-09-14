@@ -7,15 +7,15 @@
 
 ## 📜 Scripts
 * BatchTrace `(new, 15.08.2022)`
-* DuplicateToArtboards `(new, 02.09.2022)`
+* DuplicateToArtboards `(upd, 14.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 26.07.2022)`
-* Rescale `(upd, 01.08.2022)`
+* RenameItems `(upd, 14.09.2022)`
+* Rescale `(upd, 14.09.2022)`
 * ResizeOnLargerSide `(upd, 01.08.2022)`
-* ResizeToSize `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 14.09.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
 * SortLayerItems `(new, 29.08.2022)`
 
@@ -111,14 +111,14 @@ The script rounds the coordinates of each selected object. The reference point g
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
-
 ## SortLayerItems
 Sorts objects alphabetically inside layers. The sublayers are sorted with the objects and when you select `Include all sublayers` their contents too. The layer count is automatically updated. Objects without a name (in pointy brackets `<Group>`, `<Ellipse>`, etc.) are placed top / bottom.
 
 ![SortLayerItems](https://i.ibb.co/R9wQS7t/Sort-Layer-Items.gif)
+
+<a href="https://bit.ly/2M0j95N">
+  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
+</a> 
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

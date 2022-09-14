@@ -1,7 +1,7 @@
 /*
   NumeratesPoints.jsx for Adobe Illustrator
   Description: Numerates selected points and marks them with colored circles
-  Date: August, 2022
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -10,6 +10,7 @@
   0.1 Initial version
   0.2 Disabled Preview only for Illustrator v.24.3, because Illustrator crashes
   0.3 Added more units (yards, meters, etc.) support if the document is saved
+  0.3.1 Removed RU localization due to Adobe API bug
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -31,13 +32,12 @@
 */
 
 //@target illustrator
-$.localize = true; // Enabling automatic localization
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
   var SCRIPT = {
         name: 'Numerates Points',
-        version: 'v.0.3'
+        version: 'v.0.3.1'
       },
       CFG = {
         aiVers: app.version.slice(0, 4),
@@ -59,18 +59,16 @@ function main() {
         folder: Folder.myDocuments + '/Adobe Scripts/'
       },
       LANG = {
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errSel:  { en: 'Error\nPlease select atleast one object',
-                  ru: 'Ошибка\nВыделите хотя бы 1 объект' },
-        number: { en: 'Start number', ru: 'Стартовый номер' },
-        radius: { en: 'Marker radius', ru: 'Радиус маркера' },
-        font: { en: 'Font size, pt', ru: 'Размер шрифта, pt' },
-        left: { en: 'Left margin', ru: 'Отступ слева' },
-        top: { en: 'Top margin', ru: 'Отступ сверху' },
-        cancel: { en: 'Cancel', ru: 'Отмена' },
-        ok: { en: 'Ok', ru: 'Готово' },
-        preview: { en: 'Preview', ru: 'Предпросмотр' }
+        errDoc: 'Error\nOpen a document and try again',
+        errSel: 'Error\nPlease select atleast one object',
+        number: 'Start number',
+        radius: 'Marker radius',
+        font: 'Font size, pt',
+        left: 'Left margin',
+        top: 'Top margin',
+        cancel: 'Cancel',
+        ok: 'Ok',
+        preview: 'Preview',
       };
 
   if (!documents.length) {

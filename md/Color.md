@@ -8,13 +8,13 @@
 ## 📜 Scripts
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
-* ConvertToGradient
+* ConvertToGradient `(upd, 14.09.2022)`
 * CycleColors `(upd, 01.08.2022)`
 * CycleGradient
 * DistributeGradientStops
 * RemoveGradientStops
 * ReverseGradientColor
-* StrokeColorFromFill `(upd, 12.01.2022)`
+* StrokeColorFromFill `(upd, 14.09.2022)`
 
 <a href="https://bit.ly/2M0j95N">
   <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">

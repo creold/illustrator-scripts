@@ -13,6 +13,7 @@
   0.3 Added color interpolation to get the Stroke color from the gradient
   0.3.1 Minor improvements
   0.3.2 Added conversion of spot tint to color
+  0.3.2 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -22,15 +23,8 @@
   - via QIWI https://qiwi.com/n/OSOKIN
   - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
-  NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
-  This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale
-
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
-
-  Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -40,11 +34,12 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Stroke Color From Fill',
-        version: 'v.0.3.1'
+        version: 'v.0.3.2'
       },
       CFG = {
-        aiVers: parseInt(app.version),
-        os: $.os.toLowerCase().indexOf('mac') >= 0 ? 'MAC': 'WINDOWS',
+        aiVers: parseFloat(app.version),
+        isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isRgb: (activeDocument.documentColorSpace === DocumentColorSpace.RGB) ? true : false,
         uiOpacity: .97, // UI window opacity. Range 0-1
         spotConvert: false,
@@ -100,6 +95,9 @@ function main() {
     cKeys = ['cyan', 'magenta', 'yellow', 'black'];
   }
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -111,6 +109,11 @@ function main() {
       shiftPanel.orientation = 'row';
       shiftPanel.alignChildren = ['left', 'center'];
   var colorShift = shiftPanel.add('edittext', [0, 0, 80, 30], CFG.shift);
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    colorShift.active = true;
+  }
 
   var info = shiftPanel.add('group');
       info.orientation = 'column';
@@ -121,7 +124,7 @@ function main() {
       isSpotConvert.value = CFG.spotConvert;
 
   // AI older 2020 on Mac OS has bug with add stroke
-  if (CFG.os == 'WINDOWS' || (CFG.os == 'MAC' && CFG.aiVers >= 24)) {
+  if (!CFG.isMac || (CFG.isMac && CFG.aiVers >= 24)) {
     var isAddStroke = dialog.add('checkbox', undefined, LANG.stroke);
         isAddStroke.value = CFG.addStroke;
   }
@@ -236,6 +239,29 @@ function main() {
 
   dialog.center();
   dialog.show();
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Checking whether there are stroked Paths in the selection

@@ -15,31 +15,31 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [Artboard](md/Artboard.md)  
 
-* ArtboardsFinder `(upd, 01.08.2022)`
-* BatchRenamer `(upd, 03.08.2022)`
-* DuplicateArtboards `(upd, 01.08.2022)`
+* ArtboardsFinder `(upd, 14.09.2022)`
+* BatchRenamer `(upd, 14.09.2022)`
+* DuplicateArtboards `(upd, 14.09.2022)`
 * FitArtboardsToArtwork `(upd, 01.08.2022)`
-* MoveArtboards `(upd, 03.08.2022)`
-* RenameArtboardAsLayer
+* MoveArtboards `(upd, 14.09.2022)`
+* RenameArtboardAsLayer `(upd, 14.09.2022)`
 * RenameArtboardAsSize `(upd, 01.08.2022)`
-* RenameArtboardAsTopObj
+* RenameArtboardAsTopObj `(upd, 14.09.2022)`
 
 ### [Color](md/Color.md)  
 
 * AverageColors `(new, 27.03.2022)`
 * ColorBlindSimulator `(new, 18.04.2022)`
-* ConvertToGradient
+* ConvertToGradient `(upd, 14.09.2022)`
 * CycleColors `(upd, 01.08.2022)`
 * CycleGradient
 * DistributeGradientStops
 * RemoveGradientStops
 * ReverseGradientColor
-* StrokeColorFromFill `(upd, 12.01.2022)`
+* StrokeColorFromFill `(upd, 14.09.2022)`
 
 ### [Draw](md/Draw.md) 
 
-* NumeratesPoints `(upd, 01.08.2022)`
-* RandomScribble `(upd, 01.08.2022)`
+* NumeratesPoints `(upd, 14.09.2022)`
+* RandomScribble `(upd, 14.09.2022)`
 
 ### [Export](md/Export.md)  
 
@@ -50,38 +50,38 @@ Click the links to learn more about the scripts in the selected category.
 
 * CenterClipsToArtboards
 * ExtUngroup
-* MoveToGroup
+* MoveToGroup `(upd, 14.09.2022)`
 * TrimMasks
 
 ### [Item](md/Item.md)  
 
 * BatchTrace `(new, 15.08.2022)`
-* DuplicateToArtboards `(new, 02.09.2022)`
+* DuplicateToArtboards `(upd, 14.09.2022)`
 * FitSelectionToArtboards `(upd, 01.08.2022)`
 * MakeEnvelopesWithTops
 * MirrorMove `(upd, 01.08.2022)`
 * RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 26.07.2022)`
-* Rescale `(upd, 01.08.2022)`
+* RenameItems `(upd, 14.09.2022)`
+* Rescale `(upd, 14.09.2022)`
 * ResizeOnLargerSide `(upd, 01.08.2022)`
-* ResizeToSize `(upd, 01.08.2022)`
+* ResizeToSize `(upd, 14.09.2022)`
 * RoundCoordinates `(upd, 01.08.2022)`
 * SortLayerItems `(new, 29.08.2022)`
 
 ### [Path](md/Path.md)  
 
-* Points Move Random `(upd, 01.08.2022)`
-* SplitPath `(upd, 12.06.2022)`
+* Points Move Random `(upd, 14.09.2022)`
+* SplitPath `(upd, 14.09.2022)`
 * SubtractTopPath `(new, 03.04.2022)`
 
 ### [Select](md/Select.md)  
 
-* NamedItemsFinder `(upd, 01.08.2022)`
+* NamedItemsFinder `(upd, 14.09.2022)`
 * SelectAllLayersAbove `(new, 21.02.2022)`
 * SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches `(upd, 12.06.2022)`
+* SelectBySwatches `(upd, 14.09.2022)`
 * SelectOnlyPoints
-* SelectPointsByType `(upd, 01.08.2022)`
+* SelectPointsByType `(upd, 14.09.2022)`
 * SelectRotatedItems `(new, 22.06.2022)`
 
 ### [Style](md/Style.md)  
@@ -102,7 +102,7 @@ Click the links to learn more about the scripts in the selected category.
 
 ### [View](md/View.md)  
 
-* Zoom And Center `(upd, 12.06.2022)`
+* Zoom And Center `(upd, 14.09.2022)`
 
 ## How to download one script 
 1. Open the `.jsx` file in the directory

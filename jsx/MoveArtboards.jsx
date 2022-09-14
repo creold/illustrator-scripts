@@ -2,7 +2,7 @@
   MoveArtboards.jsx for Adobe Illustrator
   Description: Script for moving artboards range with artwork along the X and Y axis
   Requirements: Adobe Illustrator CS6 and later
-  Date: August, 2022
+  Date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,24 +12,10 @@
   0.1.1 Minor improvements
   0.2 Added more units (yards, meters, etc.) support if the document is saved
   0.2.1 Added custom RGB color (idxColor) for artboard indexes
-
-  Donate (optional):
-  If you find this script helpful, you can buy me a coffee
-  - via DonatePay https://new.donatepay.ru/en/@osokin
-  - via Donatty https://donatty.com/sergosokin
-  - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
-  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
-
-  NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
-  This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale
+  0.2.2 Fixed input activation in Windows OS
 
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
-
-  Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -39,11 +25,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.2.1'
+        version: 'v.0.2.2'
       },
       CFG = {
         aiVers: parseInt(app.version),
         isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         units: getUnits(), // Active document units
         tmpLyr: 'ARTBOARD_INDEX',
         idxColor: [255, 0, 0], // Artboard index color
@@ -99,6 +86,9 @@ function main() {
   var doc = activeDocument,
       currBoardIdx = doc.artboards.getActiveArtboardIndex();
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // INTERFACE
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
@@ -111,7 +101,11 @@ function main() {
       abPanel.alignChildren = ['fill','center'];
       abPanel.margins = CFG.uiMargins;
   var abInput = abPanel.add('edittext', undefined, CFG.abs);
-      if (CFG.isMac) abInput.active = true;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    abInput.active = true;
+  }
   var abDescr = abPanel.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
       abDescr.justify = 'left';
 
@@ -266,6 +260,29 @@ function main() {
       } catch (e) {}
     }
   }
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 // Output artboard indexes as text
@@ -499,7 +516,7 @@ function getArtboardsRange(arr, placeholder) {
       parsedStr.push(j);
     }
   });
-  // if (isNaN(parsedStr));
+
   return intersect(activeDocument.artboards, parsedStr);
 }
 
