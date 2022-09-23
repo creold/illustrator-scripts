@@ -5,22 +5,24 @@
 
 [Back to homepage](../README.md)
 
-## 📜 Scripts
-* AverageColors `(new, 27.03.2022)`
-* ColorBlindSimulator `(new, 18.04.2022)`
-* ConvertToGradient `(upd, 14.09.2022)`
-* CycleColors `(upd, 01.08.2022)`
-* CycleGradient
-* DistributeGradientStops
-* RemoveGradientStops
-* ReverseGradientColor
-* StrokeColorFromFill `(upd, 14.09.2022)`
+### How to download one script 
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+## Scripts
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `(new, 27.03.2022)`
+* [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `(upd, 14.09.2022)`
+* [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `(upd, 01.08.2022)`
+* [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
+* [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops)
+* [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops)
+* [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor)
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `(upd, 14.09.2022)`
 
 ## AverageColors
+[![Direct](https://img.shields.io/badge/Direct%20Link-AverageColors.jsx-FF6900.svg)](http://bit.do/avgcols) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Averages the colors of selected objects or separately inside groups or gradients. The script skips objects without color or with a pattern. If nothing is selected, the script process all groups in the document. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
 
@@ -32,12 +34,14 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 ![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif) 
 
 ## ColorBlindSimulator
+[![Direct](https://img.shields.io/badge/Direct%20Link-ColorBlindSimulator.jsx-FF6900.svg)](http://bit.do/colblindsim) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Simulates color vision deficiency of 8 types. You can recolor objects or use only a preview. Adobe is limited to viewing two types in the `View > Proof Setup` menu and cannot apply colors. The script supports: paths, compound paths, text, fills and strokes. You can change the gamma correction in `CFG.gamma: 2.2` and activate the default preview `CFG.defPreview: true`. Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
 
 ## ConvertToGradient
+[![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](http://bit.do/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Convert a flat process color into a matching gradient.   
 What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items.   
@@ -46,12 +50,14 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
 
 ## CycleColors
+[![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](http://bit.do/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Swaps the fill and stroke colors of the selected objects in order they have in the Layers panel. Preserves the weight of the strokes, but if an object has no stroke, the script copies one from another object. If your selected objects are in non-consecutive order, you may think that the `Forward` and `Backward` buttons move colors randomly. The `Revert` button doesn't return custom brushes and dash settings applied to strokes, but you You can use the native command `Undo` after closing the dialog box.
 
 ![CycleColors](https://i.ibb.co/3zk9Jgs/Cycle-Colors.gif)
 
 ## CycleGradient
+[![Direct](https://img.shields.io/badge/Direct%20Link-CycleGradient.jsx-FF6900.svg)](http://bit.do/cyclegrad) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 * CycleGradient.jsx (UI version)
 * CycleGradientBackward.jsx
@@ -63,32 +69,32 @@ A set of 4 scripts that change the color order of gradient stops. The position o
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
 
 ## DistributeGradientStops
+[![Direct](https://img.shields.io/badge/Direct%20Link-DistributeGradientStops.jsx-FF6900.svg)](http://bit.do/distgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Distributes uniform spacing between all the gradients stops without changing the position of the outermost stops. Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.  
 
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
 
 ## RemoveGradientStops
+[![Direct](https://img.shields.io/badge/Direct%20Link-RemoveGradientStops.jsx-FF6900.svg)](http://bit.do/rmvgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Removes intermediate color stops of gradient fill and stroke for selected objects.
 
 ![RemoveGradientStops](https://i.ibb.co/cv6wgPq/remove-Gradient-Stops.gif)
 
 ## ReverseGradientColor
+[![Direct](https://img.shields.io/badge/Direct%20Link-ReverseGradientColor.jsx-FF6900.svg)](http://bit.do/rvsgradcol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Reverse the order of gradient colors and their opacity. Does not reverse the locations of color stops. If a gradient is copied from another object with the Eyedropper Tool (I), the Illustrator will think that they have the same gradient. Use the Reverse Gradient button in the Gradient panel instead then.   
 
 ![ReverseGradient](https://i.ibb.co/Fg8nnHZ/Reverse-Gradient-Color.gif)
 
 ## StrokeColorFromFill
+[![Direct](https://img.shields.io/badge/Direct%20Link-StrokeColorFromFill.jsx-FF6900.svg)](http://bit.do/strokefromfill) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Setting the Stroke color of object based on an his solid or gradient fill. The option to automatically add an stroke is not available for Mac OS users with an Illustrator older than CC 2020.   
 
-![SplitPath](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+![StrokeColorFromFill](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif)
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

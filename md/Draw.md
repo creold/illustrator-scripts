@@ -5,29 +5,28 @@
 
 [Back to homepage](../README.md)
 
-## 📜 Scripts
-* NumeratesPoints `(upd, 14.09.2022)`
-* RandomScribble `(upd, 14.09.2022)`
+### How to download one script 
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+## Scripts
+* [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `(upd, 14.09.2022)`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `(upd, 14.09.2022)`
 
 ## NumeratesPoints
+[![Direct](https://img.shields.io/badge/Direct%20Link-NumeratesPoints.jsx-FF6900.svg)](http://bit.do/numpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Numerates selected points and marks them with colored circles.
 
 ![NumeratesPoints](https://i.ibb.co/bdJ8tvV/Numerates-Points.gif)
 
 ## RandomScribble
+[![Direct](https://img.shields.io/badge/Direct%20Link-RandomScribble.jsx-FF6900.svg)](http://bit.do/randscrib) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Creates random paths with a specified number of points. These can be random straight lines from 2 points or complex shapes that imitate scribbles. The points do not go beyond the bounds of the active artboard. If many shapes are first selected in the document, the script will generate individual paths with points into their bounding box.
 
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

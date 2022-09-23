@@ -5,16 +5,18 @@
 
 [Back to homepage](../README.md)
 
-## 📜 Scripts
-* Points Move Random `(upd, 14.09.2022)`
-* SplitPath `(upd, 14.09.2022)`
-* SubtractTopPath `(new, 03.04.2022)`
+### How to download one script 
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+## Scripts
+* [Points Move Random](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `(upd, 14.09.2022)`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 14.09.2022)`
+* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
 
 ## Points Move Random
+[![Direct](https://img.shields.io/badge/Direct%20Link-PointsMoveRandom.jsx-FF6900.svg)](http://bit.do/ptsmovrnd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script moves randomly in numeric ranges horizontally and vertically selected points or all points on objects. Quick access with <kbd>Q</kbd> + underlined key. Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey: 'Q'`.
 
@@ -25,6 +27,7 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif)
 
 ## SplitPath
+[![Direct](https://img.shields.io/badge/Direct%20Link-SplitPath.jsx-FF6900.svg)](http://bit.do/splpath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
 
@@ -35,14 +38,11 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
 
 ## SubtractTopPath
+[![Direct](https://img.shields.io/badge/Direct%20Link-SubtractTopPath.jsx-FF6900.svg)](http://bit.do/subtoppath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Subtracts the top selected shape from all the shapes below it. Pathfinder panel in Adobe Illustrator does not do it. Change the value of `isRmvTop` to `false` to keep the original shape. The `isUseFS: true` speeds up processing with a large number of objects. Align Stroke to Inside / Outside doesn't work correctly. Apply `Object > Path > Outline Stroke` before running the script.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

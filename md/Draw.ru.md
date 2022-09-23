@@ -5,29 +5,28 @@
 
 [На главную](../README.ru.md)
 
-## 📜 Scripts
-* NumeratesPoints `(upd, 14.09.2022)`
-* RandomScribble `(upd, 14.09.2022)`
+### Как скачать один скрипт
+1. В описании скрипта нажмите кнопку «Прямая ссылка».
+2. Во вкладке откроется код скрипта.
+3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
-</a>  
+## Scripts
+* [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `(upd, 14.09.2022)`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `(upd, 14.09.2022)`
 
 ## NumeratesPoints
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](http://bit.do/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Нумерует выделенные точки и помечает их круглыми маркерами. Пригодится, например, для создания рисунков в стиле «Соедини по точкам (цифрам)».
 
 ![NumeratesPoints](https://i.ibb.co/bdJ8tvV/Numerates-Points.gif)
 
 ## RandomScribble
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomScribble.jsx-FF6900.svg)](http://bit.do/randscrib) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Создаёт случайные пути с заданным количеством точек. Это могут быть случайные отрезки из 2 точек или сложные фигуры, имитирующие каракули. Точки не выходят за границы активного артборда. Если в документе сначала выделили несколько фигур, то скрипт сгенерирует отдельные пути с точками, лежащими в пределах их границ (bounding box).
 
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
-</a> 
 
 ## 💸 Поддержка
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен

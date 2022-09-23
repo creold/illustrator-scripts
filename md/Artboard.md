@@ -5,27 +5,30 @@
 
 [Back to homepage](../README.md)
 
-## 📜 Scripts
-* ArtboardsFinder `(upd, 14.09.2022)`
-* BatchRenamer `(upd, 14.09.2022)`
-* DuplicateArtboards `(upd, 14.09.2022)`
-* FitArtboardsToArtwork `(upd, 01.08.2022)`
-* MoveArtboards `(upd, 14.09.2022)`
-* RenameArtboardAsLayer `(upd, 14.09.2022)`
-* RenameArtboardAsSize `(upd, 01.08.2022)`
-* RenameArtboardAsTopObj `(upd, 14.09.2022)`
+## How to download one script 
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+## 📜 Scripts
+* [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `(upd, 14.09.2022)`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `(upd, 14.09.2022)`
+* [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `(upd, 14.09.2022)`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `(upd, 01.08.2022)`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `(upd, 14.09.2022)`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `(upd, 14.09.2022)`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `(upd, 01.08.2022)`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `(upd, 14.09.2022)`
 
 ## ArtboardsFinder
+[![Direct](https://img.shields.io/badge/Direct%20Link-ArtboardsFinder.jsx-FF6900.svg)](http://bit.do/abfinder) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Search for artboards by name or size and shows the selected artboards in the center of the window. Width and height in document units. Landscape, portrait, square artboards are displayed in descending order of size when searching by orientation.
 
 ![ArtboardsFinder](https://i.ibb.co/VJXKjWQ/artboards-finder.gif)
 
 ## BatchRenamer
+[![Direct](https://img.shields.io/badge/Direct%20Link-BatchRenamer.jsx-FF6900.svg)](http://bit.do/batchren) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Batch renames Artboards, top-level Layers and selected objects in the document. Adds a common prefix and suffix to names. "Find & Replace" replaces matching strings in current names.
 
@@ -45,6 +48,7 @@ If you want to change the number of rows, change the CFG `rows: 5` in the script
 ![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)
 
 ## DuplicateArtboardsLight
+[![Direct](https://img.shields.io/badge/Direct%20Link-DuplicateArtboardsLight.jsx-FF6900.svg)](http://bit.do/dupabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
 
@@ -55,38 +59,39 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 ![DuplicateArtboardsLight](https://i.ibb.co/rF92HpV/demo-Duplicate-Artboards-Light.gif) 
 
 ## FitArtboardsToArtwork
+[![Direct](https://img.shields.io/badge/Direct%20Link-FitArtboardsToArtwork.jsx-FF6900.svg)](http://bit.do/fitabstoart) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Fit artboards by the visible unlocked content with custom margins.
 
 ![FitArtboardsToArtwork](https://i.ibb.co/SJJh5Hc/Fit-Artboards-To-Artwork.gif) 
 
 ## MoveArtboards
+[![Direct](https://img.shields.io/badge/Direct%20Link-MoveArtboards.jsx-FF6900.svg)](http://bit.do/moveabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Script for moving artboards range with artwork along the X and Y axis.
 
 ![MoveArtboards](https://i.ibb.co/wrHTpTG/Move-Artboards.gif) 
 
 ## RenameArtboardAsLayer
+[![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsLayer.jsx-FF6900.svg)](http://bit.do/renabsaslyr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script renames each Artboard by the custom name of Layer with the first visible unlocked item on it.
 
 ![RenameArtboardAsLayer](https://i.ibb.co/9nk8Lqn/Rename-Artboard-As-Layer.gif)
 
 ## RenameArtboardAsSize
+[![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsSize.jsx-FF6900.svg)](http://bit.do/renabsassize) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script names the artboard by its size in pixels. If you don't want save Artboard name, but replace with his size, change `var SAVE_NAME = true;` in the script file to `false`.
 
 ![RenameArtboardAsSize](https://i.ibb.co/54H4Jcm/Rename-Artboard-As-Size.gif)
 
 ## RenameArtboardAsTopObj
+[![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsTopObj.jsx-FF6900.svg)](http://bit.do/renabsasobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script renames each Artboard by the custom name of the first visible unlocked item on it. If the top object is text, its contents will be the name of Artboard. 
 
 ![RenameArtboardAsTopObj](https://i.ibb.co/WPmf14B/Rename-Artboard-As-Top-Obj.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

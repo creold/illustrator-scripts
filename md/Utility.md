@@ -5,17 +5,19 @@
 
 [Back to homepage](../README.md)
 
-## 📜 Scripts
-* FileVersionInformer
-* ObjectsCounter
-* SaveAllDocs
-* SyncGlobalColorsNames
+### How to download one script 
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
+## Scripts
+* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
+* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
+* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
+* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames)
 
 ## FileVersionInformer
+[![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](http://bit.do/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
 *Notice: on large files it works slowly, just wait.*
@@ -23,24 +25,23 @@ Script for collecting information about the program version of .ai & .eps files 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)
 
 ## ObjectsCounter
+[![Direct](https://img.shields.io/badge/Direct%20Link-ObjectsCounter.jsx-FF6900.svg)](http://bit.do/objcntr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Counts the number of selected objects.
 
 ![ObjectsCounter](https://i.ibb.co/bFd5k6p/Objects-Counter.gif)
 
 ## SaveAllDocs
+[![Direct](https://img.shields.io/badge/Direct%20Link-SaveAllDocs.jsx-FF6900.svg)](http://bit.do/savealldocs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Save all opened docs in one click.
 
 ## SyncGlobalColorsNames
+[![Direct](https://img.shields.io/badge/Direct%20Link-SyncGlobalColorsNames.jsx-FF6900.svg)](http://bit.do/syncglblclr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Syncs the names of the same global colors between open documents. After that, all changes will be saved.
 
 ![SyncGlobalColorsNames](https://i.ibb.co/G9NRF7J/Sync-Global-Colors-Names.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/kg4KLJh/download-en.png">
-</a> 
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

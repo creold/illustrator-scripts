@@ -10,105 +10,10 @@ This is a collection of JS scripts for Adobe Illustrator. All scripts created by
 
 The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022 (Windows), CC 2018-2022 (Mac OS).   
 
-## 📜 Categories
-Click the links to learn more about the scripts in the selected category.
-
-### [Artboard](md/Artboard.md)  
-
-* ArtboardsFinder `(upd, 14.09.2022)`
-* BatchRenamer `(upd, 14.09.2022)`
-* DuplicateArtboards `(upd, 14.09.2022)`
-* FitArtboardsToArtwork `(upd, 01.08.2022)`
-* MoveArtboards `(upd, 14.09.2022)`
-* RenameArtboardAsLayer `(upd, 14.09.2022)`
-* RenameArtboardAsSize `(upd, 01.08.2022)`
-* RenameArtboardAsTopObj `(upd, 14.09.2022)`
-
-### [Color](md/Color.md)  
-
-* AverageColors `(new, 27.03.2022)`
-* ColorBlindSimulator `(new, 18.04.2022)`
-* ConvertToGradient `(upd, 14.09.2022)`
-* CycleColors `(upd, 01.08.2022)`
-* CycleGradient
-* DistributeGradientStops
-* RemoveGradientStops
-* ReverseGradientColor
-* StrokeColorFromFill `(upd, 14.09.2022)`
-
-### [Draw](md/Draw.md) 
-
-* NumeratesPoints `(upd, 14.09.2022)`
-* RandomScribble `(upd, 14.09.2022)`
-
-### [Export](md/Export.md)  
-
-* Export selection as AI `(upd, 01.08.2022)`
-* ExportToDXF `(upd, 01.08.2022)`
-
-### [Group | Mask](md/Group.md)  
-
-* CenterClipsToArtboards
-* ExtUngroup
-* MoveToGroup `(upd, 14.09.2022)`
-* TrimMasks
-
-### [Item](md/Item.md)  
-
-* BatchTrace `(new, 15.08.2022)`
-* DuplicateToArtboards `(upd, 14.09.2022)`
-* FitSelectionToArtboards `(upd, 01.08.2022)`
-* MakeEnvelopesWithTops
-* MirrorMove `(upd, 01.08.2022)`
-* RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 14.09.2022)`
-* Rescale `(upd, 14.09.2022)`
-* ResizeOnLargerSide `(upd, 01.08.2022)`
-* ResizeToSize `(upd, 14.09.2022)`
-* RoundCoordinates `(upd, 01.08.2022)`
-* SortLayerItems `(new, 29.08.2022)`
-
-### [Path](md/Path.md)  
-
-* Points Move Random `(upd, 14.09.2022)`
-* SplitPath `(upd, 14.09.2022)`
-* SubtractTopPath `(new, 03.04.2022)`
-
-### [Select](md/Select.md)  
-
-* NamedItemsFinder `(upd, 14.09.2022)`
-* SelectAllLayersAbove `(new, 21.02.2022)`
-* SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches `(upd, 14.09.2022)`
-* SelectOnlyPoints
-* SelectPointsByType `(upd, 14.09.2022)`
-* SelectRotatedItems `(new, 22.06.2022)`
-
-### [Style](md/Style.md)  
-
-* ChangeOpacity `(upd, 01.08.2022)`
-* GrayscaleToOpacity
-* OpacityMaskClip
-* RandomStrokeWidth `(upd, 01.08.2022)`
-* StrokesWeightUp `(upd, 01.08.2022)`
-* StrokesWeightDown `(upd, 01.08.2022)`
-
-### [Utility](md/Utility.md)  
-
-* FileVersionInformer
-* ObjectsCounter
-* SaveAllDocs
-* SyncGlobalColorsNames
-
-### [View](md/View.md)  
-
-* Zoom And Center `(upd, 14.09.2022)`
-
 ## How to download one script 
-1. Open the `.jsx` file in the directory
-2. Click to the `Raw` button in the right corner
-3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
-4. Delete `.txt` extension: `name.jsx.txt` > `name.jsx`
+1. In the script description, click the "Direct Link" button.
+2. The tab will open the script code.
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## How to run scripts
 
@@ -132,6 +37,102 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladygin.pro/products/lascripts/
+
+## 📜 Categories
+Click the category name to learn more about the scripts in the selected category.   
+
+[![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+### [Artboard](md/Artboard.md)  
+
+* [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `(upd, 14.09.2022)`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `(upd, 14.09.2022)`
+* [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `(upd, 14.09.2022)`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `(upd, 01.08.2022)`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `(upd, 14.09.2022)`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `(upd, 14.09.2022)`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `(upd, 01.08.2022)`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `(upd, 14.09.2022)`
+
+### [Color](md/Color.md)  
+
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `(new, 27.03.2022)`
+* [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `(upd, 14.09.2022)`
+* [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `(upd, 01.08.2022)`
+* [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
+* [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops)
+* [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops)
+* [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor)
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `(upd, 14.09.2022)`
+
+### [Draw](md/Draw.md) 
+
+* [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `(upd, 14.09.2022)`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `(upd, 14.09.2022)`
+
+### [Export](md/Export.md)  
+
+* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 01.08.2022)`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 01.08.2022)`
+
+### [Group | Mask](md/Group.md)  
+
+* [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards)
+* [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `(upd, 14.09.2022)`
+* [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
+
+### [Item](md/Item.md)  
+
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `(new, 15.08.2022)`
+* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `(upd, 14.09.2022)`
+* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `(upd, 01.08.2022)`
+* [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `(upd, 01.08.2022)`
+* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rememberselectionlayers) `(upd, 26.02.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 14.09.2022)`
+* [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `(upd, 14.09.2022)`
+* [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `(upd, 01.08.2022)`
+* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `(upd, 14.09.2022)`
+* [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `(upd, 01.08.2022)`
+* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#sortlayeritems) `(new, 29.08.2022)`
+
+### [Path](md/Path.md)  
+
+* [Points Move Random](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `(upd, 14.09.2022)`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 14.09.2022)`
+* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
+
+### [Select](md/Select.md)  
+
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `(upd, 14.09.2022)`
+* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
+* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `(upd, 14.09.2022)`
+* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
+* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `(upd, 14.09.2022)`
+* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `(new, 22.06.2022)`
+
+### [Style](md/Style.md)  
+
+* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `(upd, 01.08.2022)`
+* [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#grayscaletoopacity)
+* [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#opacitymaskclip)
+* [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#randomstrokewidth) `(upd, 01.08.2022)`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `(upd, 01.08.2022)`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `(upd, 01.08.2022)`
+
+### [Utility](md/Utility.md)  
+
+* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
+* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
+* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
+* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames)
+
+### [View](md/View.md)  
+
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `(upd, 14.09.2022)`
 
 ## 💸 Donate
 You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable

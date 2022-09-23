@@ -10,116 +10,10 @@
 
 Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2022 (Windows), CC 2018-2022 (Mac OS). 
 
-## 📜 Категории
-По ссылкам описание и демонстрация скриптов в каждой категории.
-
-### [Artboard](md/Artboard.ru.md)  
-Скрипты для создания и управления артбордами
-
-* ArtboardsFinder `(upd, 14.09.2022)`
-* BatchRenamer `(upd, 14.09.2022)`
-* DuplicateArtboards `(upd, 14.09.2022)`
-* FitArtboardsToArtwork `(upd, 01.08.2022)`
-* MoveArtboards `(upd, 14.09.2022)`
-* RenameArtboardAsLayer `(upd, 14.09.2022)`
-* RenameArtboardAsSize `(upd, 01.08.2022)`
-* RenameArtboardAsTopObj `(upd, 14.09.2022)`
-
-### [Color](md/Color.ru.md)  
-Скрипты для работы с цветом объектов
-
-* AverageColors `(new, 27.03.2022)`
-* ColorBlindSimulator `(new, 18.04.2022)`
-* ConvertToGradient `(upd, 14.09.2022)`
-* CycleColors `(upd, 01.08.2022)`
-* CycleGradient
-* DistributeGradientStops
-* RemoveGradientStops
-* ReverseGradientColor
-* StrokeColorFromFill `(upd, 14.09.2022)`
-
-### [Draw](md/Draw.ru.md) 
-Скрипты, которые что-либо рисуют
-
-* NumeratesPoints `(upd, 14.09.2022)`
-* RandomScribble `(upd, 14.09.2022)`
-
-### [Export](md/Export.ru.md)  
-Скрипты для экспорта документов
-
-* Export selection as AI `(upd, 01.08.2022)`
-* ExportToDXF `(upd, 01.08.2022)`
-
-### [Group | Mask](md/Group.ru.md)  
-Скрипты для создания и управления группами, обтравочными масками
-
-* CenterClipsToArtboards
-* ExtUngroup
-* MoveToGroup `(upd, 14.09.2022)`
-* TrimMasks
-
-### [Item](md/Item.ru.md)  
-Скрипты, управляющие выбранными объектами
- 
-* BatchTrace `(new, 15.08.2022)`
-* DuplicateToArtboards `(upd, 14.09.2022)`
-* FitSelectionToArtboards `(upd, 01.08.2022)`
-* MakeEnvelopesWithTops
-* MirrorMove `(upd, 01.08.2022)`
-* RememberSelectionLayers `(upd, 26.02.2022)`
-* RenameItems `(upd, 14.09.2022)`
-* Rescale `(upd, 14.09.2022)`
-* ResizeOnLargerSide `(upd, 01.08.2022)`
-* ResizeToSize `(upd, 14.09.2022)`
-* RoundCoordinates `(upd, 01.08.2022)`
-* SortLayerItems `(new, 29.08.2022)`
-
-### [Path](md/Path.ru.md)  
-Скрипты, изменяющие пути
-
-* Points Move Random `(upd, 14.09.2022)`
-* SplitPath `(upd, 14.09.2022)`
-* SubtractTopPath `(new, 03.04.2022)`
-
-### [Select](md/Select.ru.md)  
-Скрипты для выбора объектов в документе
-
-* NamedItemsFinder `(upd, 14.09.2022)`
-* SelectAllLayersAbove `(new, 21.02.2022)`
-* SelectAllLayersBelow `(new, 21.02.2022)`
-* SelectBySwatches `(upd, 14.09.2022)`
-* SelectOnlyPoints
-* SelectPointsByType `(upd, 14.09.2022)`
-* SelectRotatedItems `(new, 22.06.2022)`
-
-### [Style](md/Style.ru.md)  
-Скрипты, стилизующие объекты
-
-* ChangeOpacity `(upd, 01.08.2022)`
-* GrayscaleToOpacity
-* OpacityMaskClip
-* RandomStrokeWidth `(upd, 01.08.2022)`
-* StrokesWeightUp `(upd, 01.08.2022)`
-* StrokesWeightDown `(upd, 01.08.2022)`
-
-### [Utility](md/Utility.ru.md)  
-Вспомогательные скрипты
-
-* FileVersionInformer
-* ObjectsCounter
-* SaveAllDocs
-* SyncGlobalColorsNames
-
-### [View](md/View.ru.md)  
-Скрипты для просмотра документа
-
-* Zoom And Center `(upd, 14.09.2022)`
-
 ## Как скачать один скрипт
-1. Откройте `.jsx` файл в папке
-2. Нажмите кнопку `Raw` в правом углу
-3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> для скачивания
-4. Удалите `.txt` из имени: `name.jsx.txt` > `name.jsx`
+1. В описании скрипта нажмите кнопку «Прямая ссылка».
+2. Во вкладке откроется код скрипта.
+3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Как запускать скрипты
 
@@ -143,6 +37,113 @@
 
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladygin.pro/products/lascripts/
+
+## 📜 Категории
+Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
+
+[![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+### [Artboard](md/Artboard.ru.md)  
+Скрипты для создания и управления артбордами
+
+* [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `(upd, 14.09.2022)`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `(upd, 14.09.2022)`
+* [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `(upd, 14.09.2022)`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `(upd, 01.08.2022)`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `(upd, 14.09.2022)`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `(upd, 14.09.2022)`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `(upd, 01.08.2022)`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `(upd, 14.09.2022)`
+
+### [Color](md/Color.ru.md)  
+Скрипты для работы с цветом объектов
+
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `(new, 27.03.2022)`
+* [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#converttogradient) `(upd, 14.09.2022)`
+* [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclecolors) `(upd, 01.08.2022)`
+* [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclegradient)
+* [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#distributegradientstops)
+* [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#removegradientstops)
+* [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#reversegradientcolor)
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#strokecolorfromfill) `(upd, 14.09.2022)`
+
+### [Draw](md/Draw.ru.md) 
+Скрипты, которые что-либо рисуют
+
+* [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `(upd, 14.09.2022)`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `(upd, 14.09.2022)`
+
+### [Export](md/Export.ru.md)  
+Скрипты для экспорта документов
+
+* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#export-selection-as-ai) `(upd, 01.08.2022)`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#exporttodxf) `(upd, 01.08.2022)`
+
+### [Group | Mask](md/Group.ru.md)  
+Скрипты для создания и управления группами, обтравочными масками
+
+* [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#centerclipstoartboards)
+* [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup)
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `(upd, 14.09.2022)`
+* [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks)
+
+### [Item](md/Item.ru.md)  
+Скрипты, управляющие выбранными объектами
+ 
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#batchtrace) `(new, 15.08.2022)`
+* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#duplicatetoartboards) `(upd, 14.09.2022)`
+* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `(upd, 01.08.2022)`
+* [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `(upd, 01.08.2022)`
+* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rememberselectionlayers) `(upd, 26.02.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 14.09.2022)`
+* [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `(upd, 14.09.2022)`
+* [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `(upd, 01.08.2022)`
+* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `(upd, 14.09.2022)`
+* [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `(upd, 01.08.2022)`
+* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#sortlayeritems) `(new, 29.08.2022)`
+
+### [Path](md/Path.ru.md)  
+Скрипты, изменяющие пути
+
+* [Points Move Random](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#points-move-random) `(upd, 14.09.2022)`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 14.09.2022)`
+* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
+
+### [Select](md/Select.ru.md)  
+Скрипты для выбора объектов в документе
+
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `(upd, 14.09.2022)`
+* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `(new, 21.02.2022)`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `(new, 21.02.2022)`
+* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectbyswatches) `(upd, 14.09.2022)`
+* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints)
+* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `(upd, 14.09.2022)`
+* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectrotateditems) `(new, 22.06.2022)`
+
+### [Style](md/Style.ru.md)  
+Скрипты, стилизующие объекты
+
+* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#changeopacity) `(upd, 01.08.2022)`
+* [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#grayscaletoopacity)
+* [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#opacitymaskclip)
+* [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#randomstrokewidth) `(upd, 01.08.2022)`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `(upd, 01.08.2022)`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `(upd, 01.08.2022)`
+
+### [Utility](md/Utility.ru.md)  
+Вспомогательные скрипты
+
+* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#fileversioninformer)
+* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#objectscounter)
+* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#savealldocs)
+* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#syncglobalcolorsnames)
+
+### [View](md/View.ru.md)  
+Скрипты для просмотра документа
+
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `(upd, 14.09.2022)`
 
 ## 💸 Поддержка
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен

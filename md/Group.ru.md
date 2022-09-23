@@ -5,23 +5,26 @@
 
 [На главную](../README.ru.md)
 
-## 📜 Scripts
-* CenterClipsToArtboards
-* ExtUngroup
-* MoveToGroup `(upd, 14.09.2022)`
-* TrimMasks
+### Как скачать один скрипт
+1. В описании скрипта нажмите кнопку «Прямая ссылка».
+2. Во вкладке откроется код скрипта.
+3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
-</a>  
+## Scripts
+* [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#centerclipstoartboards)
+* [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup)
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `(upd, 14.09.2022)`
+* [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks)
 
 ## CenterClipsToArtboards
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CenterClipsToArtboards.jsx-FF6900.svg)](http://bit.do/ctrcliptoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выравнивает все обтравочные маски (clipping masks) и их содержимое по центру артбордов, на которых они лежат. Также можно выравнивать только выделенные маски по одному артборду. 
 
 ![CenterClipsToArtboards](https://i.ibb.co/ykHy3rM/Center-Clips-To-Artboards.gif)
 
-## ExtUngroup v.1.2
+## ExtUngroup
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtUngroup.jsx-FF6900.svg)](http://bit.do/extungrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт разгруппировывает объекты и удаляет обтравочные маски в документе.   
 *Сделан на основе скрипта автора Jiwoong Song и модификации от [John Wundes](http://www.wundes.com/).*
@@ -29,12 +32,14 @@
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
 
 ## MoveToGroup
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveToGroup.jsx-FF6900.svg)](http://bit.do/movtogrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Если выделенные объекты содержат группу, то перемещает все объекты в нее. Порядок сохраняется: объекты выше группы помещаются внутри наверх, нижние — вниз группы. Если групп несколько, то выбирается в диалоге куда переместить: в верхнюю или нижюю.
 
 ![MoveToGroup](https://i.ibb.co/jkD5Zx4/Move-To-Group.gif)
 
 ## TrimMasks
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimMasks.jsx-FF6900.svg)](http://bit.do/trimcm) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Автоматические обрезает объекты внутри Clipping Mask, применяя команду `Pathfinder > Crop`. Такая задача может возникнуть, когда при открытии PDF или SVG в Illustrator множество объектов помещаются внутри отдельных масок.  
 Если у маски есть цвет и хотите сохранить её после обрезки содержимого, то откройте файл скрипта текстовым редактором и поменяйте значение `SAVE_FILLED_CLIPMASK = false;` на `true`.
@@ -44,10 +49,6 @@
 </a>
 
 ![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif)
-
-<a href="https://bit.ly/2M0j95N">
-  <img width="140" height="43" src="https://i.ibb.co/Wp39Brs/download-ru.png">
-</a> 
 
 ## 💸 Поддержка
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен

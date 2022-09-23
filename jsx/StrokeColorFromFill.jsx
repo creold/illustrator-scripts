@@ -13,7 +13,7 @@
   0.3 Added color interpolation to get the Stroke color from the gradient
   0.3.1 Minor improvements
   0.3.2 Added conversion of spot tint to color
-  0.3.2 Fixed input activation in Windows OS
+  0.3.3 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -34,7 +34,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Stroke Color From Fill',
-        version: 'v.0.3.2'
+        version: 'v.0.3.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
