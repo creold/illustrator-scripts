@@ -3,7 +3,7 @@
   RenameItems.jsx for Adobe Illustrator
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
-  Date: September, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -19,14 +19,15 @@
       Saving the name input field when switching options
   1.6.1 Fixed UI for Illustrator 26.4.1 on PC
   1.6.2 Fixed placeholder buttons, input activation in Windows OS
+  1.6.3 Added erase object names by empty input
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
@@ -45,7 +46,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6.2'
+        version: 'v.1.6.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -77,12 +78,12 @@ function main() {
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // Dialog
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = ['fill', 'center'];
 
   // Target
-  var grpTarget = dialog.add('group');
+  var grpTarget = win.add('group');
 
   if (selection.length && selection.typename !== 'TextRange') {
     var selRb = grpTarget.add('radiobutton', undefined, 'Selection');
@@ -97,7 +98,7 @@ function main() {
   }
 
   // Name input
-  var grpName = dialog.add('group');
+  var grpName = win.add('group');
       grpName.alignChildren = 'fill';
       grpName.orientation = 'column';
 
@@ -113,12 +114,12 @@ function main() {
 
   // Option for Symbol
   if (selection.length === 1 && isSymbol(selection[0])) {
-    var isReplcSym = dialog.add('checkbox', undefined, 'Rename parent symbol');
+    var isReplcSym = win.add('checkbox', undefined, 'Rename parent symbol');
   }
 
   // Replace input
   if (isMultiSel || !selection.length) {
-    var grpReplc = dialog.add('group');
+    var grpReplc = win.add('group');
         grpReplc.alignChildren = 'fill';
         grpReplc.orientation = 'column';
 
@@ -130,15 +131,15 @@ function main() {
 
   // Global replace option
   if (!selection.length) {
-    var isAll = dialog.add('checkbox', undefined, 'Replace in all ');
+    var isAll = win.add('checkbox', undefined, 'Replace in all ');
     isAll.text += abRb.value ? 'artboards' : 'doc layers'; 
   }
 
   // Placeholders
   if (isMultiSel) {
-    dialog.add('statictext', undefined, 'Click to add placeholder');
+    win.add('statictext', undefined, 'Click to add placeholder');
 
-    var grpPH = dialog.add('group');
+    var grpPH = win.add('group');
         grpPH.alignChildren = ['fill', 'fill'];
 
     putPlaceholder('Name', [0, 0, 50, 20], grpPH, PH.name);
@@ -146,7 +147,7 @@ function main() {
     putPlaceholder('Num \u2193', [0, 0, 50, 20], grpPH, PH.numDown);
     
     // Numeration
-    var grpNum = dialog.add('group');
+    var grpNum = win.add('group');
     grpNum.add('statictext', undefined, 'Start number at');
     var countInp = grpNum.add('edittext', undefined, 1);
         countInp.preferredSize.width = 40;
@@ -159,7 +160,7 @@ function main() {
   }
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.alignChildren = ['fill', 'center'];
 
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
@@ -169,7 +170,7 @@ function main() {
       ok.helpTip = 'Press Enter to Run';
 
   // Copyright block
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   // Load settings and fill name input field
@@ -229,7 +230,7 @@ function main() {
     openURL('https://github.com/creold');
   });
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
 
   ok.onClick = okClick;
 
@@ -237,41 +238,35 @@ function main() {
     var name = nameInp.text,
         replc = !isUndefined(replcInp) ? replcInp.text : '';
   
-    if (isEmpty(name) && isEmpty(replc)) {
-      dialog.close();
-      return;
-    }
-
     switch (selection.length) {
       case 0: // Empty selection
         if (isAll.value) {
           if (abRb.value) replaceInAll(doc.artboards, replc, name);
           else replaceInAll(doc.layers, replc, name);
         } else {
-          if (isEmpty(replc)) {
-            if (abRb.value) actAb.name = name;
-            else actLayer.name = name;
-          } else {
+          if (!isEmpty(replc)) {
             if (abRb.value) actAb.name = actAb.name.replaceAll(replc, name);
             else actLayer.name = actLayer.name.replaceAll(replc, name);
+          } else if (!isEmpty(name)) {
+            if (abRb.value) actAb.name = name;
+            else actLayer.name = name;
           }
         }
         break;
       case 1: // One item
         if (selRb.value) {
-          if (!isUndefined(isReplcSym) && isReplcSym.value) {
+          if (!isUndefined(isReplcSym) && isReplcSym.value && !isEmpty(name)) {
             selection[0].symbol.name = name;
-          } else {
-            selection[0].name = name;
           }
-        } else {
+          selection[0].name = name;
+        } else if (!isEmpty(name)) {
           getTopLayer(selection[0]).name = name;
         }
         break;
       default: // Multiple items
         if (!isUndefined(selRb) && selRb.value) {
           rename(selection, name, replc, countInp.text, PH);
-        } else {
+        } else if (!isEmpty(name)) {
           rename(uniqLayers, name, replc, countInp.text, PH);
         }
         break;
@@ -283,7 +278,7 @@ function main() {
     }
   
     saveSettings();
-    dialog.close();
+    win.close();
   }
 
   // Get name placeholder
@@ -380,8 +375,8 @@ function main() {
     }
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 }
 
 // Simulate keyboard keys on Windows OS via VBScript
@@ -390,7 +385,7 @@ function main() {
 // Basically, on some Windows Ai versions, when a ScriptUI dialog is
 // presented and the active attribute is set to true on a field, Windows
 // will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
+// in focus with the dialog front and center
 function simulateKeyPress(k, n) {
   if (!/win/i.test($.os)) return false;
   if (!n) n = 1;

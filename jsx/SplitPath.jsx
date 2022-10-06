@@ -16,11 +16,11 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
@@ -53,8 +53,8 @@ function main() {
                   ru: 'Ошибка\nВыделите 2 или более объекта' },
         errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
                   ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-        errFill: { en: 'Error\nPlease, fill the mask object in any color',
-                  ru: 'Ошибка\nДобавьте объекту для вырезания любую заливку цветом'},
+        errFill: { en: 'Error\nPlease, fill the mask object in any color or ungroup it',
+                  ru: 'Ошибка\nДобавьте объекту для вырезания любую заливку цветом или разгруппируйте ее'},
         errOpen: { en: 'Error\nTo use Intersect add in selection atleast one opened path', 
                   ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 незамкнутую линию'},
         errClose: { en: 'Error\nTo use Intersect add in selection atleast one closed path',
@@ -115,7 +115,7 @@ function main() {
   var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
   var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
-  var copyright = dialog.add('statictext', undefined, '© Sergey Osokin. Visit Github');
+  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
   
   copyright.addEventListener('mousedown', function () {

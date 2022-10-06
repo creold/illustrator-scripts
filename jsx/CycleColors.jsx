@@ -14,11 +14,11 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
-  - via PayPal (temporarily unavailable) http://www.paypal.me/osokin/usd
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, CC 2022 (Win).

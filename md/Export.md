@@ -1,7 +1,7 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Export | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Yotube](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -11,7 +11,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 01.08.2022)`
+* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 06.10.2022)`
 * [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 01.08.2022)`
 
 ## Export selection as AI
@@ -30,16 +30,16 @@ Export multiple artboards with visible unlocked contents or selection to separat
 ![ExportToDXF](https://i.ibb.co/xqhxjp0/Export-To-DXF.gif)
 
 ## 💸 Donate
-You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
+You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
+[Buymeacoffee]: https://www.buymeacoffee.com/osokin
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
-[PayPal]: https://paypal.me/osokin/5usd
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
-  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
+<a href="https://www.buymeacoffee.com/osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

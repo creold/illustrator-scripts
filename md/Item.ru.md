@@ -1,7 +1,7 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Item | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Yotube](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -17,7 +17,7 @@
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `(upd, 01.08.2022)`
 * [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rememberselectionlayers) `(upd, 26.02.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 14.09.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 06.10.2022)`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `(upd, 14.09.2022)`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `(upd, 01.08.2022)`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `(upd, 14.09.2022)`
@@ -133,16 +133,15 @@
 ![SortLayerItems](https://i.ibb.co/R9wQS7t/Sort-Layer-Items.gif)
 
 ## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] временно недоступен
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee](https://www.buymeacoffee.com/osokin) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
-[PayPal]: https://paypal.me/osokin/5usd
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
-  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
+<a href="https://www.buymeacoffee.com/osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

@@ -1,7 +1,7 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Color | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Yotube](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -52,7 +52,7 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 ## CycleColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](http://bit.do/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Swaps the fill and stroke colors of the selected objects in order they have in the Layers panel. Preserves the weight of the strokes, but if an object has no stroke, the script copies one from another object. If your selected objects are in non-consecutive order, you may think that the `Forward` and `Backward` buttons move colors randomly. The `Revert` button doesn't return custom brushes and dash settings applied to strokes, but you You can use the native command `Undo` after closing the dialog box.   
+Swaps the fill and stroke colors of the selected objects in order they have in the Layers panel. Preserves the weight of the strokes, but if an object has no stroke, the script copies one from another object. If your selected objects are in non-consecutive order, you may think that the `Forward` and `Backward` buttons move colors randomly. The `Reset` button doesn't return custom brushes and dash settings applied to strokes, but you You can use the native command `Undo` after closing the dialog box.   
 
 The script by default remembers the position of the dialog window on the screen, to make it open centered, replace `CFG.isResWinPos: true` with `false` in the code.
 
@@ -99,16 +99,16 @@ Setting the Stroke color of object based on an his solid or gradient fill. The o
 ![StrokeColorFromFill](https://i.ibb.co/8dtK1V3/demo-Stroke-Color-From-Fill.gif)
 
 ## 💸 Donate
-You can support my work on new scripts via [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. [PayPal] is temporarily unavailable
+You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
+[Buymeacoffee]: https://www.buymeacoffee.com/osokin
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
-[PayPal]: https://paypal.me/osokin/5usd
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
-  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
+<a href="https://www.buymeacoffee.com/osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
