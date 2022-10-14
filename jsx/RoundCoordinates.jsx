@@ -1,7 +1,7 @@
 /*
   RoundCoordinates.jsx for Adobe Illustrator
   Description: The script rounds the coordinates of the center of the object
-  Date: August, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,6 +12,7 @@
   0.2.1 Uses the document ruler mode to get coordinates
   0.3 Added rounding step
   0.4 Added more units (yards, meters, etc.) support if the document is saved
+  0.4.1 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -72,6 +73,9 @@ function main() {
       isConfirm = confirm(LANG.msg),
       bounds = []; // Bounds in document units
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
+
   if (!isConfirm) {
     app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
   } else {
@@ -83,11 +87,11 @@ function main() {
         boundsPX = getVisibleBounds(currItem, CFG.inclStroke);
 
     for (var j = 0; j < boundsPX.length; j++) {
-      bounds.push(convertUnits(boundsPX[j], 'px', CFG.units));
+      bounds.push(convertUnits(boundsPX[j], 'px', CFG.units) * CFG.sf);
     }
 
     var step = (CFG.step == 0) ? convertUnits(grid, 'px', CFG.units) / subdiv : CFG.step,
-        delta = calcDeltaByAxes(CFG.refPoint, bounds, step, CFG.units);
+        delta = calcDeltaByAxes(CFG.refPoint, bounds, step, CFG.units, CFG.sf);
 
     // If has been replaced by the clipping mask bounds
     boundsPX = currItem.geometricBounds;
@@ -172,7 +176,7 @@ function compareBounds(itemBnds, currBnds) {
 }
 
 // Calculate the delta of the X, Y coordinates for the move
-function calcDeltaByAxes(point, bounds, step, units) {
+function calcDeltaByAxes(point, bounds, step, units, sf) {
   var x = y = 0,
       centerX = bounds[0] + (bounds[2] - bounds[0]) / 2,
       centerY = bounds[1] + (bounds[3] - bounds[1]) / 2;
@@ -216,8 +220,8 @@ function calcDeltaByAxes(point, bounds, step, units) {
       break;
   }
 
-  x = convertUnits(x, units, 'px');
-  y = convertUnits(y, units, 'px');
+  x = convertUnits(x, units, 'px') / sf;
+  y = convertUnits(y, units, 'px') / sf;
 
   return { 'x': x, 'y': y };
 }

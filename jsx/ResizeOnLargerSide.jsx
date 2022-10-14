@@ -1,7 +1,7 @@
 /*
   ResizeOnLargerSide.jsx for Adobe Illustrator
   Description: resize of the selected objects to the specified amount on the larger side
-  Date: March, 2020
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
   
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.2 Fixed issues. Added support for clipping masks
+  0.2.1 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -34,7 +35,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 
 function main () {
   var CFG = {
-        size: 512, // Default input
+        size: 10, // Default input
         units: getUnits(), // Active document units
         isBounds: app.preferences.getBooleanPreference('includeStrokeInBounds')
       };
@@ -49,13 +50,16 @@ function main () {
     return;
   }
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
+
   var newSize = prompt('Enter the size on the larger side (' + CFG.units + ')', CFG.size);
   
   // Prepare value
   if (!newSize.length) return;
   newSize = convertToAbsNum(newSize, CFG.size);
   if (newSize == 0) return;
-  newSize = convertUnits(newSize, CFG.units, 'px');
+  newSize = convertUnits(newSize, CFG.units, 'px') / CFG.sf;
 
   for (var i = 0, len = selection.length; i < len; i++) {
     var item = selection[i],
@@ -75,7 +79,7 @@ function main () {
 
     width = Math.abs(bnds[2] - bnds[0]);
     height = Math.abs(bnds[3] - bnds[1]);
-    largeSide = (height >= width) ? height : width;
+    largeSide = Math.max(height, width);
     ratio = 100 / (largeSide / newSize);
 
     // X, Y, Positions, FillPatterns, FillGradients, StrokePattern, LineWidths

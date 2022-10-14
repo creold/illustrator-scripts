@@ -1,7 +1,7 @@
 /*
   StrokesWeightUp.jsx for Adobe Illustrator
   Description: Increases the weight of the strokes of the selected paths relative to the current weight
-  Date: August, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -10,6 +10,7 @@
   0.1 Initial version
   0.2 Gets the app preferences of the stroke units
   0.2.1 Minor improvements
+  0.2.2 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -39,13 +40,16 @@ function main() {
   if (!documents.length) return;
   if (!selection.length || selection.typename == 'TextRange') return;
 
+  // Scale factor for Large Canvas mode
+  sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
+
   var selPaths = [],
       strokeUnits = app.preferences.getIntegerPreference('strokeUnits');
 
   getPaths(selection, selPaths);
 
   for (var i = 0, len = selPaths.length; i < len; i++) {
-    increaseWeight(selPaths[i], strokeUnits, isRoundWeight);
+    increaseWeight(selPaths[i], strokeUnits, isRoundWeight, sf);
   }
 }
 
@@ -72,7 +76,7 @@ function getPaths(collection, arr) {
 }
 
 // Increases the stroke weight relative to the current
-function increaseWeight(item, units, isRound) {
+function increaseWeight(item, units, isRound, sf) {
   var weight = item.strokeWidth,
       unitsKey = '';
 
@@ -99,11 +103,11 @@ function increaseWeight(item, units, isRound) {
 
   if (!item.stroked) {
     item.stroked = true;
-    item.strokeWidth = convertUnits(0.1, unitsKey, 'pt');
+    item.strokeWidth = convertUnits(0.1, unitsKey, 'pt') / sf;
     return;
   }
 
-  weight = convertUnits(weight, 'pt', unitsKey);
+  weight = sf * convertUnits(weight, 'pt', unitsKey);
   var tWeight = 0;
 
   if (roundNum(weight, 1) <= 0.1) {
@@ -116,7 +120,7 @@ function increaseWeight(item, units, isRound) {
     tWeight = (isRound ? roundNum(weight, 0) : weight) + 1.0;
   }
 
-  item.strokeWidth = convertUnits(tWeight, unitsKey, 'pt');
+  item.strokeWidth = convertUnits(tWeight, unitsKey, 'pt') / sf;
 }
 
 // Convert units of measurement

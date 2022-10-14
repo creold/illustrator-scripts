@@ -1,7 +1,7 @@
 /*
   BatchRenamer.jsx for Adobe Illustrator
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders
-  Date: August, 2022
+  Date: October, 2022
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -20,6 +20,7 @@
   1.1.1 Fixed load user settings
   1.2 Added more units (yards, meters, etc.) support if the document is saved
   1.2.1 Added custom RGB color (idxColor) for artboard indexes
+  1.2.2 Added size correction in large canvas mode
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -53,7 +54,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.2.1'
+        version:  'v.1.2.2'
       },
       CFG = {
         isMac: /mac/i.test($.os),
@@ -61,10 +62,11 @@ function main() {
         rows:       5, // Amount of visible rows
         listHeight: 5 * 32,
         decimal:    ',', // Decimal separator point or comma for width and height
-        precision:  0, // Rounding the artboard or the path width and height to decimal places
+        precision:  2, // Rounding the artboard or the path width and height to decimal places
         isFind:     false, // Default Find and Replace state
         tmpLyr:     'ARTBOARD_INDEX',
         idxColor:   [255, 0, 0], // Artboard index color
+        sf:         activeDocument.scaleFactor ? activeDocument.scaleFactor : 1, // Scale factor for Large Canvas mode
         uiOpacity:  .97 // UI window opacity. Range 0-1
       },
       PH = { // Placeholders
@@ -692,29 +694,29 @@ function rename(target, cfg, cfgPh, obj, objPh) {
 // Generate new name
 function generateName(target, cfg, cfgPh, obj, objPh) {
   var out = [],
-      counter = getStartingNum(cfgPh, obj, objPh),
-      amountUp = Math.abs(counter.up) + target.length,
-      amountDown = Math.abs(counter.down) + target.length;
+      cnt = getStartingNum(cfgPh, obj, objPh),
+      amountUp = Math.abs(cnt.up) + target.length,
+      amountDown = Math.abs(cnt.down) + target.length;
 
   for (var i = 0, len = obj.state.length; i < len; i++) {
     var newName = findAndReplace(cfgPh, obj, i),
         isPre = obj.state[i][0],
         isSuff = obj.state[i][2],
-        counterUp = fillZero(counter.up, amountUp.toString().length),
-        counterDown = fillZero(counter.down, amountDown.toString().length); 
+        cntUp = fillZero(cnt.up, amountUp.toString().length),
+        cntDown = fillZero(cnt.down, amountDown.toString().length); 
     
     var tmpPre = '';
     if (isPre) {
-      tmpPre = rplcPlaceholder(obj.state[i], counterUp, counterDown, obj.pre, cfg, target, objPh);
+      tmpPre = rplcPlaceholder(obj.state[i], cntUp, cntDown, obj.pre, cfg, target, objPh);
     }
 
     var tmpSuff = '';
     if (isSuff) { 
-      tmpSuff = rplcPlaceholder(obj.state[i], counterUp, counterDown, obj.suff, cfg, target, objPh);
+      tmpSuff = rplcPlaceholder(obj.state[i], cntUp, cntDown, obj.suff, cfg, target, objPh);
     }
 
-    counter.up = changeCounter(counter.up, obj.pre, obj.suff, objPh.nu, isPre, isSuff, true);
-    counter.down = changeCounter(counter.down, obj.pre, obj.suff, objPh.nd, isPre, isSuff, false);
+    cnt.up = changeCounter(cnt.up, obj.pre, obj.suff, objPh.nu, isPre, isSuff, true);
+    cnt.down = changeCounter(cnt.down, obj.pre, obj.suff, objPh.nd, isPre, isSuff, false);
 
     out.push(tmpPre + newName + tmpSuff);
   }
@@ -731,18 +733,18 @@ function getStartingNum(cfgPh, obj, objPh) {
   // Parse number up from string    
   var startIdxNumUp = tmpPreSuff.indexOf(tmpNumUp) + tmpNumUp.length,
       endIdxNumUp = tmpPreSuff.indexOf('}', startIdxNumUp);
-  var counterUp = 1 * tmpPreSuff.substring(startIdxNumUp, endIdxNumUp);
-  if (isNaN(counterUp)) counterUp = 0;
-  objPh.nu = tmpNumUp + counterUp + '}';
+  var cntUp = 1 * tmpPreSuff.substring(startIdxNumUp, endIdxNumUp);
+  if (isNaN(cntUp)) cntUp = 0;
+  objPh.nu = tmpNumUp + cntUp + '}';
   
   // Parse number down from string    
   var startIdxNumDown = tmpPreSuff.indexOf(tmpNumDown) + tmpNumUp.length,
       endIdxNumDown = tmpPreSuff.indexOf('}', startIdxNumDown);
-  var counterDown = 1 * tmpPreSuff.substring(startIdxNumDown, endIdxNumDown);
-  if (isNaN(counterDown)) counterDown = 0;
-  objPh.nd = tmpNumDown + counterDown + '}';
+  var cntDown = 1 * tmpPreSuff.substring(startIdxNumDown, endIdxNumDown);
+  if (isNaN(cntDown)) cntDown = 0;
+  objPh.nd = tmpNumDown + cntDown + '}';
 
-  return { 'up': counterUp, 'down': counterDown };
+  return { 'up': cntUp, 'down': cntDown };
 }
 
 // Find and replace in old name
@@ -761,7 +763,7 @@ function findAndReplace(cfgPh, obj, idx) {
 }
 
 // Replace the placeholders in the suffix or prefix with text
-function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
+function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
   var units = getUnits();
       width = height = 0,
       color = (activeDocument.documentColorSpace == DocumentColorSpace.RGB) ? 'RGB' : 'CMYK';
@@ -784,8 +786,8 @@ function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
       break;
   }
   
-  width = ( convertUnits(width, 'px', units) ).toFixed(cfg.precision);
-  height = ( convertUnits(height, 'px', units) ).toFixed(cfg.precision);
+  width = ( cfg.sf * convertUnits(width, 'px', units) ).toFixed(cfg.precision);
+  height = ( cfg.sf * convertUnits(height, 'px', units) ).toFixed(cfg.precision);
 
   for (var prop in ph) {
     var reg = new RegExp(ph[prop], 'gi');
@@ -802,10 +804,10 @@ function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
           val = color;
           break;
         case ph.nu:
-          val = counterUp;
+          val = cntUp;
           break;
         case ph.nd:
-          val = counterDown;
+          val = cntDown;
           break;
         case ph.h:
           val = height.replace('.', cfg.decimal);
@@ -823,15 +825,15 @@ function rplcPlaceholder(row, counterUp, counterDown, str, cfg, target, ph) {
 }
 
 // Change counter for active prefix or suffix
-function changeCounter(counter, pre, suff, ph, isPre, isSuff, isUp) {
+function changeCounter(cnt, pre, suff, ph, isPre, isSuff, isUp) {
   var regUp = new RegExp(ph, 'gi');
   if ((isPre && pre.match(regUp) != null) ||
       (isSuff && suff.match(regUp) != null)) {
-    if (isUp) counter++;
-    else counter--;
+    if (isUp) cnt++;
+    else cnt--;
   }
 
-  return counter;
+  return cnt;
 }
 
 // Add zero to the file name before the indexes are less then size

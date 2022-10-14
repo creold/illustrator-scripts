@@ -1,4 +1,4 @@
-/*
+﻿/*
   StrokeColorFromFill.jsx for Adobe Illustrator
   Description: Sets a stroke color of an object based on an its solid or gradient fill.
                 Adds a stroke, if there is none (not available on Mac OS Illustrator older than CC 2020)
@@ -23,8 +23,15 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
   - via QIWI https://qiwi.com/n/OSOKIN
 
+  NOTICE:
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale
+
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
+
+  Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator

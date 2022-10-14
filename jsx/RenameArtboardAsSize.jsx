@@ -1,7 +1,7 @@
 /*
   RenameArtboardAsSize.jsx for Adobe Illustrator
   Description: The script fills in the name of artboard its size
-  Date: August, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.2 Added more units (yards, meters, etc.) support if the document is saved
+  0.2.1 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -51,11 +52,14 @@ function main() {
       width, height,
       size = '';
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
+
   for (var i = 0, len = doc.artboards.length; i < len; i++) {
     var currAb = doc.artboards[i];
     
-    width = convertUnits(currAb.artboardRect[2] - currAb.artboardRect[0], 'px', CFG.units);
-    height = convertUnits(currAb.artboardRect[1] - currAb.artboardRect[3], 'px', CFG.units);
+    width = CFG.sf * convertUnits(currAb.artboardRect[2] - currAb.artboardRect[0], 'px', CFG.units);
+    height = CFG.sf * convertUnits(currAb.artboardRect[1] - currAb.artboardRect[3], 'px', CFG.units);
 
     if (CFG.isRound) {
       width = Math.round(width);

@@ -1,13 +1,14 @@
 /*
   FitArtboardsToArtwork.jsx for Adobe Illustrator
   Description: Resize each artboard by editable artwork size with paddings
-  Date: June, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
+  0.1.1 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -34,7 +35,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
 var SCRIPT = {
       name: 'Fit Artboards To Artwork',
-      version: 'v.0.1'
+      version: 'v.0.1.1'
     },
     CFG = {
       units: getUnits(), // Active document units
@@ -47,6 +48,9 @@ var SCRIPT = {
     alert('Error\nOpen a document and try again');
     return;
   }
+
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
 
   // Dialog
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -145,10 +149,10 @@ var SCRIPT = {
     var doc = app.activeDocument,
         paddings = {};
 
-    paddings.top = convertUnits( convertToAbsNum(topInp.text, CFG.paddings), CFG.units, 'px' );
-    paddings.bottom = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(bottomInp.text, CFG.paddings), CFG.units, 'px' );
-    paddings.left = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(leftInp.text, CFG.paddings), CFG.units, 'px' );
-    paddings.right = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(rightInp.text, CFG.paddings), CFG.units, 'px' );
+    paddings.top = convertUnits( convertToAbsNum(topInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.bottom = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(bottomInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.left = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(leftInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.right = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(rightInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
 
     selection = null;
     redraw();

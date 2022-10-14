@@ -1,8 +1,8 @@
-/*
+﻿/*
   MoveArtboards.jsx for Adobe Illustrator
   Description: Script for moving artboards range with artwork along the X and Y axis
   Requirements: Adobe Illustrator CS6 and later
-  Date: September, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -13,9 +13,25 @@
   0.2 Added more units (yards, meters, etc.) support if the document is saved
   0.2.1 Added custom RGB color (idxColor) for artboard indexes
   0.2.2 Fixed input activation in Windows OS
+  0.2.3 Added size correction in large canvas mode
+
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+
+  NOTICE:
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
+  This script is provided "as is" without warranty of any kind.
+  Free to use, not for sale
 
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
+
+  Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -25,7 +41,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.2.2'
+        version: 'v.0.2.3'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -86,17 +102,19 @@ function main() {
   var doc = activeDocument,
       currBoardIdx = doc.artboards.getActiveArtboardIndex();
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // INTERFACE
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = ['fill','center'];
-      dialog.opacity = CFG.uiOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = ['fill','center'];
+      win.opacity = CFG.uiOpacity;
 
   // Value fields
-  var abPanel = dialog.add('panel', undefined, LANG.range);
+  var abPanel = win.add('panel', undefined, LANG.range);
       abPanel.orientation = 'column';
       abPanel.alignChildren = ['fill','center'];
       abPanel.margins = CFG.uiMargins;
@@ -109,7 +127,7 @@ function main() {
   var abDescr = abPanel.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
       abDescr.justify = 'left';
 
-  var shiftPanel = dialog.add('panel', undefined, LANG.shift + ', ' + CFG.units);
+  var shiftPanel = win.add('panel', undefined, LANG.shift + ', ' + CFG.units);
       shiftPanel.orientation = 'column';
       shiftPanel.alignChildren = ['left','center'];
       shiftPanel.margins = CFG.uiMargins;
@@ -124,17 +142,17 @@ function main() {
   var inputY = direction.add('edittext', [0, 0, 50, 30], CFG.shift);
 
   if (doc.pageItems.length > CFG.limit) {
-    var warning = dialog.add('statictext', undefined, LANG.warning, { multiline: true });
+    var warning = win.add('statictext', undefined, LANG.warning, { multiline: true });
   }
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.orientation = 'row';
       btns.alignChildren = ['fill', 'center'];
   var cancel = btns.add('button', undefined, LANG.cancel, { name: 'cancel' });
   var ok = btns.add('button', undefined, LANG.ok, { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
@@ -158,23 +176,23 @@ function main() {
     abInput.textselection = abInput.text;
   });
 
-  dialog.onShow = function () {
+  win.onShow = function () {
     showAbIndex(CFG.tmpLyr, CFG.idxColor);
   }
 
-  dialog.onClose = function () {
+  win.onClose = function () {
     removeAbIndex(CFG.tmpLyr);
   }
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
   ok.onClick = okClick;
 
   function okClick() {
     var tmpRange = abInput.text,
         absRange = [], // Range of artboards indexes
         extremeCoord = [], // Range of min & max artboards coordinates
-        shiftX = convertUnits(inputX.text * 1, CFG.units, 'px'),
-        shiftY = convertUnits(inputY.text * 1, CFG.units, 'px');
+        shiftX = convertUnits(inputX.text * 1, CFG.units, 'px') / CFG.sf,
+        shiftY = convertUnits(inputY.text * 1, CFG.units, 'px') / CFG.sf;
 
     // Prepare
     tmpRange = tmpRange.replace(/\s/g, ''); // Remove whitespaces
@@ -207,11 +225,11 @@ function main() {
     doc.artboards.setActiveArtboardIndex(currBoardIdx);
 
     saveSettings();
-    dialog.close();
+    win.close();
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
   // Use Up / Down arrow keys (+ Shift) for change value
   function shiftInputNumValue(item) {

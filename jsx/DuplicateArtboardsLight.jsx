@@ -2,7 +2,7 @@
   DuplicateArtboardsLight.jsx for Adobe Illustrator
   Description: Script for copying the selected Artboard with his artwork
   Requirements: Adobe Illustrator CS6 and later
-  Date: September, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -15,6 +15,7 @@
   0.3 Fixed copying all objects into one layer
   0.4 Added more units (yards, meters, etc.) support if the document is saved
   0.4.1 Fixed input activation in Windows OS. Removed RU localization due to Adobe API bug
+  0.4.2 Added size correction in large canvas mode
 
   Buy Pro version: https://sergosokin.gumroad.com/l/dupartboards
 
@@ -36,7 +37,7 @@ app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 function main() {
   var SCRIPT = {
         name: 'Duplicate Atboards Light',
-        version: 'v.0.4.1'
+        version: 'v.0.4.2'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -77,6 +78,9 @@ function main() {
       currAbIdx = doc.artboards.getActiveArtboardIndex(),
       absArr = [],
       copies = spacing = 0;
+
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
 
   // Collect artboards names for dropdown menu
   for (var i = 0, aLen = doc.artboards.length; i < aLen; i++) {
@@ -187,7 +191,7 @@ function main() {
   function okClick() {
     copies = copiesVal.text = Math.round( convertToAbsNum(copiesVal.text, CFG.copies) );
     spacing = spacingVal.text = convertToAbsNum(spacingVal.text, CFG.spacing);
-    spacing = convertUnits(spacing, CFG.units, 'px');
+    spacing = convertUnits(spacing, CFG.units, 'px') / CFG.sf;
 
     var userView = doc.views[0].screenMode;
     if (copies == 0) {
@@ -229,7 +233,7 @@ function main() {
    * Recalculate the maximum amount of copies at a given spacing
    */
   function recalcCopies() {
-    spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
+    spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' ) / CFG.sf;
     currAbIdx = doc.artboards.getActiveArtboardIndex();
     abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
     overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);

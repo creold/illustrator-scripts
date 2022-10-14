@@ -1,7 +1,7 @@
 /*
   FitSelectionToArtboards.jsx for Adobe Illustrator
   Description: Proportional resizing of objects to fit one in each artboard
-  Date: July, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -10,6 +10,7 @@
   0.1 Initial version
   0.2 Added more options
   0.3 Added silent mode when holding the Alt key
+  0.3.1 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,7 +37,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main() {
   var SCRIPT = {
         name: 'Fit Selection To Artboards',
-        version: 'v.0.3'
+        version: 'v.0.3.1'
       },
       CFG = {
         paddings: 0,
@@ -51,10 +52,6 @@ function main() {
         dlgOpacity: .97 // UI window opacity. Range 0-1
       };
 
-  var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
-      isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
-  CFG.isFlipY = (isRulerTopLeft && isRulerInFourthQuad) ? true : false;
-
   if (!documents.length) {
     alert('Error\nOpen a document and try again');
     return;
@@ -64,6 +61,13 @@ function main() {
     alert('Error\nPlease, select one or more items');
     return;
   }
+
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
+
+  var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
+      isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
+  CFG.isFlipY = (isRulerTopLeft && isRulerInFourthQuad) ? true : false;
 
   var isAltPressed = false;
   if (ScriptUI.environment.keyboardState.altKey) isAltPressed = true;
@@ -137,7 +141,7 @@ function invokeUI(title, cfg) {
   ok.onClick = okClick;
 
   function okClick() {
-    cfg.paddings = convertUnits( convertToAbsNum(padInp.text, cfg.paddings), cfg.units, 'px');
+    cfg.paddings = convertUnits( convertToAbsNum(padInp.text, cfg.paddings), cfg.units, 'px') / cfg.sf;
     cfg.isAll = allRb.value;
     cfg.isFit = fitRb.value;
     cfg.isVisBnds = visRb.value;

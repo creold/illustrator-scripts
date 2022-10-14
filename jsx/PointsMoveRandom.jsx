@@ -1,7 +1,7 @@
 /*
   PointsMoveRandom.jsx for Adobe Illustrator
   Description: Random movement of selected points in an user range
-  Date: September, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -13,6 +13,7 @@
   0.3.1 Fixed 'Fixed H' and 'Fixed V' options and entering identical from / to range
   0.4 Fixed "Illustrator quit unexpectedly" error. Updated units conversion
   0.4.1 Fixed input activation in Windows OS
+  0.4.2 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -40,7 +41,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Points Move Random',
-        version: 'v.0.4.1'
+        version: 'v.0.4.2'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -78,6 +79,9 @@ function main() {
 
   selection = null;
   redraw();
+
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
 
   showUI(selPoints, SCRIPT, CFG, SETTINGS, MSG);
 }
@@ -301,30 +305,30 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       return;
     }
 
-    var range = [],
+    var range = {},
         chanceVal,
         stepVal,
         tmpMinMax,
         errStepMsg = '';
 
     // Validation of numeric inputs
-    range[0] = hFromVal.text = convertToNum(hFromVal.text, -1 * CFG.move);
-    range[1] = hToVal.text = convertToNum(hToVal.text, CFG.move);
-    range[2] = vFromVal.text = convertToNum(vFromVal.text, -1 * CFG.move);
-    range[3] = vToVal.text = convertToNum(vToVal.text, CFG.move);
+    range.x1 = hFromVal.text = convertToNum(hFromVal.text, -1 * CFG.move);
+    range.x2 = hToVal.text = convertToNum(hToVal.text, CFG.move);
+    range.y1 = vFromVal.text = convertToNum(vFromVal.text, -1 * CFG.move);
+    range.y2 = vToVal.text = convertToNum(vToVal.text, CFG.move);
     chanceVal = chanceInp.text = convertToNum(chanceInp.text, CFG.chance);
     stepVal = stepInp.text = convertToNum(stepInp.text, CFG.step);
 
     // Swap values if the start are greater than the end
-    if (range[1] < range[0]) {
-      tmpMinMax = range[0];
-      range[0] = hFromVal.text = range[1];
-      range[1] = hToVal.text = tmpMinMax;
+    if (range.x2 < range.x1) {
+      tmpMinMax = range.x1;
+      range.x1 = hFromVal.text = range.x2;
+      range.x2 = hToVal.text = tmpMinMax;
     }
-    if (range[3] < range[2]) {
-      tmpMinMax = range[2];
-      range[2] = vFromVal.text = range[3];
-      range[3] = vToVal.text = tmpMinMax;
+    if (range.y2 < range.y1) {
+      tmpMinMax = range.y1;
+      range.y1 = vFromVal.text = range.y2;
+      range.y2 = vToVal.text = tmpMinMax;
     }
 
     if (chanceVal < 0) chanceVal = chanceInp.text = 0;
@@ -332,9 +336,9 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
     if (stepVal < 0) stepVal = stepInp.text = CFG.step;
     // Check that the step don't out of the range
-    if (range[0] !== range[1] && (stepVal + range[0]) > range[1])
+    if (range.x1 !== range.x2 && (stepVal + range.x1) > range.x2)
       errStepMsg += 'Horizontal, ';
-    if (range[2] !== range[3] && (stepVal + range[2]) > range[3])
+    if (range.y1 !== range.y2 && (stepVal + range.y1) > range.y2)
       errStepMsg += 'Vertical, ';
     if (errStepMsg.length) {
       alert(MSG.errStepOut + errStepMsg.slice(0, -2));
@@ -360,15 +364,13 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
     // Start move
     movePoint(
       isRandPoint.value ? newPoints : points,
-      range[0],
-      range[1],
-      range[2],
-      range[3],
+      range,
       isHFixed.value,
       isVFixed.value,
       isHandles.value,
       stepVal,
-      CFG.units
+      CFG.units,
+      CFG.sf
     );
 
     redraw();
@@ -516,15 +518,15 @@ function getRandomInRange(min, max, step) {
 }
 
 // Move points
-function movePoint(points, x1, x2, y1, y2, isHFixed, isVFixed, isHandles, step, units) {
+function movePoint(points, range, isHFixed, isVFixed, isHandles, step, units, sf) {
   var deltaX, deltaY;
 
   for (var i = 0, pLen = points.length; i < pLen; i++) {
-    deltaX = (isHFixed || x1 == x2) ? x2 : getRandomInRange(x1, x2, step);
-    deltaY = (isVFixed || y1 == y2) ? y2 : getRandomInRange(y1, y2, step);
+    deltaX = (isHFixed || range.x1 == range.x2) ? range.x2 : getRandomInRange(range.x1, range.x2, step);
+    deltaY = (isVFixed || range.y1 == range.y2) ? range.y2 : getRandomInRange(range.y1, range.y2, step);
 
-    deltaX = convertUnits(deltaX, units, 'px');
-    deltaY = convertUnits(deltaY, units, 'px');
+    deltaX = convertUnits(deltaX, units, 'px') / sf;
+    deltaY = convertUnits(deltaY, units, 'px') / sf;
 
     with (points[i]) {
       if (!isHandles) { // Move the anchor and handles

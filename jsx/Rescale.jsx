@@ -3,7 +3,7 @@
   Description: Automatic scaling of objects to the desired size.
                 If you draw a line on top with the length or height of the desired object,
                 'Old Size' will be filled automatically
-  Date: September, 2022
+  Date: October, 2022
   Author: Nick Grabowski, @Grabovvski
   Co-author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -18,6 +18,7 @@
   0.2.4 Minor improvements
   0.3 Added more units (yards, meters, etc.) support if the document is saved
   0.3.1 Fixed input activation in Windows OS
+  0.3.2 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -44,7 +45,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main () {
   var SCRIPT = {
         name: 'Rescale',
-        version: 'v.0.3.1'
+        version: 'v.0.3.2'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -67,14 +68,16 @@ function main () {
   }
 
   var doc = activeDocument;
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // DIALOG
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
 
-  var oldSizePnl = dialog.add('group {alignment: "center"}');
+  var oldSizePnl = win.add('group {alignment: "center"}');
       oldSizePnl.orientation = 'row';
       oldSizePnl.add('statictext', undefined, 'Old size, ' + CFG.units + ':');
 
@@ -86,14 +89,14 @@ function main () {
     oSizeTxt.active = true;
   }
 
-  var newSizePnl = dialog.add('group {alignment: "center"}');
+  var newSizePnl = win.add('group {alignment: "center"}');
       newSizePnl.orientation = 'row';
       newSizePnl.add('statictext', undefined, 'New size, ' + CFG.units + ':');
 
   var nSizeTxt = newSizePnl.add('edittext', undefined);
       nSizeTxt.characters = 6;
 
-  var option = dialog.add('group {alignment: "center"}');
+  var option = win.add('group {alignment: "center"}');
       option.orientation = 'column';
   var chkCorner = option.add('checkbox', undefined, 'Scale corners radius');
       chkCorner.helpTip = 'Only works with Live Shape';
@@ -103,18 +106,18 @@ function main () {
   var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
       chkRmv.value = true;
 
-  var buttons = dialog.add('group');
+  var buttons = win.add('group');
   var cancel = buttons.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = buttons.add('button', undefined, 'OK',  { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold');
   });
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
   ok.onClick = okClick;
 
   oSizeTxt.onChange = function () {
@@ -127,15 +130,15 @@ function main () {
   var keyPath = selection[0];
   if (keyPath.typename === 'PathItem' && !keyPath.closed && keyPath.pathPoints.length == 2) {
     var keyPathLength = keyPath.length; // If you use a straight line to measure
-    oSizeTxt.text = (convertUnits(keyPathLength, 'px', CFG.units)).toFixed(4);
+    oSizeTxt.text = (CFG.sf * convertUnits(keyPathLength, 'px', CFG.units)).toFixed(4);
     if (CFG.isMac) nSizeTxt.active = true;
   } else {
     chkRmv.enabled = false;
     chkRmv.value = false;
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
   function okClick() {
     try {
@@ -144,7 +147,7 @@ function main () {
           ratio = (newSize / oldSize) * 100;
       // When old and new size are equal
       if (ratio == 100) {
-        dialog.close();
+        win.close();
       }
 
       if (CFG.aiVers > 16) {
@@ -186,7 +189,7 @@ function main () {
 
       if (chkRmv.enabled && chkRmv.value) keyPath.remove();
 
-      dialog.close();
+      win.close();
     } catch (e) {}
   }
 }

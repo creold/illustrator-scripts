@@ -11,6 +11,7 @@
   0.2 Disabled Preview only for Illustrator v.24.3, because Illustrator crashes
   0.3 Added more units (yards, meters, etc.) support if the document is saved
   0.3.1 Removed RU localization due to Adobe API bug
+  0.3.2 Radius replaced by diameter. Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,12 +38,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Numerates Points',
-        version: 'v.0.3.1'
+        version: 'v.0.3.2'
       },
       CFG = {
         aiVers: app.version.slice(0, 4),
         units: getUnits(), // Active document units
-        radius: 4, // Marker radius
+        diameter: 8, // Marker diameter
         font: 6, // Font size, pt
         left: 10, // Margin left
         top: -10, // Margin top
@@ -62,7 +63,7 @@ function main() {
         errDoc: 'Error\nOpen a document and try again',
         errSel: 'Error\nPlease select atleast one object',
         number: 'Start number',
-        radius: 'Marker radius',
+        diameter: 'Marker diameter',
         font: 'Font size, pt',
         left: 'Left margin',
         top: 'Top margin',
@@ -87,24 +88,27 @@ function main() {
       isUndo = false,
       tempPath; // For fix Preview bug
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
+
   getPaths(selection, selPaths);
   getPoints(selPaths, selPoints);
 
   // INTERFACE
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
-      dialog.opacity = CFG.uiOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = ['fill', 'center'];
+      win.opacity = CFG.uiOpacity;
 
   // Value fields
-  var fieldGroup = dialog.add('group');
+  var fieldGroup = win.add('group');
       fieldGroup.orientation = 'row';
       fieldGroup.alignChildren = ['fill', 'center'];
 
   var grpTitle = fieldGroup.add('group');
       grpTitle.orientation = 'column';
   var numTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.number);
-  var radTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.radius + ', ' + CFG.units);
+  var radTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.diameter + ', ' + CFG.units);
   var leftTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.left + ', ' + CFG.units);
   var topTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.top + ', ' + CFG.units);
   var fontTitle = grpTitle.add('statictext', CFG.uiTitle, LANG.font);
@@ -112,19 +116,19 @@ function main() {
   var grpInput = fieldGroup.add('group');
       grpInput.orientation = 'column';
   var numVal = grpInput.add('edittext', CFG.uiField, CFG.start);
-  var radVal = grpInput.add('edittext', CFG.uiField, CFG.radius);
+  var diaVal = grpInput.add('edittext', CFG.uiField, CFG.diameter);
   var leftVal = grpInput.add('edittext', CFG.uiField, CFG.left);
   var topVal = grpInput.add('edittext', CFG.uiField, CFG.top);
   var fontVal = grpInput.add('edittext', CFG.uiField, CFG.font);
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.orientation = 'row';
       btns.alignChildren = ['fill','center'];
   var cancel = btns.add('button', undefined, LANG.cancel, { name: 'cancel' });
   var ok = btns.add('button', undefined, LANG.ok,  { name: 'ok' });
 
-  var grpPreview = dialog.add('group');
+  var grpPreview = win.add('group');
       grpPreview.orientation = 'row';
       grpPreview.alignChildren = ['center','center'];
   var isPreview = grpPreview.add('checkbox', undefined, LANG.preview);
@@ -136,7 +140,7 @@ function main() {
     isPreview.value = CFG.isPreview;
   }
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
@@ -149,16 +153,16 @@ function main() {
 
   // Event listener for isPreview
   isPreview.onClick = previewStart;
-  numVal.onChanging = radVal.onChanging = fontVal.onChanging = previewStart;
+  numVal.onChanging = diaVal.onChanging = fontVal.onChanging = previewStart;
   leftVal.onChanging = topVal.onChanging = previewStart;
 
   numVal.onChange = function () { this.text = convertToNum(this.text, CFG.start); }
   leftVal.onChange = function () { this.text = convertToNum(this.text, CFG.left); }
   topVal.onChange = function () { this.text = convertToNum(this.text, CFG.top); }
 
-  radVal.onChange = function () {
-    this.text = convertToNum(this.text, CFG.radius);
-    if (this.text * 1 <= 0) this.text = CFG.radius;
+  diaVal.onChange = function () {
+    this.text = convertToNum(this.text, CFG.diameter);
+    if (this.text * 1 <= 0) this.text = CFG.diameter;
   }
 
   fontVal.onChange = function () {
@@ -171,9 +175,9 @@ function main() {
     shiftInputNumValue(grpInput.children[i]);
   }
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
 
-  dialog.onClose = function () {
+  win.onClose = function () {
     try {
       if (isUndo) {
         undo();
@@ -193,7 +197,7 @@ function main() {
     if (isPreview.value && isUndo) undo();
     start();
     isUndo = false;
-    dialog.close();
+    win.close();
   }
 
   function previewStart() {
@@ -213,7 +217,7 @@ function main() {
 
   function start() {
     var counter = convertToNum(numVal.text, CFG.start),
-        radius = convertToNum(radVal.text, CFG.radius),
+        diameter = convertToNum(diaVal.text, CFG.diameter),
         leftMargin = convertToNum(leftVal.text, CFG.left),
         topMargin = convertToNum(topVal.text, CFG.top),
         fontSize  = convertToNum(fontVal.text, CFG.font),
@@ -221,12 +225,13 @@ function main() {
         markerGroup, numGroup;
 
     if (fontSize <= 0) fontSize = CFG.font;
-    if (radius <= 0) radius = CFG.radius;
+    if (fontSize > 1296 * CFG.sf) fontSize = 1296 * CFG.sf;
+    if (diameter <= 0) diameter = CFG.diameter;
 
     // Convert value to document units
-    radius = convertUnits(radius, CFG.units, 'px');
-    leftMargin = convertUnits(leftMargin, CFG.units, 'px');
-    topMargin = convertUnits(topMargin, CFG.units, 'px');
+    diameter = convertUnits(diameter, CFG.units, 'px') / CFG.sf;
+    leftMargin = convertUnits(leftMargin, CFG.units, 'px') / CFG.sf;
+    topMargin = convertUnits(topMargin, CFG.units, 'px') / CFG.sf;
 
     tempPath = doc.activeLayer.pathItems.add();
     tempPath.name = 'Temp_Path';
@@ -237,14 +242,14 @@ function main() {
 
     for (var j = 0, pLen = selPoints.length; j < pLen; j++) {
       var currPoint = selPoints[j];
-      drawMarker(currPoint, radius, markerColor, markerGroup);
-      drawNumber(currPoint, fontSize, counter, topMargin, leftMargin, numGroup);
+      drawMarker(currPoint, diameter, markerColor, markerGroup);
+      drawNumber(currPoint, fontSize / CFG.sf, counter, topMargin, leftMargin, numGroup);
       counter++;
     }
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
   function saveSettings() {
     if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
@@ -253,7 +258,7 @@ function main() {
     $file.open('w');
     var pref = {};
     pref.counter = numVal.text;
-    pref.radius = radVal.text;
+    pref.diameter = diaVal.text;
     pref.left = leftVal.text;
     pref.top = topVal.text;
     pref.font = fontVal.text;
@@ -274,7 +279,7 @@ function main() {
         $file.close();
         if (typeof pref != 'undefined') {
           numVal.text = pref.counter;
-          radVal.text = pref.radius;
+          diaVal.text = pref.diameter;
           leftVal.text = pref.left;
           topVal.text = pref.top;
           fontVal.text = pref.font;
@@ -409,12 +414,12 @@ function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-function drawMarker(point, radius, color, container) {
+function drawMarker(point, diameter, color, container) {
   var marker = activeDocument.pathItems.ellipse(
-      point.anchor[1] + radius, // Top
-      point.anchor[0] - radius, // Left
-      2 * radius, // Width
-      2 * radius, // Height
+      point.anchor[1] + diameter * 0.5, // Top
+      point.anchor[0] - diameter * 0.5, // Left
+      diameter, // Width
+      diameter, // Height
       false, // Reversed
       true); // Inscribed
   marker.stroked = false;

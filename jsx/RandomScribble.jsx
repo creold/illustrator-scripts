@@ -1,4 +1,4 @@
-/*
+﻿/*
   RandomScribble.jsx for Adobe Illustrator
   Description: Create random path (scribble) with a given number of points
   Date: September, 2022
@@ -12,8 +12,16 @@
   0.1.1 Fixed "Illustrator quit unexpectedly" error
   0.1.2 Fixed input activation in Windows OS
 
+  Donate (optional):
+  If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
+  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
+  - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
+
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 

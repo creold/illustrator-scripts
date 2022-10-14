@@ -1,7 +1,7 @@
 ﻿/*
   ArtboardsFinder.jsx for Adobe Illustrator
   Description: Search and navigate to artboards by name or size
-  Date: September, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -10,6 +10,7 @@
   0.1 Initial version
   0.1.1 Minor improvements
   0.1.2 Fixed input activation in Windows OS
+  0.1.3 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,7 +38,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Artboards Finder',
-        version: 'v.0.1.2'
+        version: 'v.0.1.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -80,9 +81,11 @@ function main() {
     return;
   }
 
-  var resAbs = []; // Array of found artboards
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+  var resAbs = []; // Array of found artboards
 
   // Dialog
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -186,7 +189,7 @@ function main() {
 
     for (var i = 0; i < filterPnl.children.length; i++) {
       if (filterPnl.children[i].value) {
-        resAbs = getAbsByFilter(i, userInp.text, CFG.units);
+        resAbs = getAbsByFilter(i, userInp.text, CFG.units, CFG.sf);
         break;
       }
     }
@@ -329,9 +332,10 @@ function simulateKeyPress(k, n) {
  * @param {number} key - Search method
  * @param {string} str - Search string
  * @param {string} units - Document units
+ * @param {number} sf - Size scale factor
  * @return {Array} out - Array of matches
  */
-function getAbsByFilter(key, str, units) {
+function getAbsByFilter(key, str, units, sf) {
   var out = [];
 
   for (var i = 0, len = activeDocument.artboards.length; i < len; i++) {
@@ -339,8 +343,8 @@ function getAbsByFilter(key, str, units) {
         abWidth = ab.artboardRect[2] - ab.artboardRect[0],
         abHeight = Math.abs(ab.artboardRect[1] - ab.artboardRect[3]);
 
-    abWidth = convertUnits(abWidth, 'px', units);
-    abHeight = convertUnits(abHeight, 'px', units);
+    abWidth = sf * convertUnits(abWidth, 'px', units);
+    abHeight = sf * convertUnits(abHeight, 'px', units);
 
     switch (key) {
       case 0:

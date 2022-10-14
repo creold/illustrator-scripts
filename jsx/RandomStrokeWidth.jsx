@@ -3,7 +3,7 @@
   Description: Sets random stroke width of selected objects in a range with steps
               Hold Alt on launch to show dialog if showUI: false
               or run in silent mode with the latest settings if showUI: true
-  Date: August, 2022
+  Date: October, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +11,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Minor improvements
+  0.1.2 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -38,9 +39,9 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name    : 'Random Stroke Width',
-        version : 'v.0.1'
+        version : 'v.0.1.2'
       },
-      СFG = {
+      CFG = {
         units     : getPrefUnits(),
         minWidth  : 0.5,
         maxWidth  : 4,
@@ -59,6 +60,9 @@ function main() {
 
   if (!selection.length && selection.typename === 'TextRange') return;
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
+
   var isAltPressed = false;
 
   if (ScriptUI.environment.keyboardState.altKey) {
@@ -67,13 +71,13 @@ function main() {
 
   var paths = getPaths(selection);
 
-  if ((СFG.showUI && !isAltPressed) || (!СFG.showUI && isAltPressed)) { // Show dialog
-    invokeUI(SCRIPT, СFG, SETTINGS, paths);
-  } else if (СFG.showUI && isAltPressed) { // Silent mode with the latest settings
+  if ((CFG.showUI && !isAltPressed) || (!CFG.showUI && isAltPressed)) { // Show dialog
+    invokeUI(SCRIPT, CFG, SETTINGS, paths);
+  } else if (CFG.showUI && isAltPressed) { // Silent mode with the latest settings
     var params = loadSettings(SETTINGS);
-    if (params.length) process(paths, params[0], params[1], params[2], params[3], СFG.units);
+    if (params.length) process(paths, params[0], params[1], params[2], params[3], CFG.units, CFG.sf);
   } else { // Silent mode with the default settings
-    process(paths, СFG.minWidth, СFG.maxWidth, СFG.step, false, СFG.units);
+    process(paths, CFG.minWidth, CFG.maxWidth, CFG.step, false, CFG.units, CFG.sf);
   }
 }
 
@@ -157,7 +161,7 @@ function invokeUI(title, cfg, cfgFile, paths) {
   var btns = dialog.add('group');
       btns.alignChildren = ['fill', 'center'];
 
-  var cancel = btns.add('button', undefined, 'Сancel', { name: 'cancel' });
+  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = btns.add('button', undefined, 'Ok',  { name: 'ok' });
 
   var copyright = dialog.add('statictext', undefined, 'Visit Github');
@@ -187,7 +191,7 @@ function invokeUI(title, cfg, cfgFile, paths) {
         ];
 
     saveSettings(cfgFile, params);
-    var result = process(paths, params[0], params[1], params[2], params[3], cfg.units);
+    var result = process(paths, params[0], params[1], params[2], params[3], cfg.units, cfg.sf);
     if (result) dialog.close();
   }
 
@@ -277,9 +281,10 @@ function getAutoValues(paths, units) {
  * @param {number} maxW - Maximum stoke width
  * @param {number} step - Stroke width value step
  * @param {boolean} isAuto - Get min and max from selection
+ * @param {number} sf - Scale factor
  * @return {boolean} Return the runtime error
  */
-function process(paths, minW, maxW, step, isAuto, units) {
+function process(paths, minW, maxW, step, isAuto, units, sf) {
   if (minW === 0) {
     alert('Error\nThe minimum value must be greater than 0');
     return false;
@@ -303,9 +308,9 @@ function process(paths, minW, maxW, step, isAuto, units) {
   var paths = getPaths(selection);
 
   // Convert values to system units
-  minW = convertUnits(minW, units, 'pt');
-  maxW = convertUnits(maxW, units, 'pt');
-  step = convertUnits(step, units, 'pt');
+  minW = convertUnits(minW, units, 'pt') / sf;
+  maxW = convertUnits(maxW, units, 'pt') / sf;
+  step = convertUnits(step, units, 'pt') / sf;
 
   var defColor = {};
   if (activeDocument.documentColorSpace == DocumentColorSpace.RGB) {

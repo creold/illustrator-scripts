@@ -17,6 +17,7 @@
   0.7.1 Code refactoring
   0.8 Added relative resize option. Minor improvements
   0.8.1 Fixed input activation in Windows OS
+  0.8.2 Added size correction in large canvas mode
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -43,7 +44,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main () {
   var SCRIPT = {
         name: 'Resize To Size',
-        version: 'v.0.8.1'
+        version: 'v.0.8.2'
       },
       CFG = {
         size: 100, // Default size value
@@ -85,15 +86,17 @@ function main () {
       tmpPath,
       isUndo = false;
 
+  // Scale factor for Large Canvas mode
+  CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // DIALOG
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
 
   // Size
-  var sizeGrp = dialog.add('group');
+  var sizeGrp = win.add('group');
       sizeGrp.alignChildren = 'fill';
       sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
 
@@ -113,7 +116,7 @@ function main () {
       deltaRb.alignment = 'bottom';
 
   // Item bounds
-  var bndsPnl = dialog.add('panel', undefined, 'Item dimensions');
+  var bndsPnl = win.add('panel', undefined, 'Item dimensions');
       bndsPnl.orientation = 'row';
       bndsPnl.margins = CFG.uiMargins;
 
@@ -128,7 +131,7 @@ function main () {
   CFG.isInclStroke ? vbRb.value = true : gbRb.value = true;
 
   // Side and reference point
-  var sideGrp = dialog.add('group');
+  var sideGrp = win.add('group');
       sideGrp.spacing = 38;
 
   var sidePnl = sideGrp.add('panel', undefined, 'Scaling side');
@@ -155,7 +158,7 @@ function main () {
   refPointArr[CFG.refActive].value = true; // Get value from Transform panel
 
   // Extra options
-  var prefs = dialog.add('panel', undefined, 'Extra scaling options');
+  var prefs = win.add('panel', undefined, 'Extra scaling options');
       prefs.orientation = 'row';
       prefs.alignChildren = 'left';
       prefs.margins = CFG.uiMargins;
@@ -189,12 +192,12 @@ function main () {
   var isStrokePatt = prefsColTwo.add('checkbox', undefined, 'Stroke Pat\u0332tern'); // Unicode t̲
       isStrokePatt.value = CFG.isScalePattern;
 
-  var hint = dialog.add('statictext', undefined, 'Quick access with ' + CFG.modKey + ' + underlined key/digit');
+  var hint = win.add('statictext', undefined, 'Quick access with ' + CFG.modKey + ' + underlined key/digit');
       hint.justify = 'center';
       hint.enabled = false;
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.alignChildren = 'fill';
 
   var isPreview = btns.add('checkbox', undefined, 'P\u0332review'); // Unicode P̲
@@ -204,7 +207,7 @@ function main () {
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = btns.add('button', undefined, 'OK',  { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   loadSettings();
@@ -225,7 +228,7 @@ function main () {
       kd.preventDefault(); 
   });
 
-  dialog.addEventListener('keydown', function(kd) {
+  win.addEventListener('keydown', function(kd) {
     var key = kd.keyName;
     if (!key) return; // non-English layout
     if (keysList.test(key)) keys[kd.keyName] = true;
@@ -251,7 +254,7 @@ function main () {
     }
   });
 
-  dialog.addEventListener('keyup', function(kd) {
+  win.addEventListener('keyup', function(kd) {
     var key = kd.keyName;
     if (key && keysList.test(key)) delete keys[kd.keyName];
   });
@@ -291,10 +294,10 @@ function main () {
   });
   // End preview
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  dialog.onClose = function () {
+  win.onClose = function () {
     try {  
       if (isUndo) {
         undo();
@@ -333,10 +336,10 @@ function main () {
     sizeInp.text = val;
 
     // Check size limit
-    var pxVal = convertUnits(val, CFG.units, 'px');
+    var pxVal = convertUnits(val, CFG.units, 'px') / CFG.sf;
     if (pxVal > CFG.maxSize) {
       pxVal = CFG.maxSize;
-      sizeInp.text = convertUnits(CFG.maxSize, 'px', CFG.units);
+      sizeInp.text = CFG.sf * convertUnits(CFG.maxSize, 'px', CFG.units);
     }
 
     // Set transformation side key
@@ -400,7 +403,7 @@ function main () {
     }
     isUndo = false;
     saveSettings();
-    dialog.close();
+    win.close();
   }
 
   // Save input data to file
@@ -457,8 +460,8 @@ function main () {
     }
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 }
 
 // Get active document ruler units
@@ -570,7 +573,7 @@ function getSize(item, side, isVB) {
 
   switch (side) {
     case 'L':
-      size = itemBH > itemBW ? itemBH : itemBW;
+      size = Math.max(itemBH, itemBW);
       break;
     case 'W':
       size = itemBW;
