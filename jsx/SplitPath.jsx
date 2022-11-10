@@ -1,8 +1,8 @@
-/*
+﻿/*
   SplitPath.jsx for Adobe Illustrator
   Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
   Requirements: Adobe Illustrator CS6 and above
-  Date: September, 2022
+  Date: November, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -13,6 +13,7 @@
   1.1 Minor improvements
   1.1.1 Fixed "Illustrator quit unexpectedly" error
   1.1.2 Fixed input activation in Windows OS
+  1.2 Added option to save the original filled path
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -40,45 +41,27 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'SplitPath',
-        version: 'v.1.1.2'
+        version: 'v.1.2'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
       },
       LANG = { 
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errSel: { en: 'Error\nPlease, select two or more objects',
-                  ru: 'Ошибка\nВыделите 2 или более объекта' },
-        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
-                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-        errFill: { en: 'Error\nPlease, fill the mask object in any color or ungroup it',
-                  ru: 'Ошибка\nДобавьте объекту для вырезания любую заливку цветом или разгруппируйте ее'},
+        errFill: { en: 'Error\nPlease, fill the mask path in any color or ungroup it',
+                  ru: 'Ошибка\nДобавьте фигуре для вырезания любую заливку цветом или разгруппируйте ее'},
         errOpen: { en: 'Error\nTo use Intersect add in selection atleast one opened path', 
                   ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 незамкнутую линию'},
         errClose: { en: 'Error\nTo use Intersect add in selection atleast one closed path',
                     ru: 'Ошибка\nДля использования метода Пересечение добавьте хотя бы 1 замкнутую линию'},
         minus: { en: 'Minus Front', ru: 'Минус верхний'},
         intersect: { en: 'Intersect', ru: 'Пересечение'},
+        keep: { en: 'Keep original filled path', ru: 'Оставить путь с заливкой'},
         cancel: { en: 'Cancel', ru: 'Отмена' },
         ok: { en: 'Ok', ru: 'Готово' }
       };
 
-  if (CFG.aiVers < 16) {
-    alert(LANG.errVers);
-    return;
-  }
-
-  if (!documents.length) {
-    alert(LANG.errDoc);
-    return;
-  }
-
-  if (!selection.length || selection.typename == 'TextRange') {
-    alert(LANG.errSel);
-    return;
-  }
+  if (!isCorrectEnv('version:16', 'selection')) return;
 
   var info = {
         isFilled: false,
@@ -91,14 +74,13 @@ function main() {
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
 
   // Create Main Window
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = 'fill';
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = 'fill';
 
   // Split method
-  var method = dialog.add('group');
+  var method = win.add('group');
       method.orientation = 'row';
-      method.margins = [0, 10, 0, 10];
   var minusRadio = method.add('radiobutton', undefined, LANG.minus);
       minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
@@ -107,15 +89,17 @@ function main() {
   } else {
     minusRadio.active = true;
   }
+  
+  var isKeepPath = win.add('checkbox', undefined, LANG.keep);
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.orientation = 'row';
       btns.alignment = 'center';
   var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
   var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
   
   copyright.addEventListener('mousedown', function () {
@@ -123,7 +107,7 @@ function main() {
   });
 
   // Begin access key shortcut
-  dialog.addEventListener('keydown', function(kd) {
+  win.addEventListener('keydown', function(kd) {
     var key = kd.keyName;
     if (key.match(/1/)) minusRadio.notify();
     if (key.match(/2/)) intersectRadio.notify();
@@ -148,21 +132,70 @@ function main() {
       return;
     }
 
-    try {
-      if (minusRadio.value) { 
-        minusFront();
-      } else {
-        intersect(SCRIPT.name);
-      }
-    } catch (e) {}
+    releaseGroups(selection);
+    if (isKeepPath.value) keepFilledPaths();
+    if (minusRadio.value) { 
+      cutPaths();
+    } else {
+      intersect(SCRIPT.name);
+    }
 
-    dialog.close();
+    win.close();
   }
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
+}
+
+// Check the script environment
+function isCorrectEnv() {
+  var lang = {
+        errApp: { en: 'Error\nRun script from Adobe Illustrator',
+                  ru: 'Ошибка\nЗапустите скрипт в Adobe Illustrator' },
+        errDoc: { en: 'Error\nOpen a document and try again',
+                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
+        errSel: { en: 'Error\nPlease, select stroked paths and filled shape',
+                  ru: 'Ошибка\nВыделите контурные линии и фигуру с заливкой' },
+        errVers: { en: 'Error\nSorry, script only works in Adobe Illustrator above v.',
+                  ru: 'Ошибка\nСкрипт работает в Adobe Illustrator выше v.' },
+      },
+      args = ['app', 'document'];
+  args.push.apply(args, arguments);
+
+  for (var i = 0; i < args.length; i++) {
+    var arg = args[i].toString().toLowerCase();
+    switch (true) {
+      case /app/g.test(arg):
+        if (!/illustrator/i.test(app.name)) {
+          alert(lang.errApp);
+          return false;
+        }
+        break;
+      case /version/g.test(arg):
+        var rqdVers = parseFloat(arg.split(':')[1]);
+        if (parseFloat(app.version) < rqdVers) {
+          alert(lang.errVers + rqdVers);
+          return false;
+        }
+        break;
+      case /document/g.test(arg):
+        if (!documents.length) {
+          alert(lang.errDoc);
+          return false;
+        }
+        break;
+      case /selection/g.test(arg):
+        if (!selection.length || selection.typename === 'TextRange') {
+          alert(lang.errSel);
+          return false;
+        }
+        break;
+    }
+  }
+
+  return true;
 }
 
 // Simulate keyboard keys on Windows OS via VBScript
@@ -188,18 +221,11 @@ function simulateKeyPress(k, n) {
   } catch(e) {}
 }
 
-// Minus Front method
-function minusFront() {
-  releaseGroups(selection);
-  cutPaths();
-}
-
 // Intersect method
 function intersect(name) {
   var saveSel = [],
       saveFill = [];
 
-  releaseGroups(selection);
   saveState(saveSel, saveFill);
   addTopRectangle(name);
 
@@ -226,28 +252,56 @@ function intersect(name) {
 
 // Searching unfilled objects
 function checkFill(arr, attr) {
-  for (var i = 0, aLen = arr.length; i < aLen; i++) {
-    var currItem = arr[i];
+  var item = null;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    item = arr[i];
     try {
-      switch (currItem.typename) {
+      switch (item.typename) {
         case 'GroupItem':
-          checkFill(currItem.pageItems);
+          checkFill(item.pageItems, attr);
           break;
         case 'PathItem':
-          if (currItem.filled) attr.isFilled = true;
-          if (currItem.closed) attr.isClosed = true;
-          if (!currItem.closed) attr.isOpened = true;
+          if (item.filled) attr.isFilled = true;
+          if (item.closed) attr.isClosed = true;
+          if (!item.closed) attr.isOpened = true;
           break;
         case 'CompoundPathItem':
-          if (currItem.pathItems[0].filled && currItem.pathItems[0].closed) attr.isFilled = true;
-          if (currItem.pathItems[0].closed) attr.isClosed = true;
-          if (!currItem.pathItems[0].closed) attr.isOpened = true;
+          if (item.pathItems.length) {
+            var zero = item.pathItems[0];
+            if (zero.filled && zero.closed) attr.isFilled = true;
+            if (zero.closed) attr.isClosed = true;
+            if (!zero.closed) attr.isOpened = true;
+          }
           break;
         default:
           break;
       }
     } catch (e) { }
   }
+}
+
+// Ungroup array
+function releaseGroups(arr) {
+  var childArr = getChildAll(arr);
+
+  if (childArr.length < 1) {
+    arr.remove();
+    return;
+  }
+
+  var item = null;
+  for (var i = 0, cLen = childArr.length; i < cLen; i++) {
+    item = childArr[i];
+    try {
+      if (item.parent.typename !== 'Layer') {
+        item.move(arr, ElementPlacement.PLACEBEFORE);
+      }
+      if (item.typename === 'GroupItem' || item.typename === 'Layer') {
+        releaseGroups(item);
+      }
+    } catch (e) { }
+  }
+  app.redraw();
 }
 
 function getChildAll(arr) {
@@ -267,42 +321,35 @@ function getChildAll(arr) {
   return childsArr;
 }
 
-// Ungroup array
-function releaseGroups(arr) {
-  var childArr = getChildAll(arr);
-
-  if (childArr.length < 1) {
-    arr.remove();
-    return;
+function keepFilledPaths() {
+  var item = null,
+      dup = null;
+  for (var i = 0, len = selection.length; i < len; i++) {
+    item = selection[i];
+    if ((item.typename === 'PathItem' && item.filled) ||
+        (item.typename === 'CompoundPathItem' && item.pathItems[0].filled)) {
+      dup = selection[i].duplicate();
+      dup.selected = false;
+    }
   }
-
-  for (var i = 0, cLen = childArr.length; i < cLen; i++) {
-    var currItem = childArr[i];
-    try {
-      if (currItem.parent.typename !== 'Layer') {
-        currItem.move(arr, ElementPlacement.PLACEBEFORE);
-      }
-      if (currItem.typename === 'GroupItem' || currItem.typename === 'Layer') {
-        releaseGroups(currItem);
-      }
-    } catch (e) { }
-  }
-  app.redraw();
 }
 
 function saveState(sel, fills) {
+  var item = null;
   for (var i = 0, selLen = selection.length; i < selLen; i++) {
-    var currItem = selection[i];
+    item = selection[i];
     try {
-      switch (currItem.typename) {
+      switch (item.typename) {
         case 'PathItem':
-          if (currItem.filled && currItem.closed) fills.push(currItem);
-          if (!currItem.closed) sel.push(currItem);
+          if (item.filled && item.closed) fills.push(item);
+          if (!item.closed) sel.push(item);
           break;
         case 'CompoundPathItem':
-          var zeroItem = currItem.pathItems[0];
-          if (zeroItem.filled && zeroItem.closed) fills.push(currItem);
-          if (!zeroItem.closed) sel.push(currItem);
+          if (item.pathItems.length) {
+            var zero = item.pathItems[0];
+            if (zero.filled && zero.closed) fills.push(item);
+            if (!zero.closed) sel.push(item);
+          }
           break;
         default:
           break;

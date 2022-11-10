@@ -8,7 +8,7 @@
 ## 👨‍💻 Hi
 This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code.
 
-The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022 (Windows), CC 2018-2022 (Mac OS).   
+The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022, 2023 (Windows), CC 2018-2023 (Mac OS).   
 
 ## How to download one script 
 1. In the script description, click the "Direct Link" button.
@@ -30,7 +30,9 @@ The descriptions for each file can be found in the file’s header text. Test en
 [Download archive]: https://bit.ly/2M0j95N
 
 #### Variant 2 — Drag & Drop
-Drag and drop the script file (JS or JSX) into Adobe Illustrator Window
+Drag and drop the script file (JS or JSX) onto the tabs of Illustrator documents. If you drag it to the area of the open document, the script may not work correctly (Adobe bug).  
+
+![drag](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
 
 #### Variant 3 — Use extensions
 I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify which folder your script files are stored in.
@@ -101,7 +103,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Path](md/Path.md)  
 
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 14.10.2022`
-* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 14.09.2022)`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
 
 ### [Select](md/Select.md)  
