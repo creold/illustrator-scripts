@@ -27,7 +27,7 @@
   Released under the MIT license.
   http://opensource.org/licenses/mit-license.php
 
-  Check other author's scripts: https://github.com/creold
+  Check my other scripts: https://github.com/creold
 */
 
 //@target illustrator

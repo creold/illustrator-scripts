@@ -40,7 +40,34 @@
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladygin.pro/products/lascripts/
 
-## 📜 Категории
+> #### Внимание
+> Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2023 на Мак и Виндовс.
+
+## Поддержка
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [FanTalks](https://fantalks.io/r/sergey) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Donatty]: https://donatty.com/sergosokin
+[DonatePay]: https://new.donatepay.ru/@osokin
+
+<a href="https://fantalks.io/r/sergey">
+  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
+</a>
+
+<a href="https://yoomoney.ru/to/410011149615582">
+  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
+</a>
+
+<a href="https://donatty.com/sergosokin">
+  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
+</a>
+
+<a href="https://new.donatepay.ru/@osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
+</a>
+
+## Категории
 Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
 
 [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -109,7 +136,7 @@
 ### [Path](md/Path.ru.md)  
 Скрипты, изменяющие пути
 
-* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#pointsmoverandom) `upd, 14.10.2022`
+* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#points-move-random) `upd, 14.10.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
 
@@ -147,31 +174,7 @@
 
 * [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `(upd, 14.09.2022)`
 
-## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee](https://www.buymeacoffee.com/osokin) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
-
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
-[ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Donatty]: https://donatty.com/sergosokin
-[DonatePay]: https://new.donatepay.ru/@osokin
-
-<a href="https://www.buymeacoffee.com/osokin">
-  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://yoomoney.ru/to/410011149615582">
-  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
-</a>
-
-<a href="https://donatty.com/sergosokin">
-  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
-</a>
-
-<a href="https://new.donatepay.ru/@osokin">
-  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
-</a>
-
-## 🗣 Отзывы
+## Отзывы
 * *I am very thankful for such a nice and useful scripts.
 It makes my life easy and more productive* - Rizwan Abuzar
 * *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts.* - Nitcho
@@ -184,18 +187,18 @@ It makes my life easy and more productive* - Rizwan Abuzar
 
 Не забывайте поделиться ссылкой со знакомыми дизайнерами 🙂 
 
-## 🤝 Развитие
+## Развитие
 
 Нашли ошибку? [Создайте запрос](https://github.com/creold/illustrator-scripts/issues) на Github или напишите мне на почту.
 
-## 🔬 Блог
+## Блог
 Советы, трюки и баги при написании скриптов для Adobe Illustrator: [English](https://aiscripts.medium.com), [Русский](https://ais.sergosokin.ru/blog/).
 
-## ✉️ Контакты
+## Контакты
 Email <hi@sergosokin.ru>  
 Telegram [@sergosokin](https://t.me/sergosokin)
 
-### 📝 Лицензия
+### Лицензия
 
 Скрипты распространяются по лицензии MIT.   
 Больше деталей во вложенном файле LICENSE.

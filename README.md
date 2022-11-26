@@ -5,7 +5,7 @@
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
-## 👨‍💻 Hi
+## Hi
 This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code.
 
 The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022, 2023 (Windows), CC 2018-2023 (Mac OS).   
@@ -40,7 +40,35 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladygin.pro/products/lascripts/
 
-## 📜 Categories
+> #### Warning
+> To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
+
+## Donate
+You can support my work on new scripts via [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+
+[FanTalks]: https://fantalks.io/r/sergey
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Donatty]: https://donatty.com/sergosokin
+[DonatePay]: https://new.donatepay.ru/@osokin
+
+<a href="https://fantalks.io/r/sergey">
+  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
+</a>
+
+<a href="https://yoomoney.ru/to/410011149615582">
+  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
+</a>
+
+<a href="https://donatty.com/sergosokin">
+  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
+</a>
+
+<a href="https://new.donatepay.ru/@osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
+</a>
+
+## Categories
 Click the category name to learn more about the scripts in the selected category.   
 
 [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -102,7 +130,7 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Path](md/Path.md)  
 
-* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 14.10.2022`
+* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `upd, 14.10.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
 
@@ -136,32 +164,7 @@ Click the category name to learn more about the scripts in the selected category
 
 * [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `(upd, 14.09.2022)`
 
-## 💸 Donate
-You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
-
-[Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
-[ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Donatty]: https://donatty.com/sergosokin
-[DonatePay]: https://new.donatepay.ru/@osokin
-
-<a href="https://www.buymeacoffee.com/osokin">
-  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://yoomoney.ru/to/410011149615582">
-  <img width="111" height="40" src="https://i.ibb.co/wwrYWJ5/yoomoney-badge.png">
-</a>
-
-<a href="https://donatty.com/sergosokin">
-  <img width="111" height="40" src="https://i.ibb.co/s61FGCn/donatty-badge.png">
-</a>
-
-<a href="https://new.donatepay.ru/@osokin">
-  <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
-</a>
-
-## 🗣 Testimonials
+## Testimonials
 * *I am very thankful for such a nice and useful scripts.
 It makes my life easy and more productive* - Rizwan Abuzar
 * *You are a hero. Thank you for all your hard work improving illustrator so it saves countless hours for people worldwide via your scripts* - Nitcho
@@ -174,18 +177,18 @@ It makes my life easy and more productive* - Rizwan Abuzar
 
 Don't forget sharing link with a friend 🙂 
 
-## 🤝 Contribute
+## Contribute
 
 Found a bug? Please [submit a new issues](https://github.com/creold/illustrator-scripts/issues) on GitHub.
 
-## 🔬 Blog
+## Blog
 Tips, tricks and scripts bugs for Adobe Illustrator: [English](https://aiscripts.medium.com), [Русский](https://ais.sergosokin.ru/blog/).
 
-## ✉️ Contact
+## Contact
 Email <hi@sergosokin.ru>  
 Telegram [@sergosokin](https://t.me/sergosokin)
 
-### 📝 License
+### License
 
 All scripts is licensed under the MIT licence.  
 See the included LICENSE file for more details.

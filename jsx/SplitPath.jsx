@@ -17,7 +17,7 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
-  - via Buymeacoffee https://www.buymeacoffee.com/osokin
+  - via FanTalks https://fantalks.io/r/sergey
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
@@ -31,7 +31,7 @@
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
-  Check other author's scripts: https://github.com/creold
+  Check my other scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -342,13 +342,13 @@ function saveState(sel, fills) {
       switch (item.typename) {
         case 'PathItem':
           if (item.filled && item.closed) fills.push(item);
-          if (!item.closed) sel.push(item);
+          if (!item.closed || !item.filled) sel.push(item);
           break;
         case 'CompoundPathItem':
           if (item.pathItems.length) {
             var zero = item.pathItems[0];
             if (zero.filled && zero.closed) fills.push(item);
-            if (!zero.closed) sel.push(item);
+            if (!zero.closed || !zero.filled) sel.push(item);
           }
           break;
         default:

@@ -29,15 +29,15 @@
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
 
 ## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee](https://www.buymeacoffee.com/osokin) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [FanTalks](https://fantalks.io/r/sergey) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
-<a href="https://www.buymeacoffee.com/osokin">
-  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+<a href="https://fantalks.io/r/sergey">
+  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
