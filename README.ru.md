@@ -161,6 +161,11 @@
 * [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
 * [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
 
+### [Text](md/Text.ru.md)  
+Скрипты для работы с текстовыми объектами
+
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `(new, 07.12.2022)`
+
 ### [Utility](md/Utility.ru.md)  
 Вспомогательные скрипты
 
