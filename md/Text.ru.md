@@ -1,5 +1,5 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
-# View | Adobe Illustrator Scripts
+# Text | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Скачивания-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 

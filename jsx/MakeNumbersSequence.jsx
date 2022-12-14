@@ -256,12 +256,6 @@ function polyfills() {
     }
     return '' + str;
   };
-  Array.prototype.forEach = function (callback, startPos, inc) {
-    startPos = startPos || 0;
-    inc = inc || 1;
-    for (var i = startPos; i < this.length; i += inc)
-      callback(this[i], i, this);
-  };
 }
 
 // Get TextFrames array from collection
