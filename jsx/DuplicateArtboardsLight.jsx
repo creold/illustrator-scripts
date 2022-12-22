@@ -2,7 +2,7 @@
   DuplicateArtboardsLight.jsx for Adobe Illustrator
   Description: Script for copying the selected Artboard with his artwork
   Requirements: Adobe Illustrator CS6 and later
-  Date: October, 2022
+  Date: December, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -14,13 +14,14 @@
   0.2.2 Performance optimization
   0.3 Fixed copying all objects into one layer
   0.4 Added more units (yards, meters, etc.) support if the document is saved
-  0.4.1 Fixed input activation in Windows OS. Removed RU localization due to Adobe API bug
+  0.4.1 Fixed input activation in Windows OS. Removed RU localization
   0.4.2 Added size correction in large canvas mode
+  0.4.3 Added new units API for CC 2023 v27.1.1
 
   Buy Pro version: https://sergosokin.gumroad.com/l/dupartboards
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
+  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale.
 
@@ -37,7 +38,7 @@ app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 function main() {
   var SCRIPT = {
         name: 'Duplicate Atboards Light',
-        version: 'v.0.4.2'
+        version: 'v.0.4.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -75,7 +76,7 @@ function main() {
 
   var doc = activeDocument,
       maxCopies = ((CFG.aiVers >= 22) ? 1000 : 100) - doc.artboards.length, // Artboards limit
-      currAbIdx = doc.artboards.getActiveArtboardIndex(),
+      curAbIdx = doc.artboards.getActiveArtboardIndex(),
       absArr = [],
       copies = spacing = 0;
 
@@ -102,7 +103,7 @@ function main() {
       abGroup.alignChildren = ['fill', 'top'];
       abGroup.add('statictext', undefined, 'Select artboard');
   var abIdx = abGroup.add('dropdownlist', CFG.uiTitle, absArr);
-      abIdx.selection = currAbIdx;
+      abIdx.selection = curAbIdx;
 
   var fieldGroup = dialog.add('group');
       fieldGroup.orientation = 'row';
@@ -141,9 +142,9 @@ function main() {
   loadSettings();
 
   spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
-  currAbIdx = doc.artboards.getActiveArtboardIndex();
+  curAbIdx = doc.artboards.getActiveArtboardIndex();
 
-  var abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
+  var abCoord = getArtboardCoordinates(curAbIdx, CFG.tmpLyr);
   var overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
 
   copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
@@ -212,7 +213,7 @@ function main() {
     try {
       for (var i = 0; i < copies; i++) {
         suffix = CFG.suffix + fillZero((i + 1), copies.toString().length);
-        duplicateArtboard(currAbIdx, abItems, spacing, suffix, i);
+        duplicateArtboard(curAbIdx, abItems, spacing, suffix, i);
       }
     } catch (e) {}
 
@@ -234,8 +235,8 @@ function main() {
    */
   function recalcCopies() {
     spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' ) / CFG.sf;
-    currAbIdx = doc.artboards.getActiveArtboardIndex();
-    abCoord = getArtboardCoordinates(currAbIdx, CFG.tmpLyr);
+    curAbIdx = doc.artboards.getActiveArtboardIndex();
+    abCoord = getArtboardCoordinates(curAbIdx, CFG.tmpLyr);
     overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
     copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
     if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
@@ -354,16 +355,16 @@ function unlockLayers(_layers) {
 function removeNote(_layers, lKey, hKey) {
   var regexp = new RegExp(lKey + '|' + hKey, 'gi');
   for (var i = 0, len = _layers.length; i < len; i++) {
-    var currLayer = _layers[i],
+    var curLayer = _layers[i],
         allItems = [];
-    if (currLayer.layers.length > 0) {
-      removeNote(currLayer.layers, lKey, hKey);
+    if (curLayer.layers.length > 0) {
+      removeNote(curLayer.layers, lKey, hKey);
     }
     try {
-      getItems(currLayer.pageItems, allItems);
+      getItems(curLayer.pageItems, allItems);
       for (var j = 0, iLen = allItems.length; j < iLen; j++) {
-        var currItem = allItems[j];
-        currItem.note = currItem.note.replace(regexp, '');
+        var curItem = allItems[j];
+        curItem.note = curItem.note.replace(regexp, '');
       }
     } catch (e) {}
   }
@@ -378,20 +379,20 @@ function removeNote(_layers, lKey, hKey) {
 function saveItemsState(_layers, lKey, hKey) {
   var allItems = [];
   for (var i = 0, len = _layers.length; i < len; i++) {
-    var currLayer = _layers[i];
-    if (currLayer.layers.length > 0) {
-      saveItemsState(currLayer.layers, lKey, hKey);
+    var curLayer = _layers[i];
+    if (curLayer.layers.length > 0) {
+      saveItemsState(curLayer.layers, lKey, hKey);
     }
-    getItems(currLayer.pageItems, allItems);
+    getItems(curLayer.pageItems, allItems);
     for (var j = 0, iLen = allItems.length; j < iLen; j++) {
-      var currItem = allItems[j];
-      if (currItem.locked) {
-        currItem.locked = false;
-        currItem.note += lKey;
+      var curItem = allItems[j];
+      if (curItem.locked) {
+        curItem.locked = false;
+        curItem.note += lKey;
       }
-      if (currItem.hidden) {
-        currItem.hidden = false;
-        currItem.note += hKey;
+      if (curItem.hidden) {
+        curItem.hidden = false;
+        curItem.note += hKey;
       }
     }
   }
@@ -408,20 +409,20 @@ function restoreItemsState(_layers, lKey, hKey) {
   var allItems = [],
       regexp = new RegExp(lKey + '|' + hKey, 'gi');
   for (var i = 0, len = _layers.length; i < len; i++) {
-    var currLayer = _layers[i];
-    if (currLayer.layers.length > 0) {
-      restoreItemsState(currLayer.layers, lKey, hKey);
+    var curLayer = _layers[i];
+    if (curLayer.layers.length > 0) {
+      restoreItemsState(curLayer.layers, lKey, hKey);
     }
-    getItems(currLayer.pageItems, allItems);
+    getItems(curLayer.pageItems, allItems);
     for (var j = 0, iLen = allItems.length; j < iLen; j++) {
-      var currItem = allItems[j];
-      if (currItem.note.match(lKey) != null) {
-        currItem.note = currItem.note.replace(regexp, '');
-        currItem.locked = true;
+      var curItem = allItems[j];
+      if (curItem.note.match(lKey) != null) {
+        curItem.note = curItem.note.replace(regexp, '');
+        curItem.locked = true;
       }
-      if (currItem.note.match(hKey) != null) {
-        currItem.note = currItem.note.replace(regexp, '');
-        currItem.hidden = true;
+      if (curItem.note.match(hKey) != null) {
+        curItem.note = curItem.note.replace(regexp, '');
+        curItem.hidden = true;
       }
     }
   }
@@ -434,15 +435,15 @@ function restoreItemsState(_layers, lKey, hKey) {
  */
 function getItems(obj, arr) {
   for (var i = 0, len = obj.length; i < len; i++) {
-    var currItem = obj[i];
+    var curItem = obj[i];
     try {
-      switch (currItem.typename) {
+      switch (curItem.typename) {
         case 'GroupItem':
-          arr.push(currItem);
-          getItems(currItem.pageItems, arr);
+          arr.push(curItem);
+          getItems(curItem.pageItems, arr);
           break;
         default:
-          arr.push(currItem);
+          arr.push(curItem);
           break;
       }
     } catch (e) {}
@@ -593,25 +594,32 @@ function getDuplicates(collection) {
  */
 function getUnits() {
   if (!documents.length) return '';
-  switch (activeDocument.rulerUnits) {
-    case RulerUnits.Pixels: return 'px';
-    case RulerUnits.Points: return 'pt';
-    case RulerUnits.Picas: return 'pc';
-    case RulerUnits.Inches: return 'in';
-    case RulerUnits.Millimeters: return 'mm';
-    case RulerUnits.Centimeters: return 'cm';
-    case RulerUnits.Unknown: // Parse new units only for the saved doc
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
       var xmp = activeDocument.XMPString;
-      // Example: <stDim:unit>Yards</stDim:unit>
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
       }
       break;
+    default: return 'px';
   }
-  return 'px'; // Default
 }
 
 /**
@@ -621,8 +629,8 @@ function getUnits() {
  * @param {string} newUnits - Final units
  * @return {number} Converted value 
  */
-function convertUnits(value, currUnits, newUnits) {
-  return UnitValue(value, currUnits).as(newUnits);
+function convertUnits(value, curUnits, newUnits) {
+  return UnitValue(value, curUnits).as(newUnits);
 }
 
 /**

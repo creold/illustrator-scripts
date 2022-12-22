@@ -36,7 +36,10 @@
 ## MakeTrappingStroke
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeTrappingStroke.jsx-FF6900.svg)](http://bit.do/mktrapstroke) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Для препресса применяет к обводке цвет на основе заливки объекта при включенном атрибуте Overprint Stroke. В Мак ОС версии Иллюстратора обводки не всегда добавляются на несколько объектов с опцией `Force add stroke`. Если столкнулись с проблемой, то добавьте вручную любую обводку объектам и потом запустите скрипт.
+Для препресса применяет к обводке цвет на основе заливки объекта при включенном атрибуте Overprint Stroke. 
+
+> **Note**   
+> В Мак ОС версии Иллюстратора обводки не всегда добавляются на несколько объектов с опцией `Force add stroke`. Если столкнулись с проблемой, то добавьте вручную любую обводку объектам и потом запустите скрипт.
 
 ![MakeTrappingStroke](https://i.ibb.co/QQkJ451/Make-Trapping-Stroke.gif)
 

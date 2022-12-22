@@ -55,7 +55,9 @@
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectPointsByType.jsx-FF6900.svg)](http://bit.do/selptsbyty) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выделяет точки на выбранных объектах в соответствии с типом. Возможностей выбора пока больше, чем в плагинах у Astute Graphics :).  
-*Перед запуском скрипта скройте рамку `View → Hide Bounding Box`, чтобы видеть выделяемые точки.*   
+
+> **Note**   
+Перед запуском скрипта скройте рамку `View → Hide Bounding Box`, чтобы видеть выделяемые точки.   
 
 <a href="https://youtu.be/pjHmBDLIWbw">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">

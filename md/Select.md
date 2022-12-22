@@ -55,7 +55,9 @@ After using the Lasso tool <kbd>A</kbd> or Direct Selection Tool <kbd>Q</kbd>, b
 [![Direct](https://img.shields.io/badge/Direct%20Link-SelectPointsByType.jsx-FF6900.svg)](http://bit.do/selptsbyty) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
-Select `View → Hide Bounding Box` to see active points in real time.   
+
+> **Note**   
+> Select `View → Hide Bounding Box` to see active points in real time.   
 
 <a href="https://youtu.be/pjHmBDLIWbw">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">

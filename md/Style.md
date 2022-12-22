@@ -36,7 +36,10 @@ Convert selection colors to Grayscale and set identical Opacity value.
 ## MakeTrappingStroke
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeTrappingStroke.jsx-FF6900.svg)](http://bit.do/mktrapstroke) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Sets the stroke color based on the fill of the object, with the Overprint Stroke attribute enabled, for prepress. In the Mac OS version of Adobe Illustrator strokes are not always added to multiple objects with the `Force add stroke` option. If you have a problem on Mac, manually add any stroke to objects and then run the script.
+Sets the stroke color based on the fill of the object, with the Overprint Stroke attribute enabled, for prepress. 
+
+> **Note**   
+> In the Mac OS version of Adobe Illustrator strokes are not always added to multiple objects with the `Force add stroke` option. If you have a problem on Mac, manually add any stroke to objects and then run the script.
 
 ![MakeTrappingStroke](https://i.ibb.co/QQkJ451/Make-Trapping-Stroke.gif)
 

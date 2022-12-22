@@ -1,7 +1,7 @@
 /*
   FitArtboardsToArtwork.jsx for Adobe Illustrator
   Description: Resize each artboard by editable artwork size with paddings
-  Date: October, 2022
+  Date: December, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Added size correction in large canvas mode
+  0.1.2 Added new units API for CC 2023 v27.1.1
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -19,7 +20,7 @@
   - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
+  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -35,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
 var SCRIPT = {
       name: 'Fit Artboards To Artwork',
-      version: 'v.0.1.1'
+      version: 'v.0.1.2'
     },
     CFG = {
       units: getUnits(), // Active document units
@@ -194,25 +195,32 @@ function resizeArtboard(ab, idx, paddings) {
 // Get active document ruler units
 function getUnits() {
   if (!documents.length) return '';
-  switch (activeDocument.rulerUnits) {
-    case RulerUnits.Pixels: return 'px';
-    case RulerUnits.Points: return 'pt';
-    case RulerUnits.Picas: return 'pc';
-    case RulerUnits.Inches: return 'in';
-    case RulerUnits.Millimeters: return 'mm';
-    case RulerUnits.Centimeters: return 'cm';
-    case RulerUnits.Unknown: // Parse new units only for the saved doc
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
       var xmp = activeDocument.XMPString;
-      // Example: <stDim:unit>Yards</stDim:unit>
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
       }
       break;
+    default: return 'px';
   }
-  return 'px'; // Default
 }
 
 // Convert units of measurement

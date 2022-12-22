@@ -3,7 +3,7 @@
   Description: Automatic scaling of objects to the desired size.
                 If you draw a line on top with the length or height of the desired object,
                 'Old Size' will be filled automatically
-  Date: October, 2022
+  Date: December, 2022
   Author: Nick Grabowski, @Grabovvski
   Co-author: Sergey Osokin, email: hi@sergosokin.ru
 
@@ -19,6 +19,7 @@
   0.3 Added more units (yards, meters, etc.) support if the document is saved
   0.3.1 Fixed input activation in Windows OS
   0.3.2 Added size correction in large canvas mode
+  0.3.3 Added new units API for CC 2023 v27.1.1
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -29,7 +30,7 @@
   - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -45,7 +46,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main () {
   var SCRIPT = {
         name: 'Rescale',
-        version: 'v.0.3.2'
+        version: 'v.0.3.3'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -76,34 +77,41 @@ function main () {
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'column';
+      win.alignChildren = 'fill';
 
-  var oldSizePnl = win.add('group {alignment: "center"}');
-      oldSizePnl.orientation = 'row';
-      oldSizePnl.add('statictext', undefined, 'Old size, ' + CFG.units + ':');
+  var oldSizePnl = win.add('group');
+      oldSizePnl.alignChildren = 'fill';
+      oldSizePnl.add('statictext', undefined, 'Old size:').preferredSize.width = 60;
 
   var oSizeTxt = oldSizePnl.add ('edittext', undefined);
-      oSizeTxt.characters = 6;
+      oSizeTxt.characters = 7;
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
     oSizeTxt.active = true;
   }
 
-  var newSizePnl = win.add('group {alignment: "center"}');
-      newSizePnl.orientation = 'row';
-      newSizePnl.add('statictext', undefined, 'New size, ' + CFG.units + ':');
+  oldSizePnl.add('statictext', undefined, CFG.units);
 
+  var newSizePnl = win.add('group');
+      newSizePnl.alignChildren = 'fill';
+  
+  newSizePnl.add('statictext', undefined, 'New size:').preferredSize.width = 60;
   var nSizeTxt = newSizePnl.add('edittext', undefined);
-      nSizeTxt.characters = 6;
+      nSizeTxt.characters = 7;
 
-  var option = win.add('group {alignment: "center"}');
-      option.orientation = 'column';
-  var chkCorner = option.add('checkbox', undefined, 'Scale corners radius');
+  newSizePnl.add('statictext', undefined, CFG.units);
+
+  var opts = win.add('group');
+      opts.orientation = 'column';
+      opts.alignChildren = 'fill';
+
+  var chkCorner = opts.add('checkbox', undefined, 'Scale corners radius');
       chkCorner.helpTip = 'Only works with Live Shape';
       chkCorner.value = (CFG.scaleCorner == 1) ? true : false;
-  var chkStroke = option.add('checkbox', undefined, 'Scale strokes & effects');
+  var chkStroke = opts.add('checkbox', undefined, 'Scale strokes & effects');
       chkStroke.value = CFG.scaleStrokes;
-  var chkRmv = option.add('checkbox', undefined, 'Remove top open path');
+  var chkRmv = opts.add('checkbox', undefined, 'Remove top open path');
       chkRmv.value = true;
 
   var buttons = win.add('group');
@@ -197,25 +205,32 @@ function main () {
 // Get active document ruler units
 function getUnits() {
   if (!documents.length) return '';
-  switch (activeDocument.rulerUnits) {
-    case RulerUnits.Pixels: return 'px';
-    case RulerUnits.Points: return 'pt';
-    case RulerUnits.Picas: return 'pc';
-    case RulerUnits.Inches: return 'in';
-    case RulerUnits.Millimeters: return 'mm';
-    case RulerUnits.Centimeters: return 'cm';
-    case RulerUnits.Unknown: // Parse new units only for the saved doc
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
       var xmp = activeDocument.XMPString;
-      // Example: <stDim:unit>Yards</stDim:unit>
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
       }
       break;
+    default: return 'px';
   }
-  return 'px'; // Default
 }
 
 // Convert units of measurement

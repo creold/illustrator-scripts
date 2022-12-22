@@ -20,7 +20,9 @@
 [![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](http://bit.do/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
-*Notice: on large files it works slowly, just wait.*
+
+> **Warning**   
+> Notice: on large files it works slowly, just wait.
 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)
 

@@ -1,7 +1,7 @@
 ﻿/*
   ArtboardsFinder.jsx for Adobe Illustrator
   Description: Search and navigate to artboards by name or size
-  Date: October, 2022
+  Date: December, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +11,7 @@
   0.1.1 Minor improvements
   0.1.2 Fixed input activation in Windows OS
   0.1.3 Added size correction in large canvas mode
+  0.1.4 Added new units API for CC 2023 v27.1.1
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -21,7 +22,7 @@
   - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
+  Tested with Adobe Illustrator CC 2018-2023 (Mac), CS6, 2023 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -38,7 +39,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Artboards Finder',
-        version: 'v.0.1.3'
+        version: 'v.0.1.4'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -187,9 +188,10 @@ function main() {
     resAbs = []; // Clear previous matches
     listbox.removeAll(); // Clear list before search
 
+    var pre = CFG.aiVers >= 24 ? 4 : 2; // Rounding precision
     for (var i = 0; i < filterPnl.children.length; i++) {
       if (filterPnl.children[i].value) {
-        resAbs = getAbsByFilter(i, userInp.text, CFG.units, CFG.sf);
+        resAbs = getAbsByFilter(i, userInp.text, CFG.units, pre, CFG.sf);
         break;
       }
     }
@@ -332,10 +334,11 @@ function simulateKeyPress(k, n) {
  * @param {number} key - Search method
  * @param {string} str - Search string
  * @param {string} units - Document units
+ * @param {string} pre - Rounding precision
  * @param {number} sf - Size scale factor
  * @return {Array} out - Array of matches
  */
-function getAbsByFilter(key, str, units, sf) {
+function getAbsByFilter(key, str, units, pre, sf) {
   var out = [];
 
   for (var i = 0, len = activeDocument.artboards.length; i < len; i++) {
@@ -347,31 +350,31 @@ function getAbsByFilter(key, str, units, sf) {
     abHeight = sf * convertUnits(abHeight, 'px', units);
 
     switch (key) {
-      case 0:
+      case 0: // By name
       default:
         var regexp = new RegExp(str, 'i');
         if (ab.name.match(regexp))
-          push(out, i, ab, abWidth, abHeight);
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
-      case 1:
-        if (abWidth.toFixed(2).match(str))
-          push(out, i, ab, abWidth, abHeight);
+      case 1: // By width
+        if (abWidth.toFixed(pre).match(str))
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
-      case 2:
-        if (abHeight.toFixed(2).match(str))
-          push(out, i, ab, abWidth, abHeight);
+      case 2: // By height
+        if (abHeight.toFixed(pre).match(str))
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
-      case 3:
+      case 3: // Landscape
         if (abWidth > abHeight)
-          push(out, i, ab, abWidth, abHeight);
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
-      case 4:
+      case 4: // Portrait
         if (abWidth < abHeight)
-          push(out, i, ab, abWidth, abHeight);
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
-      case 5:
+      case 5: // Square
         if (abWidth.toFixed(4) == abHeight.toFixed(4))
-          push(out, i, ab, abWidth, abHeight);
+          push(out, i, ab, abWidth, abHeight, pre);
         break;
     }
   }
@@ -386,13 +389,14 @@ function getAbsByFilter(key, str, units, sf) {
  * @param {Object} ab - Artboard
  * @param {number} width - Artboard width
  * @param {number} height - Artboard height
+ * @param {string} pre - Rounding precision
  */
-function push(arr, i, ab, width, height) {
+function push(arr, i, ab, width, height, pre) {
   arr.push({
     'idx': i,
     'ab': ab,
-    'width': 1 * width.toFixed(2),
-    'height': 1 * height.toFixed(2)
+    'width': 1 * width.toFixed(pre),
+    'height': 1 * height.toFixed(pre)
   });
 }
 
@@ -465,25 +469,32 @@ function calcBounds(abs) {
  */
 function getUnits() {
   if (!documents.length) return '';
-  switch (activeDocument.rulerUnits) {
-    case RulerUnits.Pixels: return 'px';
-    case RulerUnits.Points: return 'pt';
-    case RulerUnits.Picas: return 'pc';
-    case RulerUnits.Inches: return 'in';
-    case RulerUnits.Millimeters: return 'mm';
-    case RulerUnits.Centimeters: return 'cm';
-    case RulerUnits.Unknown: // Parse new units only for the saved doc
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
       var xmp = activeDocument.XMPString;
-      // Example: <stDim:unit>Yards</stDim:unit>
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
       }
       break;
+    default: return 'px';
   }
-  return 'px'; // Default
 }
 
 /**

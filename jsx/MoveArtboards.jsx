@@ -2,7 +2,7 @@
   MoveArtboards.jsx for Adobe Illustrator
   Description: Script for moving artboards range with artwork along the X and Y axis
   Requirements: Adobe Illustrator CS6 and later
-  Date: October, 2022
+  Date: December, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -14,6 +14,7 @@
   0.2.1 Added custom RGB color (idxColor) for artboard indexes
   0.2.2 Fixed input activation in Windows OS
   0.2.3 Added size correction in large canvas mode
+  0.2.4 Added new units API for CC 2023 v27.1.1
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -24,7 +25,7 @@
   - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
+  Tested with Adobe Illustrator CC 2018-2023 (Mac), CS6, 2023 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -41,7 +42,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.2.3'
+        version: 'v.0.2.4'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -65,12 +66,12 @@ function main() {
         folder: Folder.myDocuments + '/Adobe Scripts/'
       },
       LANG = {
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
-                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-        errOverCnvs: { en: 'Error\nMoved artboards go beyond canvas\nbounds from the ',
-                      ru: 'Ошибка\nПеремещаемые артборды выходят за пределы\nхолста Иллюстратора с ' },
+        errDoc: { en: 'No documents\nOpen a document and try again',
+                  ru: 'Нет документов\nОткройте документ и запустите скрипт' },
+        errVers: { en: 'Wrong app version\nSorry, script only works in Illustrator CS6 and later',
+                  ru: 'Не подходит версия АИ\nСкрипт работает в Illustrator CS6 и выше' },
+        errOverCnvs: { en: 'Canvas limit\nMoved artboards go beyond canvas\nbounds from the ',
+                      ru: 'Ограничения холста\nПеремещаемые артборды выходят за пределы\nхолста Иллюстратора с ' },
         errOverSide: { en: 'side.', ru: 'стороны.' },
         errOverL: { en: 'LEFT, ', ru: 'ЛЕВОЙ, ' },
         errOverR: { en: 'RIGHT, ', ru: 'ПРАВОЙ, ' },
@@ -85,22 +86,23 @@ function main() {
         shift: { en: 'Shift', ru: 'Смещение' },
         axisX: { en: 'X axis', ru: 'Ось X' },
         axisY: { en: 'Y axis', ru: 'Ось Y' },
+        artwork: { en: 'Move artwork with artboard', ru: 'Переместить объекты с артбордом' },
         cancel: { en: 'Cancel', ru: 'Отмена' },
         ok: { en: 'Ok', ru: 'Готово' }
       };
 
   if (CFG.aiVers < 16) {
-    alert(LANG.errVers);
+    alert(LANG.errVers, 'Script error');
     return;
   }
 
   if (!documents.length) {
-    alert(LANG.errDoc);
+    alert(LANG.errDoc, 'Script error');
     return;
   }
 
   var doc = activeDocument,
-      currBoardIdx = doc.artboards.getActiveArtboardIndex();
+      curBoardIdx = doc.artboards.getActiveArtboardIndex();
 
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
@@ -114,17 +116,17 @@ function main() {
       win.opacity = CFG.uiOpacity;
 
   // Value fields
-  var abPanel = win.add('panel', undefined, LANG.range);
-      abPanel.orientation = 'column';
-      abPanel.alignChildren = ['fill','center'];
-      abPanel.margins = CFG.uiMargins;
-  var abInput = abPanel.add('edittext', undefined, CFG.abs);
+  var abPnl = win.add('panel', undefined, LANG.range);
+      abPnl.orientation = 'column';
+      abPnl.alignChildren = ['fill','center'];
+      abPnl.margins = CFG.uiMargins;
+  var abInp = abPnl.add('edittext', undefined, CFG.abs);
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
-    abInput.active = true;
+    abInp.active = true;
   }
-  var abDescr = abPanel.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
+  var abDescr = abPnl.add('statictext', undefined, CFG.allAbs + ' - ' + LANG.placeholder);
       abDescr.justify = 'left';
 
   var shiftPanel = win.add('panel', undefined, LANG.shift + ', ' + CFG.units);
@@ -132,14 +134,16 @@ function main() {
       shiftPanel.alignChildren = ['left','center'];
       shiftPanel.margins = CFG.uiMargins;
 
-  var direction = shiftPanel.add('group');
-      direction.orientation = 'row';
+  var dir = shiftPanel.add('group');
+      dir.orientation = 'row';
 
-  var titleX = direction.add('statictext', undefined, LANG.axisX);
-  var inputX = direction.add('edittext', [0, 0, 50, 30], CFG.shift);
+  var titleX = dir.add('statictext', undefined, LANG.axisX);
+  var inputX = dir.add('edittext', [0, 0, 50, 30], CFG.shift);
 
-  var titleY = direction.add('statictext', undefined, LANG.axisY);
-  var inputY = direction.add('edittext', [0, 0, 50, 30], CFG.shift);
+  var titleY = dir.add('statictext', undefined, LANG.axisY);
+  var inputY = dir.add('edittext', [0, 0, 50, 30], CFG.shift);
+
+  var isMoveArt = win.add('checkbox', undefined, LANG.artwork);
 
   if (doc.pageItems.length > CFG.limit) {
     var warning = win.add('statictext', undefined, LANG.warning, { multiline: true });
@@ -171,9 +175,9 @@ function main() {
 
   abDescr.addEventListener('mousedown', function () {
     inputX.active = true;
-    abInput.text = CFG.allAbs;
-    abInput.active = true;
-    abInput.textselection = abInput.text;
+    abInp.text = CFG.allAbs;
+    abInp.active = true;
+    abInp.textselection = abInp.text;
   });
 
   win.onShow = function () {
@@ -188,7 +192,7 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    var tmpRange = abInput.text,
+    var tmpRange = abInp.text,
         absRange = [], // Range of artboards indexes
         extremeCoord = [], // Range of min & max artboards coordinates
         shiftX = convertUnits(inputX.text * 1, CFG.units, 'px') / CFG.sf,
@@ -199,30 +203,33 @@ function main() {
     tmpRange = tmpRange.split(','); // Split string to array
     absRange = getArtboardsRange(tmpRange, CFG.allAbs);
 
-    saveItemsState(CFG.lKey, CFG.hKey); // Save information about locked & hidden pageItems
+    if (isMoveArt.value) saveItemsState(CFG.lKey, CFG.hKey); // Save information about locked & hidden pageItems
 
     // Check coordinates limit before moving
     extremeCoord = collectExtremeCoordinates(absRange, CFG.cnvs);
     var overCnvsSize = isOverCnvsBounds(extremeCoord, shiftX, shiftY, CFG.cnvs, LANG);
     if (overCnvsSize.val) {
-      alert(overCnvsSize.msg);
+      alert(overCnvsSize.msg, 'Script error');
       return;
     }
 
-    var abItems = collectArtboardItems(absRange);
+    var abItems = [];
+    if (isMoveArt.value) abItems = collectArtboardItems(absRange);
 
-    for (var i = 0, rLen = absRange.length; i < rLen; i++) {
+    for (var i = 0, len = absRange.length; i < len; i++) {
       var idx = absRange[i];
       try {
-        moveArtboard(doc.artboards[idx], abItems[i][0], shiftX, shiftY);
+        moveArtboard(doc.artboards[idx], shiftX, shiftY);
+        if (isMoveArt.value) moveArt(doc, abItems[i][0], shiftX, shiftY);
       } catch (e) {}
     }
 
     // Restore locked & hidden pageItems
-    selection = null;
-    restoreItemsState(CFG.lKey, CFG.hKey);
-
-    doc.artboards.setActiveArtboardIndex(currBoardIdx);
+    if (isMoveArt.value) {
+      selection = null;
+      restoreItemsState(CFG.lKey, CFG.hKey);
+      doc.artboards.setActiveArtboardIndex(curBoardIdx);
+    }
 
     saveSettings();
     win.close();
@@ -253,9 +260,10 @@ function main() {
     $file.encoding = 'UTF-8';
     $file.open('w');
     var pref = {};
-    pref.range = abInput.text;
+    pref.range = abInp.text;
     pref.x = inputX.text;
     pref.y = inputY.text;
+    pref.art = isMoveArt.value;
     var data = pref.toSource();
     $file.write(data);
     $file.close();
@@ -271,9 +279,10 @@ function main() {
         var pref = new Function('return ' + json)();
         $file.close();
         if (typeof pref != 'undefined') {
-          abInput.text = pref.range;
+          abInp.text = pref.range;
           inputX.text = pref.x;
           inputY.text = pref.y;
+          isMoveArt.value = pref.art;
         }
       } catch (e) {}
     }
@@ -320,16 +329,16 @@ function showAbIndex(layer, color) {
 
   for (var i = 0, len = doc.artboards.length; i < len; i++)  {
     doc.artboards.setActiveArtboardIndex(i);
-    var currAb = doc.artboards[i],
-        abWidth = currAb.artboardRect[2] - currAb.artboardRect[0],
-        abHeight = currAb.artboardRect[1] - currAb.artboardRect[3],
+    var curAb = doc.artboards[i],
+        abWidth = curAb.artboardRect[2] - curAb.artboardRect[0],
+        abHeight = curAb.artboardRect[1] - curAb.artboardRect[3],
         label = doc.textFrames.add(),
         labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
     label.textRange.characterAttributes.fillColor = idxColor;
-    label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
+    label.position = [curAb.artboardRect[0], curAb.artboardRect[1]];
     label.move(tmpLayer, ElementPlacement.PLACEATBEGINNING);
   }
 
@@ -446,24 +455,25 @@ function isOverCnvsBounds(coord, shiftX, shiftY, max, LANG) {
   return { val: isOverCnvs, msg: msg };
 }
 
-// Moving the artboard
-function moveArtboard(ab, items, shiftX, shiftY) {
-  var doc = activeDocument,
-      docCoordSystem = CoordinateSystem.DOCUMENTCOORDINATESYSTEM,
-      abCoordSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM,
-      isDocCoords = (app.coordinateSystem == docCoordSystem),
-      thisAbRect = ab.artboardRect;
-
+// Move artboard
+function moveArtboard(ab, shiftX, shiftY) {
+  var abRect = ab.artboardRect;
   // Move current artboard
   ab.artboardRect = [
-    thisAbRect[0] + shiftX,
-    thisAbRect[1] + shiftY,
-    thisAbRect[2] + shiftX,
-    thisAbRect[3] + shiftY
+    abRect[0] + shiftX,
+    abRect[1] + shiftY,
+    abRect[2] + shiftX,
+    abRect[3] + shiftY
   ];
+}
 
+// Move artwork
+function moveArt(doc, items, shiftX, shiftY) {
+  var docCoordSystem = CoordinateSystem.DOCUMENTCOORDINATESYSTEM,
+      abCoordSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM,
+      isDocCoords = (app.coordinateSystem == docCoordSystem);
   // Move objects from array
-  for (var i = 0, iLen = items.length; i < iLen; i++) {
+  for (var i = 0, len = items.length; i < len; i++) {
     var pos = isDocCoords ? items[i].position : doc.convertCoordinate(items[i].position, docCoordSystem, abCoordSystem);
     items[i].position = [pos[0] + shiftX, pos[1] + shiftY];
   }
@@ -483,16 +493,16 @@ function convertToNum(str, def) {
 // Save information about locked & hidden pageItems
 function saveItemsState(lKey, hKey) {
   for (var i = 0, piLen = activeDocument.pageItems.length; i < piLen; i++) {
-    var currItem = activeDocument.pageItems[i];
+    var curItem = activeDocument.pageItems[i];
     var regexp = new RegExp(lKey + '|' + hKey, 'gi');
-    currItem.note = currItem.note.replace(regexp, '');
-    if (currItem.locked) {
-      currItem.locked = false;
-      currItem.note += lKey;
+    curItem.note = curItem.note.replace(regexp, '');
+    if (curItem.locked) {
+      curItem.locked = false;
+      curItem.note += lKey;
     }
-    if (currItem.hidden) {
-      currItem.hidden = false;
-      currItem.note += hKey;
+    if (curItem.hidden) {
+      curItem.hidden = false;
+      curItem.note += hKey;
     }
   }
   redraw();
@@ -502,14 +512,14 @@ function saveItemsState(lKey, hKey) {
 function restoreItemsState(lKey, hKey) {
   var regexp = new RegExp(lKey + '|' + hKey, 'gi');
   for (var i = 0, piLen = activeDocument.pageItems.length; i < piLen; i++) {
-    var currItem = activeDocument.pageItems[i];
-    if (currItem.note.match(lKey) != null) {
-      currItem.note = currItem.note.replace(regexp, '');
-      currItem.locked = true;
+    var curItem = activeDocument.pageItems[i];
+    if (curItem.note.match(lKey) != null) {
+      curItem.note = curItem.note.replace(regexp, '');
+      curItem.locked = true;
     }
-    if (currItem.note.match(hKey) != null) {
-      currItem.note = currItem.note.replace(regexp, '');
-      currItem.hidden = true;
+    if (curItem.note.match(hKey) != null) {
+      curItem.note = curItem.note.replace(regexp, '');
+      curItem.hidden = true;
     }
   }
 }
@@ -567,30 +577,37 @@ if (!Array.prototype.indexOf) {
 // Get active document ruler units
 function getUnits() {
   if (!documents.length) return '';
-  switch (activeDocument.rulerUnits) {
-    case RulerUnits.Pixels: return 'px';
-    case RulerUnits.Points: return 'pt';
-    case RulerUnits.Picas: return 'pc';
-    case RulerUnits.Inches: return 'in';
-    case RulerUnits.Millimeters: return 'mm';
-    case RulerUnits.Centimeters: return 'cm';
-    case RulerUnits.Unknown: // Parse new units only for the saved doc
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
       var xmp = activeDocument.XMPString;
-      // Example: <stDim:unit>Yards</stDim:unit>
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
       }
       break;
+    default: return 'px';
   }
-  return 'px'; // Default
 }
 
 // Convert units of measurement
-function convertUnits(value, currUnits, newUnits) {
-  return UnitValue(value, currUnits).as(newUnits);
+function convertUnits(value, curUnits, newUnits) {
+  return UnitValue(value, curUnits).as(newUnits);
 }
 
 // Open link in browser

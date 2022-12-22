@@ -42,7 +42,9 @@
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimMasks.jsx-FF6900.svg)](http://bit.do/trimcm) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Автоматические обрезает объекты внутри Clipping Mask, применяя команду `Pathfinder > Crop`. Такая задача может возникнуть, когда при открытии PDF или SVG в Illustrator множество объектов помещаются внутри отдельных масок.  
-Если у маски есть цвет и хотите сохранить её после обрезки содержимого, то откройте файл скрипта текстовым редактором и поменяйте значение `SAVE_FILLED_CLIPMASK = false;` на `true`.
+
+> **Note**   
+> Если у маски есть цвет и хотите сохранить её после обрезки содержимого, то откройте файл скрипта текстовым редактором и поменяйте значение `SAVE_FILLED_CLIPMASK = false;` на `true`.
 
 <a href="https://youtu.be/liui0ZUAN50">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">

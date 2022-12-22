@@ -43,7 +43,9 @@ Moves all objects in a selection into a group selected. The order is preserved: 
 [![Direct](https://img.shields.io/badge/Direct%20Link-TrimMasks.jsx-FF6900.svg)](http://bit.do/trimcm) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Automatically trims all clip groups in a selection or a document using `Pathfinder > Crop`.
-If you want to save the fill of the mask mask after trimming, open the script file in a text editor and change `SAVE_FILLED_CLIPMASK = false;` value to `true`.
+
+> **Note**   
+> If you want to save the fill of the mask mask after trimming, open the script file in a text editor and change `SAVE_FILLED_CLIPMASK = false;` value to `true`.
 
 <a href="https://youtu.be/liui0ZUAN50">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">

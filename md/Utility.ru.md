@@ -20,7 +20,9 @@
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-FileVersionInformer.jsx-FF6900.svg)](http://bit.do/fverinfo) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт собирает в текстовый файл информацию о том в какой версии Adobe Illustrator были созданы файлы .ai или .eps из папки.   
-*Предупреждение: на больших файлах скрипт может работать медленно*
+
+> **Warning**   
+> Предупреждение: на больших файлах скрипт может работать медленно.
 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)
 
