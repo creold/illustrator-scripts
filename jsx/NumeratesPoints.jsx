@@ -157,17 +157,17 @@ function main() {
   numVal.onChanging = diaVal.onChanging = fontVal.onChanging = previewStart;
   leftVal.onChanging = topVal.onChanging = previewStart;
 
-  numVal.onChange = function () { this.text = convertToNum(this.text, CFG.start); }
-  leftVal.onChange = function () { this.text = convertToNum(this.text, CFG.left); }
-  topVal.onChange = function () { this.text = convertToNum(this.text, CFG.top); }
+  numVal.onChange = function () { this.text = strToNum(this.text, CFG.start); }
+  leftVal.onChange = function () { this.text = strToNum(this.text, CFG.left); }
+  topVal.onChange = function () { this.text = strToNum(this.text, CFG.top); }
 
   diaVal.onChange = function () {
-    this.text = convertToNum(this.text, CFG.diameter);
+    this.text = strToNum(this.text, CFG.diameter);
     if (this.text * 1 <= 0) this.text = CFG.diameter;
   }
 
   fontVal.onChange = function () {
-    this.text = convertToNum(this.text, CFG.font);
+    this.text = strToNum(this.text, CFG.font);
     if (this.text * 1 <= 0) this.text = CFG.font;
   }
 
@@ -217,11 +217,11 @@ function main() {
   }
 
   function start() {
-    var counter = convertToNum(numVal.text, CFG.start),
-        diameter = convertToNum(diaVal.text, CFG.diameter),
-        leftMargin = convertToNum(leftVal.text, CFG.left),
-        topMargin = convertToNum(topVal.text, CFG.top),
-        fontSize  = convertToNum(fontVal.text, CFG.font),
+    var counter = strToNum(numVal.text, CFG.start),
+        diameter = strToNum(diaVal.text, CFG.diameter),
+        leftMargin = strToNum(leftVal.text, CFG.left),
+        topMargin = strToNum(topVal.text, CFG.top),
+        fontSize  = strToNum(fontVal.text, CFG.font),
         markerColor = setMarkerColor(),
         markerGroup, numGroup;
 
@@ -376,8 +376,8 @@ function addGroup(name) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
@@ -411,6 +411,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';

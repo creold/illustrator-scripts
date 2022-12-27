@@ -169,8 +169,8 @@ function main() {
 
   // Changing the zoom ratio
   zoomInp.onChange = function () {
-    if (convertToAbsNum(this.text, CFG.defZoom) > 1) this.text = 1;
-    if (convertToAbsNum(this.text, CFG.defZoom) < CFG.minZoom) this.text = CFG.minZoom;
+    if (strToAbsNum(this.text, CFG.defZoom) > 1) this.text = 1;
+    if (strToAbsNum(this.text, CFG.defZoom) < CFG.minZoom) this.text = CFG.minZoom;
     selectListItem();
   }
 
@@ -232,7 +232,7 @@ function main() {
 
     activeDocument.artboards.setActiveArtboardIndex(first);
 
-    var ratio = convertToAbsNum(zoomInp.text, CFG.defZoom);
+    var ratio = strToAbsNum(zoomInp.text, CFG.defZoom);
     zoom(abs, ratio, isZoom.value);
   }
 
@@ -491,6 +491,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -514,8 +515,8 @@ function convertUnits(value, currUnits, newUnits) {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

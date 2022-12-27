@@ -133,7 +133,7 @@ function invokeUI(title, cfg, cfgFile) {
   ok.onClick = function() {
     var params = [
           xyRb.value ? 'XY' : (xRb.value ? 'X' : 'Y'),
-          convertToAbsNum(ratioInp.text, cfg.ratio)
+          strToAbsNum(ratioInp.text, cfg.ratio)
         ];
 
     saveSettings(cfgFile, params);
@@ -343,8 +343,8 @@ function move(item, pos1, pos2, isX, isY, ratio) {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

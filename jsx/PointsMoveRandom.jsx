@@ -301,7 +301,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
   }
 
   function start() {
-    if (convertToNum(stepInp.text, 0) === 0) {
+    if (strToNum(stepInp.text, 0) === 0) {
       alert(MSG.errStepZero);
       return;
     }
@@ -313,12 +313,12 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
         errStepMsg = '';
 
     // Validation of numeric inputs
-    range.x1 = hFromVal.text = convertToNum(hFromVal.text, -1 * CFG.move);
-    range.x2 = hToVal.text = convertToNum(hToVal.text, CFG.move);
-    range.y1 = vFromVal.text = convertToNum(vFromVal.text, -1 * CFG.move);
-    range.y2 = vToVal.text = convertToNum(vToVal.text, CFG.move);
-    chanceVal = chanceInp.text = convertToNum(chanceInp.text, CFG.chance);
-    stepVal = stepInp.text = convertToNum(stepInp.text, CFG.step);
+    range.x1 = hFromVal.text = strToNum(hFromVal.text, -1 * CFG.move);
+    range.x2 = hToVal.text = strToNum(hToVal.text, CFG.move);
+    range.y1 = vFromVal.text = strToNum(vFromVal.text, -1 * CFG.move);
+    range.y2 = vToVal.text = strToNum(vToVal.text, CFG.move);
+    chanceVal = chanceInp.text = strToNum(chanceInp.text, CFG.chance);
+    stepVal = stepInp.text = strToNum(stepInp.text, CFG.step);
 
     // Swap values if the start are greater than the end
     if (range.x2 < range.x1) {
@@ -488,8 +488,8 @@ function isSelected(point) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
@@ -569,6 +569,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';

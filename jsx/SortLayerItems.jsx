@@ -177,7 +177,7 @@ function polyfills() {
 
 // Get all single layers
 function getVisibleLayers(parent, isInSublayers) {
-  if (arguments.length == 1 || !isInSublayers) isInSublayers = false;
+  if (arguments.length == 1 || isInSublayers == undefined) isInSublayers = false;
   var out = [];
 
   for (var i = 0, len = parent.layers.length; i < len; i++) {
@@ -195,7 +195,7 @@ function getVisibleLayers(parent, isInSublayers) {
 
 // Sort items alphabetically
 function sortLayerItems(parent, isLowerFirst, isReverse) {
-  if (arguments.length == 1 || !isReverse) isReverse = false;
+  if (arguments.length == 1 || isReverse == undefined) isReverse = false;
 
   get('pageItems', parent)
     .sort(function (a, b) {
@@ -216,7 +216,7 @@ function sortLayerItems(parent, isLowerFirst, isReverse) {
 
 // Convert ILST collection into standard Array so we can use Array methods
 function get(type, parent) {
-  if (arguments.length == 1 || !parent) parent = app.activeDocument;
+  if (arguments.length == 1 || parent == undefined) parent = app.activeDocument;
   var result = [];
   if (!parent[type]) return result;
   for (var i = 0; i < parent[type].length; i++) result.push(parent[type][i]);

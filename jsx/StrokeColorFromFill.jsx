@@ -191,7 +191,7 @@ function main() {
   function start() {
     tempPath = doc.activeLayer.pathItems.add();
     tempPath.name = '__TempPath';
-    var shiftVal = convertToNum(colorShift.text, 0);
+    var shiftVal = strToNum(colorShift.text, 0);
     for (var i = 0, pLen = selPaths.length; i < pLen; i++) {
       try {
         var item = selPaths[i];
@@ -414,8 +414,8 @@ function hasColorFill(obj) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

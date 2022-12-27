@@ -123,9 +123,9 @@ function main() {
 
   function okClick() {
     var tfs = getTextFrames(selection).reverse(),
-        inc = convertToNum(incInp.text, 1),
-        startNum = convertToNum(startInp.text, 0),
-        endNum = isUseAll.value ? startNum + (tfs.length - 1) * inc : convertToNum(endInp.text, 10),
+        inc = strToNum(incInp.text, 1),
+        startNum = strToNum(startInp.text, 0),
+        endNum = isUseAll.value ? startNum + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
         strLen = ('' + endNum).length,
         curNum = startNum,
         i = 0;
@@ -269,8 +269,8 @@ function getTextFrames(coll) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

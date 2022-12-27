@@ -142,7 +142,7 @@ function invokeUI(title, cfg) {
   ok.onClick = okClick;
 
   function okClick() {
-    cfg.paddings = convertUnits( convertToAbsNum(padInp.text, cfg.paddings), cfg.units, 'px') / cfg.sf;
+    cfg.paddings = convertUnits( strToAbsNum(padInp.text, cfg.paddings), cfg.units, 'px') / cfg.sf;
     cfg.isAll = allRb.value;
     cfg.isFit = fitRb.value;
     cfg.isVisBnds = visRb.value;
@@ -222,6 +222,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -234,8 +235,8 @@ function convertUnits(value, currUnits, newUnits) {
 }
 
 // Convert string to absolute number
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

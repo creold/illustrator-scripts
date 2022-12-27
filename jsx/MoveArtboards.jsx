@@ -167,7 +167,7 @@ function main() {
 
   // Event listeners
   inputX.onChange = inputY.onChange = function () {
-    this.text = convertToNum(this.text, CFG.shift);
+    this.text = strToNum(this.text, CFG.shift);
   }
 
   shiftInputNumValue(inputX);
@@ -314,7 +314,7 @@ function simulateKeyPress(k, n) {
 
 // Output artboard indexes as text
 function showAbIndex(layer, color) {
-  if (arguments.length == 1 || !color) color = [0, 0, 0];
+  if (arguments.length == 1 || color == undefined) color = [0, 0, 0];
 
   var doc = activeDocument,
       idxColor = setRGBColor(color),
@@ -332,17 +332,21 @@ function showAbIndex(layer, color) {
     var curAb = doc.artboards[i],
         abWidth = curAb.artboardRect[2] - curAb.artboardRect[0],
         abHeight = curAb.artboardRect[1] - curAb.artboardRect[3],
-        label = doc.textFrames.add(),
+        label = tmpLayer.textFrames.add(),
         labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
     label.textRange.characterAttributes.fillColor = idxColor;
     label.position = [curAb.artboardRect[0], curAb.artboardRect[1]];
-    label.move(tmpLayer, ElementPlacement.PLACEATBEGINNING);
   }
 
-  redraw();
+  if (parseInt(app.version) >= 16) {
+    app.executeMenuCommand('preview');
+    app.executeMenuCommand('preview');
+  } else {
+    redraw();
+  }
 }
 
 // Generate solid RGB color
@@ -480,8 +484,8 @@ function moveArt(doc, items, shiftX, shiftY) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
@@ -599,6 +603,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';

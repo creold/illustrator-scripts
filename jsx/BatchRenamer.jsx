@@ -628,7 +628,7 @@ function isEmpty(str) {
 
 // Output artboard indexes as text
 function showAbIndex(layer, color) {
-  if (arguments.length == 1 || !color) color = [0, 0, 0];
+  if (arguments.length == 1 || color == undefined) color = [0, 0, 0];
 
   var doc = activeDocument,
       idxColor = setRGBColor(color),
@@ -646,17 +646,21 @@ function showAbIndex(layer, color) {
     var currAb = doc.artboards[i],
         abWidth = currAb.artboardRect[2] - currAb.artboardRect[0],
         abHeight = currAb.artboardRect[1] - currAb.artboardRect[3],
-        label = doc.textFrames.add(),
+        label = tmpLayer.textFrames.add(),
         labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
     label.textRange.characterAttributes.fillColor = idxColor;
     label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
-    label.move(tmpLayer, ElementPlacement.PLACEATBEGINNING);
   }
 
-  redraw();
+  if (parseInt(app.version) >= 16) {
+    app.executeMenuCommand('preview');
+    app.executeMenuCommand('preview');
+  } else {
+    redraw();
+  }
 }
 
 // Generate solid RGB color
@@ -899,6 +903,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';

@@ -161,7 +161,7 @@ function main() {
   function start() {
     tmpPath = doc.activeLayer.pathItems.add();
     tmpPath.name = '__TempPath';
-    var widthVal = convertToNum(widthInp.text, 1);
+    var widthVal = strToNum(widthInp.text, 1);
     if (isMm.value) widthVal = convertUnits(widthVal, 'mm', 'pt');
     for (var i = 0, len = paths.length; i < len; i++) {
       var item = paths[i];
@@ -199,13 +199,13 @@ function main() {
       var sign = this.text.substr(0, 1) == '+' ? '+' : '',
           step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
       if (kd.keyName == 'Down') {
-        this.text = convertToNum(this.text, min) - step;
+        this.text = strToNum(this.text, min) - step;
         if (this.text * 1 < min) this.text = min;
         if (this.text * 1 > 0) this.text = sign + this.text;
         kd.preventDefault();
       }
       if (kd.keyName == 'Up') {
-        this.text = convertToNum(this.text, min) + step;
+        this.text = strToNum(this.text, min) + step;
         if (this.text * 1 <= max) {
           kd.preventDefault();
         } else {
@@ -361,8 +361,8 @@ function isType(item, type) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

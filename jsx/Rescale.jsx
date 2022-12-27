@@ -129,10 +129,10 @@ function main () {
   ok.onClick = okClick;
 
   oSizeTxt.onChange = function () {
-    this.text = convertToAbsNum(this.text, CFG.size)
+    this.text = strToAbsNum(this.text, CFG.size)
   };
   nSizeTxt.onChange = function () {
-    this.text = convertToAbsNum(this.text, CFG.size)
+    this.text = strToAbsNum(this.text, CFG.size)
   };
 
   var keyPath = selection[0];
@@ -227,6 +227,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -262,8 +263,8 @@ function simulateKeyPress(k, n) {
 }
 
 // Convert string to absolute number
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

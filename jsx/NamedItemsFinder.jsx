@@ -210,8 +210,8 @@ function main() {
 
   // Changing the zoom ratio
   zoomRatioInp.onChange = function() {
-    if (convertToAbsNum(this.text, CFG.zoomRatio) > 1) this.text = 1;
-    if (convertToAbsNum(this.text, CFG.zoomRatio) < CFG.zoomRatio) this.text = CFG.zoomRatio;
+    if (strToAbsNum(this.text, CFG.zoomRatio) > 1) this.text = 1;
+    if (strToAbsNum(this.text, CFG.zoomRatio) < CFG.zoomRatio) this.text = CFG.zoomRatio;
 
     for (var i = 0, len = listbox.children.length; i < len; i++) {
       if (listbox.children[i].selected) {
@@ -333,7 +333,7 @@ function main() {
       }
     }
     
-    var ratio = convertToAbsNum(zoomRatioInp.text, CFG.zoomRatio);
+    var ratio = strToAbsNum(zoomRatioInp.text, CFG.zoomRatio);
     zoom(ratio, isZoom.value);
 
     restoreItemsState(tmpState);
@@ -764,8 +764,8 @@ function hasWhiteSpace(str) {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

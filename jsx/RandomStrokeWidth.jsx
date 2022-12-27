@@ -168,13 +168,13 @@ function invokeUI(title, cfg, cfgFile, paths) {
       copyright.justify = 'center';
 
   minInp.onChange = maxInp.onChange = stepInp.onChange = function() {
-    this.text = convertToAbsNum(this.text, 0);
+    this.text = strToAbsNum(this.text, 0);
   }
 
   isAutoVal.onClick = function() {
-    minInp.text = convertToAbsNum(autoVal.minW.toFixed(3), cfg.minWidth);
-    maxInp.text = convertToAbsNum(autoVal.maxW.toFixed(3), cfg.maxWidth);
-    stepInp.text = convertToAbsNum(autoVal.step.toFixed(3), cfg.step);
+    minInp.text = strToAbsNum(autoVal.minW.toFixed(3), cfg.minWidth);
+    maxInp.text = strToAbsNum(autoVal.maxW.toFixed(3), cfg.maxWidth);
+    stepInp.text = strToAbsNum(autoVal.step.toFixed(3), cfg.step);
     minInp.enabled = !this.value;
     maxInp.enabled = !this.value;
     stepInp.enabled = !this.value;
@@ -184,9 +184,9 @@ function invokeUI(title, cfg, cfgFile, paths) {
 
   ok.onClick = function() {
     var params = [
-          convertToAbsNum(minInp.text, cfg.minWidth),
-          convertToAbsNum(maxInp.text, cfg.maxWidth),
-          convertToAbsNum(stepInp.text, cfg.step),
+          strToAbsNum(minInp.text, cfg.minWidth),
+          strToAbsNum(maxInp.text, cfg.maxWidth),
+          strToAbsNum(stepInp.text, cfg.step),
           isAutoVal.value,
         ];
 
@@ -404,8 +404,8 @@ function forEach(collection, fn) {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

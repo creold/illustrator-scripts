@@ -329,7 +329,7 @@ function main () {
   // Resize selection
   function start() {
     var items = getItems(selection),
-        val = convertToNum(sizeInp.text, CFG.size),
+        val = strToNum(sizeInp.text, CFG.size),
         side = 'W',
         failItems = [];
 
@@ -490,6 +490,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -554,8 +555,8 @@ Array.prototype.forEach = function (callback) {
 }
 
 // Convert string to number
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

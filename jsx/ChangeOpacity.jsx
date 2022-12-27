@@ -103,13 +103,13 @@ function main () {
       var sign = this.text.substr(0, 1) == '+' ? '+' : '',
           step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
       if (kd.keyName == 'Down') {
-        this.text = convertToNum(this.text, min) - step;
+        this.text = strToNum(this.text, min) - step;
         if (this.text * 1 < min) this.text = min;
         if (this.text * 1 > 0) this.text = sign + this.text;
         kd.preventDefault();
       }
       if (kd.keyName == 'Up') {
-        this.text = convertToNum(this.text, min) + step;
+        this.text = strToNum(this.text, min) + step;
         if (this.text * 1 <= max) {
           kd.preventDefault();
         } else {
@@ -123,7 +123,7 @@ function main () {
   function okClick() {
     var sign = shiftInp.text.substr(0, 1);
     if (sign !== '-' && sign !== '+') sign = '';
-    var opValue = convertToNum(shiftInp.text, 100);
+    var opValue = strToNum(shiftInp.text, 100);
 
     if (!isContent.value) {
       changeOpacity(selection, sign, opValue);
@@ -143,8 +143,8 @@ function main () {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number} 
  */
-function convertToNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

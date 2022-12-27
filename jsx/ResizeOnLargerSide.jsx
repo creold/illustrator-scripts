@@ -58,7 +58,7 @@ function main () {
   
   // Prepare value
   if (!newSize.length) return;
-  newSize = convertToAbsNum(newSize, CFG.size);
+  newSize = strToAbsNum(newSize, CFG.size);
   if (newSize == 0) return;
   newSize = convertUnits(newSize, CFG.units, 'px') / CFG.sf;
 
@@ -113,6 +113,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -125,8 +126,8 @@ function convertUnits(value, currUnits, newUnits) {
 }
 
 // Convert string to absolute number
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

@@ -150,10 +150,10 @@ var SCRIPT = {
     var doc = app.activeDocument,
         paddings = {};
 
-    paddings.top = convertUnits( convertToAbsNum(topInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
-    paddings.bottom = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(bottomInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
-    paddings.left = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(leftInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
-    paddings.right = isEqual.value ? paddings.top : convertUnits( convertToAbsNum(rightInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.top = convertUnits( strToAbsNum(topInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.bottom = isEqual.value ? paddings.top : convertUnits( strToAbsNum(bottomInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.left = isEqual.value ? paddings.top : convertUnits( strToAbsNum(leftInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
+    paddings.right = isEqual.value ? paddings.top : convertUnits( strToAbsNum(rightInp.text, CFG.paddings), CFG.units, 'px' ) / CFG.sf;
 
     selection = null;
     redraw();
@@ -217,6 +217,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -229,8 +230,8 @@ function convertUnits(value, currUnits, newUnits) {
 }
 
 // Convert string to absolute number
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

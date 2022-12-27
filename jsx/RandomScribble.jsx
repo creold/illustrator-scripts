@@ -153,7 +153,7 @@ function main() {
   }
 
   tensionLbl.onChange = function () {
-    currTension = convertToAbsNum(this.text, CFG.tension);
+    currTension = strToAbsNum(this.text, CFG.tension);
     if (currTension > CFG.maxTension) {
       currTension = CFG.maxTension;
       this.text = CFG.maxTension;
@@ -298,7 +298,7 @@ function simulateKeyPress(k, n) {
  * @param {number} tension - tension of the point handles
  */
 function process(container, arr, points, isClosed, stroke, tension) {
-  points = parseInt( convertToAbsNum(points, 2) );
+  points = parseInt( strToAbsNum(points, 2) );
   if (points < 2) points = 2;
   for (var i = 0; i < container.length; i++) {
     var line = new Line(container[i], isClosed, stroke, tension);
@@ -470,8 +470,8 @@ function removeLines(arr) {
  * @param {number} def - default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';

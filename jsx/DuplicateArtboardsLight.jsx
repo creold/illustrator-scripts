@@ -141,14 +141,14 @@ function main() {
 
   loadSettings();
 
-  spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
+  spacing = convertUnits( strToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' );
   curAbIdx = doc.artboards.getActiveArtboardIndex();
 
   var abCoord = getArtboardCoordinates(curAbIdx, CFG.tmpLyr);
   var overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
 
   copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
-  if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
+  if (strToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
     copiesVal.text = overCnvsSize.copies;
   }
 
@@ -158,12 +158,12 @@ function main() {
   // Change listeners
   spacingVal.onChange = function () {
     recalcCopies();
-    this.text = convertToAbsNum(this.text, CFG.spacing);
+    this.text = strToAbsNum(this.text, CFG.spacing);
   }
 
   copiesVal.onChange = function () {
     recalcCopies();
-    this.text = convertToAbsNum(this.text, CFG.copies);
+    this.text = strToAbsNum(this.text, CFG.copies);
   }
 
   copiesVal.onChanging = spacingVal.onChanging = recalcCopies;
@@ -190,8 +190,8 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    copies = copiesVal.text = Math.round( convertToAbsNum(copiesVal.text, CFG.copies) );
-    spacing = spacingVal.text = convertToAbsNum(spacingVal.text, CFG.spacing);
+    copies = copiesVal.text = Math.round( strToAbsNum(copiesVal.text, CFG.copies) );
+    spacing = spacingVal.text = strToAbsNum(spacingVal.text, CFG.spacing);
     spacing = convertUnits(spacing, CFG.units, 'px') / CFG.sf;
 
     var userView = doc.views[0].screenMode;
@@ -234,15 +234,15 @@ function main() {
    * Recalculate the maximum amount of copies at a given spacing
    */
   function recalcCopies() {
-    spacing = convertUnits( convertToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' ) / CFG.sf;
+    spacing = convertUnits( strToAbsNum(spacingVal.text, CFG.minSpacing), CFG.units, 'px' ) / CFG.sf;
     curAbIdx = doc.artboards.getActiveArtboardIndex();
     abCoord = getArtboardCoordinates(curAbIdx, CFG.tmpLyr);
     overCnvsSize = isOverCnvsBounds(abCoord, maxCopies, spacing, CFG.cnvs);
     copiesTitle.text = 'Copies (max ' + overCnvsSize.copies + ')';
-    if (convertToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
+    if (strToAbsNum(copiesVal.text, CFG.copies) > overCnvsSize.copies) {
       copiesVal.text = overCnvsSize.copies;
     }
-    if (convertToAbsNum(copiesVal.text, CFG.copies) < 0) {
+    if (strToAbsNum(copiesVal.text, CFG.copies) < 0) {
       copiesVal.text = 0;
     }
   }
@@ -257,13 +257,13 @@ function main() {
       var step;
       ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
       if (kd.keyName == 'Down') {
-        this.text = convertToAbsNum(this.text, min) - step;
+        this.text = strToAbsNum(this.text, min) - step;
         if (this.text * 1 < min) this.text = min;
         recalcCopies();
         kd.preventDefault();
       }
       if (kd.keyName == 'Up') {
-        this.text = convertToAbsNum(this.text, min) + step;
+        this.text = strToAbsNum(this.text, min) + step;
         recalcCopies();
         kd.preventDefault();
       }
@@ -616,6 +616,7 @@ function getUnits() {
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
+        return 'px';
       }
       break;
     default: return 'px';
@@ -639,8 +640,8 @@ function convertUnits(value, curUnits, newUnits) {
  * @param {number} def - Default value if the string don't contain digits
  * @return {number}
  */
-function convertToAbsNum(str, def) {
-  if (arguments.length == 1 || !def) def = 1;
+function strToAbsNum(str, def) {
+  if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
