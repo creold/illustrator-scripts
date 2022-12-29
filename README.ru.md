@@ -166,6 +166,7 @@
 Скрипты для работы с текстовыми объектами
 
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `(new, 07.12.2022)`
+* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ### [Utility](md/Utility.ru.md)  
 Вспомогательные скрипты

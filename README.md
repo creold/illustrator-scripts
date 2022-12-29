@@ -157,6 +157,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Text](md/Text.md)  
 
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(new, 07.12.2022)`
+* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ### [Utility](md/Utility.md)  
 

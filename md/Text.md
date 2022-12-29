@@ -12,6 +12,7 @@
 
 ## Scripts
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(new, 07.12.2022)`
+* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ## MakeNumbersSequence
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeNumbersSequence.jsx-FF6900.svg)](http://bit.do/mknumseq) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -19,6 +20,13 @@
 Fills a range of selected text items with numbers incremented based on the input data. Reorder your items in Layers manually before launching the script, bottom to top.
 
 ![MakeNumbersSequence](https://i.ibb.co/ChCpVry/Make-Numbers-Sequence.gif)
+
+## ReplaceFormattedText
+[![Direct](https://img.shields.io/badge/Direct%20Link-ReplaceFormattedText.jsx-FF6900.svg)](http://bit.do/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Pasting text from the clipboard without formatting, preserving the paragraph styles of the original text. The style is saved from the first character of each paragraph.
+
+![ReplaceFormattedText](https://i.ibb.co/LQGmg1W/Replace-Formatted-Text.gif)
 
 ## Donate
 You can support my work on new scripts via [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
