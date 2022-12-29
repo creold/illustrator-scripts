@@ -164,7 +164,13 @@ function get(coll) {
 // Copy object properties
 function copyProps(o) {
   var p = {};
-  for (var k in o) p[k] = o[k];
+  for (var k in o) {
+    if (o.hasOwnProperty(k)) {
+      try {
+        p[k] = o[k];
+      } catch (err) {} // Skip undefined properties
+    }
+  }
   return p;
 }
 
