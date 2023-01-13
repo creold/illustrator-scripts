@@ -1,14 +1,15 @@
 /*
   MakeNumbersSequence.jsx for Adobe Illustrator
   Description: Fills a range of selected text objects with numbers incremented based on the input data
-  Date: December, 2022
+  Date: January, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Idea: Egor Chistyakov (@chegr)
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.0 Initial version
+  0.1.1 Added Shuffle option
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,7 +37,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -88,6 +89,7 @@ function main() {
 
   // Options
   var isUseAll = win.add('checkbox', undefined, 'Ignore end num and use all');
+  var isShuffle = win.add('checkbox', undefined, 'Shuffle numbers order');
   var isPadZero = win.add('checkbox', undefined, 'Zero padding (e.g. 01, 02)');
   var isRmvTf = win.add('checkbox', undefined, 'Remove unused texts');
 
@@ -123,38 +125,28 @@ function main() {
 
   function okClick() {
     var tfs = getTextFrames(selection).reverse(),
-        inc = strToNum(incInp.text, 1),
-        startNum = strToNum(startInp.text, 0),
-        endNum = isUseAll.value ? startNum + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
-        strLen = ('' + endNum).length,
-        curNum = startNum,
-        i = 0;
+        inc = strToNum(incInp.text, 1);
+        start = strToNum(startInp.text, 0),
+        end = isUseAll.value ? start + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
+        strLen = ('' + end).length,
+        isPad = isPadZero.value;
 
-    if (startNum <= endNum && inc > 0) {
-      while ((curNum + inc <= endNum) && (i < tfs.length)) {
-        curNum = setContent(tfs[i], curNum);
+    if (tfs.length) {
+      var nums = getNumbers(inc, start, end, tfs.length);
+      if (isShuffle.value) shuffle(nums);
+
+      var i = 0;
+      while (i < nums.length) {
+        tfs[i].contents = isPad ? ('' + nums[i]).zeroPad(strLen) : nums[i];
         i++;
       }
-    } else if (inc < 0) {
-      while ((curNum + inc >= endNum) && (i < tfs.length)) {
-        curNum = setContent(tfs[i], curNum);
-        i++;
-      }
-    }
 
-    if (isRmvTf.enabled && isRmvTf.value && i < tfs.length) {
-      while (i < tfs.length) {
-        tfs[i].remove();
-        i++;
+      if (isRmvTf.enabled && isRmvTf.value && i < tfs.length) {
+        while (i < tfs.length) {
+          tfs[i].remove();
+          i++;
+        }
       }
-    }
-
-    // Set TextFrame content
-    function setContent(tf, n) {
-      n = startNum + i * inc;
-      var str = isPadZero.value ? ('' + n).zeroPad(strLen) : n;
-      tf.contents = str;
-      return n; 
     }
 
     saveSettings(SETTINGS);
@@ -172,8 +164,9 @@ function main() {
     pref.end = endInp.text;
     pref.inc = incInp.text;
     pref.all = isUseAll.value;
+    pref.rndm = isShuffle.value;
     pref.zero = isPadZero.value;
-    pref.remove = isRmvTf.value;
+    pref.rmv = isRmvTf.value;
     var data = pref.toSource();
     f.write(data);
     f.close();
@@ -194,8 +187,9 @@ function main() {
           endInp.text = pref.end;
           incInp.text = pref.inc;
           isUseAll.value = pref.all;
+          isShuffle.value = pref.rndm;
           isPadZero.value = pref.zero;
-          isRmvTf.value = pref.remove;
+          isRmvTf.value = pref.rmv;
         }
       } catch (e) {}
     }
@@ -268,6 +262,29 @@ function getTextFrames(coll) {
   return tfs;
 }
 
+// Get numbers from range
+function getNumbers(inc, start, end, amt) {
+  var out = [],
+      curNum = start,
+      i = 0;
+
+  if (start <= end && inc > 0) {
+    while ((curNum + inc <= end) && (i < amt)) {
+      curNum = start + i * inc;
+      out.push(curNum);
+      i++;
+    }
+  } else if (inc < 0) {
+    while ((curNum + inc >= end) && (i < amt)) {
+      curNum = start + i * inc;
+      out.push(curNum);
+      i++;
+    }
+  }
+
+  return out;
+}
+
 // Convert string to number
 function strToNum(str, def) {
   if (arguments.length == 1 || def == undefined) def = 1;
@@ -277,6 +294,18 @@ function strToNum(str, def) {
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
   if (isNaN(str) || !str.length) return parseFloat(def);
   else return parseFloat(str);
+}
+
+// Shuffle array
+function shuffle(arr) {
+  var j, tmp;
+  for (var i = arr.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    tmp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = tmp;
+  }
+  return arr;
 }
 
 // Simulate keyboard keys on Windows OS via VBScript

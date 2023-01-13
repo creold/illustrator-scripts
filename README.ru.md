@@ -1,7 +1,7 @@
 ![header](https://i.ibb.co/mF018gV/emblem.png)
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-25k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md), [Русский](README.ru.md)*
 
@@ -165,7 +165,7 @@
 ### [Text](md/Text.ru.md)  
 Скрипты для работы с текстовыми объектами
 
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `(new, 07.12.2022)`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `(upd, 13.01.2023)`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ### [Utility](md/Utility.ru.md)  
