@@ -14,6 +14,7 @@
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 22.12.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(new, 27.01.2023)`
 
 ## Points Move Random
 [![Direct](https://img.shields.io/badge/Direct%20Link-PointsMoveRandom.jsx-FF6900.svg)](http://bit.do/ptsmovrnd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -46,6 +47,13 @@ Subtracts the top selected shape from all the shapes below it. Pathfinder panel 
 > Align Stroke to Inside / Outside doesn't work correctly. Apply `Object > Path > Outline Stroke` before running the script.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
+
+## TrimOpenEnds
+[![Direct](https://img.shields.io/badge/Direct%20Link-TrimOpenEnds.jsx-FF6900.svg)](http://bit.do/trimends) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Removes the ends of open paths up to their intersection points. It's an alternative to the Shape Builder tool.
+
+![TrimOpenEnds](https://i.ibb.co/J3ct3KN/Trim-Open-Ends.gif)
 
 ## 💸 Donate
 You can support my work on new scripts via [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   

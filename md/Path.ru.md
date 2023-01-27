@@ -14,6 +14,7 @@
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#pointsmoverandom) `upd, 22.12.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(new, 27.01.2023)`
 
 ## Points Move Random
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-PointsMoveRandom.jsx-FF6900.svg)](http://bit.do/ptsmovrnd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -46,6 +47,13 @@
 > Некорректно работает с обводками внутрь и наружу (Align Stroke to Inside /  Outside). К таким объектам примените `Object > Path > Outline Stroke` перед запуском скрипта.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
+
+## TrimOpenEnds
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimOpenEnds.jsx-FF6900.svg)](http://bit.do/trimends) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Удаляет концы незамкнутых линий до точек их пересечений. Заменяет ручную обработку инструментом Shape Builder.  
+
+![TrimOpenEnds](https://i.ibb.co/J3ct3KN/Trim-Open-Ends.gif)
 
 ## 💸 Поддержка
 Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [FanTalks](https://fantalks.io/r/sergey) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
