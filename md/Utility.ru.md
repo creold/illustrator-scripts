@@ -11,10 +11,21 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#checkpixelperfect) `(new, 03.02.2022)`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#savealldocs)
 * [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#syncglobalcolorsnames)
+
+## CheckPixelPerfect
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CheckPixelPerfect.jsx-FF6900.svg)](http://bit.do/ckpxperf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Проверяет привязку точек выбранных линий к пиксельной сетке с шагом координат 0,5 или 1,0 px. Скрипт выделит точки с дробными координатами. Подойдет для проверки основных точек формы, так как точки на изгибах линий сложно подогнать к сетке.
+
+> **Note**   
+> В переменной `CFG`: `rgb`, `d`, `opa` настраиваются RGB цвет маркеров, диаметр, непрозрачность группы маркеров.
+
+![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
 
 ## FileVersionInformer
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-FileVersionInformer.jsx-FF6900.svg)](http://bit.do/fverinfo) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -45,13 +56,19 @@
 
 ![SyncGlobalColorsNames](https://i.ibb.co/G9NRF7J/Sync-Global-Colors-Names.gif)
 
-## 💸 Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [FanTalks](https://fantalks.io/r/sergey) (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+## Поддержка
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee], [FanTalks] (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
+[Buymeacoffee]: https://www.buymeacoffee.com/osokin
+[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
+
+<a href="https://www.buymeacoffee.com/osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
 
 <a href="https://fantalks.io/r/sergey">
   <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">

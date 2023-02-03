@@ -11,10 +11,21 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `(new, 03.02.2022)`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
 * [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames)
+
+## CheckPixelPerfect
+[![Direct](https://img.shields.io/badge/Direct%20Link-CheckPixelPerfect.jsx-FF6900.svg)](http://bit.do/ckpxperf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The script selects points with fractional coordinates. Useful for checking the main points of the shape, as points on line curves are difficult to fit on the grid.
+
+> **Note**   
+> In the `CFG` variable: `rgb`, `d`, `opa` you can set the RGB color of the markers, their diameter and opacity.
+
+![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
 
 ## FileVersionInformer
 [![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](http://bit.do/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -45,14 +56,19 @@ Syncs the names of the same global colors between open documents. After that, al
 
 ![SyncGlobalColorsNames](https://i.ibb.co/G9NRF7J/Sync-Global-Colors-Names.gif)
 
-## 💸 Donate
-You can support my work on new scripts via [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+## Donate
+You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
+[Buymeacoffee]: https://www.buymeacoffee.com/osokin
 [FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
+
+<a href="https://www.buymeacoffee.com/osokin">
+  <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
 
 <a href="https://fantalks.io/r/sergey">
   <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">

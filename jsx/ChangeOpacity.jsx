@@ -8,6 +8,7 @@
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed input activation in Windows OS
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -33,12 +34,15 @@
 function main () {
   var SCRIPT = {
         name: 'Change Opacity',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         opacity: '-10',
         inclContent: false,
         inclMask: false,
+        aiVers: parseFloat(app.version),
+        isMac: /mac/i.test($.os),
+        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         uiOpacity: .96 // UI window opacity. Range 0-1
       };
 
@@ -52,33 +56,41 @@ function main () {
     return;
   }
 
+  // Disable Windows Screen Flicker Bug Fix on newer versions
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+
   // DIALOG
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.alignChildren = ['fill', 'top'];
-      dialog.opacity = CFG.uiOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.alignChildren = ['fill', 'top'];
+      win.opacity = CFG.uiOpacity;
 
   // Input
-  var input = dialog.add('panel', undefined, 'Enter opacity value');;
+  var input = win.add('panel', undefined, 'Enter opacity value');;
       input.margins = [5, 15, 5, 5];
       input.alignChildren = ['fill', 'center'];
 
   var group = input.add('group');
   var shiftInp = group.add('edittext', undefined, selection.length == 1 ? selection[0].opacity : CFG.opacity);
       shiftInp.preferredSize.width = 120;
+  if (winFlickerFix) {
+    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
+  } else {
+    shiftInp.active = true;
+  }
   group.add('statictext', undefined, '%');
   var helptip = input.add('statictext', undefined, 'Use + or - sign for shift');
 
-  var isContent = dialog.add('checkbox', undefined, 'Change group content');
+  var isContent = win.add('checkbox', undefined, 'Change group content');
       isContent.value = CFG.inclContent;
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.orientation = 'column';
       btns.alignChildren = ['fill', 'center'];
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, 'Visit Github');
+  var copyright = win.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
@@ -87,11 +99,11 @@ function main () {
 
   shiftInputNumValue(shiftInp, -100, 100);
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
   /**
   * Use Up / Down arrow keys (+ Shift) for change value
@@ -133,8 +145,31 @@ function main () {
       changeOpacity(selItems, sign, opValue);
     }
 
-    dialog.close();
+    win.close();
   }
+}
+
+// Simulate keyboard keys on Windows OS via VBScript
+// 
+// This function is in response to a known ScriptUI bug on Windows.
+// Basically, on some Windows Ai versions, when a ScriptUI dialog is
+// presented and the active attribute is set to true on a field, Windows
+// will flash the Windows Explorer app quickly and then bring Ai back
+// in focus with the dialog front and center.
+function simulateKeyPress(k, n) {
+  if (!/win/i.test($.os)) return false;
+  if (!n) n = 1;
+  try {
+    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
+    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
+    while (n--) {
+      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
+    }
+    f.open('w');
+    f.write(s);
+    f.close();
+    f.execute();
+  } catch(e) {}
 }
 
 /**
