@@ -161,6 +161,7 @@
 ### [Style](md/Style.ru.md)  
 Скрипты, стилизующие объекты
 
+* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#averagestrokeswidth) `(new, 07.02.2023)`
 * [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#changeopacity) `(upd, 01.08.2022)`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#grayscaletoopacity)
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#maketrappingstroke) `(new, 14.12.2022)`

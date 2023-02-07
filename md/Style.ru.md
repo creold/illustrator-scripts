@@ -11,6 +11,7 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
+* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#averagestrokeswidth) `(new, 07.02.2023)`
 * [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#changeopacity) `(upd, 01.08.2022)`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#grayscaletoopacity)
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#maketrappingstroke) `(new, 14.12.2022)`
@@ -18,6 +19,13 @@
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#randomstrokewidth) `upd, 14.10.2022`
 * [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
 * [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
+
+## AverageStrokesWidth
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageStrokesWidth.jsx-FF6900.svg)](https://rebrand.ly/avgstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Усредняет толщину обводок выбранных объектов, пропуская те, что без обводки. Поддерживает пути, компаунды и текстовые объекты. 
+
+![AverageStrokesWidth](https://i.ibb.co/3shb651/Average-Strokes-Width.gif)
 
 ## ChangeOpacity
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ChangeOpacity.jsx-FF6900.svg)](http://bit.do/chngopa) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

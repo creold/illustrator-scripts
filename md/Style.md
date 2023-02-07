@@ -11,6 +11,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
+* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#averagestrokeswidth) `(new, 07.02.2023)`
 * [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `(upd, 01.08.2022)`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#grayscaletoopacity)
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `(new, 14.12.2022)`
@@ -18,6 +19,13 @@
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#randomstrokewidth) `upd, 14.10.2022`
 * [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 14.10.2022`
 * [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 14.10.2022`
+
+## AverageStrokesWidth
+[![Direct](https://img.shields.io/badge/Direct%20Link-AverageStrokesWidth.jsx-FF6900.svg)](https://rebrand.ly/avgstrwd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Averages the stroke width of selected objects, skipping those without strokes. Supports paths, compound paths and text objects.
+
+![AverageStrokesWidth](https://i.ibb.co/3shb651/Average-Strokes-Width.gif)
 
 ## ChangeOpacity
 [![Direct](https://img.shields.io/badge/Direct%20Link-ChangeOpacity.jsx-FF6900.svg)](http://bit.do/chngopa) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

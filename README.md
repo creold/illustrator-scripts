@@ -152,6 +152,7 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Style](md/Style.md)  
 
+* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#averagestrokeswidth) `(new, 07.02.2023)`
 * [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `(upd, 01.08.2022)`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#grayscaletoopacity)
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `(new, 14.12.2022)`
