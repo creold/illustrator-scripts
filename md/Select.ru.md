@@ -20,7 +20,7 @@
 * [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectrotateditems) `(new, 22.06.2022)`
 
 ## Named Items Finder
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NamedItemsFinder.jsx-FF6900.svg)](http://bit.do/itemsfinder) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NamedItemsFinder.jsx-FF6900.svg)](https://rebrand.ly/itemsfinder) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Ищет объекты в документе по имени и масштабирует их по центру окна. Также можно искать текстовые фреймы в документе по словам. Вдохновлено функционалом Photoshop CC 2020.   
 
@@ -31,28 +31,28 @@
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif)
 
 ## SelectAllLayersAbove
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectAllLayersAbove.jsx-FF6900.svg)](http://bit.do/sellyrabv) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectAllLayersBelow.jsx-FF6900.svg)](http://bit.do/sellyrblw) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectAllLayersAbove.jsx-FF6900.svg)](https://rebrand.ly/sellyrabv) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectAllLayersBelow.jsx-FF6900.svg)](https://rebrand.ly/sellyrblw) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт SelectAllLayersAbove выбирает объекты во всех слоях выше активного. SelectAllLayersBelow - в слоях ниже. Если в документе что-то выбрано, активным будет считаться родительский слой выбранного объекта. В ином случае - слой, который подсвечен в панели Layers. Поменяйте значение `var isInclActive = false` в коде на `true`, чтобы выделились объекты и в исходном слое.
 
 ![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
 
 ## SelectBySwatches
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectBySwatches.jsx-FF6900.svg)](http://bit.do/selbyswat) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectBySwatches.jsx-FF6900.svg)](https://rebrand.ly/selbyswat) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Инструмент Magic Wand выделяет объекты, совпадающие по цвету с образцом. Выбирая образцы с  зажатой клавишей <kbd>Shift</kbd>, выделяются объекты разных цветов. Скрипт же выделит объекты, заливка или контур которых совпадает с цветами, выбранными в панели Swatches.
 
 ![SelectBySwatches](https://i.ibb.co/q70XMd6/Select-By-Swatches.gif)
 
 ## SelectOnlyPoints
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectBySwatches.jsx-FF6900.svg)](http://bit.do/selonlypts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectOnlyPoints.jsx-FF6900.svg)](https://rebrand.ly/selonlypts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 При использовании инструментов Lasso Tool <kbd>A</kbd> или Direct Selection Tool <kbd>Q</kbd> захватываются не только точки, но и сегменты путей. Скрипт оставляет активными только сами точки.
 
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif)
 
 ## SelectPointsByType
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectPointsByType.jsx-FF6900.svg)](http://bit.do/selptsbyty) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectPointsByType.jsx-FF6900.svg)](https://rebrand.ly/selptsbyty) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выделяет точки на выбранных объектах в соответствии с типом. Возможностей выбора пока больше, чем в плагинах у Astute Graphics :).  
 
@@ -76,7 +76,7 @@
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
 
 ## SelectRotatedItems
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectRotatedItems.jsx-FF6900.svg)](http://bit.do/selrotdit) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectRotatedItems.jsx-FF6900.svg)](https://rebrand.ly/selrotdit) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Находит среди выбранных объектов или во всём документе те, что повёрнуты. Если в коде `isSkipRight: true`, то объекты повёрнутые на 90, 180, 270 градусов не учитываются, если значение `false`, то выбираются все объекты с углом поворота отличным от 0 градусов.
 

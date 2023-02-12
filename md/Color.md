@@ -22,7 +22,7 @@
 * [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `upd, 14.10.2022`
 
 ## AverageColors
-[![Direct](https://img.shields.io/badge/Direct%20Link-AverageColors.jsx-FF6900.svg)](http://bit.do/avgcols) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-AverageColors.jsx-FF6900.svg)](https://rebrand.ly/avgcols) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Averages the colors of selected objects or separately inside groups or gradients. The script skips objects without color or with a pattern. If nothing is selected, the script process all groups in the document. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
 
@@ -34,7 +34,7 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 ![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif) 
 
 ## ColorBlindSimulator
-[![Direct](https://img.shields.io/badge/Direct%20Link-ColorBlindSimulator.jsx-FF6900.svg)](http://bit.do/colblindsim) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ColorBlindSimulator.jsx-FF6900.svg)](https://rebrand.ly/colblindsim) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Simulates color vision deficiency of 8 types. You can recolor objects or use only a preview. Adobe is limited to viewing two types in the `View > Proof Setup` menu and cannot apply colors. The script supports: paths, compound paths, text, fills and strokes. You can change the gamma correction in `CFG.gamma: 2.2` and activate the default preview `CFG.defPreview: true`. 
 
@@ -44,7 +44,7 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
 
 ## ConvertToGradient
-[![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](http://bit.do/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Convert a flat process color into a matching gradient.   
 What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items.   
@@ -53,7 +53,7 @@ What's new: The script now works with the RGB and CMYK document profile, Spot & 
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
 
 ## CycleColors
-[![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](http://bit.do/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](https://rebrand.ly/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Swaps the fill and stroke colors of the selected objects in order they have in the Layers panel. Preserves the weight of the strokes, but if an object has no stroke, the script copies one from another object. If your selected objects are in non-consecutive order, you may think that the `Forward` and `Backward` buttons move colors randomly. The `Reset` button doesn't return custom brushes and dash settings applied to strokes, but you You can use the native command `Undo` after closing the dialog box.   
 
@@ -62,7 +62,7 @@ The script by default remembers the position of the dialog window on the screen,
 ![CycleColors](https://i.ibb.co/qNXFHry/cycle-colors.gif)
 
 ## CycleGradient
-[![Direct](https://img.shields.io/badge/Direct%20Link-CycleGradient.jsx-FF6900.svg)](http://bit.do/cyclegrad) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-CycleGradient.jsx-FF6900.svg)](https://rebrand.ly/cyclegrad) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 * CycleGradient.jsx (UI version)
 * CycleGradientBackward.jsx
@@ -77,7 +77,7 @@ A set of 4 scripts that change the color order of gradient stops. The position o
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
 
 ## DistributeGradientStops
-[![Direct](https://img.shields.io/badge/Direct%20Link-DistributeGradientStops.jsx-FF6900.svg)](http://bit.do/distgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-DistributeGradientStops.jsx-FF6900.svg)](https://rebrand.ly/distgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Distributes uniform spacing between all the gradients stops without changing the position of the outermost stops. 
 
@@ -87,7 +87,7 @@ Distributes uniform spacing between all the gradients stops without changing the
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
 
 ## RemoveGradientStops
-[![Direct](https://img.shields.io/badge/Direct%20Link-RemoveGradientStops.jsx-FF6900.svg)](http://bit.do/rmvgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-RemoveGradientStops.jsx-FF6900.svg)](https://rebrand.ly/rmvgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Removes intermediate color stops of gradient fill and stroke for selected objects.
 
@@ -97,7 +97,7 @@ Removes intermediate color stops of gradient fill and stroke for selected object
 ![RemoveGradientStops](https://i.ibb.co/cv6wgPq/remove-Gradient-Stops.gif)
 
 ## ReverseGradientColor
-[![Direct](https://img.shields.io/badge/Direct%20Link-ReverseGradientColor.jsx-FF6900.svg)](http://bit.do/rvsgradcol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ReverseGradientColor.jsx-FF6900.svg)](https://rebrand.ly/rvsgradcol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Reverse the order of gradient colors and their opacity. Does not reverse the locations of color stops.
 
@@ -107,7 +107,7 @@ Reverse the order of gradient colors and their opacity. Does not reverse the loc
 ![ReverseGradient](https://i.ibb.co/Fg8nnHZ/Reverse-Gradient-Color.gif)
 
 ## StrokeColorFromFill
-[![Direct](https://img.shields.io/badge/Direct%20Link-StrokeColorFromFill.jsx-FF6900.svg)](http://bit.do/strokefromfill) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-StrokeColorFromFill.jsx-FF6900.svg)](https://rebrand.ly/strokefromfill) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Setting the Stroke color of object based on an his solid or gradient fill. The option to automatically add an stroke is not available for Mac OS users with an Illustrator older than CC 2020.   
 

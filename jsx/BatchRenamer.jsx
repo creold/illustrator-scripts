@@ -1,7 +1,7 @@
 /*
   BatchRenamer.jsx for Adobe Illustrator
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders
-  Date: December, 2022
+  Date: February, 2023
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -22,23 +22,23 @@
   1.2.1 Added custom RGB color (idxColor) for artboard indexes
   1.2.2 Added size correction in large canvas mode
   1.2.3 Added new units API for CC 2023 v27.1.1
+  1.2.4 Added {fn} placeholder to insert a filename
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
   - via FanTalks https://fantalks.io/r/sergey
   - via DonatePay https://new.donatepay.ru/en/@osokin
-  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
-  
+
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
+  Tested with Adobe Illustrator CC 2019-2023 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
-  
-  Released under the MIT license.
+  Free to use, not for sale
+
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
-  
+
   Check my other scripts: https://github.com/creold
 */
 
@@ -55,65 +55,68 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.2.3'
+        version:  'v.1.2.4'
       },
       CFG = {
-        isMac: /mac/i.test($.os),
-        defTab:     0, // Default tab. 0 - Artboard, 1 - Layer, 2 - Path
-        rows:       5, // Amount of visible rows
-        listHeight: 5 * 32,
         decimal:    ',', // Decimal separator point or comma for width and height
-        precision:  2, // Rounding the artboard or the path width and height to decimal places
-        isFind:     false, // Default Find and Replace state
-        tmpLyr:     'ARTBOARD_INDEX',
+        defTab:     0, // Default tab. 0 - Artboard, 1 - Layer, 2 - Path
         idxColor:   [255, 0, 0], // Artboard index color
+        isFind:     false, // Default Find and Replace state
+        isMac:      /mac/i.test($.os),
+        listHeight: 5 * 32,
+        precision:  2, // Rounding the artboard or the path width and height to decimal places
+        rows:       5, // Amount of visible rows
         sf:         activeDocument.scaleFactor ? activeDocument.scaleFactor : 1, // Scale factor for Large Canvas mode
-        uiOpacity:  .97 // UI window opacity. Range 0-1
+        tmpLyr:     'ARTBOARD_INDEX',
+        uiOpacity:  .97, // UI window opacity. Range 0-1
       },
       PH = { // Placeholders
-        units:    '{u}',
-        date:     '{d}',
         color:    '{c}',
-        name:     '{n}',
-        numUp:    '{nu:0}',
-        numDown:  '{nd:0}',
+        date:     '{d}',
+        fName:    '{fn}',
         height:   '{h}',
-        width:    '{w}'
+        name:     '{n}',
+        numDown:  '{nd:0}',
+        numUp:    '{nu:0}',
+        units:    '{u}',
+        width:    '{w}',
       },
       SETTINGS = {
         name:   SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
       },
       MSG = {
-        tabAb:        'ARTBOARD',
-        tabLyr:       'LAYER',
-        tabPath:      'PATH',
+        cancel:       'Cancel',
+        copyright:    '\u00A9 Sergey Osokin. Visit Github',
+        empty:        'No paths are selected',
+        enable:       'Enable',
+        find:         'Find',
         nameAb:       'Artboard name',
         nameLyr:      'Layer name',
         namePath:     'Path name',
-        prefix:       'Prefix',
-        suffix:       'Suffix',
-        ph:           'Placeholder: ' + PH.name + ' - current name',
-        prvwOn:       'PREVIEW ON',
-        find:         'Find',
-        rplc:         'Replace',
-        enable:       'Enable',
-        prvw:         'Preview',
-        cancel:       'Cancel',
         ok:           'Ok',
-        copyright:    '\u00A9 Sergey Osokin. Visit Github',
-        empty:        'No paths are selected',
+        ph:           'Placeholder: ' + PH.name + ' - current artboard name',
+        prefix:       'Prefix',
+        prvw:         'Preview',
+        prvwOn:       'PREVIEW ON',
+        rplc:         'Replace',
+        suffix:       'Suffix',
+        tabAb:        'ARTBOARD',
+        tabLyr:       'LAYER',
+        tabPath:      'PATH',
         preSuffAb:    'Placeholders:\n' +
                       PH.width + ' - artboard width, ' +
                       PH.height + ' - artboard height, ' +
                       PH.units + ' - ruler units, ' +
                       PH.numUp + ' - auto-number \u2191 with start from, ' + // ascending
                       PH.numDown + ' - number \u2193,\n' + // descending
-                      PH.color + ' - doc color space, ' + 
-                      PH.date + ' - current date as YYYYMMDD',
+                      PH.color + ' - file color space, ' + 
+                      PH.date + ' - current date as YYYYMMDD,\n' +
+                      PH.fName + ' - file name',
         preSuffLyr:   'Placeholders:\n' +
                       PH.numUp + ' - auto-number \u2191 with start from,\n' + // ascending
-                      PH.numDown + ' - auto-number \u2193 with start from', // descending
+                      PH.numDown + ' - auto-number \u2193 with start from, ' + // descending
+                      PH.fName + ' - file name',
         preSuffPath:  'Placeholders:\n' +
                       PH.numUp + ' - auto-number \u2191 with start from, ' + // ascending
                       PH.numDown + ' - number \u2193,\n' + // descending
@@ -124,57 +127,59 @@ function main() {
 
   var doc = app.activeDocument,
       abs = { // Artboards
-        state: [],
-        names: [],
-        isPre: [],
-        isSuff: [],
+        find:   '',
         isFind: CFG.isFind,
-        pre: '',
-        suff: '',
-        find: '',
-        rplc: ''
+        isPre:  [],
+        isSuff: [],
+        names:  [],
+        pre:    '',
+        rplc:   '',
+        state:  [],
+        suff:   '',
       },
       lyrs = {  // Layers
-        state: [],
-        names: [],
-        isPre: [],
-        isSuff: [],
+        find:   '',
         isFind: CFG.isFind,
-        pre: '',
-        suff: '',
-        find: '',
-        rplc: ''
+        isPre:  [],
+        isSuff: [],
+        names:  [],
+        pre:    '',
+        rplc:   '',
+        state:  [],
+        suff:   '',
       },
       paths = { // Selected paths
-        state: [],
-        names: [],
-        isPre: [],
-        isSuff: [],
+        find:   '',
         isFind: CFG.isFind,
-        pre: '',
-        suff: '',
-        find: '',
-        rplc: ''
+        isPre:  [],
+        isSuff: [],
+        names:  [],
+        pre:    '',
+        rplc:   '',
+        state:  [],
+        suff:   '',
       },
       absPlaceholder = {
-        u: PH.units,
-        d: PH.date,
-        c: PH.color,
-        nu: PH.numUp,
+        c:  PH.color,
+        d:  PH.date,
+        fn: PH.fName,
+        h:  PH.height,
         nd: PH.numDown,
-        h: PH.height,
-        w: PH.width
+        nu: PH.numUp,
+        u:  PH.units,
+        w:  PH.width,
       },
       lyrsPlaceholder = {
+        fn: PH.fName,
+        nd: PH.numDown,
         nu: PH.numUp,
-        nd: PH.numDown
       },
       pathsPlaceholder = {
-        u: PH.units,
-        nu: PH.numUp,
+        h:  PH.height,
         nd: PH.numDown,
-        h: PH.height,
-        w: PH.width
+        nu: PH.numUp,
+        u:  PH.units,
+        w:  PH.width,
       },
       rowItem = []; // List rows
 
@@ -353,7 +358,7 @@ function main() {
       var suffTitle = preSuffGrp.add('statictext', undefined, txt.suffix);
       var suff = preSuffGrp.add('edittext', extraInpSize, '');
 
-      var preSuffNote = extra.add('statictext', [0, 0, 350, 60], placeholder, {multiline: true});
+      var preSuffNote = extra.add('statictext', [0, 0, 350, 75], placeholder, {multiline: true});
 
       // Simulate a dividing line
       var border = extra.add('panel');
@@ -440,14 +445,14 @@ function main() {
     }
 
     var out = {
-      pre:            (typeof extra !== 'undefined') ? pre : undefined,
-      suff:           (typeof extra !== 'undefined') ? suff : undefined,
-      find:           (typeof extra !== 'undefined') ? find : undefined,
-      rplc:           (typeof extra !== 'undefined') ? rplc : undefined,
-      prvwTitle:      (typeof prvwTitle !== 'undefined') ? prvwTitle : undefined,
-      scroll:         (typeof scroll !== 'undefined') ? scroll : undefined,
-      smallList:      (typeof scroll !== 'undefined') ? smallList : undefined,
-      pageListPanel:  (typeof scroll !== 'undefined') ? pageListPanel : undefined
+      pre:            (extra == undefined)      ? undefined : pre,
+      suff:           (extra == undefined)      ? undefined : suff,
+      find:           (extra == undefined)      ? undefined : find,
+      rplc:           (extra == undefined)      ? undefined : rplc,
+      prvwTitle:      (prvwTitle == undefined)  ? undefined : prvwTitle,
+      scroll:         (scroll == undefined)     ? undefined : scroll,
+      smallList:      (scroll == undefined)     ? undefined : smallList,
+      pageListPanel:  (scroll == undefined)     ? undefined : pageListPanel,
     }
 
     return out;
@@ -769,9 +774,10 @@ function findAndReplace(cfgPh, obj, idx) {
 
 // Replace the placeholders in the suffix or prefix with text
 function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
-  var units = getUnits();
+  var name = activeDocument.name.replace(/\.[^\.]+$/, ''),
+      units = getUnits(),
       width = height = 0,
-      color = (activeDocument.documentColorSpace == DocumentColorSpace.RGB) ? 'RGB' : 'CMYK';
+      color = /rgb/i.test(activeDocument.documentColorSpace) ? 'RGB' : 'CMYK';
 
   switch (target[0].typename) {
     case 'Artboard':
@@ -802,6 +808,9 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
         case ph.u:
           val = units;
           break;
+        case ph.fn:
+          val = name;
+          break;
         case ph.d:
           val = getTodayDate();
           break;
@@ -826,7 +835,7 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
     }
   }
 
-  return str;  
+  return str;
 }
 
 // Change counter for active prefix or suffix

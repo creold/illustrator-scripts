@@ -15,14 +15,14 @@
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `upd, 14.10.2022`
 
 ## NumeratesPoints
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](http://bit.do/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Нумерует выделенные точки и помечает их круглыми маркерами. Пригодится, например, для создания рисунков в стиле «Соедини по точкам (цифрам)».
 
 ![NumeratesPoints](https://i.ibb.co/bdJ8tvV/Numerates-Points.gif)
 
 ## RandomScribble
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomScribble.jsx-FF6900.svg)](http://bit.do/randscrib) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomScribble.jsx-FF6900.svg)](https://rebrand.ly/randscrib) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Создаёт случайные пути с заданным количеством точек. Это могут быть случайные отрезки из 2 точек или сложные фигуры, имитирующие каракули. Точки не выходят за границы активного артборда. Если в документе сначала выделили несколько фигур, то скрипт сгенерирует отдельные пути с точками, лежащими в пределах их границ (bounding box).
 

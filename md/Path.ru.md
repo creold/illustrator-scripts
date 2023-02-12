@@ -17,7 +17,7 @@
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(new, 27.01.2023)`
 
 ## Points Move Random
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-PointsMoveRandom.jsx-FF6900.svg)](http://bit.do/ptsmovrnd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-PointsMoveRandom.jsx-FF6900.svg)](https://rebrand.ly/ptsmovrnd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Перемещает случайным образом выбранные точки фигуры по осям X, Y. Дистанция сдвига генерируется в пределах заданного диапазона. Настройки переключаются горячими клавишами <kbd>Q</kbd> + подчеркнутая буква. Вместо <kbd>Q</kbd> можно задать свою клавишу-модификатор в коде `modKey: 'Q'`.
 
@@ -28,7 +28,7 @@
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif)
 
 ## SplitPath
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SplitPath.jsx-FF6900.svg)](http://bit.do/splpath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SplitPath.jsx-FF6900.svg)](https://rebrand.ly/splpath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт для фигурного разрезания незамкнутых линий. Стандартная панель Pathfinder в Illustrator пока не умеет этого.   
 
@@ -39,7 +39,7 @@
 ![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
 
 ## SubtractTopPath
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SubtractTopPath.jsx-FF6900.svg)](http://bit.do/subtoppath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SubtractTopPath.jsx-FF6900.svg)](https://rebrand.ly/subtoppath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Вырезает верхнюю выбранную фигуру из лежащих под ней. Стандартная панель Pathfinder в Illustrator пока не умеет этого. Поменяйте значение `isRmvTop` на `false`, чтобы после вырезания объект не удалился. `isUseFS: true` ускоряет обработку при большом количестве объектов. 
 
@@ -49,7 +49,7 @@
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
 
 ## TrimOpenEnds
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimOpenEnds.jsx-FF6900.svg)](http://bit.do/trimends) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimOpenEnds.jsx-FF6900.svg)](https://rebrand.ly/trimends) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Удаляет концы незамкнутых линий до точек их пересечений. Заменяет ручную обработку инструментом Shape Builder.  
 

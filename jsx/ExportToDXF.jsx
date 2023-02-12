@@ -11,11 +11,10 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
   - via FanTalks https://fantalks.io/r/sergey
   - via DonatePay https://new.donatepay.ru/en/@osokin
-  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).

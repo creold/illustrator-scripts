@@ -15,7 +15,7 @@
 * [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#exporttodxf) `(upd, 01.08.2022)`
 
 ## Export selection as AI
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Export--selection--as--AI.jsx-FF6900.svg)](http://bit.do/exptoai) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Export--selection--as--AI.jsx-FF6900.svg)](https://rebrand.ly/exptoai) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Экспортирует выбранные объекты в отдельные файлы формата .ai.    
 *Сделан на основе Layers to SVG 0.1 автора Anton Ball.*
@@ -23,7 +23,7 @@
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif)
 
 ## ExportToDXF
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExportToDXF.jsx-FF6900.svg)](http://bit.do/exptodxf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExportToDXF.jsx-FF6900.svg)](https://rebrand.ly/exptodxf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Экспортирует выбранные артборды с видимыми незаблокированными объектами или выделенные объекты в отдельные файлы DXF для CAD-систем.
 

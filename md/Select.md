@@ -20,7 +20,7 @@
 * [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `(new, 22.06.2022)`
 
 ## Named Items Finder
-[![Direct](https://img.shields.io/badge/Direct%20Link-NamedItemsFinder.jsx-FF6900.svg)](http://bit.do/itemsfinder) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-NamedItemsFinder.jsx-FF6900.svg)](https://rebrand.ly/itemsfinder) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Search items in the document by name and zoom to them contents. Inspired by Photoshop CC 2020 features.   
 
@@ -31,28 +31,28 @@ Search items in the document by name and zoom to them contents. Inspired by Phot
 ![NamedItemsFinder](https://i.ibb.co/QDVtnXP/demo-Named-Items-Finder.gif)
 
 ## SelectAllLayersAbove
-[![Direct](https://img.shields.io/badge/Direct%20Link-SelectAllLayersAbove.jsx-FF6900.svg)](http://bit.do/sellyrabv) [![Direct](https://img.shields.io/badge/Direct%20Link-SelectAllLayersBelow.jsx-FF6900.svg)](http://bit.do/sellyrblw) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectAllLayersAbove.jsx-FF6900.svg)](https://rebrand.ly/sellyrabv) [![Direct](https://img.shields.io/badge/Direct%20Link-SelectAllLayersBelow.jsx-FF6900.svg)](https://rebrand.ly/sellyrblw) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The SelectAllLayersAbove script selects objects in all layers above the active layer. And the SelectAllLayersBelow script is in the layers below. If something is selected in the document, the parent layer of the selected object becomes active. Otherwise, the active layer is the layer that is selected in the Layers panel. Change `var isInclActive = false` in the code to `true` so that objects in the source layer are also selected.
 
 ![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
 
 ## SelectBySwatches
-[![Direct](https://img.shields.io/badge/Direct%20Link-SelectBySwatches.jsx-FF6900.svg)](http://bit.do/selbyswat) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectBySwatches.jsx-FF6900.svg)](https://rebrand.ly/selbyswat) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The Magic Wand tool selects objects that match the color of the sample. Selecting samples with the <kbd>Shift</kbd> key will select items of different colors. The script will select items if a fill or stroke color matches the colors selected in the Swatches panel.
 
 ![SelectBySwatches](https://i.ibb.co/q70XMd6/Select-By-Swatches.gif)
 
 ## SelectOnlyPoints
-[![Direct](https://img.shields.io/badge/Direct%20Link-SelectBySwatches.jsx-FF6900.svg)](http://bit.do/selonlypts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectOnlyPoints.jsx-FF6900.svg)](https://rebrand.ly/selonlypts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 After using the Lasso tool <kbd>A</kbd> or Direct Selection Tool <kbd>Q</kbd>, both Points and Path segments are selected. 
 
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif)
 
 ## SelectPointsByType
-[![Direct](https://img.shields.io/badge/Direct%20Link-SelectPointsByType.jsx-FF6900.svg)](http://bit.do/selptsbyty) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectPointsByType.jsx-FF6900.svg)](https://rebrand.ly/selptsbyty) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
 
@@ -76,7 +76,7 @@ Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey
 ![SelectPointsType](https://i.ibb.co/1MTyHx8/Select-Points-By-Type.gif)
 
 ## SelectRotatedItems
-[![Direct](https://img.shields.io/badge/Direct%20Link-SelectRotatedItems.jsx-FF6900.svg)](http://bit.do/selrotdit) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectRotatedItems.jsx-FF6900.svg)](https://rebrand.ly/selrotdit) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Finds rotated objects in a selection or in a document. If `isSkipRight: true`, then objects rotated 90, 180, 270 degrees are ignored, if `false` value, then all objects with rotation angle different from 0 degrees are selected.
 

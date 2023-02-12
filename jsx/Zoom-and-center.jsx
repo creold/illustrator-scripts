@@ -20,11 +20,10 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
+  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
   - via FanTalks https://fantalks.io/r/sergey
   - via DonatePay https://new.donatepay.ru/en/@osokin
-  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
 
   Check my other scripts: https://github.com/creold
 */

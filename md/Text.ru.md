@@ -15,14 +15,14 @@
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ## MakeNumbersSequence
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](http://bit.do/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](https://rebrand.ly/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Заменяет выделенные текстовые объекты диапазоном чисел с шагом, заданным в диалоговом окне. Перед запуском скрипта самостоятельно разложите объекты упорядоченно в слое снизу вверх.
 
 ![MakeNumbersSequence](https://i.ibb.co/ChCpVry/Make-Numbers-Sequence.gif)
 
 ## ReplaceFormattedText
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](http://bit.do/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Вставляет текст из буфера обмена без форматирования, сохраняя стили исходных абзацев выбранного текстового объекта. Стили сохраняются по первым символам каждого абзаца.
 

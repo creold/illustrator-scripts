@@ -15,14 +15,14 @@
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `upd, 14.10.2022`
 
 ## NumeratesPoints
-[![Direct](https://img.shields.io/badge/Direct%20Link-NumeratesPoints.jsx-FF6900.svg)](http://bit.do/numpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Numerates selected points and marks them with colored circles.
 
 ![NumeratesPoints](https://i.ibb.co/bdJ8tvV/Numerates-Points.gif)
 
 ## RandomScribble
-[![Direct](https://img.shields.io/badge/Direct%20Link-RandomScribble.jsx-FF6900.svg)](http://bit.do/randscrib) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-RandomScribble.jsx-FF6900.svg)](https://rebrand.ly/randscrib) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Creates random paths with a specified number of points. These can be random straight lines from 2 points or complex shapes that imitate scribbles. The points do not go beyond the bounds of the active artboard. If many shapes are first selected in the document, the script will generate individual paths with points into their bounding box.
 
