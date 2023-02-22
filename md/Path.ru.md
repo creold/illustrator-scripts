@@ -11,10 +11,21 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
+* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#dividebottompath) `(new, 22.02.2023)`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#pointsmoverandom) `upd, 22.12.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
-* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(new, 27.01.2023)`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(upd, 22.02.2023)`
+
+## DivideBottomPath
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DivideBottomPath.jsx-FF6900.svg)](https://rebrand.ly/divbottp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Разрезает нижний контур в местах пересечений с верхними. Нижний и верхние объекты должны быть с обводкой. Заменяет Pathfinder → Outline, который сбрасывает цвет и оставляет части верхних объектов. Инструмент Scissors (Ножницы) требует точного попадания и занимает много времени при большом количестве точек.  
+
+> **Note**   
+> Если хотите оставить верхние линии, то поменяйте `var isRmvTop = true` на `false`. Для перекрашивания сегментов в разные цвета `isRndColor = true`.
+
+![DivideBottomPath](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
 
 ## Points Move Random
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-PointsMoveRandom.jsx-FF6900.svg)](https://rebrand.ly/ptsmovrnd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -44,7 +55,7 @@
 Вырезает верхнюю выбранную фигуру из лежащих под ней. Стандартная панель Pathfinder в Illustrator пока не умеет этого. Поменяйте значение `isRmvTop` на `false`, чтобы после вырезания объект не удалился. `isUseFS: true` ускоряет обработку при большом количестве объектов. 
 
 > **Warning**   
-> Некорректно работает с обводками внутрь и наружу (Align Stroke to Inside /  Outside). К таким объектам примените `Object > Path > Outline Stroke` перед запуском скрипта.
+> Некорректно работает с обводками внутрь и наружу (Align Stroke to Inside /  Outside). К таким объектам примените `Object → Path → Outline Stroke` перед запуском скрипта.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
 

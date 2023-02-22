@@ -1,15 +1,13 @@
 /*
-  TrimOpenEnds.jsx for Adobe Illustrator
-  Description: Removes the ends of open paths up to their intersection points
-  Date: January, 2023
-  Modification date: February, 2023
+  DivideBottomPath.jsx for Adobe Illustrator
+  Description: Divide the bottom path by the intersection points with the top paths
+  Date: February, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
-  0.1.1 Added undo action on error
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -33,8 +31,10 @@
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
-  if (!isCorrectEnv('version:16', 'selection')) return;
+  var isRmvTop = true, // Remove top paths
+      isRndColor = false; // Random stroke color
 
+  if (!isCorrectEnv('version:16', 'selection')) return;
   var paths = getPaths(selection);
   if (!paths.length) return;
 
@@ -50,12 +50,33 @@ function main() {
     return;
   }
   
-  for (var i = selection.length - 1; i >= 0; i--) {
-    var item = selection[i],
-        arr = get(selection);
-    arr.splice(i, 1);
-    var otherPts = getPoints(arr);
-    rmvPoints(item, otherPts);
+  var last = selection.length - 1, // Bottom shape index
+      lastPath = selection[last],
+      arr = get(selection),
+      i = 0;
+
+  arr.splice(last, 1);
+  var otherPts = getPoints(arr);
+  var newPts = getNewPoints(lastPath, otherPts);
+
+  selectPoints(lastPath, newPts);
+  divideShape(lastPath);
+
+  // Recolor strokes
+  if (isRndColor) {
+    var isRGB = activeDocument.documentColorSpace == DocumentColorSpace.RGB;
+    for (i = selection.length - 1; i >=0; i--) {
+      if (selection[i].stroked) {
+        selection[i].strokeColor = generateColor(isRGB);
+      }
+    }
+  }
+
+  // Remove top paths
+  if (isRmvTop) {
+    for (i = arr.length - 1; i >=0; i--) {
+      arr[i].remove();
+    }
   }
 }
 
@@ -103,9 +124,18 @@ function getPaths(coll) {
     var item = coll[i];
     if (isType(item, 'group') && item.pageItems.length) {
       out = [].concat(out, getPaths(item.pageItems));
-    } else if (isType(item, '^path') && item.stroked && item.strokeWidth > 0) {
-      item.filled = false;
-      out.push(item);
+    } else if (isType(item, '^path')) {
+      if (!item.stroked) {
+        item.stroked = true;
+        item.strokeWidth = 1;
+        item.strokeColor = generateColor();
+      }
+      if (item.stroked && item.strokeWidth > 0) {
+        item.filled = false;
+        out.push(item);
+      } else {
+        item.selected = false;
+      }
     } else {
       item.selected = false;
     }
@@ -155,7 +185,7 @@ function addIntersectPoints() {
 }
 
 // Remove start and end points
-function rmvPoints(item, pts) {
+function getNewPoints(item, pts) {
   if (!isType(item, '^path')) return;
   var len = item.pathPoints.length,
       newPP = [],
@@ -166,14 +196,7 @@ function rmvPoints(item, pts) {
       newPP.push(i); // Add new point index
     }
   }
-  var nLen = newPP.length;
-  if (!nLen) return;
-  for (i = len - 1; i >= 0; i--) {
-    // For two paths remove only points at the end
-    if (i < newPP[0] || (nLen > 1 && i > newPP[nLen - 1])) {
-      item.pathPoints[i].remove();
-    }
-  }
+  return newPP;
 }
 
 // Find coordinates match
@@ -186,6 +209,100 @@ function compareCoord(p, coord) {
     }
   }
   return false;
+}
+
+function selectPoints(path, pts) {
+  selection = [];
+  var idx = 0;
+  for (var i = 0, len = pts.length; i < len; i++) {
+    idx = pts[i];
+    path.pathPoints[idx].selected = PathPointSelection.ANCHORPOINT;
+  }
+}
+
+// Cut At Selected Anchors
+// Hiroyuki Sato, https://github.com/shspage
+function divideShape(path) {
+  if (path == undefined) return;
+
+  var i = 0,
+      j = 0,
+      pp = path.pathPoints,
+      firstAnchSel = isSelected(pp[0]),
+      idxs = [[0]],
+      ary,
+      ancs;
+
+  for (i = 1; i < pp.length; i++) {
+    idxs[idxs.length - 1].push(i);
+    if (isSelected(pp[i])) idxs.push([i]);
+  }
+
+  if (idxs.length < 2 && !(firstAnchSel && path.closed)) {
+    return;
+  }
+
+  // Adjust the array (closed path)
+  if (path.closed) {
+    if (firstAnchSel) {
+      idxs[idxs.length - 1].push(0);
+    } else {
+      ary = idxs.shift();
+      idxs[idxs.length - 1] = idxs[idxs.length - 1].concat(ary);
+    }
+  }
+
+  // Duplicate the path and apply the data of the array
+  for (i = 0; i < idxs.length; i++) {
+    ary = idxs[i];
+    ancs = [];
+    for (j = ary.length - 1; j >= 0; j--) {
+      ancs.unshift(pp[ary[j]].anchor);
+    }
+
+    with(path.duplicate()) {
+      closed = false;
+      setEntirePath(ancs);
+      for(j = pathPoints.length - 1; j >= 0; j--){
+        with(pathPoints[j]) {
+          rightDirection  = pp[ary[j]].rightDirection;
+          leftDirection   = pp[ary[j]].leftDirection;
+          pointType       = pp[ary[j]].pointType;
+        }
+      }
+      selected = true;
+    }
+  }
+  // Remove the original path
+  path.remove();
+}
+
+// Check the point is selected
+function isSelected(p) {
+  return p.selected == PathPointSelection.ANCHORPOINT;
+}
+
+// Add new RGB or CMYK color
+function generateColor(isRGB) {
+  if (!arguments.length || !isRGB) isRGB = true;
+  var c = isRGB ? new RGBColor() : new CMYKColor();
+  if (isRGB) {
+    c.red = Math.min(rndInt(0, 255, 8), 255);
+    c.green = Math.min(rndInt(0, 255, 8), 255);
+    c.blue = Math.min(rndInt(0, 255, 8), 255);
+  } else {
+    c.cyan = rndInt(0, 100, 5);
+    c.magenta = rndInt(0, 100, 5);
+    c.yellow = rndInt(0, 100, 5);
+    c.black = 0;
+  }
+  return c;
+}
+
+// Get random integer number in range
+function rndInt(min, max, step) {
+  var rand = min - 0.5 + Math.random() * (max - min + 1)
+  return Math.round(rand / step) * step;
 }
 
 // Run script

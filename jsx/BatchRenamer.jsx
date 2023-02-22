@@ -112,11 +112,11 @@ function main() {
                       PH.numDown + ' - number \u2193,\n' + // descending
                       PH.color + ' - file color space, ' + 
                       PH.date + ' - current date as YYYYMMDD,\n' +
-                      PH.fName + ' - file name',
+                      PH.fName + ' - filename',
         preSuffLyr:   'Placeholders:\n' +
                       PH.numUp + ' - auto-number \u2191 with start from,\n' + // ascending
                       PH.numDown + ' - auto-number \u2193 with start from, ' + // descending
-                      PH.fName + ' - file name',
+                      PH.fName + ' - filename',
         preSuffPath:  'Placeholders:\n' +
                       PH.numUp + ' - auto-number \u2191 with start from, ' + // ascending
                       PH.numDown + ' - number \u2193,\n' + // descending
@@ -850,7 +850,7 @@ function changeCounter(cnt, pre, suff, ph, isPre, isSuff, isUp) {
   return cnt;
 }
 
-// Add zero to the file name before the indexes are less then size
+// Add zero to the name before the indexes are less then size
 function fillZero(number, size) {
   var minus = (number < 0) ? '-' : '',
       str = '00000000000' + Math.abs(number);

@@ -11,10 +11,21 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
+* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `(new, 22.02.2023)`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 22.12.2022`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
-* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(new, 27.01.2023)`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(upd, 22.02.2023)`
+
+## DivideBottomPath
+[![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://rebrand.ly/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Divides the bottom path at the intersections with the top paths. The paths must have a stroke. This script replaces Pathfinder → Outline, which resets the color and doesn't remove the top paths segments. Scissors tool requires precise clicking and takes time with many points. 
+
+> **Note**   
+> If you want to keep the top paths, change `var isRmvTop = true` to `false`. To recolor the segments in random colors, set `isRndColor = true`.
+
+![DivideBottomPath](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
 
 ## Points Move Random
 [![Direct](https://img.shields.io/badge/Direct%20Link-PointsMoveRandom.jsx-FF6900.svg)](https://rebrand.ly/ptsmovrnd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

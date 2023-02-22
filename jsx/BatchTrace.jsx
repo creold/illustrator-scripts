@@ -2,6 +2,7 @@
   BatchTrace.jsx for Adobe Illustrator
   Description: Batch tracing of placed and embedded raster images
   Date: August, 2022
+  Modification date: February, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -9,6 +10,7 @@
   Release notes:
   0.1 Initial version
   0.2 Added processing of files from user selected folder
+  0.2.1 Added support for upper case file extensions such as JPG, PNG
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -35,7 +37,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Batch Trace',
-        version: 'v.0.2'
+        version: 'v.0.2.1'
       },
       CFG = {
         extList: ['bmp', 'gif', 'giff', 'jpeg', 'jpg', 'psd', 'png', 'tif', 'tiff'], // Set supported file formats
@@ -283,7 +285,7 @@ function getAllFiles(dir, ext, isInclSubdir) {
     if (isInclSubdir && f instanceof Folder) {
       out = out.concat(getAllFiles(f, ext, isInclSubdir));
     } else if (f instanceof File) {
-      if (regexp.test(/\.[^\.]+$/g.exec(f.name)[0])) out.push(f);
+      if (regexp.test(/\.[^\.]+$/g.exec(f.name.toLowerCase())[0])) out.push(f);
     }
   });
 
