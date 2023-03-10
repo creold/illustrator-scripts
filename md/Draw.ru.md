@@ -11,8 +11,18 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
+* [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `new, 10.03.2023`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `upd, 14.10.2022`
+
+## DrawPathBySelectedPoints
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://rebrand.ly/drawbyselpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Рисует многоугольник по выбранным точкам фигур. Чтобы не было самопересечений скрипт сортирует выбранные точки по полярным координатам от геометрического центра фигуры с вершинами в точках. Так формируется направление рисования многоугольника.
+
+Параметр в коде `isClose` — замыкать многоугольник (true) или оставлять первую и последнюю точку (false).
+
+![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
 
 ## NumeratesPoints
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

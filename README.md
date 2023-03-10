@@ -103,6 +103,7 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Draw](md/Draw.md) 
 
+* [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `new, 10.03.2023`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `upd, 14.10.2022`
 

@@ -106,6 +106,7 @@
 ### [Draw](md/Draw.ru.md) 
 Скрипты, которые что-либо рисуют
 
+* [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `new, 10.03.2023`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `upd, 14.10.2022`
 
