@@ -6,7 +6,7 @@
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
 ## Hi
-This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code.
+This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code. The [Github Gist](https://gist.github.com/creold) contains the small scripts that are not included in the main collection.
 
 The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2022, 2023 (Windows), CC 2018-2023 (Mac OS).   
 
@@ -81,6 +81,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Artboard](md/Artboard.md)  
 
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `upd, 22.12.2022`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `new, 12.04.2023`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 22.12.2022`

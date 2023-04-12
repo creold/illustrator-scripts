@@ -12,6 +12,7 @@
 
 ## 📜 Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `upd, 22.12.2022`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `new, 12.04.2023`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 22.12.2022`
@@ -26,6 +27,13 @@
 Search for artboards by name or size and shows the selected artboards in the center of the window. Width and height in document units. Landscape, portrait, square artboards are displayed in descending order of size when searching by orientation.
 
 ![ArtboardsFinder](https://i.ibb.co/VJXKjWQ/artboards-finder.gif)
+
+## ArtboardsRemapper
+[![Direct](https://img.shields.io/badge/Direct%20Link-ArtboardsRemapper.jsx-FF6900.svg)](https://rebrand.ly/abremap) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Writes artboard names to a text file or applies from it. The script starts saving or renaming artboards from the specified index to the last artboard.
+
+![ArtboardsRemapper](https://i.ibb.co/XVgb9Lj/Artboards-Remapper.gif)
 
 ## BatchRenamer
 [![Direct](https://img.shields.io/badge/Direct%20Link-BatchRenamer.jsx-FF6900.svg)](https://rebrand.ly/batchren) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -6,7 +6,7 @@
 *Инструкция на других языках: [English](README.md), [Русский](README.ru.md)*
 
 ## 👨‍💻 Привет
-Это коллекция авторских скриптов для Adobe Illustrator.
+Это коллекция авторских скриптов для Adobe Illustrator. Небольшие скрипты, не вошедшие в основную коллекцию, выкладываю на [Github Gist](https://gist.github.com/creold).
 
 Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2022, 2023 (Windows), CC 2018-2023 (Mac OS). 
 
@@ -82,6 +82,7 @@
 Скрипты для создания и управления артбордами
 
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `upd, 22.12.2022`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `new, 12.04.2023`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `upd, 22.12.2022`

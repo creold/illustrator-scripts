@@ -3,7 +3,8 @@
   RenameItems.jsx for Adobe Illustrator
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
-  Date: October, 2022
+  Date: December, 2019
+  Modification date: March, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -20,13 +21,15 @@
   1.6.1 Fixed UI for Illustrator 26.4.1 on PC
   1.6.2 Fixed placeholder buttons, input activation in Windows OS
   1.6.3 Added erase object names by empty input
+  1.6.4 Updated object name reloading
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
-  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
-  - via FanTalks https://fantalks.io/r/sergey
+  - via Buymeacoffee https://www.buymeacoffee.com/osokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Donatty https://donatty.com/sergosokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
+  - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
@@ -36,7 +39,7 @@
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
-  Check my other scripts: https://github.com/creold
+  Check other author's scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -45,7 +48,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6.3'
+        version: 'v.1.6.4'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -100,6 +103,7 @@ function main() {
   var grpName = win.add('group');
       grpName.alignChildren = 'fill';
       grpName.orientation = 'column';
+      grpName.maximumSize.width = 200;
 
   var nameTitle = grpName.add('statictext', undefined, 'Rename ');
       nameTitle.text += isMultiSel ? selection.length + ' items to' : 'to';
@@ -273,7 +277,10 @@ function main() {
   
     // AI doesn't update in realtime the Layers panel until CC 2020
     if (parseInt(app.version) <= 23 && selection.length && selRb.value) {
-      reloadLayers();
+      try {
+        var tmp = selection[0].layer.pathItems.add();
+        tmp.remove();
+      } catch (err) {}
     }
   
     saveSettings();
@@ -370,7 +377,7 @@ function main() {
           if (!isUndefined(isAll) && !isUndefined(pref.layers))
             isAll.value = pref.layers;
         }
-      } catch (e) {}
+      } catch (err) {}
     }
   }
 
@@ -495,13 +502,6 @@ function isUndefined(el) {
   return typeof el == 'undefined';
 }
 
-// Update Layers panel for CC 2019 and older
-function reloadLayers() {
-  app.executeMenuCommand('AdobeLayerPalette1');
-  redraw();
-  app.executeMenuCommand('AdobeLayerPalette1');
-}
-
 // Open link in browser
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
@@ -514,4 +514,4 @@ function openURL(url) {
 
 try {
   main();
-} catch (e) {}
+} catch (err) {}
