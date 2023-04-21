@@ -169,7 +169,7 @@ function convertToGradient(obj, shift, angle, channel, max, shiftEnd) {
     switch (obj.typename) {
       case 'GroupItem':
         for (var j = 0, piLen = obj.pageItems.length; j < piLen; j++) {
-          convertToGradient(obj.pageItems[j], shift, angle, max, shiftEnd);
+          convertToGradient(obj.pageItems[j], shift, angle, channel, max, shiftEnd);
         }
         break;
       case 'PathItem':

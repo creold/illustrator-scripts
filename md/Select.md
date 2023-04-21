@@ -11,6 +11,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `(new, 21.04.2022)`
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `(upd, 14.09.2022)`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
@@ -18,6 +19,13 @@
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `(upd, 14.09.2022)`
 * [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `(new, 22.06.2022)`
+
+## CornersSelector
+[![Direct](https://img.shields.io/badge/Direct%20Link-CornersSelector.jsx-FF6900.svg)](https://rebrand.ly/corslctr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Selects points on objects that are inside or outside the shape of the object. For example, for the task, select all the rays of a star and round them.
+
+![CornersSelector](https://i.ibb.co/Jy12pLW/Corners-Selector.gif)
 
 ## Named Items Finder
 [![Direct](https://img.shields.io/badge/Direct%20Link-NamedItemsFinder.jsx-FF6900.svg)](https://rebrand.ly/itemsfinder) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

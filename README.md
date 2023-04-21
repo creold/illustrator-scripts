@@ -145,6 +145,7 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Select](md/Select.md)  
 
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `(new, 21.04.2022)`
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `(upd, 14.09.2022)`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`

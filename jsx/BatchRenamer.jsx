@@ -23,6 +23,7 @@
   1.2.2 Added size correction in large canvas mode
   1.2.3 Added new units API for CC 2023 v27.1.1
   1.2.4 Added {fn} placeholder to insert a filename
+  1.2.4a Fixed problem launching through LAScripts extension
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -55,7 +56,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.2.4'
+        version:  'v.1.2.4a'
       },
       CFG = {
         decimal:    ',', // Decimal separator point or comma for width and height
@@ -801,6 +802,8 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
   height = ( cfg.sf * convertUnits(height, 'px', units) ).toFixed(cfg.precision);
 
   for (var prop in ph) {
+    // Fix for LAScripts extension users
+    if (/function/i.test(ph[prop])) continue;
     var reg = new RegExp(ph[prop], 'gi');
     if (str.match(reg)) {
       var val;

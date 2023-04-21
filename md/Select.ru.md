@@ -11,6 +11,7 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#cornersselector) `(new, 21.04.2022)`
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `(upd, 14.09.2022)`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `(new, 21.02.2022)`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `(new, 21.02.2022)`
@@ -18,6 +19,13 @@
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `(upd, 14.09.2022)`
 * [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectrotateditems) `(new, 22.06.2022)`
+
+## CornersSelector
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CornersSelector.jsx-FF6900.svg)](https://rebrand.ly/corslctr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Выделяет на объектах точки направленные внутрь либо наружу объекта. Например, для задачи выделить все лучи звезды и скруглить.    
+
+![CornersSelector](https://i.ibb.co/Jy12pLW/Corners-Selector.gif)
 
 ## Named Items Finder
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-NamedItemsFinder.jsx-FF6900.svg)](https://rebrand.ly/itemsfinder) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
