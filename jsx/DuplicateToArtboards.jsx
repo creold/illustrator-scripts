@@ -9,6 +9,7 @@
   Release notes:
   0.1 Initial version
   0.1.1 Fixed input activation in Windows OS
+  0.1.2 Fixed display of indexes when launched by action
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -35,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Duplicate To Artboards',
-        version: 'v.0.1.1'
+        version: 'v.0.1.2'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -299,6 +300,7 @@ function showAbIndex(layer, color) {
   if (arguments.length == 1 || color == undefined) color = [0, 0, 0];
 
   var doc = activeDocument,
+      actLayer = doc.activeLayer,
       actIdx = doc.artboards.getActiveArtboardIndex(),
       tmpLayer;
 
@@ -329,6 +331,7 @@ function showAbIndex(layer, color) {
   }
 
   doc.artboards.setActiveArtboardIndex(actIdx);
+  doc.activeLayer = actLayer;
   if (parseInt(app.version) >= 16) {
     app.executeMenuCommand('preview');
     app.executeMenuCommand('preview');
