@@ -2,6 +2,7 @@
   ResizeToSize.jsx for Adobe Illustrator
   Description: Resize each selected object to the entered size
   Date: December, 2022
+  Modification date: April, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -19,11 +20,12 @@
   0.8.1 Fixed input activation in Windows OS
   0.8.2 Added size correction in large canvas mode
   0.8.3 Added new units API for CC 2023 v27.1.1
+  0.9 Added Smaller and Random option to Scaling side
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via Buymeacoffee: https://www.buymeacoffee.com/osokin
-  - via FanTalks https://fantalks.io/r/sergey
+  - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
@@ -44,7 +46,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main () {
   var SCRIPT = {
         name: 'Resize To Size',
-        version: 'v.0.8.3'
+        version: 'v.0.9'
       },
       CFG = {
         size: 100, // Default size value
@@ -63,7 +65,8 @@ function main () {
                         'Left', 'Center', 'Right',
                         'Bottom Left', 'Bottom', 'Bottom Right'
                       ],
-        uiMargins: [10, 20, 10, 10]
+        sideList: ['W\u0332idth', 'H\u0332eight', 'L\u0332arger', 'S\u0332maller', 'R\u0332andom'],
+        uiMargins: [10, 15, 10, 10]
       },
       SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
@@ -83,13 +86,13 @@ function main () {
   var refPointArr = new Array(9), // Reference point array
       refPointVal = '', // Reference point name
       ratio = 0, // Resize ratio
-      tmpPath,
-      isUndo = false;
+      isUndo = false
+      result = []; // Bad items
 
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -98,9 +101,11 @@ function main () {
   // Size
   var sizeGrp = win.add('group');
       sizeGrp.alignChildren = 'fill';
-      sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
+      sizeGrp.spacing = 20;
 
-  var sizeInp = sizeGrp.add('edittext', [0, 0, 70, 25], CFG.size);
+  sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
+  var sizeInp = sizeGrp.add('edittext', undefined, CFG.size);
+      sizeInp.preferredSize.width = 60;
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
@@ -118,7 +123,9 @@ function main () {
   // Item bounds
   var bndsPnl = win.add('panel', undefined, 'Item dimensions');
       bndsPnl.orientation = 'row';
+      bndsPnl.alignChildren = 'fill';
       bndsPnl.margins = CFG.uiMargins;
+      bndsPnl.preferredSize.width = 270;
 
   var vbRb = bndsPnl.add('radiobutton', undefined, 'V\u0332isible bounds'); // Unicode V̲
       vbRb.helpTip = 'Object\u0027s bounding box, \nincluding any stroke widths.' +
@@ -132,37 +139,43 @@ function main () {
 
   // Side and reference point
   var sideGrp = win.add('group');
-      sideGrp.spacing = 38;
 
   var sidePnl = sideGrp.add('panel', undefined, 'Scaling side');
-      sidePnl.alignChildren = 'left';
-      sidePnl.margins = CFG.uiMargins;
+      sidePnl.orientation = 'row';
+      sidePnl.bounds = [0, 0 , 160, 110];
 
-  var wRb = sidePnl.add('radiobutton', undefined, 'W\u0332idth'); // Unicode W̲
-      wRb.value = true;
-  var hRb = sidePnl.add('radiobutton', undefined, 'H\u0332eight'); // Unicode H̲
-  var largeRb = sidePnl.add('radiobutton', undefined, 'L\u0332arger'); // Unicode L̲
+  // Create scaling side matrix
+  var idx = 0;
+  var sideArr = [];
+  for (var i = 0; i < 3; i++) {
+    for (var j = 0; j < 2; j++) {
+      if (!CFG.sideList[idx]) break;
+      sideArr[idx] = addRadiobutton(sidePnl, j, i, CFG.sideList[idx], true);
+      idx++;
+    };
+  };
 
-  var refPointPnl = sideGrp.add('panel', undefined, 'Reference point');
+  var refPointPnl = sideGrp.add('panel', undefined, 'Ref. point');
       refPointPnl.orientation = 'row';
-      refPointPnl.bounds = [0, 0 , 116, 116];
+      refPointPnl.bounds = [0, 0 , 100, 110];
 
-  // Create Reference point matrix 3x3
+  // Create Reference point matrix
   var idx = 0;
   for (var i = 0; i < 3; i++) {
     for (var j = 0; j < 3; j++) {
-      refPointArr[idx] = addRadio(refPointPnl, j, i, CFG.refPointsHint[idx]);
+      refPointArr[idx] = addRadiobutton(refPointPnl, j, i, CFG.refPointsHint[idx]);
       idx++;
     };
   };
   refPointArr[CFG.refActive].value = true; // Get value from Transform panel
 
   // Extra options
-  var prefs = win.add('panel', undefined, 'Extra scaling options');
+  var prefs = win.add('panel', undefined, 'Scaling options');
       prefs.orientation = 'row';
-      prefs.alignChildren = 'left';
+      prefs.alignChildren = 'fill';
       prefs.margins = CFG.uiMargins;
       prefs.spacing = 20;
+      prefs.preferredSize.width = 270;
 
   var prefsColOne = prefs.add('group');
       prefsColOne.orientation = 'column';
@@ -217,7 +230,7 @@ function main () {
   });
 
   // Shortcut listener
-  var keysList = new RegExp('^[' + CFG.modKey + 'EDVGLWHUCFTSP1-9]$', 'i');
+  var keysList = new RegExp('^[' + CFG.modKey + 'EDVGWHLSRUCFTOP1-9]$', 'i');
   var keys = {};
 
   // Block size input
@@ -227,6 +240,8 @@ function main () {
     if (keys[CFG.modKey])
       kd.preventDefault(); 
   });
+
+  shiftInputNumValue(sizeInp);
 
   win.addEventListener('keydown', function(kd) {
     var key = kd.keyName;
@@ -241,14 +256,16 @@ function main () {
         if (k.match(/[1-9]/)) refPointArr[k * 1 - 1].notify();
         if (k == 'V') vbRb.notify();
         if (k == 'G') gbRb.notify();
-        if (k == 'W') wRb.notify();
-        if (k == 'H') hRb.notify();
-        if (k == 'L') largeRb.notify();
+        if (k == 'W') sideArr[0].notify();
+        if (k == 'H') sideArr[1].notify();
+        if (k == 'L') sideArr[2].notify();
+        if (k == 'S') sideArr[3].notify();
+        if (k == 'R') sideArr[4].notify();
         if (k == 'U') isUniform.notify();
         if (k == 'C' && isCorner) isCorner.notify();
         if (k == 'F') isFillPatt.notify();
         if (k == 'T') isStrokePatt.notify();
-        if (k == 'S') isStroke.notify();
+        if (k == 'O') isStroke.notify();
         if (k == 'P') isPreview.notify();
       }
     }
@@ -274,13 +291,13 @@ function main () {
     e.onClick = preview;
   });
 
-  // Change reference point
-  getItems(refPointArr).forEach(function (e) {
+  // Change scaling side
+  getItems(sideArr).forEach(function (e) {
     e.onClick = preview;
   });
 
-  // Change scaling side
-  getItems(sidePnl.children).forEach(function (e) {
+  // Change reference point
+  getItems(refPointArr).forEach(function (e) {
     e.onClick = preview;
   });
 
@@ -297,31 +314,24 @@ function main () {
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  win.onClose = function () {
-    try {  
-      if (isUndo) {
-        undo();
-        redraw();
-      }
-      tmpPath.remove();
-    } catch (e) {}
-    // Restore Scale Corners pref
-    preferences.setIntegerPreference('policyForPreservingCorners', CFG.isScaleCorner);
-  }
-
   // Resize preview
   function preview() {
     try {
       if (isPreview.value) {
         if (isUndo) undo();
         else isUndo = true;
-        start();
+        result = start();
+        var aLayer = activeDocument.activeLayer,
+            dummyLayer = activeDocument.layers.add();
+        activeDocument.activeLayer = aLayer;
+        dummyLayer.remove();
         redraw();
       } else if (isUndo) {
-          undo();
-          redraw();
-          isUndo = false;
-        }
+        undo();
+        redraw();
+        isUndo = false;
+        result = [];
+      }
     } catch (e) {}
   }
 
@@ -343,12 +353,14 @@ function main () {
     }
 
     // Set transformation side key
-    getItems(sidePnl.children).forEach(function (e) {
+    getItems(sideArr).forEach(function (e) {
       if (e.value) {
-        side = e.text.slice(0, 1);
+        side = e.text.slice(0, 1).toUpperCase();
         return;
       }
     });
+
+    var isRnd = side === 'R';
 
     // Set the point to use as anchor, to transform about
     getItems(refPointPnl.children).forEach(function (e, i) {
@@ -362,10 +374,10 @@ function main () {
       preferences.setIntegerPreference('policyForPreservingCorners', isCorner.value ? 1 : 2);
     }
 
-    tmpPath = selection[0].layer.pathItems.add();
-    tmpPath.name = 'ToRemove';
-
     items.forEach(function (e, i) {
+      if (isRnd) {
+        side = Math.random() >= 0.5 ? 'W' : 'H';
+      }
       try {
         var orig = getSize(e, side, vbRb.value),
             isWidth = orig.isW,
@@ -395,8 +407,9 @@ function main () {
   }
 
   function okClick() {
-    if (isPreview.value && isUndo) undo();
-    var result = start();
+    if (!isPreview.value) {
+      result = start();
+    }
     if (result.length) {
       var isShowFail = confirm('Warning\nSome objects could not be resized. Select them?');
       if (isShowFail) selection = result;
@@ -404,6 +417,34 @@ function main () {
     isUndo = false;
     saveSettings();
     win.close();
+  }
+
+  win.onClose = function () {
+    try {  
+      if (isUndo) {
+        redraw();
+        undo();
+      }
+    } catch (e) {}
+    // Restore Scale Corners pref
+    preferences.setIntegerPreference('policyForPreservingCorners', CFG.isScaleCorner);
+  }
+
+  // Use Up / Down arrow keys (+ Shift) for change value
+  function shiftInputNumValue(item) {
+    item.addEventListener('keydown', function (kd) {
+      var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
+      if (kd.keyName == 'Down') {
+        this.text = strToNum(this.text) - step;
+        kd.preventDefault();
+        preview();
+      }
+      if (kd.keyName == 'Up') {
+        this.text = strToNum(this.text) + step;
+        kd.preventDefault();
+        preview();
+      }
+    });
   }
 
   // Save input data to file
@@ -502,15 +543,17 @@ function convertUnits(value, currUnits, newUnits) {
 }
 
 // Generate radiobutton
-function addRadio(place, x, y, info) {
-  var rb = place.add('radiobutton', undefined, x),
-      step = 30,
-      x0 = y0 = 20,
-      d = 14; // Padding
+function addRadiobutton(place, x, y, info, isNamed) {
+  var rb = place.add('radiobutton', undefined, isNamed ? info : ''),
+      xStep = isNamed ? 74 : 30,
+      yStep = 30,
+      x0 = 10, y0 = 15,
+      dX = isNamed ? 90 : 16,
+      dY = 16; // Padding
 
-  x = x0 + step * x;
-  y = y0 + step * y;
-  rb.bounds = [x, y, x + d, y + d];
+  x = x0 + xStep * x;
+  y = y0 + yStep * y;
+  rb.bounds = [x, y, x + dX, y + dY];
   rb.helpTip = info;
 
   return rb;
@@ -580,14 +623,17 @@ function getSize(item, side, isVB) {
   if (itemBH >= itemBW) isW = false;
 
   switch (side) {
-    case 'L':
-      size = Math.max(itemBH, itemBW);
-      break;
     case 'W':
       size = itemBW;
       break;
     case 'H':
       size = itemBH;
+      break;
+    case 'S':
+      size = Math.min(itemBH, itemBW);
+      break;
+    case 'L':
+      size = Math.max(itemBH, itemBW);
       break;
   }
 
@@ -632,6 +678,14 @@ function getRatio(item, newSize, side, isW, isExac, isVB, isUni) {
 
   if (!isUni) {
     switch (side) {
+      case 'W':
+        ratio.x = ratio.r;
+        ratio.y = 100;
+        break;
+      case 'H':
+        ratio.x = 100;
+        ratio.y = ratio.r;
+        break;
       case 'L':
         if (isW) {
           ratio.y = 100;
@@ -641,13 +695,14 @@ function getRatio(item, newSize, side, isW, isExac, isVB, isUni) {
           ratio.r = ratio.y;
         }
         break;
-      case 'W':
-        ratio.x = ratio.r;
-        ratio.y = 100;
-        break;
-      case 'H':
-        ratio.x = 100;
-        ratio.y = ratio.r;
+      case 'S':
+        if (isW) {
+          ratio.x = 100;
+          ratio.r = ratio.y;
+        } else {
+          ratio.y = 100;
+          ratio.r = ratio.x;
+        }
         break;
     }
   } else {

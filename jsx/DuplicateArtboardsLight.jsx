@@ -89,7 +89,7 @@ function main() {
   }
 
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
   // Main Window
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);

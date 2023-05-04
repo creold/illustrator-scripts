@@ -39,10 +39,9 @@ Creates random paths with a specified number of points. These can be random stra
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
 
 ## Donate
-You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
@@ -50,10 +49,6 @@ You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff]
 
 <a href="https://www.buymeacoffee.com/osokin">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://fantalks.io/r/sergey">
-  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

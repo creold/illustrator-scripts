@@ -3,6 +3,7 @@
   Description: Script for moving artboards range with artwork along the X and Y axis
   Requirements: Adobe Illustrator CS6 and later
   Date: December, 2022
+  Modification date: May, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -15,11 +16,12 @@
   0.2.2 Fixed input activation in Windows OS
   0.2.3 Added size correction in large canvas mode
   0.2.4 Added new units API for CC 2023 v27.1.1
+  0.2.5 Fixed placeholder insertion for CS6
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via Buymeacoffee: https://www.buymeacoffee.com/osokin
-  - via FanTalks https://fantalks.io/r/sergey
+  - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
@@ -41,7 +43,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Move Artboards',
-        version: 'v.0.2.4'
+        version: 'v.0.2.5'
       },
       CFG = {
         aiVers: parseInt(app.version),
@@ -106,7 +108,7 @@ function main() {
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
   // INTERFACE
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -174,9 +176,8 @@ function main() {
 
   abDescr.addEventListener('mousedown', function () {
     inputX.active = true;
-    abInp.text = CFG.allAbs;
     abInp.active = true;
-    abInp.textselection = abInp.text;
+    abInp.textselection = CFG.allAbs;
   });
 
   win.onShow = function () {

@@ -16,7 +16,7 @@
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via Buymeacoffee: https://www.buymeacoffee.com/osokin
-  - via FanTalks https://fantalks.io/r/sergey
+  - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
@@ -84,7 +84,7 @@ function main() {
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
   var resAbs = []; // Array of found artboards
 
   // Dialog

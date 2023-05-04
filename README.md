@@ -44,10 +44,9 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 > To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
 
 ## Donate
-You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
@@ -55,10 +54,6 @@ You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff]
 
 <a href="https://www.buymeacoffee.com/osokin">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://fantalks.io/r/sergey">
-  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -85,7 +80,7 @@ Click the category name to learn more about the scripts in the selected category
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 22.12.2022`
-* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `upd, 22.12.2022`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `upd, 04.05.2023`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `(upd, 14.09.2022)`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `upd, 22.12.2022`
 * [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `(upd, 14.09.2022)`
@@ -111,7 +106,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Export](md/Export.md)  
 
 * [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 06.10.2022)`
-* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 01.08.2022)`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 04.05.2023)`
 
 ### [Group | Mask](md/Group.md)  
 
@@ -128,10 +123,10 @@ Click the category name to learn more about the scripts in the selected category
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `(upd, 01.08.2022)`
 * [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rememberselectionlayers) `(upd, 26.02.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 06.10.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 04.05.2023)`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `upd, 22.12.2022`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`
-* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 22.12.2022`
+* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 04.05.2023`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
 * [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#sortlayeritems) `(new, 29.08.2022)`
 

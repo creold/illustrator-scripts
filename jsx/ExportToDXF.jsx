@@ -2,17 +2,19 @@
   exportToDXF.jsx for Adobe Illustrator
   Description: Export all artboards or selection to separately DXF
   Date: May, 2021
+  Modification date: May, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed placeholder insertion for CS6
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via Buymeacoffee: https://www.buymeacoffee.com/osokin
-  - via FanTalks https://fantalks.io/r/sergey
+  - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
@@ -35,7 +37,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Export To DXF',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         defRadio: 1, // Default export: 1 - Artboards, 2 - Selection, 3 - Each selection
@@ -165,9 +167,8 @@ function main() {
   absDescr.addEventListener('mousedown', function () {
     rbAbs.active = true;
     dialog.update();
-    absInput.text = CFG.allAbs;
     absInput.active = true;
-    absInput.textselection = absInput.text;
+    absInput.textselection = CFG.allAbs;
   });
 
   cancel.onClick = dialog.close;

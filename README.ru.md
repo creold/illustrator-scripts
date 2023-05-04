@@ -44,10 +44,9 @@
 > Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2023 на Мак и Виндовс.
 
 ## Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee], [FanTalks] (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee] (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
@@ -55,10 +54,6 @@
 
 <a href="https://www.buymeacoffee.com/osokin">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://fantalks.io/r/sergey">
-  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -86,7 +81,7 @@
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `upd, 22.12.2022`
-* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `upd, 22.12.2022`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `upd, 04.05.2023`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `(upd, 14.09.2022)`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `upd, 22.12.2022`
 * [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `(upd, 14.09.2022)`
@@ -115,7 +110,7 @@
 Скрипты для экспорта документов
 
 * [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#export-selection-as-ai) `(upd, 06.10.2022)`
-* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#exporttodxf) `(upd, 01.08.2022)`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.ru.md#exporttodxf) `(upd, 04.05.2023)`
 
 ### [Group | Mask](md/Group.ru.md)  
 Скрипты для создания и управления группами, обтравочными масками
@@ -134,10 +129,10 @@
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `(upd, 01.08.2022)`
 * [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rememberselectionlayers) `(upd, 26.02.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 06.10.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 04.05.2023)`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `upd, 22.12.2022`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 22.12.2022`
-* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 22.12.2022`
+* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 04.05.2023`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `upd, 22.12.2022`
 * [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#sortlayeritems) `(new, 29.08.2022)`
 

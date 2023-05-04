@@ -17,10 +17,10 @@
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `(upd, 01.08.2022)`
 * [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rememberselectionlayers) `(upd, 26.02.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 06.10.2022)`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 04.05.2023)`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `upd, 22.12.2022`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 14.10.2022`
-* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 22.12.2022`
+* [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 04.05.2023`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
 * [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#sortlayeritems) `(new, 29.08.2022)`
 
@@ -136,10 +136,9 @@ Sorts objects alphabetically inside layers. The sublayers are sorted with the ob
 ![SortLayerItems](https://i.ibb.co/R9wQS7t/Sort-Layer-Items.gif)
 
 ## Donate
-You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
@@ -147,10 +146,6 @@ You can support my work on new scripts via [Buymeacoffee], [FanTalks], [Tinkoff]
 
 <a href="https://www.buymeacoffee.com/osokin">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://fantalks.io/r/sergey">
-  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

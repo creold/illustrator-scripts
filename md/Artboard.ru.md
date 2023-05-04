@@ -16,7 +16,7 @@
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `upd, 13.02.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `upd, 22.12.2022`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `upd, 22.12.2022`
-* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `upd, 22.12.2022`
+* [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `upd, 04.05.2023`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `(upd, 14.09.2022)`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `upd, 22.12.2022`
 * [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `(upd, 14.09.2022)`
@@ -104,10 +104,9 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 ![RenameArtboardAsTopObj](https://i.ibb.co/WPmf14B/Rename-Artboard-As-Top-Obj.gif)
 
 ## Поддержка
-Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee], [FanTalks] (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+Вы можете поддержать мою работу над новыми скриптами и их распространение любой суммой через [Buymeacoffee] (иностр. карты), [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
-[FanTalks]: https://fantalks.io/r/sergey
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
@@ -115,10 +114,6 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 
 <a href="https://www.buymeacoffee.com/osokin">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
-</a>
-
-<a href="https://fantalks.io/r/sergey">
-  <img width="111" height="40" src="https://i.ibb.co/vcds3vF/fantalks-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
