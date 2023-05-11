@@ -1,7 +1,8 @@
-/*
+﻿/*
   SelectBySwatches.jsx for Adobe Illustrator
   Description: Select objects if the stroke color matches the selected swatches
-  Date: September, 2022
+  Date: June, 2021
+  Modification date: May, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +12,7 @@
   0.2 Added a dialog for selecting fills or strokes
   0.2.1 Fixed "Illustrator quit unexpectedly" error
   0.2.2 Fixed input activation in Windows OS
+  0.3 Added third option "Fill or Stroke"
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -38,28 +40,38 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectBySwatches',
-        version: 'v.0.2.2'
+        version: 'v.0.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
         isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         keyword: '%selswatch%',
-        actionSet: 'SelBySwatch',
-        actionName: 'SelectByNote',
-        actionPath: Folder.myDocuments + '/Adobe Scripts/',
+        set: 'SelBySwatch',
+        action: 'SelectByNote',
+        path: Folder.myDocuments + '/Adobe Scripts/',
         dlgOpacity: 0.97 // UI window opacity. Range 0-1
       },
       LANG = {
+        errVer: { en: 'Wrong app version\nSorry, script only works in Illustrator CS6 and later',
+                  ru: 'Неподходящая версия\nСкрипт работает в Illustrator CS6 и выше' },
         errDoc: { en: 'Error\nOpen a document and try again', 
                   ru: 'Ошибка\nОткройте документ и запустите скрипт' },
         errSwatch: { en: 'Error\nPlease, select at least one swatch', 
                     ru: 'Ошибка\nВыберите хотя бы один образец цвета' },
         fill: { en: 'Fill Color', ru: 'Цвет заливки' },
         stroke: { en: 'Stroke Color', ru: 'Цвет контура' },
-        hotkeyFill: { en: 'Press <1> for quick acess\n(Mac OS)', ru: 'Нажмите <1> для выбора\n(Mac OS)' },
-        hotkeyStroke: { en: 'Press <2> for quick acess\n(Mac OS)', ru: 'Нажмите <2> для выбора\n(Mac OS)' }
+        any: { en: 'Fill or Stroke', ru: 'Заливка или контур' },
+        hotkeyFill: { en: 'Press <1> for quick acess', ru: 'Нажмите <1> для выбора' },
+        hotkeyStroke: { en: 'Press <2> for quick acess', ru: 'Нажмите <2> для выбора' },
+        hotkeyAny: { en: 'Press <3> for quick acess', ru: 'Нажмите <3> для выбора' },
+        empty: { en: 'No items found with selected swatches', ru: 'Объекты с указанными цветами не найдены' },
       };
+
+  if (CFG.aiVers < 16) {
+    alert(LANG.errVer);
+    return;
+  }
 
   if (!documents.length) {
     alert(LANG.errDoc);
@@ -78,17 +90,20 @@ function main() {
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
   // Dialog
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = 'fill';
-      dialog.spacing = 10;
-      dialog.margins = 16;
-      dialog.opacity = CFG.dlgOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = 'fill';
+      win.spacing = 10;
+      win.margins = 16;
+      win.preferredSize.width = 190;
+      win.opacity = CFG.dlgOpacity;
 
-  var fillBtn = dialog.add('button', undefined, LANG.fill);
+  var fillBtn = win.add('button', undefined, LANG.fill);
       fillBtn.helpTip = LANG.hotkeyFill;
-  var strokeBtn = dialog.add('button', undefined, LANG.stroke);
+  var strokeBtn = win.add('button', undefined, LANG.stroke);
       strokeBtn.helpTip = LANG.hotkeyStroke;
+  var anyBtn = win.add('button', undefined, LANG.any);
+      anyBtn.helpTip = LANG.hotkeyAny;
 
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
@@ -96,58 +111,45 @@ function main() {
     fillBtn.active = true;
   }
 
-  var copyright = dialog.add('statictext', undefined, 'Visit Github');
+  var copyright = win.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
   });
 
-  fillBtn.onClick = function () { process(true); };
-  strokeBtn.onClick = function () { process(false); };
+  fillBtn.onClick = function () { process(1); };
+  strokeBtn.onClick = function () { process(2); };
+  anyBtn.onClick = function () { process(3); };
 
   // Begin access key shortcut. For Mac users only
-  dialog.addEventListener('keydown', function(kd) {
+  win.addEventListener('keydown', function(kd) {
     var key = kd.keyName;
     if (key.match(/1/)) fillBtn.notify();
     if (key.match(/2/)) strokeBtn.notify();
+    if (key.match(/3/)) anyBtn.notify();
   });
   // End access key shortcut
   
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
-  function process(isFill) {
+  function process(code) {
+    var items = [];
     switch (selSwatch.length) {
       case 1:
-        selection = null;
-        if (isFill) {
-          doc.defaultFillColor = selSwatch[0].color;
-          app.executeMenuCommand('Find Fill Color menu item');
-        } else {
-          doc.defaultStrokeColor = selSwatch[0].color;
-          app.executeMenuCommand('Find Stroke Color menu item');
-        }
+        items = getItemsBySwatch(selSwatch[0], code);
+        selectItems(items, code, CFG);
         break;
       default: // multiple swatches selected
-        var totalSel = [];
-        for (var i = 0, swatchLen = selSwatch.length; i < swatchLen; i++) {
-          selection = null;
-          if (isFill) {
-            doc.defaultFillColor = selSwatch[i].color;
-            app.executeMenuCommand('Find Fill Color menu item');
-          } else {
-            doc.defaultStrokeColor = selSwatch[i].color;
-            app.executeMenuCommand('Find Stroke Color menu item');
-          }
-          totalSel.push.apply(totalSel, selection);
+        for (var i = 0, len = selSwatch.length; i < len; i++) {
+          items = [].concat(items, getItemsBySwatch(selSwatch[i], code));
         }
-        addNote(totalSel, CFG.keyword);
-        selectByNote(CFG.actionSet, CFG.actionName, CFG.actionPath, CFG.keyword);
-        removeNote(totalSel, CFG.keyword);
+        selectItems(items, 3, CFG);
         break;
     }
-    dialog.close();
+    if (!items.length) alert(LANG.empty);
+    win.close();
   }
 }
 
@@ -176,38 +178,78 @@ function simulateKeyPress(k, n) {
     f.write(s);
     f.close();
     f.execute();
-  } catch(e) {}
+  } catch(err) {}
+}
+
+/** 
+* Find objects of the same color
+* @param {Object} swatch - The swatch color
+* @param {number} code - The code to determine which properties of the items to search
+* 1: fill color only
+* 2: stroke color only
+* 3: both fill and stroke colors
+* @returns {Array} - An array of selected items in the active document
+*/
+function getItemsBySwatch(swatch, code) {
+  var doc = app.activeDocument;
+  var total = [];
+  if (code == 1 || code == 3) {
+    selection = null;
+    doc.defaultFillColor = swatch.color;
+    app.executeMenuCommand('Find Fill Color menu item');
+    if (selection.length) total.push.apply(total, selection);
+  }
+  if (code == 2 || code == 3) {
+    selection = null;
+    doc.defaultStrokeColor = swatch.color;
+    app.executeMenuCommand('Find Stroke Color menu item');
+    if (selection.length) total.push.apply(total, selection);
+  }
+  return total;
+}
+
+/** 
+ * Selects items in a given array
+ * @param {Array} arr - The array of items to select
+ * @param {number} code - The code to select by fill and stroke colors
+ * @param {Object} props - The script constant
+ */
+function selectItems(arr, code, props) {
+  if (code !== 3 || !arr.length) return;
+  addNote(arr, props.keyword);
+  selectByNote(props.set, props.action, props.path, props.keyword);
+  removeNote(arr, props.keyword);
 }
 
 /**
  * Put keyword into Note in Attributes panel
- * @param {object} collection array of items
- * @param {string} key keyword for notes
+ * @param {Object} coll - Array of items
+ * @param {string} key - Keyword for notes
  */
-function addNote(collection, key) {
-  for (var i = 0, len = collection.length; i < len; i++) {
-    (collection[i].note == '') ? collection[i].note = key : collection[i].note += key;
+function addNote(coll, key) {
+  for (var i = 0, len = coll.length; i < len; i++) {
+    (coll[i].note == '') ? coll[i].note = key : coll[i].note += key;
   }
 }
 
 /**
  * Remove keyword from Note in Attributes panel
- * @param {object} collection array of items
- * @param {string} key keyword for notes
+ * @param {Object} coll - Array of items
+ * @param {string} key - Keyword for notes
  */
-function removeNote(collection, key) {
+function removeNote(coll, key) {
   var regexp = new RegExp(key, 'gi');
-  for (var i = 0; i < collection.length; i++) {
-    collection[i].note = collection[i].note.replace(regexp, '');
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].note = coll[i].note.replace(regexp, '');
   }
 }
 
 /**
  * Run a fast selection via the created action
- * @param {string} set name of the action set
- * @param {string} name name of the action
- * @param {string} path folder path for .aia file
- * @param {string} key keyword for notes
+ * @param {string} set - Name of the action set
+ * @param {string} name - Action name
+ * @param {string} path - Folder path for .aia file
+ * @param {string} key - Keyword for notes
  */
 function selectByNote(set, name, path, key) {
   if (!Folder(path).exists) Folder(path).create();
@@ -258,7 +300,9 @@ function selectByNote(set, name, path, key) {
       }
     }
   }''';
-
+  try {
+    app.unloadAction(set, '');
+  } catch (err) {}
   createAction(actionCode, set, path);
   app.doScript(name, set);
   app.redraw();
@@ -267,9 +311,9 @@ function selectByNote(set, name, path, key) {
 
 /**
  * Load Action to Adobe Illustrator
- * @param {*} str the action code
- * @param {*} set name of the action set
- * @param {*} path folder path for the .aia file
+ * @param {string} str - The action code
+ * @param {string} set - Name of the action set
+ * @param {string} path - Folder path for the .aia file
  */
 function createAction(str, set, path) {
   var f = new File('' + path + '/' + set + '.aia');
@@ -282,8 +326,8 @@ function createAction(str, set, path) {
 
 /**
  * Convert string to hex
- * @param {string} hex input string
- * @return {string} hex value
+ * @param {string} hex - Input string
+ * @returns {string} hex - Value
  */
 function ascii2Hex(hex) {
   return hex.replace(/./g, function(a) {
@@ -293,7 +337,7 @@ function ascii2Hex(hex) {
 
 /**
  * Open link in browser
- * @param {string} url - website adress
+ * @param {string} url - Website adress
  */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
@@ -307,4 +351,4 @@ function openURL(url) {
 // Run script
 try {
   main();
-} catch (e) {}
+} catch (err) {}
