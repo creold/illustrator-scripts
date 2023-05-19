@@ -38,7 +38,7 @@ Drag and drop the script file (JS or JSX) onto the tabs of Illustrator documents
 I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify which folder your script files are stored in.
 
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
-[LAScripts]: https://ladygin.pro/products/lascripts/
+[LAScripts]: https://ladyginpro.ru/products/lascripts/
 
 > **Warning**   
 > To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
@@ -133,7 +133,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Path](md/Path.md)  
 
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `(new, 22.02.2023)`
-* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `upd, 22.12.2022`
+* [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `upd, 19.05.2023`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 10.11.2022)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(upd, 22.02.2023)`

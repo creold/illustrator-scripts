@@ -15,6 +15,7 @@
   0.4.1 Fixed input activation in Windows OS
   0.4.2 Added size correction in large canvas mode
   0.4.3 Added new units API for CC 2023 v27.1.1
+  0.4.4 Fixed step check condition
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -41,7 +42,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Points Move Random',
-        version: 'v.0.4.2'
+        version: 'v.0.4.4'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -336,9 +337,9 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
     if (stepVal < 0) stepVal = stepInp.text = CFG.step;
     // Check that the step don't out of the range
-    if (range.x1 !== range.x2 && (stepVal + range.x1) > range.x2)
+    if (range.x1 !== range.x2 && (stepVal + range.x1) > range.x2 && !isHFixed.value)
       errStepMsg += 'Horizontal, ';
-    if (range.y1 !== range.y2 && (stepVal + range.y1) > range.y2)
+    if (range.y1 !== range.y2 && (stepVal + range.y1) > range.y2 && !isVFixed.value)
       errStepMsg += 'Vertical, ';
     if (errStepMsg.length) {
       alert(MSG.errStepOut + errStepMsg.slice(0, -2));
