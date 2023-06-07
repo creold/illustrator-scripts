@@ -2,7 +2,7 @@
   BatchTrace.jsx for Adobe Illustrator
   Description: Batch tracing of placed and embedded raster images
   Date: August, 2022
-  Modification date: February, 2023
+  Modification date: June, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +11,7 @@
   0.1 Initial version
   0.2 Added processing of files from user selected folder
   0.2.1 Added support for upper case file extensions such as JPG, PNG
+  0.3 Bug fixes and minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,13 +38,15 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Batch Trace',
-        version: 'v.0.2.1'
+        version: 'v.0.3'
       },
       CFG = {
         extList: ['bmp', 'gif', 'giff', 'jpeg', 'jpg', 'psd', 'png', 'tif', 'tiff'], // Set supported file formats
         isInclSubdir: true, // Include subfolder files
         isReverse: true,  // Make user presets first in the list
         isExpand: true, // Expand traced image
+        aiVers: parseFloat(app.version),
+        spacing: 10,
         uiMargins: [10, 15, 10, 10],
         dlgOpacity: .97 // UI window opacity. Range 0-1
       },
@@ -57,7 +60,7 @@ function main() {
     return;
   }
 
-  var images = getRasters(selection);
+  var images = app.documents.length ? getRasters(selection) : [];
 
   var tpList = tracingPresetsList,
       imgDir = decodeURI(Folder.desktop);
@@ -67,7 +70,7 @@ function main() {
   var dlg = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dlg.orientation = 'column';
       dlg.alignChildren = 'fill';
-      dlg.spacing = 10;
+      dlg.spacing = CFG.spacing;
       dlg.preferredSize.width = 210;
       dlg.opacity = CFG.dlgOpacity;
   
@@ -88,6 +91,9 @@ function main() {
   var srcBtn = src.add('button', undefined, 'Choose');
   var srcLbl = src.add('edittext', undefined, imgDir, {readonly: true});
       srcLbl.characters = 10;
+
+  var isInclSubdir = src.add('checkbox', undefined, 'Include subfolder files');
+      isInclSubdir.value = CFG.isInclSubdir;
 
   // Options for folder
   var isOneDoc = src.add('checkbox', undefined, 'Vectorize in single .ai');
@@ -114,7 +120,7 @@ function main() {
       isExpand.value = CFG.isExpand;
 
   var btns = dlg.add('group');
-      btns.orientation = 'column';
+      btns.orientation = 'row';
       btns.alignChildren = 'fill';
 
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
@@ -127,6 +133,7 @@ function main() {
   var progBar = prgGroup.add('progressbar', [20, 5, 200, 10], 0, 100);
 
   loadSettings();
+  imgDir = Folder( decodeURI(srcLbl.text) );
 
   if (!images.length) {
     selRb.enabled = false;
@@ -134,22 +141,22 @@ function main() {
   }
   
   if (selRb.value) {
-    src.visible = !selRb.value;
+    src.visible = false;
     src.maximumSize = [0, 0];
-    dlg.spacing /= 2;
+    dlg.spacing = CFG.spacing / 1.5;
   }
 
   selRb.onClick = function () {
     src.visible = false;
-    dlg.spacing /= 2;
     src.maximumSize = [0, 0];
+    dlg.spacing = CFG.spacing / 1.5;
     dlg.layout.layout(true);
   }
 
   dirRb.onClick = function () {
     src.visible = true;
-    dlg.spacing *= 2;
     src.maximumSize = [1000, 1000];
+    dlg.spacing = CFG.spacing;
     dlg.layout.layout(true);
   }
 
@@ -175,7 +182,7 @@ function main() {
         doc, pImg;
 
     if (dirRb.value) {
-      images = getAllFiles(imgDir, CFG.extList, CFG.isInclSubdir);
+      images = getAllFiles(imgDir, CFG.extList, isInclSubdir.value);
     }
 
     if (dirRb.value && isOneDoc.value) {
@@ -197,10 +204,13 @@ function main() {
         pImg.name = imgName;
         traceRaster(pImg, idx, isExpand.value);
 
+        if (CFG.aiVers >= 16 && dirRb.value) {
+          app.executeMenuCommand('Fit Artboard to artwork bounds');
+        }
+
         if (!isOneDoc.value) {
           saveFile(imgName + '_traced' + '.ai', imgDir + '/traced');
         }
-
       }
       progBar.value = parseInt(100 * (i + 1) / amount);
     });
@@ -223,6 +233,7 @@ function main() {
     var pref = {};
     pref.selection = selRb.value;
     pref.dir = srcLbl.text;
+    pref.isSubdir = isInclSubdir.value;
     pref.single = isOneDoc.value;
     pref.rgb = rgbRb.value;
     pref.expand = isExpand.value;
@@ -245,6 +256,7 @@ function main() {
         if (typeof pref != 'undefined') {
           pref.selection ? selRb.value = true : dirRb.value = true;
           srcLbl.text = pref.dir;
+          isInclSubdir.value = pref.isSubdir;
           isOneDoc.value = pref.single;
           pref.rgb ? rgbRb.value = true : cmykRb.value = true;
           isExpand.value = pref.expand;

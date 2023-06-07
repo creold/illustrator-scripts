@@ -11,7 +11,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `(upd, 22.02.2023)`
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `(upd, 07.06.2023)`
 * [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `(upd, 14.09.2022)`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `upd, 22.12.2022`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
@@ -32,10 +32,12 @@ Batch tracing of selected placed and embedded images in a document or all images
 > **Note**   
 > The speed of the script depends on the specifications of your PC, the tracing preset and the amount of images.
 
+> **Warning**   
+Adobe scripts incorrectly apply the Colors value from custom presets, so the tracing result may not match the preset. The big difference is seen in CC 2023. Vote for a fix at [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
+
 Tweaks in the script code:
 
 * `CFG.extList` — a list of extensions to be processed from the folder. You can add your own or remove some to skip the script;
-* `CFG.isInclSubdir` — search for images in all subfolders (true) or only the root folder (false);
 * `CFG.isReverse` — reverse the order of the presets list (true), the user presets will be at the top.
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)

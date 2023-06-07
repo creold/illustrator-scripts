@@ -13,7 +13,7 @@
 ## Scripts
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#dividebottompath) `(new, 22.02.2023)`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#pointsmoverandom) `upd, 19.05.2023`
-* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 10.11.2022)`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 07.06.2023)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(upd, 22.02.2023)`
 

@@ -3,6 +3,7 @@
   Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
   Requirements: Adobe Illustrator CS6 and above
   Date: November, 2022
+  Modification date: June, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -14,6 +15,7 @@
   1.1.1 Fixed "Illustrator quit unexpectedly" error
   1.1.2 Fixed input activation in Windows OS
   1.2 Added option to save the original filled path
+  1.3 Fixed expand command when script is launched via Action
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -24,7 +26,6 @@
 
   NOTICE:
   Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
-  This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
   Released under the MIT license
@@ -40,7 +41,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'SplitPath',
-        version: 'v.1.2'
+        version: 'v.1.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -83,6 +84,7 @@ function main() {
   var minusRadio = method.add('radiobutton', undefined, LANG.minus);
       minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
+
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
@@ -136,7 +138,7 @@ function main() {
     if (minusRadio.value) { 
       cutPaths();
     } else {
-      intersect(SCRIPT.name);
+      intersect();
     }
 
     win.close();
@@ -221,31 +223,33 @@ function simulateKeyPress(k, n) {
 }
 
 // Intersect method
-function intersect(name) {
-  var saveSel = [],
+function intersect() {
+  var doc = app.activeDocument,
+      saveSel = [],
       saveFill = [];
 
   saveState(saveSel, saveFill);
-  addTopRectangle(name);
+  var rectIntersect = addTopRectangle();
+  var tmpGroup = selection[0].layer.groupItems.add();
 
-  selection = null;
-  restore(saveFill);
+  for (var i = saveFill.length - 1; i >= 0; i--) {
+    saveFill[i].move(tmpGroup, ElementPlacement.PLACEATBEGINNING);
+  }
+  rectIntersect.move(tmpGroup, ElementPlacement.PLACEATBEGINNING);
 
-  rectIntersect = activeDocument.pageItems.getByName(name);
-  rectIntersect.selected = true;
-  
+  selection = tmpGroup;
+  updateDoc(tmpGroup.layer);
+
   // Create a intersect mask
-  app.executeMenuCommand('group');
   app.executeMenuCommand('Live Pathfinder Minus Back');
   app.executeMenuCommand('expandStyle');
-  app.executeMenuCommand('ungroup');
+  releaseGroups(selection);
   
-  // Place the intersect mask over the lines
-  app.executeMenuCommand('group');
-  selection[0].move(saveSel[0], ElementPlacement.PLACEBEFORE);
-  app.executeMenuCommand('ungroup');
-  
-  restore(saveSel);
+  for (var j = 0, len = saveSel.length; j < len; j++) {
+    saveSel[j].selected = true;
+  }
+
+  updateDoc(selection[0].layer);
   cutPaths();
 }
 
@@ -300,7 +304,7 @@ function releaseGroups(arr) {
       }
     } catch (e) { }
   }
-  app.redraw();
+  updateDoc(selection[0].layer);
 }
 
 function getChildAll(arr) {
@@ -361,47 +365,46 @@ function saveState(sel, fills) {
 
 function cutPaths() {
   app.executeMenuCommand('Make Planet X');
+  updateDoc(selection[0].layer);
   app.executeMenuCommand('Expand Planet X');
   selection[0].groupItems[selection[0].groupItems.length - 1].remove();
-  app.executeMenuCommand('ungroup');
+  releaseGroups(selection);
 }
 
-function addTopRectangle(name) {
+function addTopRectangle() {
   if (selection instanceof Array) {
     // Used code from FitArtboardToArt.jsx by Darryl Zurn
-    var initBounds = selection[0].visibleBounds;
+    var bnds = selection[0].visibleBounds;
     for (var i = 1, selLen = selection.length; i < selLen; i++) {
-      var groupBounds = selection[i].visibleBounds;
-      if (groupBounds[0] < initBounds[0]) {
-        initBounds[0] = groupBounds[0];
-      }
-      if (groupBounds[1] > initBounds[1]) {
-        initBounds[1] = groupBounds[1];
-      }
-      if (groupBounds[2] > initBounds[2]) {
-        initBounds[2] = groupBounds[2];
-      }
-      if (groupBounds[3] < initBounds[3]) {
-        initBounds[3] = groupBounds[3];
-      }
+      var grpBnds = selection[i].visibleBounds;
+      if (grpBnds[0] < bnds[0]) bnds[0] = grpBnds[0];
+      if (grpBnds[1] > bnds[1]) bnds[1] = grpBnds[1];
+      if (grpBnds[2] > bnds[2]) bnds[2] = grpBnds[2];
+      if (grpBnds[3] < bnds[3]) bnds[3] = grpBnds[3];
     }
   }
 
-  var top = initBounds[1] + 1,
-      left = initBounds[0] - 1,
-      width = initBounds[2] - initBounds[0] + 2,
-      height = initBounds[1] - initBounds[3] + 2;
+  var top = bnds[1] + 1,
+      left = bnds[0] - 1,
+      width = bnds[2] - bnds[0] + 2,
+      height = bnds[1] - bnds[3] + 2;
 
-  var rect = activeDocument.activeLayer.pathItems.rectangle(top, left, width, height);
-  rect.name = name;
+  var color = new RGBColor();
+  color.red = 0; color.green = 0; color.black = 0;
+  var rect = selection[0].layer.pathItems.rectangle(top, left, width, height);
   rect.filled = true;
+  rect.fillColor = color;
   rect.strokeColor = new NoColor();
+
+  return rect;
 }
 
-function restore(arr) {
-  for (var i = 0, aLen = arr.length; i < aLen; i++) {
-    arr[i].selected = true;
-  }
+// Update document trick without recording in history
+// Replace app.redraw()
+function updateDoc(layer) {
+  var tmpPath = layer.pathItems.add();
+  tmpPath.translate(10, 10);
+  tmpPath.remove();
 }
 
 // Open link in browser

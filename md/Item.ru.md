@@ -11,7 +11,7 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#batchtrace) `(upd, 22.02.2023)`
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#batchtrace) `(upd, 07.06.2023)`
 * [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#duplicatetoartboards) `(upd, 14.09.2022)`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `upd, 22.12.2022`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
@@ -32,10 +32,12 @@
 > **Note**   
 > Скорость работы скрипта зависит от характеристик вашего компьютера, пресета и количества изображений.
 
+> **Warning**   
+> Скрипты Adobe некорректно применяют значение Colors из пользовательских пресетов, поэтому результат трассировки может не совпасть с пресетом. Сильно заметно в CC 2023. Проголосовать за исправление на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
+
 Тонкие настройки в коде скрипта:
 
 * `CFG.extList` — список обрабатываемых форматов из папки. Можно добавить свои или удалить некоторые для пропуска скриптом;
-* `CFG.isInclSubdir` — поиск изображений во всех подпапках (true) или только корневой (false);
 * `CFG.isReverse` — развернуть список пресетов (true), пользовательские будут наверху.
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
