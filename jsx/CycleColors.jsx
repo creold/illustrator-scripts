@@ -2,6 +2,7 @@
   CycleColors.jsx for Adobe Illustrator
   Description: Swap the colors of the selected objects
   Date: September, 2022
+  Modification date: June, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +12,7 @@
   0.2 Transfer stroke width, minor improvements
   0.3 Added shift steps, reset button
   0.4 Added flip button, text changed to icons
+  0.4.1 Minor improvements
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -37,13 +39,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Cycle Colors',
-        version: 'v.0.4'
+        version: 'v.0.4.1'
       },
       CFG = {
         steps: 1,
         isResWinPos: true, // Restore dialog window position
-        aiVers: parseInt(app.version),
-        isMac: /mac/i.test($.os),
         isDarkUI: preferences.getRealPreference('uiBrightness') <= .5,
       },
       icoBkwd = {
@@ -65,12 +65,14 @@ function main() {
 
   if (!isCorrectEnv('selection')) return;
 
-  var selItems = [],
+  var docSel = selection,
+      selItems = [],
       origColors = [],
       tmp = []; // Array of temp paths for fix compound paths
 
   selItems = getItems(selection, tmp);
   origColors = getColors(selItems);
+  selection = [];
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -97,10 +99,6 @@ function main() {
   var isFill = opt.add('checkbox', undefined, 'Fill');
       isFill.value = true;
   var isStroke = opt.add('checkbox', undefined, 'Stroke');
-  // AI older 2020 on Mac OS has bug with add stroke
-  if (CFG.isMac && CFG.aiVers <= 23) {
-    isStroke.helpTip = "Stroke property in older CC\non Mac OS doesn't work\ncorrectly";
-  }
 
   // ACTION BUTTONS
   var icoGrp = win.add('group');
@@ -128,13 +126,6 @@ function main() {
 
   var reset = txtBtns.add('button', undefined, 'Reset');
   var ok = txtBtns.add('button', undefined, 'Close', { name: 'ok' });
-
-  // AI older 2020 on Mac OS has bug with add stroke
-  if (CFG.isMac && CFG.aiVers <= 23) {
-    var wrng = win.add('statictext', undefined, undefined, { multiline: true });
-    wrng.text = "Stroke property in older CC on\nMac OS doesn't work correctly";
-    wrng.enabled = false;
-  }
 
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
@@ -187,6 +178,7 @@ function main() {
 
   win.onClose = function () {
     UIPos = [this.location[0], this.location[1]];
+    selection = docSel;
     return true;
   };
 

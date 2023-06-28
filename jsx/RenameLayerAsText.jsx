@@ -52,7 +52,7 @@ function main() {
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
   // UI
-  var win = new Window('dialog', 'Rename layer as text');
+  var win = new Window('dialog', 'Rename Layer As Text');
       win.alignChildren = ['fill', 'center'];
 
   var opts = win.add('group');
@@ -65,6 +65,13 @@ function main() {
   var btns = win.add('group');
   var currBtn = btns.add('button', undefined, 'Active Layer', { name: 'ok' });
   var allBtn = btns.add('button', undefined, 'All');
+
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+      copyright.justify = 'center';
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
 
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 3);
@@ -132,6 +139,16 @@ function getTextFrames(coll) {
     }
   }
   return tfs;
+}
+
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 // Run script

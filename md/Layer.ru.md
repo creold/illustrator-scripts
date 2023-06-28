@@ -25,7 +25,7 @@
 ## RenameLayerAsText
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameLayerAsText.jsx-FF6900.svg)](https://rebrand.ly/renlyrtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Переименовывает слои по имени, если оно есть, или контенту текстового объекта в слое. Источник опционально первый сверху или нижний текст в слое.
+Переименовывает слои по имени текстового объекта в слое, если оно есть, или контенту. Источник опционально первый сверху или нижний текст в слое.
 
 ![RenameLayerAsText](https://i.ibb.co/vQ1p7gx/Rename-Layer-As-Text.gif)
 
