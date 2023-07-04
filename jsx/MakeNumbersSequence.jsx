@@ -1,7 +1,8 @@
 /*
   MakeNumbersSequence.jsx for Adobe Illustrator
   Description: Fills a range of selected text objects with numbers incremented based on the input data
-  Date: January, 2023
+  Date: December, 2022
+  Modification date: July, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Idea: Egor Chistyakov (@chegr)
 
@@ -10,6 +11,7 @@
   Release notes:
   0.1.0 Initial version
   0.1.1 Added Shuffle option
+  0.2 Added sorting by position and placeholder replacement
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,9 +38,10 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v.0.1.1'
+        version: 'v.0.2'
       },
       CFG = {
+        placeholder: '{%n}',
         aiVers: parseInt(app.version),
         isMac: /mac/i.test($.os),
         isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
@@ -49,7 +52,6 @@ function main() {
       };
   
   if (!isCorrectEnv('selection')) return;
-  polyfills();
 
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
@@ -61,11 +63,15 @@ function main() {
       win.opacity = .97;
 
   // Star number
-  var startGrp = win.add('group');
-  var startLbl = startGrp.add('statictext', undefined, 'Start num');
+  var numPnl = win.add('panel', undefined, 'Numbers');
+      numPnl.alignChildren = 'left';
+      numPnl.margins = [10, 15, 10, 10];
+
+  var startGrp = numPnl.add('group');
+  var startLbl = startGrp.add('statictext', undefined, 'Start value');
       startLbl.preferredSize.width = 65;
   var startInp = startGrp.add('edittext', undefined, '1');
-      startInp.preferredSize.width = 90;
+      startInp.preferredSize.width = 74;
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
@@ -73,27 +79,46 @@ function main() {
   }
 
   // End number
-  var endGrp = win.add('group');
-  var endLbl = endGrp.add('statictext', undefined, 'End num');
+  var endGrp = numPnl.add('group');
+  var endLbl = endGrp.add('statictext', undefined, 'End value');
       endLbl.preferredSize.width = 65;
   var endInp = endGrp.add('edittext', undefined, '50');
-      endInp.preferredSize.width = 90;
+      endInp.preferredSize.width = 74;
 
   // Increment
-  var incGrp = win.add('group');
+  var incGrp = numPnl.add('group');
   var incLbl = incGrp.add('statictext', undefined, 'Increment');
       incLbl.preferredSize.width = 65;
   var incInp = incGrp.add('edittext', undefined, '5');
-      incInp.preferredSize.width = 90;
+      incInp.preferredSize.width = 74;
 
-  // Options
-  var isUseAll = win.add('checkbox', undefined, 'Ignore end num and use all');
-  var isShuffle = win.add('checkbox', undefined, 'Shuffle numbers order');
-  var isPadZero = win.add('checkbox', undefined, 'Zero padding (e.g. 01, 02)');
-  var isRmvTf = win.add('checkbox', undefined, 'Remove unused texts');
+  var isUseAll = numPnl.add('checkbox', undefined, 'Number to last text');
+  var isShuffle = numPnl.add('checkbox', undefined, 'Shuffle numbers order');
+  var isPadZero = numPnl.add('checkbox', undefined, 'Add zeros (e.g. 01, 02)');
+  var isRmvTf = numPnl.add('checkbox', undefined, 'Remove unused texts');
+
+  // Sort objects
+  var sortPnl = win.add('panel', undefined, 'Sort before numbering');
+      sortPnl.alignChildren = 'left';
+      sortPnl.margins = [10, 15, 10, 10];
+
+  var isOrder = sortPnl.add('radiobutton', undefined, 'By order in layers');
+      isOrder.value = true;
+  var isRows = sortPnl.add('radiobutton', undefined, 'By rows (like Z)');
+  var isCols = sortPnl.add('radiobutton', undefined, 'By columns (like \u0418)');
+
+  // Replace
+  var rplcPnl = win.add('panel', undefined, 'Replace text to number');
+      rplcPnl.alignChildren = 'left';
+      rplcPnl.margins = [10, 15, 10, 10];
+
+  var isFullRplc = rplcPnl.add('radiobutton', undefined, 'Full text content');
+      isFullRplc.value = true;
+  var isPhRplc = rplcPnl.add('radiobutton', undefined, 'Only {%n} placeholder');
 
   // Buttons
   var btns = win.add('group');
+      btns.alignChildren = ['fill', 'center'];
   var cancel, ok;
   if (CFG.isMac) {
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
@@ -123,28 +148,46 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    var tfs = getTextFrames(selection).reverse(),
-        inc = strToNum(incInp.text, 1);
+    var tfs = getTextFrames(selection).reverse();
+    if (!tfs.length) {
+      alert('Texts not found\nSelect texts and re-run script', 'Script error');
+      win.close();
+      return;
+    }
+
+    var tolerance = getTolerance(tfs[0]),
+        inc = strToNum(incInp.text, 1),
         start = strToNum(startInp.text, 0),
         end = isUseAll.value ? start + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
-        strLen = ('' + end).length,
-        isPad = isPadZero.value;
+        strLen = getMaxNumLength(start, end),
+        isPad = isPadZero.value,
+        isRplc = isPhRplc.value;
 
-    if (tfs.length) {
-      var nums = getNumbers(inc, start, end, tfs.length);
-      if (isShuffle.value) shuffle(nums);
+    if (isRows.value && !isShuffle.value) {
+      sortByRows(tfs, tolerance);
+    } else if (isCols.value && !isShuffle.value) {
+      sortByColumns(tfs, tolerance);
+    }
 
-      var i = 0;
-      while (i < nums.length) {
-        tfs[i].contents = isPad ? ('' + nums[i]).zeroPad(strLen) : nums[i];
+    if (isRplc) tfs = filterByString(tfs, CFG.placeholder);
+
+    var nums = getNumbers(inc, start, end, tfs.length);
+    if (isShuffle.value) shuffle(nums);
+
+    var i = 0,
+        curNum = 0,
+        regex = new RegExp(CFG.placeholder, 'gi');
+
+    while (i < nums.length) {
+      curNum = isPad && nums[i] >= 0 ? zeroPad(nums[i], strLen) : nums[i];
+      tfs[i].contents = isRplc ? tfs[i].contents.replace(regex, curNum): curNum;
+      i++;
+    }
+
+    if (isRmvTf.enabled && isRmvTf.value && i < tfs.length) {
+      while (i < tfs.length) {
+        tfs[i].remove();
         i++;
-      }
-
-      if (isRmvTf.enabled && isRmvTf.value && i < tfs.length) {
-        while (i < tfs.length) {
-          tfs[i].remove();
-          i++;
-        }
       }
     }
 
@@ -162,6 +205,8 @@ function main() {
     pref.start = startInp.text;
     pref.end = endInp.text;
     pref.inc = incInp.text;
+    pref.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
+    pref.ph = isFullRplc.value ? 0 : 1;
     pref.all = isUseAll.value;
     pref.rndm = isShuffle.value;
     pref.zero = isPadZero.value;
@@ -185,6 +230,11 @@ function main() {
           startInp.text = pref.start;
           endInp.text = pref.end;
           incInp.text = pref.inc;
+          if (pref.sort == 0) isOrder.value = true;
+          else if (pref.sort == 1) isRows.value = true;
+          else if (pref.sort == 2) isCols.value = true;
+          if (pref.ph == 0) isFullRplc.value = true;
+          else if (pref.ph == 1) isPhRplc.value = true;
           isUseAll.value = pref.all;
           isShuffle.value = pref.rndm;
           isPadZero.value = pref.zero;
@@ -200,6 +250,7 @@ function main() {
   win.show();
 }
 
+// Check the script environment
 function isCorrectEnv() {
   var args = ['app', 'document'];
   args.push.apply(args, arguments);
@@ -238,19 +289,6 @@ function isCorrectEnv() {
   return true;
 }
 
-// Setup JavaScript Polyfills
-function polyfills() {
-  String.prototype.zeroPad = function (num) {
-    var str = this;
-    for (var i = 0; i <= num; i++) {
-      if (i > str.length) {
-        str = '0' + str;
-      }
-    }
-    return '' + str;
-  };
-}
-
 // Get TextFrames array from collection
 function getTextFrames(coll) {
   var tfs = [];
@@ -260,6 +298,55 @@ function getTextFrames(coll) {
   }
   return tfs;
 }
+
+// Get tolerance of letter size for sorting
+function getTolerance(tf) {
+  var val = 0;
+  if (/text/i.test(tf.typename)) {
+    var str = tf.contents;
+    tf.contents = '0';
+    val = tf.height;
+    tf.contents = str;
+  }
+  return val;
+}
+
+// Get maximum number length
+function getMaxNumLength(a, b) {
+  var strA = ('' + Math.abs(a)).length,
+      strB = ('' + Math.abs(b)).length;
+  return Math.max(strA, strB);
+}
+
+// Sort objects coords from left to right by rows
+function sortByRows(arr, tolerance) {
+  arr.sort(function(a, b) {
+    if (Math.abs(b.top - a.top) <= tolerance) {
+      return a.left - b.left;
+    }
+    return b.top - a.top;
+  });
+}
+
+// Sort objects coords from top to bottom by columns
+function sortByColumns(arr, tolerance) {
+  arr.sort(function(a, b) {
+    if (Math.abs(a.left - b.left) <= tolerance) {
+      return b.top - a.top;
+    }
+    return a.left - b.left;
+  });
+}
+
+function filterByString(tfs, str) {
+  var out = [],
+      regex = new RegExp(str, 'gi');
+  for (var i = 0, len = tfs.length; i < len; i++) {
+    if (regex.test(tfs[i].contents)) out.push(tfs[i]);
+  }
+  return out;
+}
+
 
 // Get numbers from range
 function getNumbers(inc, start, end, amt) {
@@ -305,6 +392,17 @@ function shuffle(arr) {
     arr[i] = tmp;
   }
   return arr;
+}
+
+// Add leading zero to number
+function zeroPad(num, len) {
+  var str = '' + num;
+  for (var i = 0; i <= len; i++) {
+    if (i > str.length) {
+      str = '0' + str;
+    }
+  }
+  return str;
 }
 
 // Simulate keyboard keys on Windows OS via VBScript

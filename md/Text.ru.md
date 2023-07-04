@@ -12,7 +12,7 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `(new, 28.04.2023)`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 13.01.2023)`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 04.07.2023)`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ## AlignTextBaseline
@@ -25,9 +25,13 @@
 ## MakeNumbersSequence
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](https://rebrand.ly/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Заменяет выделенные текстовые объекты диапазоном чисел с шагом, заданным в диалоговом окне. Перед запуском скрипта самостоятельно разложите объекты упорядоченно в слое снизу вверх.
+Заменяет выделенные текстовые объекты диапазоном чисел с шагом, заданным в диалоговом окне. Может заменять внутри выбранных текстовых объектов только плейсхолдер `{%N}`.
 
-![MakeNumbersSequence](https://i.ibb.co/ChCpVry/Make-Numbers-Sequence.gif)
+<a href="https://youtu.be/02SLTH26sMQ">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
+![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
 
 ## ReplaceFormattedText
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
