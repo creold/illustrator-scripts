@@ -13,6 +13,7 @@
 ## Scripts
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#dividebottompath) `(new, 22.02.2023)`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#pointsmoverandom) `upd, 19.05.2023`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#setpointscoordinates) `(new, 31.07.2023)`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `(upd, 07.06.2023)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `(new, 03.04.2022)`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `(upd, 22.02.2023)`
@@ -37,6 +38,13 @@
 </a>
 
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif)
+
+## SetPointsCoordinates
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SetPointsCoordinates.jsx-FF6900.svg)](https://rebrand.ly/setptscrds) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Устанавливает общие координаты X, Y для выбранных точек. В панели Transform в Иллюстраторе после ввода числа в поля X, Y перемещается фигура, а не выбранные точки. Скрипт работает с линейками артборда или глобальными, которые переключаются в меню `View → Rulers`. Для перемещения точек на дельту используйте двойные символы `--` или `++` перед числом. Если у точек общая координата, то поле ввода будет предзаполнено. У Иллюстратора бывают погрешности координат, поэтому в коде можно скрипта задать величину погрешности `CFG.tolerance`, чтобы в её пределах показать координаты точек одинаковыми в диалоге.
+
+![SetPointsCoordinates](https://i.ibb.co/KmR2gSS/Set-Points-Coordinates.gif)
 
 ## SplitPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SplitPath.jsx-FF6900.svg)](https://rebrand.ly/splpath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

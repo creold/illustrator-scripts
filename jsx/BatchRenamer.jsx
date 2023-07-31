@@ -1,7 +1,9 @@
 /*
   BatchRenamer.jsx for Adobe Illustrator
-  Description: Script for batch renaming artboards, layers & selected items manually or by placeholders
-  Date: February, 2023
+  Description: Script for batch renaming artboards, layers & selected items manually or by placeholders.
+  Find & Replace supports regular expressions.
+  Date: January, 2022
+  Modification date: July, 2023
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -24,6 +26,7 @@
   1.2.3 Added new units API for CC 2023 v27.1.1
   1.2.4 Added {fn} placeholder to insert a filename
   1.2.4a Fixed problem launching through LAScripts extension
+  1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -53,12 +56,13 @@ function main() {
     alert('Error\nOpen a document and try again');
     return;
   }
+  var doc = app.activeDocument;
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.2.4a'
-      },
-      CFG = {
+        version:  'v.1.3'
+      };
+  var CFG = {
         decimal:    ',', // Decimal separator point or comma for width and height
         defTab:     0, // Default tab. 0 - Artboard, 1 - Layer, 2 - Path
         idxColor:   [255, 0, 0], // Artboard index color
@@ -70,8 +74,8 @@ function main() {
         sf:         activeDocument.scaleFactor ? activeDocument.scaleFactor : 1, // Scale factor for Large Canvas mode
         tmpLyr:     'ARTBOARD_INDEX',
         uiOpacity:  .97, // UI window opacity. Range 0-1
-      },
-      PH = { // Placeholders
+      };
+  var PH = { // Placeholders
         color:    '{c}',
         date:     '{d}',
         fName:    '{fn}',
@@ -81,12 +85,12 @@ function main() {
         numUp:    '{nu:0}',
         units:    '{u}',
         width:    '{w}',
-      },
-      SETTINGS = {
+      };
+  var SETTINGS = {
         name:   SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
-      },
-      MSG = {
+      };
+  var MSG = {
         cancel:       'Cancel',
         copyright:    '\u00A9 Sergey Osokin. Visit Github',
         empty:        'No paths are selected',
@@ -96,7 +100,7 @@ function main() {
         nameLyr:      'Layer name',
         namePath:     'Path name',
         ok:           'Ok',
-        ph:           'Placeholder: ' + PH.name + ' - current artboard name',
+        ph:           'Placeholder: ' + PH.name + ' - current name',
         prefix:       'Prefix',
         prvw:         'Preview',
         prvwOn:       'PREVIEW ON',
@@ -109,25 +113,24 @@ function main() {
                       PH.width + ' - artboard width, ' +
                       PH.height + ' - artboard height, ' +
                       PH.units + ' - ruler units, ' +
-                      PH.numUp + ' - auto-number \u2191 with start from, ' + // ascending
-                      PH.numDown + ' - number \u2193,\n' + // descending
+                      PH.numUp.replace(/\d/g, doc.artboards.length) + ' - auto-number \u2191 with start from, ' + // ascending
+                      PH.numDown.replace(/\d/g, doc.artboards.length) + ' - number \u2193,\n' + // descending
                       PH.color + ' - file color space, ' + 
                       PH.date + ' - current date as YYYYMMDD,\n' +
                       PH.fName + ' - filename',
         preSuffLyr:   'Placeholders:\n' +
-                      PH.numUp + ' - auto-number \u2191 with start from,\n' + // ascending
-                      PH.numDown + ' - auto-number \u2193 with start from, ' + // descending
+                      PH.numUp.replace(/\d/g, doc.layers.length) + ' - auto-number \u2191 with start from,\n' + // ascending
+                      PH.numDown.replace(/\d/g, doc.layers.length) + ' - auto-number \u2193 with start from, ' + // descending
                       PH.fName + ' - filename',
         preSuffPath:  'Placeholders:\n' +
-                      PH.numUp + ' - auto-number \u2191 with start from, ' + // ascending
-                      PH.numDown + ' - number \u2193,\n' + // descending
+                      PH.numUp.replace(/\d/g, app.selection.length) + ' - auto-number \u2191 with start from, ' + // ascending
+                      PH.numDown.replace(/\d/g, app.selection.length) + ' - number \u2193,\n' + // descending
                       PH.width + ' - object width, ' +
                       PH.height + ' - object height, ' +
                       PH.units + ' - ruler units',
       };
 
-  var doc = app.activeDocument,
-      abs = { // Artboards
+  var abs = { // Artboards
         find:   '',
         isFind: CFG.isFind,
         isPre:  [],
@@ -137,8 +140,8 @@ function main() {
         rplc:   '',
         state:  [],
         suff:   '',
-      },
-      lyrs = {  // Layers
+      };
+  var lyrs = {  // Layers
         find:   '',
         isFind: CFG.isFind,
         isPre:  [],
@@ -148,8 +151,8 @@ function main() {
         rplc:   '',
         state:  [],
         suff:   '',
-      },
-      paths = { // Selected paths
+      };
+  var paths = { // Selected paths
         find:   '',
         isFind: CFG.isFind,
         isPre:  [],
@@ -159,8 +162,8 @@ function main() {
         rplc:   '',
         state:  [],
         suff:   '',
-      },
-      absPlaceholder = {
+      };
+  var absPlaceholder = {
         c:  PH.color,
         d:  PH.date,
         fn: PH.fName,
@@ -169,20 +172,20 @@ function main() {
         nu: PH.numUp,
         u:  PH.units,
         w:  PH.width,
-      },
-      lyrsPlaceholder = {
+      };
+  var lyrsPlaceholder = {
         fn: PH.fName,
         nd: PH.numDown,
         nu: PH.numUp,
-      },
-      pathsPlaceholder = {
+      };
+  var pathsPlaceholder = {
         h:  PH.height,
         nd: PH.numDown,
         nu: PH.numUp,
         u:  PH.units,
         w:  PH.width,
-      },
-      rowItem = []; // List rows
+      };
+  var rowItem = []; // List rows
 
   // Init prefix, index, name and suffix
   initData(doc.artboards, abs.state);
@@ -190,11 +193,11 @@ function main() {
   initData(selection, paths.state);
 
   // Create UI
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.opacity = CFG.uiOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.opacity = CFG.uiOpacity;
 
   // Tabs and properties
-  var tabPnl = dialog.add('tabbedpanel'); 
+  var tabPnl = win.add('tabbedpanel'); 
       tabPnl.alignChildren = 'fill'; 
 
   var absTab = tabPnl.add('tab', undefined, MSG.tabAb); // Artboard
@@ -208,7 +211,7 @@ function main() {
   var lyrsTabData = addTabContent(lyrsTab, lyrs, CFG, MSG, MSG.nameLyr, MSG.preSuffLyr);
   var pathsTabData = addTabContent(pathsTab, paths, CFG, MSG, MSG.namePath, MSG.preSuffPath);
   
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.margins = [0, 10, 0, 0];
       btns.alignment = 'center';
 
@@ -216,12 +219,12 @@ function main() {
   var cancel = btns.add('button', undefined, MSG.cancel, { name: 'cancel' });
   var ok = btns.add('button', undefined, MSG.ok, { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, MSG.copyright);
+  var copyright = win.add('statictext', undefined, MSG.copyright);
       copyright.justify = 'center';
 
   loadSettings();
 
-  dialog.onShow = function () {
+  win.onShow = function () {
     showAbIndex(CFG.tmpLyr, CFG.idxColor);
     var delta = 20;
     setScrollMax(absTabData, delta);
@@ -238,12 +241,12 @@ function main() {
 
     applyPrvwName(doc.artboards, CFG, PH, abs, absPlaceholder);
     applyPrvwName(doc.layers, CFG, PH, lyrs, lyrsPlaceholder);
-    applyPrvwName(selection, CFG, PH, paths, pathsPlaceholder);
+    applyPrvwName(app.selection, CFG, PH, paths, pathsPlaceholder);
   }
 
   cancel.onClick = function () {
     removeAbIndex(CFG.tmpLyr);
-    dialog.close();
+    win.close();
   }
 
   ok.onClick = okClick;
@@ -252,8 +255,8 @@ function main() {
     openURL('https://github.com/creold/');
   });
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 
   // DIALOG LOCAL FUNCTIONS
 
@@ -261,14 +264,14 @@ function main() {
     removeAbIndex(CFG.tmpLyr);
     rename(doc.artboards, CFG, PH, abs, absPlaceholder);
     rename(doc.layers, CFG, PH, lyrs, lyrsPlaceholder);
-    rename(selection, CFG, PH, paths, pathsPlaceholder);
+    rename(app.selection, CFG, PH, paths, pathsPlaceholder);
     saveSettings();
-    dialog.close();
+    win.close();
   }
 
   function addTabContent(tab, obj, cfg, txt, name, placeholder) {
     // Path tab content
-    if (tab.text === txt.tabPath && !selection.length) {
+    if (tab.text === txt.tabPath && !app.selection.length) {
       var pathList = tab.add('group');
           pathList.alignment = 'center';
       pathList.add('statictext', undefined, txt.empty);
@@ -516,7 +519,7 @@ function main() {
         }
         obj.isPre[idx].active = true;
         obj.names[idx + 1].active = true;
-        dialog.update();
+        win.update();
         kd.preventDefault();
       }
 
@@ -529,7 +532,7 @@ function main() {
         }
         obj.isPre[idx].active.active = true;
         obj.names[idx - 1].active = true;
-        dialog.update();
+        win.update();
         kd.preventDefault();
       }
 
@@ -537,7 +540,7 @@ function main() {
       if (kd.keyName == 'Down' && (idx + 1) == obj.names.length) {
         obj.isPre[idx].active = true;
         pre.active = true;
-        dialog.update();
+        win.update();
         kd.preventDefault();
       }
     });
@@ -547,7 +550,7 @@ function main() {
       if (kd.keyName == 'Up') {
         obj.isPre[obj.names.length - 1].active = true;
         obj.names[obj.names.length - 1].active = true;
-        dialog.update();
+        win.update();
         kd.preventDefault();
       }
     });
@@ -789,7 +792,7 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
     case 'Layer':
       break;
     default:
-      var item = selection[row[3]];
+      var item = app.selection[row[3]];
       if (item.typename === 'GroupItem' && item.clipped) {
         item = getMaskPath(item);
       }

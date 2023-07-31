@@ -13,6 +13,7 @@
 ## Scripts
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `(new, 22.02.2023)`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 19.05.2023`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `(new, 31.07.2023)`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 07.06.2023)`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(upd, 22.02.2023)`
@@ -37,6 +38,13 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 </a>
 
 ![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif)
+
+## SetPointsCoordinates
+[![Direct](https://img.shields.io/badge/Direct%20Link-SetPointsCoordinates.jsx-FF6900.svg)](https://rebrand.ly/setptscrds) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Sets the same X, Y coordinates for the selected points. In the native Transform panel, after you type X, Y, the shape moves, not the selected points. The script works with artboard rulers or global rulers toggled in the `View → Rulers` menu. To move points by a delta, use the double signs `--` or `++` in front of the number. If the points have a common coordinate, it is displayed in the input. Illustrator has coordinate inaccuracies, so you can set the `CFG.tolerance' in the script code to make the coordinates of the points appear the same in the dialog box.
+
+![SetPointsCoordinates](https://i.ibb.co/KmR2gSS/Set-Points-Coordinates.gif)
 
 ## SplitPath
 [![Direct](https://img.shields.io/badge/Direct%20Link-SplitPath.jsx-FF6900.svg)](https://rebrand.ly/splpath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
