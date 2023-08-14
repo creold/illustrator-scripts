@@ -56,7 +56,7 @@ function main() {
   polyfills();
 
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // Dialog
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);

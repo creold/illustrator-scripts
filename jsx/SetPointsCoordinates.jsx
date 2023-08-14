@@ -54,7 +54,7 @@ function main() {
   CFG.isFlipY = isRulerTopLeft && isRulerInFourthQuad;
 
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   var defCoordSys = app.coordinateSystem;
   var paths = getPaths(selection);
@@ -96,7 +96,6 @@ function main() {
       yGrp.add('statictext', undefined, 'Y:');
   var yInp = yGrp.add('edittext', undefined, '');
       yInp.characters = 8;
-      yInp.active = true;
   
   var info = "If you don't want to change a\ncoordinate, leave its field blank.\n"
       info += "Use ++ or -- before a number\nto increment or decrement\na original coordinate.";

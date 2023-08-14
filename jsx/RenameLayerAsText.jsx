@@ -49,7 +49,7 @@ function main() {
 
   var doc = activeDocument;
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // UI
   var win = new Window('dialog', 'Rename Layer As Text');

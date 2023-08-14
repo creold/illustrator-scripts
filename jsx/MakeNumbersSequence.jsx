@@ -2,7 +2,7 @@
   MakeNumbersSequence.jsx for Adobe Illustrator
   Description: Fills a range of selected text objects with numbers incremented based on the input data
   Date: December, 2022
-  Modification date: July, 2023
+  Modification date: August, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Idea: Egor Chistyakov (@chegr)
 
@@ -12,6 +12,7 @@
   0.1.0 Initial version
   0.1.1 Added Shuffle option
   0.2 Added sorting by position and placeholder replacement
+  0.3 Added number replacement in a string
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -38,7 +39,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v.0.2'
+        version: 'v.0.3'
       },
       CFG = {
         placeholder: '{%n}',
@@ -114,6 +115,7 @@ function main() {
 
   var isFullRplc = rplcPnl.add('radiobutton', undefined, 'Full text content');
       isFullRplc.value = true;
+  var isNumRplc = rplcPnl.add('radiobutton', undefined, 'Numbers in text');
   var isPhRplc = rplcPnl.add('radiobutton', undefined, 'Only {%n} placeholder');
 
   // Buttons
@@ -161,7 +163,8 @@ function main() {
         end = isUseAll.value ? start + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
         strLen = getMaxNumLength(start, end),
         isPad = isPadZero.value,
-        isRplc = isPhRplc.value;
+        isNum = isNumRplc.value,
+        isPh = isPhRplc.value;
 
     if (isRows.value && !isShuffle.value) {
       sortByRows(tfs, tolerance);
@@ -169,18 +172,22 @@ function main() {
       sortByColumns(tfs, tolerance);
     }
 
-    if (isRplc) tfs = filterByString(tfs, CFG.placeholder);
+    if (isNum) {
+      tfs = filterByString(tfs, '\\d');
+    } else if (isPh) {
+      tfs = filterByString(tfs, CFG.placeholder);
+    }
 
     var nums = getNumbers(inc, start, end, tfs.length);
     if (isShuffle.value) shuffle(nums);
 
     var i = 0,
         curNum = 0,
-        regex = new RegExp(CFG.placeholder, 'gi');
+        regex = new RegExp(isNum ? '(\\d+([.,]\\d+)*)' : CFG.placeholder, 'gi');
 
     while (i < nums.length) {
       curNum = isPad && nums[i] >= 0 ? zeroPad(nums[i], strLen) : nums[i];
-      tfs[i].contents = isRplc ? tfs[i].contents.replace(regex, curNum): curNum;
+      tfs[i].contents = (isPh || isNum) ? tfs[i].contents.replace(regex, curNum) : curNum;
       i++;
     }
 
@@ -206,7 +213,7 @@ function main() {
     pref.end = endInp.text;
     pref.inc = incInp.text;
     pref.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
-    pref.ph = isFullRplc.value ? 0 : 1;
+    pref.ph = isFullRplc.value ? 0 : (isNumRplc.value ? 1 : 2);
     pref.all = isUseAll.value;
     pref.rndm = isShuffle.value;
     pref.zero = isPadZero.value;
@@ -234,7 +241,8 @@ function main() {
           else if (pref.sort == 1) isRows.value = true;
           else if (pref.sort == 2) isCols.value = true;
           if (pref.ph == 0) isFullRplc.value = true;
-          else if (pref.ph == 1) isPhRplc.value = true;
+          else if (pref.ph == 1) isNumRplc.value = true;
+          else if (pref.ph == 2) isPhRplc.value = true;
           isUseAll.value = pref.all;
           isShuffle.value = pref.rndm;
           isPadZero.value = pref.zero;

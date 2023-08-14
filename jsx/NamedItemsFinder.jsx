@@ -96,7 +96,7 @@ function main() {
   saveLayersState(doc.layers, layersState);
 
   // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
+  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // Check the document contains too many items
   if ( (selection.length && selItems.length > CFG.limit) ||

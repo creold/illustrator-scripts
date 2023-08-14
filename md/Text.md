@@ -12,7 +12,7 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `(new, 28.04.2023)`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 04.07.2023)`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 11.08.2023)`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `(new, 29.12.2022)`
 
 ## AlignTextBaseline
@@ -25,7 +25,7 @@ Allows point texts to be vertically aligned based on the baseline of its font, n
 ## MakeNumbersSequence
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeNumbersSequence.jsx-FF6900.svg)](https://rebrand.ly/mknumseq) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Fills a range of selected text items with numbers incremented based on the input data. Can only replace the `{%N}` placeholder within the selected text objects.
+Fills a range of selected text items with numbers incremented based on the input data. Can only replace numbers or `{%N}` placeholder within the selected text objects.
 
 <a href="https://youtu.be/02SLTH26sMQ">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
