@@ -13,6 +13,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `(new, 27.03.2022)`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `(new, 07.09.2023)`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `(upd, 14.09.2022)`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `(upd, 30.09.2022)`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
@@ -42,6 +43,21 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 > Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
+
+## ContrastChecker
+[![Direct](https://img.shields.io/badge/Direct%20Link-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Helps select color combinations for text and backgrounds, icons and other interface elements, and diagrams by checking the contrast of color pairs for  [WCAG 2.1](https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast) compliance. The auto-correct ratio is set in the script code in the `CFG.defRatio: 4.5` variable.
+
+* body, subtext (17 pt / 23 px regular) — 4,5:1 and above;   
+* large text, headers (18 pt / 24 px regular or 14 pt / 19 px bold) — 3:1;   
+* for non-text content (icons and actionable graphics) — 3:1, because they don't need to be read.
+
+
+> **Warning**   
+> Remember that contrast can vary depending on your monitor, device, environmental conditions, typefaces, and many other details. Using common sense can be more helpful than mindlessly following a rule. [Read more](https://ais.sergosokin.ru/color/contrast-checker/)
+
+![ContrastChecker](https://i.ibb.co/YR2mvSY/Contrast-Checker.gif) 
 
 ## ConvertToGradient
 [![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

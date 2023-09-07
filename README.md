@@ -89,6 +89,7 @@ Click the category name to learn more about the scripts in the selected category
 
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `(new, 27.03.2022)`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `(new, 07.09.2023)`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `(upd, 14.09.2022)`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `(upd, 30.09.2022)`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)

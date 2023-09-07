@@ -186,7 +186,7 @@ function main() {
         regex = new RegExp(isNum ? '(\\d+([.,]\\d+)*)' : CFG.placeholder, 'gi');
 
     while (i < nums.length) {
-      curNum = isPad && nums[i] >= 0 ? zeroPad(nums[i], strLen) : nums[i];
+      curNum = isPad && nums[i] >= 0 ? padZero(nums[i], strLen) : nums[i];
       tfs[i].contents = (isPh || isNum) ? tfs[i].contents.replace(regex, curNum) : curNum;
       i++;
     }
@@ -403,14 +403,10 @@ function shuffle(arr) {
 }
 
 // Add leading zero to number
-function zeroPad(num, len) {
-  var str = '' + num;
-  for (var i = 0; i <= len; i++) {
-    if (i > str.length) {
-      str = '0' + str;
-    }
-  }
-  return str;
+function padZero(num, len) {
+  num = num.toString();
+  while (num.length < len) num = '0' + num;
+  return num;
 }
 
 // Simulate keyboard keys on Windows OS via VBScript

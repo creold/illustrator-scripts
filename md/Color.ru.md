@@ -13,6 +13,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `(new, 27.03.2022)`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `(new, 18.04.2022)`
+* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#contrastchecker) `(new, 07.09.2023)`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#converttogradient) `(upd, 14.09.2022)`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclecolors) `(upd, 30.09.2022)`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclegradient)
@@ -42,6 +43,21 @@
 > К сожалению, скопированные градиенты связаны друг с другом в Иллюстраторе. Вручную удалите связь, развернув градиент дважды кнопкой `Reverse Gradient`.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
+
+## ContrastChecker
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Помогает подобрать различимые для людей сочетания цветов для текста и фонов, иконок и других элементов интерфейса, диаграмм, проверяя контрастность пар цветов на соответствие критериям [WCAG 2.1](https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast). Коэффициент автокоррекции редактируется в коде скрипта в переменной `CFG.defRatio: 4.5`.
+
+* основной текст (17 pt / 23 px regular) — 4,5:1 и выше;   
+* больший текст, заголовки (18 pt / 24 px regular или 14 pt / 19 px bold) — 3:1;   
+* для графических элементов коэффициент ниже — 3:1, так как они не требуют чтения.
+
+
+> **Warning**   
+> Учтите, что контрастность может варьироваться в зависимости от монитора, устройства, условий окружающей среды, рисунка шрифта и множества других деталей. Следование здравому смыслу может быть полезнее, чем бездумное выполнение какого-то правила. [Подробнее на сайте](https://ais.sergosokin.ru/color/contrast-checker/)
+
+![ContrastChecker](https://i.ibb.co/YR2mvSY/Contrast-Checker.gif) 
 
 ## ConvertToGradient
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
