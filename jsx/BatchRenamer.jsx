@@ -3,7 +3,7 @@
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders.
   Find & Replace supports regular expressions.
   Date: January, 2022
-  Modification date: July, 2023
+  Modification date: September, 2023
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -27,6 +27,7 @@
   1.2.4 Added {fn} placeholder to insert a filename
   1.2.4a Fixed problem launching through LAScripts extension
   1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
+  1.3.1 Added display of text frame content as name if it is empty
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -60,7 +61,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.3'
+        version:  'v.1.3.1'
       };
   var CFG = {
         decimal:    ',', // Decimal separator point or comma for width and height
@@ -626,7 +627,11 @@ function main() {
 // Init prefix, index, name and suffix
 function initData(src, out) {
   for (var i = 0, len = src.length; i < len; i++) {
-    out.push([false, src[i].name, false, i]);
+    var name = src[i].name;
+    if (src[i].name == '' && src[i].typename === 'TextFrame') {
+      name = src[i].contents;
+    }
+    out.push([false, name, false, i]);
   }
 }
 

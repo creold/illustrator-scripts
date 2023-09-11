@@ -4,7 +4,7 @@
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
   Date: December, 2019
-  Modification date: May, 2023
+  Modification date: September, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -23,6 +23,7 @@
   1.6.3 Added erase object names by empty input
   1.6.4 Updated object name reloading
   1.6.5 Fixed placeholder insertion for CS6
+  1.6.6 Added display of text frame content as name if it is empty
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -49,7 +50,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6.5'
+        version: 'v.1.6.6'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -302,8 +303,10 @@ function main() {
         var item = selection[0];
         if (layerRb.value) {
           str = getTopLayer(item).name;
-        } else if (isSymbol(item) && item.name == '') {
+        } else if (item.name == '' && isSymbol(item)) {
           str = item.symbol.name;
+        } else if (item.name == '' && item.typename === 'TextFrame') {
+          str = item.contents;
         } else {
           str = item.name;
         }
