@@ -263,7 +263,9 @@ function main() {
           if (!isUndefined(isReplcSym) && isReplcSym.value && !isEmpty(name)) {
             selection[0].symbol.name = name;
           }
-          selection[0].name = name;
+          if (name !== getPlaceholder()) { // Input is modified
+            selection[0].name = name;
+          }
         } else if (!isEmpty(name)) {
           getTopLayer(selection[0]).name = name;
         }

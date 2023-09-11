@@ -706,7 +706,9 @@ function rename(target, cfg, cfgPh, obj, objPh) {
   if (!target.length) return;
   var nameArr = generateName(target, cfg, cfgPh, obj, objPh);
   for (var i = 0, len = nameArr.length; i < len; i++) {
-    target[i].name = nameArr[i];
+    if (nameArr[i] !== obj.state[i][1]) { // Name is modified
+      target[i].name = nameArr[i];
+    }
   }
 }
 
