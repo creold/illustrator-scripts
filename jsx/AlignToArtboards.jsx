@@ -2,12 +2,14 @@
   AlignToArtboards.jsx for Adobe Illustrator
   Description: Positions objects on document's artboards
   Date: June, 2023
+  Modification date: September, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
+  0.2 Fixed text object align
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -33,7 +35,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main() {
   var SCRIPT = {
         name: 'Align To Artboards',
-        version: 'v.0.1'
+        version: 'v.0.2'
       },
       CFG = {
         note: '{artboard}',
@@ -95,8 +97,10 @@ function main() {
       bndsPnl.margins = [10, 15, 10, 10];
 
   var geoRb = bndsPnl.add('radiobutton', undefined, 'Geometric bounds');
+      geoRb.helpTip = 'The bounds of the object\nexcluding stroke width and effects';
       geoRb.value = true;
   var visRb = bndsPnl.add('radiobutton', undefined, 'Visible bounds (stroke & effects)');
+      visRb.helpTip = 'The visible bounds of the item\nincluding stroke width and effects';
 
   // Buttons
   var footer = win.add('group');
@@ -353,9 +357,10 @@ function processAb(doc, idx, toAllRb, params) {
   }
   if (!app.selection.length) return;
 
+  var selItems = app.selection;
   if (params.isSel) {
-    for (var j = app.selection.length - 1; j >= 0; j--) {
-      var item = app.selection[j];
+    for (var j = selItems.length - 1; j >= 0; j--) {
+      var item = selItems[j];
       if (regex.test(item.note)) {
         alignToArtboard(item, abBnds, params.refName, params.isGBnds);
         counter++;
@@ -439,9 +444,20 @@ function getMoveData(item, abBnds, isGBnds) {
   var abW = Math.abs(abBnds[2] - abBnds[0]),
       abH = Math.abs(abBnds[1] - abBnds[3]),
       type = isGBnds ? 'geometricBounds' : 'visibleBounds',
-      gBnds = getVisibleBounds(item, 'geometricBounds'),
-      vBnds = getVisibleBounds(item, type),
-      w, h, l, r, t, b, cx, cy;
+      vBnds, w, h, l, r, t, b, cx, cy;
+
+  if (item.typename === 'GroupItem' || item.typename === 'TextFrame') {
+    var dup = item.duplicate();
+    app.executeMenuCommand('deselectall');
+    app.selection = dup;
+    outlineText(dup.pageItems ? dup.pageItems : [dup]);
+    dup = app.selection[0];
+    vBnds = getVisibleBounds(dup, type);
+    app.executeMenuCommand('deselectall');
+    dup.remove();
+  } else {
+    vBnds = getVisibleBounds(item, type);
+  }
 
   w = Math.abs(vBnds[2] - vBnds[0]);
   h = Math.abs(vBnds[3] - vBnds[1]);
@@ -460,6 +476,18 @@ function getMoveData(item, abBnds, isGBnds) {
     centerX: cx,
     centerY: cy,
   };
+}
+
+// Create outlines
+function outlineText(coll) {
+  for (var i = coll.length - 1; i >= 0; i--) {
+    var item = coll[i];
+    if (item.typename === 'TextFrame') {
+      item.createOutline();
+    } else if (item.typename === 'GroupItem') {
+      outlineText(item.pageItems);
+    }
+  }
 }
 
 // Get the actual "visible" bounds
@@ -483,7 +511,7 @@ function getVisibleBounds(obj, type) {
             // via William Dowling @ github.com/wdjsdev
             tmpLayer = doc.layers.add();
             tmpItem = curItem.duplicate(tmpLayer);
-            selection = null;
+            app.executeMenuCommand('deselectall');
             tmpItem.selected = true;
             app.executeMenuCommand('noCompoundPath');
             tmpLayer.hasSelectedArtwork = true;

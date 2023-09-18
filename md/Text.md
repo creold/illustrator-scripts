@@ -11,9 +11,9 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `(new, 28.04.2023)`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 11.08.2023)`
-* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `(new, 29.12.2022)`
+* [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `new, 28.04.2023`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 11.08.2023`
+* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `new, 29.12.2022`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://rebrand.ly/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

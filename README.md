@@ -77,21 +77,21 @@ Click the category name to learn more about the scripts in the selected category
 
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `upd, 22.12.2022`
 * [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `new, 12.04.2023`
-* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 31.07.2023`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 11.09.2023`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `upd, 22.12.2022`
-* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 22.12.2022`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `upd, 04.05.2023`
-* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `(upd, 14.09.2022)`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `upd, 14.09.2022`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `upd, 22.12.2022`
-* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `(upd, 14.09.2022)`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `upd, 14.09.2022`
 
 ### [Color](md/Color.md)  
 
-* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `(new, 27.03.2022)`
-* [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `(new, 18.04.2022)`
-* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `(new, 07.09.2023)`
-* [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `(upd, 14.09.2022)`
-* [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `(upd, 30.09.2022)`
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `new, 27.03.2022`
+* [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `new, 18.04.2022`
+* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `new, 07.09.2023`
+* [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `upd, 14.09.2022`
+* [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `upd, 30.09.2022`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
 * [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops)
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops)
@@ -106,25 +106,25 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Export](md/Export.md)  
 
-* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 06.10.2022)`
-* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 04.05.2023)`
+* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `upd, 06.10.2022`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `upd, 04.05.2023`
 
 ### [Group | Mask](md/Group.md)  
 
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards)
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
-* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `(upd, 14.09.2022)`
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `upd, 14.09.2022`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
 
 ### [Item](md/Item.md)  
 
-* [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#aligntoartboards) `(new, 28.06.2023)`
-* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `(upd, 07.06.2023)`
-* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `(upd, 14.09.2022)`
-* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `upd, 22.12.2022`
+* [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#aligntoartboards) `upd, 18.09.2023`
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `upd, 07.06.2023`
+* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `upd, 14.09.2022`
+* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `upd, 18.09.2023`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
-* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `(upd, 01.08.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `(upd, 04.05.2023)`
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `upd, 01.08.2022`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `upd, 11.09.2023`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `upd, 22.12.2022`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 04.05.2023`
@@ -132,36 +132,36 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Layer](md/Layer.md)  
 
-* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#rememberselectionlayers) `(upd, 26.02.2022)`
-* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#renamelayerastext) `(new, 15.06.2023)`
-* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#sortlayeritems) `(new, 29.08.2022)`
+* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#rememberselectionlayers) `upd, 26.02.2022`
+* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#renamelayerastext) `new, 15.06.2023`
+* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#sortlayeritems) `new, 29.08.2022`
 
 ### [Path](md/Path.md)  
 
-* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `(new, 22.02.2023)`
+* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `new, 22.02.2023`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `upd, 19.05.2023`
-* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `(new, 31.07.2023)`
-* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 07.06.2023)`
-* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
-* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(upd, 22.02.2023)`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `new, 31.07.2023`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `upd, 07.06.2023`
+* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `new, 03.04.2022`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `upd, 22.02.2023`
 
 ### [Select](md/Select.md)  
 
-* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `(new, 21.04.2023)`
-* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `(upd, 14.09.2022)`
-* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `(new, 21.02.2022)`
-* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `(upd, 11.05.2023)`
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `new, 21.04.2023`
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `upd, 14.09.2022`
+* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `new, 21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `new, 21.02.2022`
+* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `upd, 11.05.2023`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
-* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `(upd, 14.09.2022)`
-* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `(new, 22.06.2022)`
+* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `upd, 14.09.2022`
+* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `new, 22.06.2022`
 
 ### [Style](md/Style.md)  
 
-* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#averagestrokeswidth) `(new, 07.02.2023)`
-* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `(upd, 01.08.2022)`
+* [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#averagestrokeswidth) `new, 07.02.2023`
+* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `upd, 01.08.2022`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#grayscaletoopacity)
-* [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `(new, 14.12.2022)`
+* [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `new, 14.12.2022`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#opacitymaskclip)
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#randomstrokewidth) `upd, 14.10.2022`
 * [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 14.10.2022`
@@ -169,13 +169,13 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [Text](md/Text.md)  
 
-* [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `(new, 28.04.2023)`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `(upd, 11.08.2023)`
-* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `(new, 29.12.2022)`
+* [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `new, 28.04.2023`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 11.08.2023`
+* [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `new, 29.12.2022`
 
 ### [Utility](md/Utility.md)  
 
-* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `(new, 03.02.2022)`
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `new, 03.02.2022`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
@@ -183,7 +183,7 @@ Click the category name to learn more about the scripts in the selected category
 
 ### [View](md/View.md)  
 
-* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `(upd, 14.09.2022)`
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `upd, 14.09.2022`
 
 ## Testimonials
 * *I am very thankful for such a nice and useful scripts.

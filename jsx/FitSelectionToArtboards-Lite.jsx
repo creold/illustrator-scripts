@@ -2,6 +2,7 @@
   FitSelectionToArtboards-Lite.jsx for Adobe Illustrator
   Description: Proportional resizing one selected object to fit in parent artboard
   Date: July, 2022
+  Modification date: September, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Full version: https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards
 
@@ -9,6 +10,7 @@
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed text object fitting
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,20 +38,26 @@ function main() {
         visBnds: true,
         isScaleStroke: true,
         isContains: false,
-        tag: 'artboard'
+        tag: 'artboard',
+        aiVers: parseInt(app.version),
       };
 
   var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
       isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
   CFG.isFlipY = (isRulerTopLeft && isRulerInFourthQuad) ? true : false;
 
+  if (CFG.aiVers < 16) {
+    alert('Error\nSorry, script only works in Illustrator CS6 and later', 'Script error');
+    return;
+  }
+
   if (!documents.length) {
-    alert('Error\nOpen a document and try again');
+    alert('Error\nOpen a document and try again', 'Script error');
     return;
   }
 
   if (!selection.length || selection.typename == 'TextRange') {
-    alert('Error\nPlease, select one item');
+    alert('Error\nPlease, select one item', 'Script error');
     return;
   }
 
@@ -121,13 +129,23 @@ function removeTag(item, key) {
 
 // Fit the item to the size of the artboard
 function fitToArtboard(item, abBnds, isVisBnds, isStroke) {
-  var orig = item;
-  if (isType(item, 'group') && item.clipped) {
-    item = getMaskPath(item);
+  var type = isVisBnds ? 'visibleBounds' : 'geometricBounds';
+  var bnds = [];
+
+  if (isType(item, 'group|text')) {
+    var dup = item.duplicate();
+    app.executeMenuCommand('deselectall');
+    selection = dup;
+    outlineText(dup.pageItems ? dup.pageItems : [dup]);
+    dup = selection[0];
+    bnds = getVisibleBounds(dup, type);
+    app.executeMenuCommand('deselectall');
+    dup.remove();
+  } else {
+    bnds = getVisibleBounds(item, type);
   }
 
-  var bnds = isVisBnds ? item.visibleBounds : item.geometricBounds,
-      itemWidth = Math.abs(bnds[2] - bnds[0]),
+  var itemWidth = Math.abs(bnds[2] - bnds[0]),
       itemHeight = Math.abs(bnds[1] - bnds[3]),
       abWidth = Math.abs(abBnds[2] - abBnds[0]),
       abHeight = Math.abs(abBnds[1] - abBnds[3]);
@@ -137,7 +155,88 @@ function fitToArtboard(item, abBnds, isVisBnds, isStroke) {
       ratio = Math.min(ratioW, ratioH);
 
   // X, Y, Positions, FillPatterns, FillGradients, StrokePattern, LineWidths
-  orig.resize(ratio, ratio, true, true, true, true, (isVisBnds || isStroke) ? ratio : 100);
+  item.resize(ratio, ratio, true, true, true, true, (isVisBnds || isStroke) ? ratio : 100);
+}
+
+// Create outlines
+function outlineText(coll) {
+  for (var i = coll.length - 1; i >= 0; i--) {
+    var item = coll[i];
+    if (isType(item, 'text')) {
+      item.createOutline();
+    } else if (isType(item, 'group')) {
+      outlineText(item.pageItems);
+    }
+  }
+}
+
+// Get the actual "visible" bounds
+// https://github.com/joshbduncan/adobe-scripts/blob/main/DrawVisibleBounds.jsx
+function getVisibleBounds(obj, type) {
+  if (arguments.length == 1 || type == undefined) type = 'geometricBounds';
+  var doc = app.activeDocument;
+  var bnds, clippedItem, tmpItem, tmpLayer;
+  var curItem;
+  if (obj.typename === 'GroupItem') {
+    if (obj.clipped) {
+      // Check all sub objects to find the clipping path
+      for (var i = 0; i < obj.pageItems.length; i++) {
+        curItem = obj.pageItems[i];
+        if (curItem.clipping) {
+          clippedItem = curItem;
+          break;
+        } else if (curItem.typename === 'CompoundPathItem') {
+          if (!curItem.pathItems.length) {
+            // Catch compound path items with no pathItems
+            // via William Dowling @ github.com/wdjsdev
+            tmpLayer = doc.layers.add();
+            tmpItem = curItem.duplicate(tmpLayer);
+            app.executeMenuCommand('deselectall');
+            tmpItem.selected = true;
+            app.executeMenuCommand('noCompoundPath');
+            tmpLayer.hasSelectedArtwork = true;
+            app.executeMenuCommand('group');
+            clippedItem = selection[0];
+            break;
+          } else if (curItem.pathItems[0].clipping) {
+            clippedItem = curItem;
+            break;
+          }
+        } else {
+          clippedItem = curItem;
+          break;
+        }
+      }
+      bnds = clippedItem[type];
+      if (tmpLayer) {
+        tmpLayer.remove();
+        tmpLayer = undefined;
+      }
+    } else {
+      // If the object is not clipped
+      var subObjBnds;
+      var allBoundPoints = [[], [], [], []];
+      // Get the bounds of every object in the group
+      for (var i = 0; i < obj.pageItems.length; i++) {
+        curItem = obj.pageItems[i];
+        subObjBnds = getVisibleBounds(curItem, type);
+        allBoundPoints[0].push(subObjBnds[0]);
+        allBoundPoints[1].push(subObjBnds[1]);
+        allBoundPoints[2].push(subObjBnds[2]);
+        allBoundPoints[3].push(subObjBnds[3]);
+      }
+      // Determine the groups bounds from it sub object bound points
+      bnds = [
+        Math.min.apply(Math, allBoundPoints[0]),
+        Math.max.apply(Math, allBoundPoints[1]),
+        Math.max.apply(Math, allBoundPoints[2]),
+        Math.min.apply(Math, allBoundPoints[3]),
+      ];
+    }
+  } else {
+    bnds = obj[type];
+  }
+  return bnds;
 }
 
 // Place the item in the center of the artboard
@@ -155,12 +254,24 @@ function centerToArtboard(item, abBnds, isFlipY) {
       };
 
   if (isType(item, 'group') && item.clipped) {
-    var mask = getMaskPath(item);
-    bnds = mask.geometricBounds,
+    bnds = getVisibleBounds(item, 'geometricBounds');
     itemSize.inLeft = bnds[0];
     itemSize.inTop = bnds[1];
     itemSize.inRight = bnds[2];
     itemSize.inBottom = bnds[3];
+  } else if (isType(item, 'group|text')) {
+    var dup = item.duplicate();
+    app.executeMenuCommand('deselectall');
+    selection = dup;
+    outlineText(dup.pageItems ? dup.pageItems : [dup]);
+    dup = selection[0];
+    bnds = getVisibleBounds(dup, 'geometricBounds');
+    app.executeMenuCommand('deselectall');
+    itemSize.inLeft = bnds[0];
+    itemSize.inTop = bnds[1];
+    itemSize.inRight = bnds[2];
+    itemSize.inBottom = bnds[3];
+    dup.remove();
   }
 
   abWidth = Math.abs(abBnds[2] - abBnds[0]);
@@ -174,25 +285,6 @@ function centerToArtboard(item, abBnds, isFlipY) {
       centerY = top + (itemSize.h + (isFlipY ? -1 : 1) * abHeight) / 2;
 
   item.position = [centerX, centerY];
-}
-
-// Get the clipping mask
-function getMaskPath(group) {
-  for (var i = 0, len = group.pageItems.length; i < len; i++) {
-    var currItem = group.pageItems[i];
-    if (isClippingPath(currItem)) {
-      return currItem;
-    }
-  }
-}
-
-// Check the clipping mask
-function isClippingPath(item) {
-  var clipText = (isType(item, 'text') &&
-                  item.textRange.characterAttributes.fillColor == '[NoColor]' &&
-                  item.textRange.characterAttributes.strokeColor == '[NoColor]');
-  return (isType(item, 'compound') && item.pathItems[0].clipping) ||
-          item.clipping || clipText;
 }
 
 // Check the item typename by short name

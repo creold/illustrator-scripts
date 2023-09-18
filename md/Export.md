@@ -11,8 +11,8 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `(upd, 06.10.2022)`
-* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `(upd, 04.05.2023)`
+* [Export selection as AI](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#export-selection-as-ai) `upd, 06.10.2022`
+* [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `upd, 04.05.2023`
 
 ## Export selection as AI
 [![Direct](https://img.shields.io/badge/Direct%20Link-Export--selection--as--AI.jsx-FF6900.svg)](https://rebrand.ly/exptoai) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -11,13 +11,13 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#aligntoartboards) `(new, 28.06.2023)`
-* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#batchtrace) `(upd, 07.06.2023)`
-* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#duplicatetoartboards) `(upd, 14.09.2022)`
-* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `upd, 22.12.2022`
+* [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#aligntoartboards) `upd, 18.09.2023`
+* [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#batchtrace) `upd, 07.06.2023`
+* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#duplicatetoartboards) `upd, 14.09.2022`
+* [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `upd, 18.09.2023`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
-* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `(upd, 01.08.2022)`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `(upd, 04.05.2023)`
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `upd, 01.08.2022`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `upd, 11.09.2023`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `upd, 22.12.2022`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 04.05.2023`

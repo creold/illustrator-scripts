@@ -13,7 +13,7 @@
 ## Scripts
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards)
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
-* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `(upd, 14.09.2022)`
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `upd, 14.09.2022`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
 
 ## CenterClipsToArtboards

@@ -11,7 +11,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `(new, 03.02.2022)`
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `new, 03.02.2022`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)

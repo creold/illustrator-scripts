@@ -11,12 +11,12 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `(new, 22.02.2023)`
+* [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `new, 22.02.2023`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#pointsmoverandom) `upd, 19.05.2023`
-* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `(new, 31.07.2023)`
-* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `(upd, 07.06.2023)`
-* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `(new, 03.04.2022)`
-* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `(upd, 22.02.2023)`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `new, 31.07.2023`
+* [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `upd, 07.06.2023`
+* [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `new, 03.04.2022`
+* [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `upd, 22.02.2023`
 
 ## DivideBottomPath
 [![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://rebrand.ly/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
