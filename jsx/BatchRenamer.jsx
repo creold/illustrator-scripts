@@ -28,6 +28,7 @@
   1.2.4a Fixed problem launching through LAScripts extension
   1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
   1.3.1 Added display of text frame content as name if it is empty
+  1.3.2 Fixed rename bug
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -61,7 +62,7 @@ function main() {
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.3.1'
+        version:  'v.1.3.2'
       };
   var CFG = {
         decimal:    ',', // Decimal separator point or comma for width and height
@@ -706,9 +707,9 @@ function rename(target, cfg, cfgPh, obj, objPh) {
   if (!target.length) return;
   var nameArr = generateName(target, cfg, cfgPh, obj, objPh);
   for (var i = 0, len = nameArr.length; i < len; i++) {
-    if (nameArr[i] !== obj.state[i][1]) { // Name is modified
-      target[i].name = nameArr[i];
-    }
+    if (target[i].name == '' && target[i].contents == nameArr[i]) continue;
+    // Name is modified
+    target[i].name = nameArr[i];
   }
 }
 
