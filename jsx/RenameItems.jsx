@@ -24,6 +24,7 @@
   1.6.4 Updated object name reloading
   1.6.5 Fixed placeholder insertion for CS6
   1.6.6 Added display of text frame content as name if it is empty
+  1.6.7 Fixed text frame content as names for various options
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -50,7 +51,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6.6'
+        version: 'v.1.6.7'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -118,7 +119,7 @@ function main() {
   }
 
   // Option for Symbol
-  if (selection.length === 1 && isSymbol(selection[0])) {
+  if (selection.length === 1 && selection[0].typename === 'SymbolItem') {
     var isReplcSym = win.add('checkbox', undefined, 'Rename parent symbol');
   }
 
@@ -305,12 +306,8 @@ function main() {
         var item = selection[0];
         if (layerRb.value) {
           str = getTopLayer(item).name;
-        } else if (item.name == '' && isSymbol(item)) {
-          str = item.symbol.name;
-        } else if (item.name == '' && item.typename === 'TextFrame') {
-          str = item.contents;
         } else {
-          str = item.name;
+          str = getName(item);
         }
         break;
     }
@@ -446,7 +443,7 @@ function replaceInAll(collection, pattern, replc) {
       replaceLayers(item.layers, pattern, replc);
     }
 
-    var newName = item.name.replaceAll(pattern, replc);
+    var newName = getName(item).replaceAll(pattern, replc);
     item.name = newName;
   }
 }
@@ -460,12 +457,12 @@ function rename(target, pattern, replc, counter, ph) {
     var newName = '',
         item = target[i];
 
-    newName = pattern.replaceAll(ph.name, item.name);
+    newName = pattern.replaceAll(ph.name, getName(item));
     newName = newName.replaceAll(ph.numUp, fillZero(min + i, max.toString().length));
     newName = newName.replaceAll(ph.numDown, fillZero(max - i, max.toString().length));
 
     if (!isEmpty(replc)) {
-      item.name = item.name.replaceAll(replc, newName);
+      item.name = getName(item).replaceAll(replc, newName);
     } else {
       item.name = newName;
     }
@@ -480,9 +477,17 @@ function convertToInt(str, def) {
   return parseFloat(str);
 }
 
-// Check Symbol type
-function isSymbol(item) {
-  return item.typename === 'SymbolItem';
+// Get item name of different types
+function getName(item) {
+  var str = '';
+  if (item.typename === 'TextFrame' && isEmpty(item.name) && !isEmpty(item.contents)) {
+    str = item.contents;
+  } else if (item.typename === 'SymbolItem' && isEmpty(item.name)) {
+    str = item.symbol.name;
+  } else {
+    str = item.name;
+  }
+  return str;
 }
 
 // Replace all occurrences

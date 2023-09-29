@@ -97,7 +97,7 @@ Finds rotated objects in a selection or in a document. If `isSkipRight: true`, t
 ![SelectRotatedItems](https://i.ibb.co/7YpGm9M/Select-Rotated-Items.gif)
 
 ## Donate
-You can support my work on new scripts via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay].   
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/

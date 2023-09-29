@@ -29,6 +29,7 @@
   1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
   1.3.1 Added display of text frame content as name if it is empty
   1.3.2 Fixed rename bug
+  1.3.3 Added display symbol object names
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -628,12 +629,22 @@ function main() {
 // Init prefix, index, name and suffix
 function initData(src, out) {
   for (var i = 0, len = src.length; i < len; i++) {
-    var name = src[i].name;
-    if (src[i].name == '' && src[i].typename === 'TextFrame') {
-      name = src[i].contents;
-    }
+    var name = getName(src[i]);
     out.push([false, name, false, i]);
   }
+}
+
+// Get item name of different types
+function getName(item) {
+  var str = '';
+  if (item.typename === 'TextFrame' && isEmpty(item.name) && !isEmpty(item.contents)) {
+    str = item.contents;
+  } else if (item.typename === 'SymbolItem' && isEmpty(item.name)) {
+    str = item.symbol.name;
+  } else {
+    str = item.name;
+  }
+  return str;
 }
 
 // Check empty string
@@ -707,7 +718,7 @@ function rename(target, cfg, cfgPh, obj, objPh) {
   if (!target.length) return;
   var nameArr = generateName(target, cfg, cfgPh, obj, objPh);
   for (var i = 0, len = nameArr.length; i < len; i++) {
-    if (target[i].name == '' && target[i].contents == nameArr[i]) continue;
+    if (isEmpty(target[i].name) && target[i].contents == nameArr[i]) continue;
     // Name is modified
     target[i].name = nameArr[i];
   }
@@ -772,7 +783,7 @@ function getStartingNum(cfgPh, obj, objPh) {
 // Find and replace in old name
 function findAndReplace(cfgPh, obj, idx) {
   var outName = obj.state[idx][1];
-  if (obj.isFind && (obj.find.length || obj.find !== '')) {
+  if (obj.isFind && (obj.find.length || !isEmpty(obj.find))) {
     if (obj.find.match(cfgPh.name) != null) {
       outName = obj.rplc;
     } else {
