@@ -13,6 +13,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `new, 27.03.2022`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `new, 18.04.2022`
+* [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorgroupreplacer) `new, 08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#contrastchecker) `new, 07.09.2023`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#converttogradient) `upd, 14.09.2022`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclecolors) `upd, 30.09.2022`
@@ -43,6 +44,13 @@
 > К сожалению, скопированные градиенты связаны друг с другом в Иллюстраторе. Вручную удалите связь, развернув градиент дважды кнопкой `Reverse Gradient`.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
+
+## ColorGroupReplacer
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Заменяет глобальные цвета из одной группы на другую группу по совпадению имён или по порядку расположения образцов в группах. В примере мы заменяем группу Default. Если в целевой группе у цвета имя `Accent`, то скрипт будет искать образцы, у которых имя содержит имя целевого цвета. Вы можете не создавать палитры с семантическими именами, а разложить цвета внутри групп в нужном порядке и выбирать опцию `By swatches order`.
+
+![ColorGroupReplacer](https://i.ibb.co/FVYrty0/Color-Group-Replacer.gif) 
 
 ## ContrastChecker
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -13,6 +13,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `new, 27.03.2022`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `new, 18.04.2022`
+* [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `new, 08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `new, 07.09.2023`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `upd, 14.09.2022`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `upd, 30.09.2022`
@@ -43,6 +44,13 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 > Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
+
+## ColorGroupReplacer
+[![Direct](https://img.shields.io/badge/Direct%20Link-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Replaces the values of spot colours in one colour group with spot colours from another group by matching swatch names or by order. In the example, the Default group is replaced. If a color in the target group has the name `Accent`, the script will look for swatches with a name that contains the name of the target color. You don't need to create palettes with semantic names, just arrange the colors within the groups in the desired order and select the `By swatches order` option.
+
+![ColorGroupReplacer](https://i.ibb.co/FVYrty0/Color-Group-Replacer.gif) 
 
 ## ContrastChecker
 [![Direct](https://img.shields.io/badge/Direct%20Link-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
