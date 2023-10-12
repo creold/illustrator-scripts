@@ -2,14 +2,15 @@
   ArtboardsRemapper.jsx for Adobe Illustrator
   Description: Writes artboard names to a text file or applies from it
   Date: April, 2023
+  Modification date: October, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Based on code by Carlos Canto
-  Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
   0.1 Initial version
+  0.1.1 Fixed detection of line breaks in TXT on PC
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -36,7 +37,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Artboards Remapper',
-        version: 'v.0.1'
+        version: 'v.0.1.1'
       },
       CFG = {
         start: 1,
@@ -153,7 +154,7 @@ function writeToText(str, f) {
 function parseFromText(f) {
   f.open('r');
   var contents = f.read();
-  var lines = contents.split('\n');
+  var lines = contents.split(/\n|\r|\r\n/);
   f.close();
   return lines;
 }

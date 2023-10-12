@@ -3,7 +3,7 @@
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders.
   Find & Replace supports regular expressions.
   Date: January, 2022
-  Modification date: September, 2023
+  Modification date: October, 2023
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -30,6 +30,7 @@
   1.3.1 Added display of text frame content as name if it is empty
   1.3.2 Fixed rename bug
   1.3.3 Added display symbol object names
+  1.4 Added import names from txt and export names into txt from active tab
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -55,15 +56,21 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 // MAIN DIALOG
 
 function main() {
-  if (!documents.length) {
-    alert('Error\nOpen a document and try again');
+  if (!/illustrator/i.test(app.name)) {
+    alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
     return;
   }
+
+  if (!documents.length) {
+    alert('No documents\nOpen a document and try again', 'Script error');
+    return;
+  }
+
   var doc = app.activeDocument;
 
   var SCRIPT = {
         name:     'Batch Renamer',
-        version:  'v.1.3.2'
+        version:  'v.1.4'
       };
   var CFG = {
         decimal:    ',', // Decimal separator point or comma for width and height
@@ -95,14 +102,20 @@ function main() {
       };
   var MSG = {
         cancel:       'Cancel',
-        copyright:    '\u00A9 Sergey Osokin. Visit Github',
+        copyright:    'Visit Github',
         empty:        'No paths are selected',
         enable:       'Enable',
+        ex:           'Export',
+        exDlg:        'Choose a folder to export TXT...',
+        exHint:       'Export names from active tab\ninto a TXT file',
         find:         'Find',
+        im:           'Import',
+        imDlg:        'Choose TXT file...',
+        imHint:       'Import names to active tab\nfrom a TXT file. Start each name\non a new line',
         nameAb:       'Artboard name',
         nameLyr:      'Layer name',
         namePath:     'Path name',
-        ok:           'Ok',
+        ok:           'OK',
         ph:           'Placeholder: ' + PH.name + ' - current name',
         prefix:       'Prefix',
         prvw:         'Preview',
@@ -197,10 +210,13 @@ function main() {
 
   // Create UI
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'row';
       win.opacity = CFG.uiOpacity;
 
+  var wrapper = win.add('group');
+
   // Tabs and properties
-  var tabPnl = win.add('tabbedpanel'); 
+  var tabPnl = wrapper.add('tabbedpanel'); 
       tabPnl.alignChildren = 'fill'; 
 
   var absTab = tabPnl.add('tab', undefined, MSG.tabAb); // Artboard
@@ -215,14 +231,26 @@ function main() {
   var pathsTabData = addTabContent(pathsTab, paths, CFG, MSG, MSG.namePath, MSG.preSuffPath);
   
   var btns = win.add('group');
-      btns.margins = [0, 10, 0, 0];
-      btns.alignment = 'center';
+      btns.orientation = 'column';
+      btns.spacing = 20;
+      btns.alignment = 'top';
 
-  var preview = btns.add('button', undefined, MSG.prvw);
-  var cancel = btns.add('button', undefined, MSG.cancel, { name: 'cancel' });
-  var ok = btns.add('button', undefined, MSG.ok, { name: 'ok' });
+  var b1 = btns.add('group');
+      b1.orientation = 'column';
 
-  var copyright = win.add('statictext', undefined, MSG.copyright);
+  var ok = b1.add('button', undefined, MSG.ok, { name: 'ok' });
+  var cancel = b1.add('button', undefined, MSG.cancel, { name: 'cancel' });
+
+  var b2 = btns.add('group');
+      b2.orientation = 'column';
+
+  var preview = b2.add('button', undefined, MSG.prvw);
+  var importBtn = b2.add('button', undefined, MSG.im);
+      importBtn.helpTip = MSG.imHint;
+  var exportBtn = b2.add('button', undefined, MSG.ex);
+      exportBtn.helpTip = MSG.exHint;
+
+  var copyright = btns.add('statictext', undefined, MSG.copyright);
       copyright.justify = 'center';
 
   loadSettings();
@@ -235,10 +263,52 @@ function main() {
     setScrollMax(pathsTabData, delta);
   }
 
+  // Import names from txt file
+  importBtn.onClick = function() {
+    var type = ($.os.match('Windows')) ? '*.txt;' : function(f) {
+      return f instanceof Folder || (f instanceof File && f.name.match(/(.txt)$/));
+    };
+    var f = File.openDialog(MSG.imDlg, type, false);
+    var txtArr = parseFromText(f);
+
+    var obj = tabPnl.selection.text.match(MSG.tabAb) ? abs : (tabPnl.selection.text.match(MSG.tabLyr) ? lyrs : paths);
+    var min = Math.min(txtArr.length, obj.names.length);
+    for (var i = 0; i < min; i++) {
+      var str = txtArr[i];
+      if (isEmpty(str)) continue;
+      obj.names[i].text = str;
+      obj.state[i][1] = str;
+    }
+
+    alert('Your file ' + decodeURIComponent(f.name) + ' has been imported successfully into the active tab.', 'Names imported');
+  }
+
+  // Export names from txt file
+  exportBtn.onClick = function() {
+    var fol = Folder.selectDialog(MSG.exDlg);
+    if (fol == null) return;
+    var type = tabPnl.selection.text.replace(/\s+.+/g, '').toLowerCase();
+    var f = new File(fol + '/' + doc.name.replace(/\.[^\.]+$/, '') + '_' + type + '.txt');
+
+    var txtArr = [];
+    if (tabPnl.selection.text.match(MSG.tabAb)) {
+      txtArr = generateName(doc.artboards, CFG, PH, abs, absPlaceholder);
+    } else if (tabPnl.selection.text.match(MSG.tabLyr)) {
+      txtArr = generateName(doc.layers, CFG, PH, lyrs, lyrsPlaceholder);
+    } else {
+      txtArr = generateName(app.selection, CFG, PH, paths, pathsPlaceholder);
+    }
+
+    if (txtArr.length) {
+      writeToText(txtArr.join('\n'), f);
+      alert('Your file ' + decodeURIComponent(f) + ' has been created successfully.', 'Names exported');
+    }
+  }
+
   // Preview new item names in the tabs
   preview.onClick = function () {
     absTabData.prvwTitle.text = lyrsTabData.prvwTitle.text = MSG.prvwOn;
-    if (typeof pathsTabData.prvwTitle !== 'undefined') {
+    if (isExists(pathsTabData.prvwTitle)) {
       pathsTabData.prvwTitle.text = MSG.prvwOn;
     }
 
@@ -365,7 +435,7 @@ function main() {
       var suffTitle = preSuffGrp.add('statictext', undefined, txt.suffix);
       var suff = preSuffGrp.add('edittext', extraInpSize, '');
 
-      var preSuffNote = extra.add('statictext', [0, 0, 350, 75], placeholder, {multiline: true});
+      var preSuffNote = extra.add('statictext', [0, 0, 362, 75], placeholder, {multiline: true});
 
       // Simulate a dividing line
       var border = extra.add('panel');
@@ -516,7 +586,7 @@ function main() {
       // Go to next name
       if (kd.keyName == 'Down' && (idx + 1) < obj.names.length) {
         // Update the scrollbar position when the Down key is pressed
-        if (idx != 0 && typeof scroll !== 'undefined') {
+        if (idx != 0 && isExists(scroll)) {
           scroll.value = (idx + 1) * (scroll.maxvalue / obj.names.length);
           scrollList.location.y += -1 * scroll.stepdelta;
         }
@@ -529,7 +599,7 @@ function main() {
       // Go to previous name
       if (kd.keyName == 'Up' && (idx - 1 >= 0)) {
         // Update the scrollbar position when the Up key is pressed
-        if ((idx + 1 < obj.names.length) && typeof scroll !== 'undefined') {
+        if ((idx + 1 < obj.names.length) && isExists(scroll)) {
           scroll.value = (idx - 1) * (scroll.maxvalue / obj.names.length);
           scrollList.location.y += 1 * scroll.stepdelta;
         }
@@ -561,7 +631,7 @@ function main() {
 
   // Fix scrollbar size for the dialog
   function setScrollMax(obj, delta) {
-    if (typeof obj.scroll !== 'undefined') {
+    if (isExists(obj.scroll)) {
       obj.scroll.maxvalue = obj.smallList.size.height - obj.pageListPanel.size.height + delta;
     }
   }
@@ -615,7 +685,7 @@ function main() {
   }
 
   function loadSettingsString(obj, tabData, arr) {
-    if (typeof tabData.pre !== 'undefined') {
+    if (isExists(tabData.pre)) {
       obj.pre  = tabData.pre.text  = arr[0];
       obj.suff = tabData.suff.text = arr[1];
       obj.find = tabData.find.text = arr[2];
@@ -650,6 +720,11 @@ function getName(item) {
 // Check empty string
 function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
+}
+
+// Check variable is defined
+function isExists(obj) {
+  return typeof obj !== 'undefined';
 }
 
 // Output artboard indexes as text
@@ -704,6 +779,22 @@ function removeAbIndex(layer) {
     var layerToRm = activeDocument.layers.getByName(layer);
     layerToRm.remove();
   } catch (e) {}
+}
+
+// Read text from a file
+function parseFromText(f) {
+  f.open('r');
+  var contents = f.read();
+  var lines = contents.split(/\n|\r|\r\n/);
+  f.close();
+  return lines;
+}
+
+// Write text to a file
+function writeToText(str, f) {
+  f.open('w');
+  f.write(str);
+  f.close();
 }
 
 // Preview the new name in the input field
