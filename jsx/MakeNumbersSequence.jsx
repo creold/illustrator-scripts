@@ -2,7 +2,7 @@
   MakeNumbersSequence.jsx for Adobe Illustrator
   Description: Fills a range of selected text objects with numbers incremented based on the input data
   Date: December, 2022
-  Modification date: August, 2023
+  Modification date: November, 2023
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Idea: Egor Chistyakov (@chegr)
 
@@ -13,6 +13,7 @@
   0.1.1 Added Shuffle option
   0.2 Added sorting by position and placeholder replacement
   0.3 Added number replacement in a string
+  0.4 Redesigned, added dynamic example to side panel
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -39,7 +40,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v.0.3'
+        version: 'v.0.4'
       },
       CFG = {
         placeholder: '{%n}',
@@ -57,22 +58,37 @@ function main() {
   // Disable Windows Screen Flicker Bug Fix on newer versions
   var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers > 16;
 
+  var tfs = getTextFrames(selection).reverse();
+  if (!tfs.length) {
+    alert('Texts not found\nSelect texts and re-run script', 'Script error');
+    return;
+  }
+
+  var inc = 0, start = 0, end = 0, strLen = 0;
+
   // Dialog
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      win.orientation = 'column';
-      win.alignChildren = 'fill';
+      win.orientation = 'row';
+      win.alignChildren = ['fill', 'top'];
       win.opacity = .97;
 
-  // Star number
-  var numPnl = win.add('panel', undefined, 'Numbers');
+  var wrapper = win.add('group');
+      wrapper.orientation = 'column';
+      wrapper.alignChildren = ['fill', 'top'];
+
+  // Start number
+  var numPnl = wrapper.add('panel', undefined, 'Numbers');
       numPnl.alignChildren = 'left';
+      numPnl.spacing = 15;
       numPnl.margins = [10, 15, 10, 10];
 
-  var startGrp = numPnl.add('group');
-  var startLbl = startGrp.add('statictext', undefined, 'Start value');
-      startLbl.preferredSize.width = 65;
-  var startInp = startGrp.add('edittext', undefined, '1');
-      startInp.preferredSize.width = 74;
+  var inpWrapper = numPnl.add('group');
+      inpWrapper.spacing = 15;
+
+  var startGrp = inpWrapper.add('group');
+  startGrp.add('statictext', undefined, 'Start:');
+  var startInp = startGrp.add('edittext', undefined, 1);
+      startInp.preferredSize.width = 48;
   if (winFlickerFix) {
     if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
   } else {
@@ -80,26 +96,39 @@ function main() {
   }
 
   // End number
-  var endGrp = numPnl.add('group');
-  var endLbl = endGrp.add('statictext', undefined, 'End value');
-      endLbl.preferredSize.width = 65;
-  var endInp = endGrp.add('edittext', undefined, '50');
-      endInp.preferredSize.width = 74;
+  var endGrp = inpWrapper.add('group');
+  endGrp.add('statictext', undefined, 'End:');
+  var endInp = endGrp.add('edittext', undefined, 50);
+      endInp.preferredSize.width = 48;
 
   // Increment
-  var incGrp = numPnl.add('group');
-  var incLbl = incGrp.add('statictext', undefined, 'Increment');
-      incLbl.preferredSize.width = 65;
-  var incInp = incGrp.add('edittext', undefined, '5');
-      incInp.preferredSize.width = 74;
+  var incGrp = inpWrapper.add('group');
+  incGrp.add('statictext', undefined, 'Increment:');
+  var incInp = incGrp.add('edittext', undefined, 5);
+      incInp.preferredSize.width = 48;
 
-  var isUseAll = numPnl.add('checkbox', undefined, 'Number to last text');
-  var isShuffle = numPnl.add('checkbox', undefined, 'Shuffle numbers order');
-  var isPadZero = numPnl.add('checkbox', undefined, 'Add zeros (e.g. 01, 02)');
-  var isRmvTf = numPnl.add('checkbox', undefined, 'Remove unused texts');
+  var numOptWrapper = numPnl.add('group');
+      numOptWrapper.alignChildren = 'left';
+
+  var numOpt_1 = numOptWrapper.add('group');
+      numOpt_1.orientation = 'column';
+      numOpt_1.alignChildren = 'left';
+
+  var isUseAll = numOpt_1.add('checkbox', undefined, 'Number to last text');
+  var isShuffle = numOpt_1.add('checkbox', undefined, 'Shuffle numbers order');
+
+  var numOpt_2 = numOptWrapper.add('group');
+      numOpt_2.orientation = 'column';
+      numOpt_2.alignChildren = 'left';
+
+  var isPadZero = numOpt_2.add('checkbox', undefined, 'Add zeros (e.g. 01, 02)');
+  var isRmvTf = numOpt_2.add('checkbox', undefined, 'Remove unused texts');
+
+  var optWrapper = wrapper.add('group');
+      optWrapper.alignChildren = ['fill', 'top'];
 
   // Sort objects
-  var sortPnl = win.add('panel', undefined, 'Sort before numbering');
+  var sortPnl = optWrapper.add('panel', undefined, 'Sort before numbering');
       sortPnl.alignChildren = 'left';
       sortPnl.margins = [10, 15, 10, 10];
 
@@ -109,7 +138,7 @@ function main() {
   var isCols = sortPnl.add('radiobutton', undefined, 'By columns (like \u0418)');
 
   // Replace
-  var rplcPnl = win.add('panel', undefined, 'Replace text to number');
+  var rplcPnl = optWrapper.add('panel', undefined, 'Replace text to number');
       rplcPnl.alignChildren = 'left';
       rplcPnl.margins = [10, 15, 10, 10];
 
@@ -120,7 +149,10 @@ function main() {
 
   // Buttons
   var btns = win.add('group');
-      btns.alignChildren = ['fill', 'center'];
+      btns.orientation = 'column';
+      btns.alignChildren = ['fill', 'top'];
+      btns.maximumSize.width = 80;
+
   var cancel, ok;
   if (CFG.isMac) {
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
@@ -129,39 +161,38 @@ function main() {
     ok = btns.add('button', undefined, 'OK', { name: 'ok' });
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
+
   cancel.helpTip = 'Press Esc to Close';
   ok.helpTip = 'Press Enter to Run';
 
-  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
-      copyright.justify = 'center';
+  btns.add('statictext', undefined, 'Preview');
+  var prvwList = btns.add('statictext', undefined, '1\n2\n3\n4\n5\n6\n7\n8', {multiline: true});
+  prvwList.preferredSize.height = 110;
+
+  var copyright = btns.add('statictext', undefined, 'Visit Github');
 
   loadSettings(SETTINGS);
-
+  preview();
+  
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold');
   });
 
+  startInp.onChange = endInp.onChange = incInp.onChange = preview;
+  isPadZero.onClick = isShuffle.onClick = preview;
+  isFullRplc.onClick = isNumRplc.onClick = isPhRplc.onClick = preview;
+
   isUseAll.onClick = function () {
     endGrp.enabled = !this.value;
     isRmvTf.enabled = !this.value;
+    preview();
   }
   
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
   function okClick() {
-    var tfs = getTextFrames(selection).reverse();
-    if (!tfs.length) {
-      alert('Texts not found\nSelect texts and re-run script', 'Script error');
-      win.close();
-      return;
-    }
-
     var tolerance = getTolerance(tfs[0]),
-        inc = strToNum(incInp.text, 1),
-        start = strToNum(startInp.text, 0),
-        end = isUseAll.value ? start + (tfs.length - 1) * inc : strToNum(endInp.text, 10),
-        strLen = getMaxNumLength(start, end),
         isPad = isPadZero.value,
         isNum = isNumRplc.value,
         isPh = isPhRplc.value;
@@ -200,6 +231,35 @@ function main() {
 
     saveSettings(SETTINGS);
     win.close();
+  }
+
+  function preview() {
+    var tmp = [].concat(tfs);
+
+    inc = strToNum(incInp.text, 1);
+    start = strToNum(startInp.text, 0);
+    end = isUseAll.value ? start + (tmp.length - 1) * inc : strToNum(endInp.text, 10);
+    strLen = getMaxNumLength(start, end);
+    isPad = isPadZero.value;
+
+    if (isNumRplc.value) {
+      tmp = filterByString(tmp, '\\d');
+    } else if (isPhRplc.value) {
+      tmp = filterByString(tmp, CFG.placeholder);
+    }
+
+    var nums = getNumbers(inc, start, end, tmp.length);
+    if (isShuffle.value) shuffle(nums);
+
+    var i = 0, len = nums.length;
+    while (i < len) {
+      if (isPad && nums[i] >= 0) {
+        nums[i] = padZero(nums[i], strLen);
+      }
+      i++;
+    }
+
+    prvwList.text = getShortArray(nums, 7, 2).join('\n');
   }
 
   // Save UI options to file
@@ -346,6 +406,7 @@ function sortByColumns(arr, tolerance) {
   });
 }
 
+// Filter text frames by string
 function filterByString(tfs, str) {
   var out = [],
       regex = new RegExp(str, 'gi');
@@ -354,7 +415,6 @@ function filterByString(tfs, str) {
   }
   return out;
 }
-
 
 // Get numbers from range
 function getNumbers(inc, start, end, amt) {
@@ -407,6 +467,18 @@ function padZero(num, len) {
   num = num.toString();
   while (num.length < len) num = '0' + num;
   return num;
+}
+
+// Get first N elements from array and M last
+function getShortArray(arr, amt, last) {
+  if (arr.length <= amt) {
+    return arr;
+  } else {
+    var first = arr.slice(0, amt - (last + 1));
+    var next = '...';
+    var last = arr.slice(-last);
+    return first.concat(next, last);
+  }
 }
 
 // Simulate keyboard keys on Windows OS via VBScript

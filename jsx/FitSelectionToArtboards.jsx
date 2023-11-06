@@ -329,11 +329,9 @@ function getVisibleBounds(obj, type) {
             clippedItem = curItem;
             break;
           }
-        } else {
-          clippedItem = curItem;
-          break;
         }
       }
+      if (!clippedItem) clippedItem = obj.pageItems[0];
       bnds = clippedItem[type];
       if (tmpLayer) {
         tmpLayer.remove();
