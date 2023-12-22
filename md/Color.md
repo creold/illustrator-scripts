@@ -19,6 +19,7 @@
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `upd, 30.09.2022`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
 * [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops)
+* [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#matchcolors) `new, 22.12.2023`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops)
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor)
 * [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `upd, 14.10.2022`
@@ -41,7 +42,7 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 Simulates color vision deficiency of 8 types. You can recolor objects or use only a preview. Adobe is limited to viewing two types in the `View > Proof Setup` menu and cannot apply colors. The script supports: paths, compound paths, text, fills and strokes. You can change the gamma correction in `CFG.gamma: 2.2` and activate the default preview `CFG.defPreview: true`. 
 
 > **Warning**   
-> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.
+> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
 
@@ -96,9 +97,19 @@ The script by default remembers the position of the dialog window on the screen,
 A set of 4 scripts that change the color order of gradient stops. The position of the stops and opacity don't change. 
 
 > **Warning**   
-> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.   
+> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
+
+## MatchColors
+[![Direct](https://img.shields.io/badge/Direct%20Link-MatchColors.jsx-FF6900.svg)](https://rebrand.ly/matchclrs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Matches two groups of objects (paths, texts) or text objecs characters by fill color. Colors are defined on paths, compound paths, or text. Other objects in groups are skipped.
+
+> **Warning**   
+> Scripts cannot copy/paste gradient angle and length properties. For this reason, only the gradient color is copied without its properties. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other)  to fix this.   
+
+![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
 
 ## DistributeGradientStops
 [![Direct](https://img.shields.io/badge/Direct%20Link-DistributeGradientStops.jsx-FF6900.svg)](https://rebrand.ly/distgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -106,7 +117,7 @@ A set of 4 scripts that change the color order of gradient stops. The position o
 Distributes uniform spacing between all the gradients stops without changing the position of the outermost stops. 
 
 > **Warning**   
-> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.  
+> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
 
@@ -116,7 +127,7 @@ Distributes uniform spacing between all the gradients stops without changing the
 Removes intermediate color stops of gradient fill and stroke for selected objects.
 
 > **Warning**   
-> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.  
+> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![RemoveGradientStops](https://i.ibb.co/cv6wgPq/remove-Gradient-Stops.gif)
 
@@ -126,7 +137,7 @@ Removes intermediate color stops of gradient fill and stroke for selected object
 Reverse the order of gradient colors and their opacity. Does not reverse the locations of color stops.
 
 > **Warning**   
-> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button.  
+> Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![ReverseGradient](https://i.ibb.co/Fg8nnHZ/Reverse-Gradient-Color.gif)
 
