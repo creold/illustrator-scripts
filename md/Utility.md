@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Utility | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -42,7 +43,7 @@ Script for collecting information about the program version of .ai & .eps files 
 
 Counts the number of selected objects.
 
-![ObjectsCounter](https://i.ibb.co/bFd5k6p/Objects-Counter.gif)
+![ObjectsCounter](https://i.ibb.co/cbmYfNV/Objects-Counter.gif)
 
 ## SaveAllDocs
 [![Direct](https://img.shields.io/badge/Direct%20Link-SaveAllDocs.jsx-FF6900.svg)](https://rebrand.ly/savealldocs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

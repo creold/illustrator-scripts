@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Style | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -39,7 +40,7 @@ Set the exact Opacity value of the selected objects. The plus or minus sign befo
 
 Convert selection colors to Grayscale and set identical Opacity value.
 
-![GrayscaleToOpacity](https://i.ibb.co/DVfGtkz/Grayscale-To-Opacity.gif)
+![GrayscaleToOpacity](https://i.ibb.co/qY1Cx68/Grayscale-To-Opacity.gif)
 
 ## MakeTrappingStroke
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeTrappingStroke.jsx-FF6900.svg)](https://rebrand.ly/mktrapstroke) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -56,7 +57,7 @@ Sets the stroke color based on the fill of the object, with the Overprint Stroke
 
 The script activates `Clip` checkbox in `Transparency > Opacity Mask`.
 
-![OpacityMaskClip](https://i.ibb.co/k0CBJKq/Opacity-Mask-Clip.gif)
+![OpacityMaskClip](https://i.ibb.co/Kbn4vqB/Opacity-Mask-Clip.gif)
 
 ## RandomStrokeWidth
 [![Direct](https://img.shields.io/badge/Direct%20Link-RandomStrokeWidth.jsx-FF6900.svg)](https://rebrand.ly/rndstrwd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -68,7 +69,7 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 * <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
 * <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
 
-![RandomStrokeWidth](https://i.ibb.co/PQN1qkV/Random-Stroke-Width.gif) 
+![RandomStrokeWidth](https://i.ibb.co/PQN1qkV/Random-Stroke-Width.gif)
 
 ## StrokesWeight
 [![Direct](https://img.shields.io/badge/Direct%20Link-StrokesWeightDown.jsx-FF6900.svg)](https://rebrand.ly/strwtdn) [![Direct](https://img.shields.io/badge/Direct%20Link-StrokesWeightUp.jsx-FF6900.svg)](https://rebrand.ly/strwtup) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

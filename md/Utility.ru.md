@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Utility | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Скачивания-25k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -42,7 +43,7 @@
 
 Подсчитывает количество выделенных объектов. Группы не учитываются, как отдельный объект, только вложенные в них элементы.
 
-![ObjectsCounter](https://i.ibb.co/bFd5k6p/Objects-Counter.gif)
+![ObjectsCounter](https://i.ibb.co/cbmYfNV/Objects-Counter.gif)
 
 ## SaveAllDocs
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SaveAllDocs.jsx-FF6900.svg)](https://rebrand.ly/savealldocs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

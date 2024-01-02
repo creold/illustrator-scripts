@@ -14,6 +14,7 @@
   0.2 Added sorting by position and placeholder replacement
   0.3 Added number replacement in a string
   0.4 Redesigned, added dynamic example to side panel
+  0.4.1 Fixed array of numbers with zero increment
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -40,7 +41,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v.0.4'
+        version: 'v0.4.1'
       },
       CFG = {
         placeholder: '{%n}',
@@ -432,6 +433,11 @@ function getNumbers(inc, start, end, amt) {
     while ((curNum + inc >= end) && (i < amt)) {
       curNum = start + i * inc;
       out.push(curNum);
+      i++;
+    }
+  } else if (inc == 0) {
+    while (i < amt) {
+      out.push(start);
       i++;
     }
   }

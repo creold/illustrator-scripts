@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Downloads-25k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -32,7 +33,7 @@ The descriptions for each file can be found in the file’s header text. Test en
 #### Variant 2 — Drag & Drop
 Drag and drop the script file (JS or JSX) onto the tabs of Illustrator documents. If you drag it to the area of the open document, the script may not work correctly (Adobe bug).  
 
-![drag](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
+![Drag-n-drop to AI](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
 
 #### Variant 3 — Use extensions
 I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify which folder your script files are stored in.
@@ -67,6 +68,15 @@ Many scripts are free to download thanks to user support. Help me to develop new
 <a href="https://new.donatepay.ru/@osokin">
   <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
 </a>
+
+## Paid scripts
+* [ColorToner](https://www.buymeacoffee.com/osokin/e/184236) — script for generating tints, shades, and tones from base colors.
+* [GradientBlender](https://www.buymeacoffee.com/osokin/e/121327) — script to make gradients more accurate, smooth.
+* [Ai2Ae](https://www.buymeacoffee.com/osokin/e/184233) — script for prepare Adobe Illustrator Layers for import into Adobe After Effects.
+* [ArtboardsFromCSV](https://www.buymeacoffee.com/osokin/e/121326) — script for batch creation of artboards with names and dimensions defined in a CSV table.
+* [Duplicate Artboards Pro](https://www.buymeacoffee.com/osokin/e/184235) —script for copying the selected Artboard with or without his Artwork.
+* [HighlightText](https://www.buymeacoffee.com/osokin/e/184101) — script for adding highlighting strokes based on text lines.
+* [ImportImagesByName](https://www.buymeacoffee.com/osokin/e/184237) — script for imports images from the specified folder by names from the contents of the selected text objects.
 
 ## Categories
 Click the category name to learn more about the scripts in the selected category.   
@@ -172,7 +182,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Text](md/Text.md)  
 
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `new, 28.04.2023`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 06.11.2023`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 25.12.2023`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `new, 29.12.2022`
 
 ### [Utility](md/Utility.md)  

@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Path | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Скачивания-25k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -37,7 +38,7 @@
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">
 </a>
 
-![PointsMoveRandom](https://i.ibb.co/9ZsRQJk/demo-Points-Move-Random.gif)
+![PointsMoveRandom](https://i.ibb.co/qNpdKTr/Points-Move-Random.gif)
 
 ## SetPointsCoordinates
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SetPointsCoordinates.jsx-FF6900.svg)](https://rebrand.ly/setptscrds) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -55,7 +56,7 @@
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">
 </a>
 
-![SplitPath](https://i.ibb.co/55fmqgY/demo-Split-Path.gif)
+![SplitPath](https://i.ibb.co/c6HNZwJ/Split-Path.gif)
 
 ## SubtractTopPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SubtractTopPath.jsx-FF6900.svg)](https://rebrand.ly/subtoppath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

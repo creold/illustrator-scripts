@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Скачивания-25k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -32,7 +33,7 @@
 #### Вариант 2 — Drag & Drop
 Перетащите файл скрипта на панель с вкладками открытых документов Иллюстратора. Если же перетащить в центр открытого документа, то скрипт может сработать с ошибками (баг Adobe).  
 
-![drag](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
+![Drag-n-drop to AI](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
 
 #### Вариант 3 — Расширения (Extension)
 Если часто приходится запускать скрипты, то чтобы не открывать постоянно меню, можно установить бесплатные панели [Scripshon Trees] или [LAScripts].  
@@ -67,6 +68,15 @@
 <a href="https://new.donatepay.ru/@osokin">
   <img width="111" height="40" src="https://i.ibb.co/0KJ94ND/donatepay-badge.png">
 </a>
+
+## Платные скрипты
+* [ColorToner](https://www.buymeacoffee.com/osokin/e/184236) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
+* [GradientBlender](https://www.buymeacoffee.com/osokin/e/121327) — скрипт для создания аккуратных переходов цветов в градиентах
+* [Ai2Ae](https://www.buymeacoffee.com/osokin/e/184233) — скрипт раскладывает объекты по слоям для импорта в After Effects
+* [ArtboardsFromCSV](https://www.buymeacoffee.com/osokin/e/121326) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
+* [Duplicate Artboards Pro](https://www.buymeacoffee.com/osokin/e/184235) — скрипт создаёт заданное количество копий артбордов
+* [HighlightText](https://www.buymeacoffee.com/osokin/e/184101) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
+* [ImportImagesByName](https://www.buymeacoffee.com/osokin/e/184237) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
 
 ## Категории
 Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
@@ -183,7 +193,7 @@
 Скрипты для работы с текстовыми объектами
 
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `new, 28.04.2023`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `upd, 06.11.2023`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `upd, 25.12.2023`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `new, 29.12.2022`
 
 ### [Utility](md/Utility.ru.md)  

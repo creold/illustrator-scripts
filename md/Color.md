@@ -1,4 +1,5 @@
-![header](https://i.ibb.co/mF018gV/emblem.png)
+![Logo](https://i.ibb.co/mF018gV/emblem.png)
+
 # Color | Adobe Illustrator Scripts
 
 ![Downloads](https://img.shields.io/badge/Downloads-23k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
@@ -44,14 +45,14 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 > **Warning**   
 > Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
-![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif) 
+![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
 
 ## ColorGroupReplacer
 [![Direct](https://img.shields.io/badge/Direct%20Link-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Replaces the values of spot colours in one colour group with spot colours from another group by matching swatch names or by order. In the example, the Default group is replaced. If a color in the target group has the name `Accent`, the script will look for swatches with a name that contains the name of the target color. You don't need to create palettes with semantic names, just arrange the colors within the groups in the desired order and select the `By swatches order` option.
 
-![ColorGroupReplacer](https://i.ibb.co/FVYrty0/Color-Group-Replacer.gif) 
+![ColorGroupReplacer](https://i.ibb.co/FVYrty0/Color-Group-Replacer.gif)
 
 ## ContrastChecker
 [![Direct](https://img.shields.io/badge/Direct%20Link-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -66,7 +67,7 @@ Helps select color combinations for text and backgrounds, icons and other interf
 > **Warning**   
 > Remember that contrast can vary depending on your monitor, device, environmental conditions, typefaces, and many other details. Using common sense can be more helpful than mindlessly following a rule. [Read more](https://ais.sergosokin.ru/color/contrast-checker/)
 
-![ContrastChecker](https://i.ibb.co/YR2mvSY/Contrast-Checker.gif) 
+![ContrastChecker](https://i.ibb.co/YR2mvSY/Contrast-Checker.gif)
 
 ## ConvertToGradient
 [![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -75,7 +76,7 @@ Convert a flat process color into a matching gradient.
 What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items.   
 *Based on original script by [Saurabh Sharma](https://tutsplus.com/authors/saurabh-sharma), 2010.*  
 
-![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif) 
+![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
 
 ## CycleColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](https://rebrand.ly/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -104,7 +105,7 @@ A set of 4 scripts that change the color order of gradient stops. The position o
 ## MatchColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-MatchColors.jsx-FF6900.svg)](https://rebrand.ly/matchclrs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Matches two groups of objects (paths, texts) or text objecs characters by fill color. Colors are defined on paths, compound paths, or text. Other objects in groups are skipped.
+Matches two groups of objects (paths, texts) or text objects characters by fill color. Colors are defined on paths, compound paths, or text. Other objects in groups are skipped.
 
 > **Warning**   
 > Scripts cannot copy/paste gradient angle and length properties. For this reason, only the gradient color is copied without its properties. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other)  to fix this.   
