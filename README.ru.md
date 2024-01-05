@@ -9,7 +9,7 @@
 ## 👨‍💻 Привет
 Это коллекция авторских скриптов для Adobe Illustrator. Небольшие скрипты, не вошедшие в основную коллекцию, выкладываю на [Github Gist](https://gist.github.com/creold).
 
-Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2022, 2023 (Windows), CC 2018-2023 (Mac OS). 
+Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2019-2024 (Windows), CC 2019-2024 (Mac OS). 
 
 ## Как скачать один скрипт
 1. В описании скрипта нажмите кнопку «Прямая ссылка».
@@ -93,7 +93,7 @@
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `upd, 04.05.2023`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `upd, 14.09.2022`
-* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `upd, 22.12.2022`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `upd, 05.01.2024`
 * [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `upd, 14.09.2022`
 
 ### [Color](md/Color.ru.md)  

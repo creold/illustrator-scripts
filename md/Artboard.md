@@ -19,7 +19,7 @@
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `upd, 04.05.2023`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `upd, 14.09.2022`
-* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `upd, 22.12.2022`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `upd, 05.01.2024`
 * [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `upd, 14.09.2022`
 
 ## ArtboardsFinder
@@ -95,9 +95,9 @@ The script renames each Artboard by the custom name of Layer with the first visi
 ## RenameArtboardAsSize
 [![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsSize.jsx-FF6900.svg)](https://rebrand.ly/renabsassize) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-The script names the artboard by its size in pixels. If you don't want save Artboard name, but replace with his size, change `var SAVE_NAME = true;` in the script file to `false`.
+Renames artboards according to their size in document units.
 
-![RenameArtboardAsSize](https://i.ibb.co/54H4Jcm/Rename-Artboard-As-Size.gif)
+![RenameArtboardAsSize](https://i.ibb.co/GR488JH/Rename-Artboard-As-Size.gif)
 
 ## RenameArtboardAsTopObj
 [![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsTopObj.jsx-FF6900.svg)](https://rebrand.ly/renabsasobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -1,7 +1,8 @@
 /*
   RenameArtboardAsSize.jsx for Adobe Illustrator
-  Description: The script fills in the name of artboard its size
-  Date: December, 2022
+  Description: The script Renames artboards according to their size in document units
+  Date: September, 2018
+  Modification date: January, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -11,6 +12,7 @@
   0.2 Added more units (yards, meters, etc.) support if the document is saved
   0.2.1 Added size correction in large canvas mode
   0.2.2 Added new units API for CC 2023 v27.1.1
+  0.3 Added user interface
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -20,10 +22,10 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
-  
+
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
@@ -37,7 +39,7 @@ function main() {
   var CFG = {
         units: getUnits(), // Active document units
         isSaveName: true, // Set false to overwrite the full name
-        isRound: false, // Set true to get a round number
+        isRound: true, // Set true to get a round number
         precision: 2,  // Size rounding precision
         isAddUnit: true,
         separator: '_'
@@ -48,37 +50,72 @@ function main() {
     return;
   }
 
-  var doc = activeDocument,
-      width, height,
-      size = '';
+  var doc = activeDocument;
+  var idx = doc.artboards.getActiveArtboardIndex();
 
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
 
-  for (var i = 0, len = doc.artboards.length; i < len; i++) {
-    var currAb = doc.artboards[i];
-    
-    width = CFG.sf * convertUnits(currAb.artboardRect[2] - currAb.artboardRect[0], 'px', CFG.units);
-    height = CFG.sf * convertUnits(currAb.artboardRect[1] - currAb.artboardRect[3], 'px', CFG.units);
+  // INTERFACE
+  var win = new Window('dialog', 'Rename Artboard As Size');
+      win.alignChildren = ['fill', 'fill'];
 
-    if (CFG.isRound) {
-      width = Math.round(width);
-      height = Math.round(height);
-    } else {
-      width = width.toFixed(CFG.precision);
-      height = height.toFixed(CFG.precision);
+  // Range
+  var rangePnl = win.add('panel', undefined, 'Artboards range');
+      rangePnl.alignChildren = ['fill', 'center'];
+      rangePnl.margins = [10, 15, 10, 8];
+
+  var isAll = rangePnl.add('radiobutton', undefined, 'All ' + doc.artboards.length + ' artboards');
+      isAll.value = true;
+
+  var isCurr = rangePnl.add('radiobutton', undefined, 'Active artboard #' + (idx + 1));
+
+  // Range
+  var optPnl = win.add('panel', undefined, 'Options');
+      optPnl.alignChildren = ['fill', 'center'];
+      optPnl.margins = [10, 15, 10, 8];
+
+  var isSaveName = optPnl.add('checkbox', undefined, 'Add size as suffix');
+      isSaveName.value = CFG.isSaveName;
+
+  var isRound = optPnl.add('checkbox', undefined, 'Round to integer');
+      isRound.value = CFG.isRound;
+
+  var isAddUnit = optPnl.add('checkbox', undefined, 'Add units after size');
+      isAddUnit.value = CFG.isAddUnit;
+
+  // Buttons
+  var btns = win.add('group');
+      btns.alignChildren = ['fill', 'center'];
+
+  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+      cancel.helpTip = 'Press Esc to Close';
+
+  var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
+      ok.helpTip = 'Press Enter to Run';
+
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  copyright.justify = 'center';
+
+  cancel.onClick = win.close;
+
+  ok.onClick = function () {
+    var range = isAll.value ? doc.artboards : [doc.artboards[idx]];
+    CFG.isSaveName = isSaveName.value;
+    CFG.isRound = isRound.value;
+    CFG.isAddUnit = isAddUnit.value;
+    for (var i = 0, len = range.length; i < len; i++) {
+      renameArtboard(range[i], CFG);
     }
-
-    size = width + 'x' + height;
-    if (CFG.isAddUnit) size += CFG.units;
-
-    if (CFG.isSaveName) {
-      currAb.name += CFG.separator + size;
-    } else {
-      currAb.name = size;
-    }
-
+    win.close();
   }
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
+
+  win.center();
+  win.show();
 }
 
 // Get active document ruler units
@@ -113,9 +150,40 @@ function getUnits() {
   }
 }
 
+// Rename an artboard by its size
+function renameArtboard(ab, prefs) {
+  var abName = ab.name;
+  var separator = /\s/.test(abName) ? ' ' : (/-/.test(abName) ? '-' : prefs.separator);
+
+  var width = prefs.sf * convertUnits(ab.artboardRect[2] - ab.artboardRect[0], 'px', prefs.units);
+  var height = prefs.sf * convertUnits(ab.artboardRect[1] - ab.artboardRect[3], 'px', prefs.units);
+
+  width = prefs.isRound ? Math.round(width) : width.toFixed(prefs.precision);
+  height = prefs.isRound ? Math.round(height) : height.toFixed(prefs.precision);
+
+  var size = width + 'x' + height;
+  if (prefs.isAddUnit) size += prefs.units;
+
+  if (prefs.isSaveName) {
+    ab.name += separator + size;
+  } else {
+    ab.name = size;
+  }
+}
+
 // Convert units of measurement
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
+}
+
+// Open link in browser
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 try {

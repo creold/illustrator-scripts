@@ -1,7 +1,8 @@
 /*
   RenameArtboardAsLayer.jsx for Adobe Illustrator
   Description: The script renames each Artboard by the custom name of Layer with the first visible unlocked item on it.
-  Date: September, 2022
+  Date: October, 2019
+  Modification date: September, 2022
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
