@@ -2,13 +2,15 @@
   ChangeOpacity.jsx for Adobe Illustrator
   Description: Set or shift the Opacity value relative to the current for the selected objects
   Date: December, 2021
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.2 Removed input activation on Windows OS below CC v26.4
   0.1.1 Fixed input activation in Windows OS
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -18,11 +20,11 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
-  This script is provided "as is" without warranty of any kind.
-  Free to use, not for sale.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
+  Free to use, not for sale
 
-  Released under the MIT license.
+  Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
   Check my other scripts: https://github.com/creold
@@ -33,7 +35,7 @@
 function main () {
   var SCRIPT = {
         name: 'Change Opacity',
-        version: 'v.0.1.1'
+        version: 'v0.1.2'
       },
       CFG = {
         opacity: '-10',
@@ -41,7 +43,6 @@ function main () {
         inclMask: false,
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         uiOpacity: .96 // UI window opacity. Range 0-1
       };
 
@@ -54,9 +55,6 @@ function main () {
     alert('Error\nPlease select atleast one object');
     return;
   }
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -71,9 +69,7 @@ function main () {
   var group = input.add('group');
   var shiftInp = group.add('edittext', undefined, selection.length == 1 ? selection[0].opacity : CFG.opacity);
       shiftInp.preferredSize.width = 120;
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     shiftInp.active = true;
   }
   group.add('statictext', undefined, '%');
@@ -146,29 +142,6 @@ function main () {
 
     win.close();
   }
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 /**

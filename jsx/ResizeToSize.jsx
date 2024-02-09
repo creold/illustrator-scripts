@@ -1,26 +1,27 @@
 /*
   ResizeToSize.jsx for Adobe Illustrator
   Description: Resize each selected object to the entered size
-  Date: December, 2022
-  Modification date: April, 2023
+  Date: April, 2020
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.2 Added menu for side selection
-  0.3 Added additional settings
-  0.4 Correct resize Clipping Mask. Added access key shortcuts
-  0.5 Added dimensions bounds
-  0.6 Added live preview (Shift+P)
-  0.7 Fixed live preview bug. Minor improvements
-  0.7.1 Code refactoring
-  0.8 Added relative resize option. Minor improvements
-  0.8.1 Fixed input activation in Windows OS
-  0.8.2 Added size correction in large canvas mode
-  0.8.3 Added new units API for CC 2023 v27.1.1
+  0.9.1 Removed input activation on Windows OS below CC v26.4
   0.9 Added Smaller and Random option to Scaling side
+  0.8.3 Added new units API for CC 2023 v27.1.1
+  0.8.2 Added size correction in large canvas mode
+  0.8.1 Fixed input activation in Windows OS
+  0.8 Added relative resize option. Minor improvements
+  0.7.1 Code refactoring
+  0.7 Fixed live preview bug. Minor improvements
+  0.6 Added live preview (Shift+P)
+  0.5 Added dimensions bounds
+  0.4 Correct resize Clipping Mask. Added access key shortcuts
+  0.3 Added additional settings
+  0.2 Added menu for side selection
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -30,8 +31,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -46,7 +47,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main () {
   var SCRIPT = {
         name: 'Resize To Size',
-        version: 'v.0.9'
+        version: 'v0.9.1'
       },
       CFG = {
         size: 100, // Default size value
@@ -55,7 +56,6 @@ function main () {
         units: getUnits(),
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isInclStroke: preferences.getBooleanPreference('includeStrokeInBounds'),
         isScaleCorner: preferences.getIntegerPreference('policyForPreservingCorners'),
         isScaleStroke: preferences.getBooleanPreference('scaleLineWeight'),
@@ -91,8 +91,6 @@ function main () {
 
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -106,9 +104,7 @@ function main () {
   sizeGrp.add('statictext', undefined, 'Size, ' + CFG.units + ':');
   var sizeInp = sizeGrp.add('edittext', undefined, CFG.size);
       sizeInp.preferredSize.width = 60;
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     sizeInp.active = true;
   }
 
@@ -557,29 +553,6 @@ function addRadiobutton(place, x, y, info, isNamed) {
   rb.helpTip = info;
 
   return rb;
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Get items array

@@ -2,20 +2,21 @@
   SplitPath.jsx for Adobe Illustrator
   Description: Script for subtract Shapes from Paths. Pathfinder in Illustrator does not do it =)
   Requirements: Adobe Illustrator CS6 and above
-  Date: November, 2022
-  Modification date: June, 2023
+  Date: July, 2018
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run
-  1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel
-  1.1 Minor improvements
-  1.1.1 Fixed "Illustrator quit unexpectedly" error
-  1.1.2 Fixed input activation in Windows OS
-  1.2 Added option to save the original filled path
+  1.3.1 Removed input activation on Windows OS below CC v26.4
   1.3 Fixed expand command when script is launched via Action
+  1.2 Added option to save the original filled path
+  1.1.2 Fixed input activation in Windows OS
+  1.1.1 Fixed "Illustrator quit unexpectedly" error
+  1.1 Minor improvements
+  1.0 Two script files merged in one. Added GUI: choose 2 methods — analogues of the Pathfinder panel
+  0.1 Initial version (old name 'pathSubtract'). Manual preparation document. 2 separate script files for run
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -25,7 +26,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -41,7 +43,7 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'SplitPath',
-        version: 'v.1.3'
+        version: 'v1.3.1'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -70,9 +72,6 @@ function main() {
       };
   checkFill(selection, info);
 
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
-
   // Create Main Window
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'column';
@@ -85,9 +84,7 @@ function main() {
       minusRadio.value = true;
   var intersectRadio = method.add('radiobutton', undefined, LANG.intersect);
 
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     minusRadio.active = true;
   }
   
@@ -197,29 +194,6 @@ function isCorrectEnv() {
   }
 
   return true;
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Intersect method

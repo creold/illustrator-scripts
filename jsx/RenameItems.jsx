@@ -4,45 +4,45 @@
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
   Date: December, 2019
-  Modification date: September, 2023
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  1.0 Initial version.
-  1.0 New option Find and replace string in all Layer names
-  1.2 Recursive search in Sublayers names
-  1.3 Renaming of the parent Symbol
-  1.4 Renaming the parent layers of the selected items
-  1.5 Added placeholders. New UI
+  1.6.8 Removed input activation on Windows OS below CC v26.4
+  1.6.7 Fixed text frame content as names for various options
+  1.6.6 Added display of text frame content as name if it is empty
+  1.6.5 Fixed placeholder insertion for CS6
+  1.6.4 Updated object name reloading
+  1.6.3 Added erase object names by empty input
+  1.6.2 Fixed placeholder buttons, input activation in Windows OS
+  1.6.1 Fixed UI for Illustrator 26.4.1 on PC
   1.6 Added renaming of the active artboard.
       Saving the name input field when switching options
-  1.6.1 Fixed UI for Illustrator 26.4.1 on PC
-  1.6.2 Fixed placeholder buttons, input activation in Windows OS
-  1.6.3 Added erase object names by empty input
-  1.6.4 Updated object name reloading
-  1.6.5 Fixed placeholder insertion for CS6
-  1.6.6 Added display of text frame content as name if it is empty
-  1.6.7 Fixed text frame content as names for various options
+  1.5 Added placeholders. New UI
+  1.4 Renaming the parent layers of the selected items
+  1.3 Renaming of the parent Symbol
+  1.2 Recursive search in Sublayers names
+  1.1 New option Find and replace string in all Layer names
+  1.0 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
-  - via Buymeacoffee https://www.buymeacoffee.com/osokin
-  - via DonatePay https://new.donatepay.ru/en/@osokin
+  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
   - via Donatty https://donatty.com/sergosokin
+  - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
-  - via QIWI https://qiwi.com/n/OSOKIN
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
   http://opensource.org/licenses/mit-license.php
 
-  Check other author's scripts: https://github.com/creold
+  Check my other scripts: https://github.com/creold
 */
 
 //@target illustrator
@@ -51,12 +51,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v.1.6.7'
+        version: 'v1.6.8'
       },
       CFG = {
         aiVers: parseFloat(app.version),
-        isMac: /mac/i.test($.os),
-        isTabRemap: false // Set to true if you work on PC and the Tab key is remapped
+        isMac: /mac/i.test($.os)
       },
       PH = {
         name: '{n}', // Put current name
@@ -78,9 +77,6 @@ function main() {
       actAb = doc.artboards[doc.artboards.getActiveArtboardIndex()],
       uniqLayers = getUniqueLayers(selection),
       isMultiSel = selection.length > 1;
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // Dialog
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -112,9 +108,7 @@ function main() {
       nameTitle.text += isMultiSel ? selection.length + ' items to' : 'to';
 
   var nameInp = grpName.add('edittext', undefined, '');
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 3);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     nameInp.active = true;
   }
 
@@ -387,29 +381,6 @@ function main() {
 
   win.center();
   win.show();
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Get unique layers for selected items

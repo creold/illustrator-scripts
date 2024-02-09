@@ -1,19 +1,22 @@
 ﻿/*
   StrokeColorFromFill.jsx for Adobe Illustrator
   Description: Sets a stroke color of an object based on an its solid or gradient fill.
-                Adds a stroke, if there is none (not available on Mac OS Illustrator older than CC 2020)
   Date: August, 2020
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.2 Added changing the color shift value with the Up/Down keys
-  0.3 Added color interpolation to get the Stroke color from the gradient
-  0.3.1 Minor improvements
-  0.3.2 Added conversion of spot tint to color
+  0.4 Changed color shift method. Spot conversion always.
+      Fixed bug with strokes on Mac OS. Added weight input for new strokes.
+      Minor improvements
   0.3.3 Fixed input activation in Windows OS
+  0.3.2 Added conversion of spot tint to color
+  0.3.1 Minor improvements
+  0.3 Added color interpolation to get the Stroke color from the gradient
+  0.2 Added changing the color shift value with the Up/Down keys
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -23,8 +26,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, 2022 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -35,376 +38,343 @@
 
 //@target illustrator
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
-$.localize = true; // Enabling automatic localization
 
 function main() {
   var SCRIPT = {
         name: 'Stroke Color From Fill',
-        version: 'v.0.3.3'
+        version: 'v0.4'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
-        isRgb: (activeDocument.documentColorSpace === DocumentColorSpace.RGB) ? true : false,
+        strokeUnits: getUnits('strokeUnits'),
         uiOpacity: .97, // UI window opacity. Range 0-1
-        spotConvert: false,
-        preview: true,
-        addStroke: true,
-        shift: -30 // Default color shift value
-      },
-      LANG = {
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errSel: { en: 'Error\nPlease select atleast one object',
-                  ru: 'Ошибка\nВыделите хотя бы 1 объект' },
-        errFill: { en: 'Attention\nThe script skips Paths & Compound Paths ' +
-                        'with patterns or empty fills. Such objects:',
-                  ru: 'Внимание\nСкрипт пропускает контуры и составные контуры ' +
-                        'с паттернами или без заливки. Таких объектов:' },
-        shift: { en: 'Color Shift', ru: 'Смещение цвета' },
-        lighter: { en: 'lighter', ru: 'светлее' },
-        darker: { en: 'darker', ru: 'темнее' },
-        stroke: { en: 'If there is no stroke, add it', ru: 'Если нет обводки, то добавить' },
-        spot: { en: 'Convert Spot colors to ', ru: 'Перевести Spot цвета в ' },
-        cancel: { en: 'Cancel', ru: 'Отмена' },
-        ok: { en: 'Ok', ru: 'Готово' },
-        preview: { en: 'Preview', ru: 'Предпросмотр' }
+        preview: false,
+        addStroke: false,
+        max: 100, // Color shift range -100...100
+        weight: 1, // Default new strokes weight
+        maxStroke: 1000, // Maximum system value, pt
+        minStroke: 0.01, // Minimum system value, pt
+        shift: -30, // Default color shift value
+        note: '%fromfill'
       };
     
-  if (!documents.length) {
-    alert(LANG.errDoc);
-    return;
+  if (!isCorrectEnv('selection')) return;
+
+  var doc = app.activeDocument,
+      docSel = app.selection,
+      selPaths = getPaths(docSel),
+      hasStroke = hasStrokedPath(selPaths),
+      isUndo = false; // For preview
+
+  // Scale factor for Large Canvas mode
+  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
+  CFG.isRgb = /rgb/i.test(doc.documentColorSpace);
+  CFG.maxStroke = 1 * convertUnits(1000, 'pt', CFG.strokeUnits).toFixed(3);
+
+  var cKeys = CFG.isRgb ? 
+  ['red', 'green', 'blue'] : 
+  ['cyan', 'magenta', 'yellow', 'black'];
+
+  removeNote(docSel, CFG.note);
+
+  if (CFG.isMac) {
+    app.selection = null;
+    app.redraw();
   }
-
-  if (!selection.length || selection.typename === 'TextRange') {
-    alert(LANG.errSel);
-    return;
-  }
-
-  // Setup initial data
-  var doc = activeDocument,
-      selPaths = [],
-      isUndo = false,
-      maxVal = 0, // Max color value in the channel
-      cKeys = [], // RGB or CMYK names
-      tempPath; // For fix Preview bug
-
-  var badFills = getPaths(doc.selection, selPaths),
-      hasStroke = hasStrokedPath(selPaths);
-
-  if (CFG.isRgb) {
-    maxVal = 255;
-    cKeys = ['red', 'green', 'blue'];
-  } else {
-    maxVal = 100;
-    cKeys = ['cyan', 'magenta', 'yellow', 'black'];
-  }
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // DIALOG
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
-      dialog.opacity = CFG.uiOpacity;
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = ['fill', 'center'];
+      win.opacity = CFG.uiOpacity;
 
-  // Value fields
-  var shiftPanel = dialog.add('panel', undefined, LANG.shift);
-      shiftPanel.orientation = 'row';
-      shiftPanel.alignChildren = ['left', 'center'];
-  var colorShift = shiftPanel.add('edittext', [0, 0, 80, 30], CFG.shift);
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
-    colorShift.active = true;
+  // Brightness
+  var shiftPnl = win.add('panel', undefined, 'Shift Brightness');
+      shiftPnl.orientation = 'row';
+      shiftPnl.alignChildren = ['left', 'center'];
+      shiftPnl.margins = [10, 15, 10, 8];
+
+  shiftPnl.add('statictext', undefined, -CFG.max);
+
+  var shiftSlider = shiftPnl.add('slider', undefined, CFG.shift, -CFG.max, CFG.max);
+      shiftSlider.preferredSize.width = 120;
+
+  shiftPnl.add('statictext', undefined, CFG.max);
+
+  var shiftInp = shiftPnl.add('edittext', undefined, CFG.shift);
+      shiftInp.characters = 5;
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
+    shiftInp.active = true;
   }
 
-  var info = shiftPanel.add('group');
-      info.orientation = 'column';
-  var lighter = info.add('statictext', undefined, '> 0 : ' + LANG.lighter);
-  var darker = info.add('statictext', undefined, '< 0 : ' + LANG.darker);
+  // Stroke
+  var strokeGrp = win.add('group');
+      strokeGrp.alignChildren = ['left', 'center'];
 
-  var isSpotConvert = dialog.add('checkbox', undefined, LANG.spot + (CFG.isRgb ? 'RGB' : 'CMYK'));
-      isSpotConvert.value = CFG.spotConvert;
+  var isAddStroke = strokeGrp.add('checkbox', undefined, "Add stroke if doesn't exist");
+      isAddStroke.value = CFG.addStroke;
 
-  // AI older 2020 on Mac OS has bug with add stroke
-  if (!CFG.isMac || (CFG.isMac && CFG.aiVers >= 24)) {
-    var isAddStroke = dialog.add('checkbox', undefined, LANG.stroke);
-        isAddStroke.value = CFG.addStroke;
-  }
+  var weightInp = strokeGrp.add('edittext', undefined, CFG.weight);
+      weightInp.characters = 6;
+
+  strokeGrp.add('statictext', undefined, CFG.strokeUnits);
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.orientation = 'row';
       btns.alignChildren = ['fill', 'center'];
-  var cancel = btns.add('button', undefined, LANG.cancel, {name: 'cancel'});
-  var ok = btns.add('button', undefined, LANG.ok, {name: 'ok'});
 
-  var grpPreview = dialog.add('group');
-      grpPreview.orientation = 'row';
-      grpPreview.alignChildren = ['center', 'center'];
-  var isPreview = grpPreview.add('checkbox', undefined, LANG.preview);
+  var isPreview = btns.add('checkbox', undefined, 'Preview');
       isPreview.value = CFG.preview;
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 github.com/creold');
-      copyright.justify = 'center';
-      copyright.enabled = false;
+  var cancel, ok;
+  if (/mac/i.test($.os)) {
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = btns.add('button', undefined, 'OK', { name: 'ok' });
+  } else {
+    ok = btns.add('button', undefined, 'OK', { name: 'ok' });
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+  }
+  cancel.helpTip = 'Press Esc to Close';
+  ok.helpTip = 'Press Enter to Run';
 
-  // Begin event listener for isPreview
-  if (isPreview.value) previewStart();
-  colorShift.onChanging = isSpotConvert.onClick = isPreview.onClick = previewStart;
-  if (isExists(isAddStroke)) isAddStroke.onClick = previewStart;
-  // End event listener for isPreview
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+      copyright.justify = 'center';
+
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold');
+  });
+
+  // Run preview
+  if (isPreview.value) preview();
+  isPreview.onClick = isAddStroke.onClick = shiftSlider.onChange = preview;
+  
+  shiftSlider.onChanging = function () { 
+    shiftInp.text = parseInt(this.value);
+  }
+
+  shiftInp.onChange = function () {
+    var shiftVal = strToNum(this.text, 0);
+    this.text = clamp(shiftVal, -CFG.max, CFG.max);
+    shiftSlider.value = parseFloat(this.text);
+    preview();
+  }
+
+  weightInp.onChange = function () {
+    var weightVal = strToNum(this.text, CFG.weight);
+    this.text = clamp(weightVal, CFG.minStroke, CFG.maxStroke);
+    preview();
+  }
 
   // Use Up / Down arrow keys (+ Shift) for change color shift
-  shiftInputNumValue(colorShift, maxVal);
+  shiftInputNumValue(shiftInp, -CFG.max, CFG.max);
+  shiftInputNumValue(weightInp, CFG.minStroke, CFG.maxStroke);
 
   ok.onClick = okClick;
 
-  function okClick() {
-    if (isPreview.value && isUndo) app.undo();
-    start();
-    isUndo = false;
-    dialog.close();
-  }
-
-  function previewStart() {
-    try {
-      if (isPreview.value && (hasStroke ||
-          (isExists(isAddStroke) && isAddStroke.value))) {
-        if (isUndo) app.undo();
-        else isUndo = true;
-        start();
-        redraw();
-      } else if (isUndo) {
-          undo();
-          redraw();
-          isUndo = false;
-        }
-    } catch (e) {}
-  }
-
-  // Start conversion
-  function start() {
-    tempPath = doc.activeLayer.pathItems.add();
-    tempPath.name = '__TempPath';
-    var shiftVal = strToNum(colorShift.text, 0);
-    for (var i = 0, pLen = selPaths.length; i < pLen; i++) {
-      try {
-        var item = selPaths[i];
-        if (isExists(isAddStroke) && isAddStroke.value && !item.stroked) {
-          item.stroked = true;
-          item.strokeWidth = 1;
-        }
-        applyColor(item, shiftVal, maxVal, cKeys, CFG.isRgb, isSpotConvert.value);
-      } catch (e) {}
+  function preview() {
+    if (isPreview.value && (hasStroke || isAddStroke.value)) {
+      start();
+      var activeLayer = doc.activeLayer,
+          dummyLayer = doc.layers.add();
+      doc.activeLayer = activeLayer;
+      dummyLayer.remove();
+      app.redraw();
+      app.undo();
+      isUndo = true;
+    } else if (isUndo) {
+      app.redraw();
+      isUndo = false;
     }
   }
 
-  cancel.onClick = dialog.close;
-
-  dialog.onClose = function () {
-    try {
-      if (isUndo) {
-        undo();
-        redraw();
-        isUndo = false;
-      }
-    } catch (e) {}
-    tempPath.remove();
-    redraw();
-    if (badFills) alert(LANG.errFill + ' ' + badFills);
-    return true;
+  function okClick() {
+    start();
+    win.close();
   }
 
-  function shiftInputNumValue(item, max) {
+  // Process
+  function start() {
+    var shiftVal = strToNum(shiftInp.text, 0);
+    var weightVal = convertUnits(strToNum(weightInp.text, CFG.weight), CFG.strokeUnits, 'pt') / CFG.sf;
+    var item, color;
+
+    for (var i = 0, len = selPaths.length; i < len; i++) {
+      item = selPaths[i];
+
+      if (isAddStroke.value && !item.stroked) {
+        item.stroked = true;
+        item.strokeWidth = weightVal;
+      }
+
+      if (!item.stroked) continue;
+
+      try {
+        color = calcColor(item.fillColor, shiftVal, cKeys, CFG.isRgb);
+      } catch (err) {
+        color = item.fillColor;
+      }
+
+      item.strokeColor = color;
+    }
+  }
+
+  cancel.onClick = win.close;
+
+  win.onClose = function () {
+    if (CFG.isMac) {
+      if (docSel.length <= 30) {
+        app.selection = docSel;
+      } else {
+        addNote(docSel, CFG.note);
+        selectByNote(CFG.note);
+      }
+    }
+    removeNote(app.selection, CFG.note);
+    isUndo = false;
+  }
+
+  /**
+   * Handle keyboard input to shift numerical values
+   * @param {Object} item - The input element to which the event listener will be attached
+   * @param {number} min - The minimum allowed value for the numerical input
+   * @param {number} max - The maximum allowed value for the numerical input
+   * @returns {void}
+   */
+  function shiftInputNumValue(item, min, max) {
     item.addEventListener('keydown', function (kd) {
-      var step;
-      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
+      var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
+      var num = Number(this.text);
       if (kd.keyName == 'Down') {
-        if (Number(this.text) >= -max + step) {
-          this.text = Number(this.text) - step;
+        if (num >= min + step) {
+          this.text = num - step;
           kd.preventDefault();
         } else {
-          this.text = -max;
+          this.text = min;
         }
+        shiftSlider.value = parseFloat(this.text);
+        preview();
       }
+
       if (kd.keyName == 'Up') {
-        if (Number(this.text) <= max - step) {
-          this.text = Number(this.text) + step;
+        if (num <= max - step) {
+          this.text = num + step;
           kd.preventDefault();
         } else {
           this.text = max;
         }
+        shiftSlider.value = parseFloat(this.text);
+        preview();
       }
-      previewStart();
     });
   }
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 }
 
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
-}
+/**
+ * Get the stroke width units from Preferences > Units > Stroke
+ * @param {string} key - The key corresponding to the preference setting.
+ * @returns {string} - The units for stroke width (e.g., 'in', 'mm', 'pt').
+ */
+function getUnits(key) {
+  var code = app.preferences.getIntegerPreference(key);
+  var units = 'pt';
 
-// Checking whether there are stroked Paths in the selection
-function hasStrokedPath(arr) {
-  for (var i = 0, aLen = arr.length; i < aLen; i++) {
-    if (arr[i].stroked) return true;
+  switch (code) {
+    case 0: units = 'in'; break;
+    case 1: units = 'mm'; break;
+    case 2: units = 'pt'; break;
+    case 3: units = 'pc'; break;
+    case 4: units = 'cm'; break;
+    // case 5: units = 'custom'; break;
+    case 6: units = 'px'; break;
+    case 7: units = 'ft'; break;
+    case 8: units = 'm'; break;
+    case 9: units = 'yd'; break;
+    case 10: units = 'ft'; break;
+    default: units = 'pt'; break;
   }
-  return false;
+
+  return units;
 }
 
-function isExists(item) {
-  return typeof item !== 'undefined';
+/**
+ * Check the script environment
+ * @param {string} List of initial data for verification
+ * @returns {boolean}  Returns true if the script environment is correct; otherwise, displays an alert and returns false
+ */
+function isCorrectEnv() {
+  var args = ['app', 'document'];
+  args.push.apply(args, arguments);
+
+  for (var i = 0; i < args.length; i++) {
+    var arg = args[i].toString().toLowerCase();
+    switch (true) {
+      case /app/g.test(arg):
+        if (!/illustrator/i.test(app.name)) {
+          alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
+          return false;
+        }
+        break;
+      case /version/g.test(arg):
+        var rqdVers = parseFloat(arg.split(':')[1]);
+        if (parseFloat(app.version) < rqdVers) {
+          alert('Wrong app version\nSorry, script only works in Illustrator v.' + rqdVers + ' and later', 'Script error');
+          return false;
+        }
+        break;
+      case /document/g.test(arg):
+        if (!documents.length) {
+          alert('No documents\nOpen a document and try again', 'Script error');
+          return false;
+        }
+        break;
+      case /selection/g.test(arg):
+        if (!selection.length || selection.typename === 'TextRange') {
+          alert('Few objects are selected\nPlease select at least one path and try again', 'Script error');
+          return false;
+        }
+        break;
+    }
+  }
+
+  return true;
 }
 
-// Get only Paths from selection
-function getPaths(item, arr) {
-  var noColorCounter = 0;
-  for (var i = 0, iLen = item.length; i < iLen; i++) {
-    var currItem = item[i];
-    try {
-      switch (currItem.typename) {
-        case 'GroupItem':
-          noColorCounter += getPaths(currItem.pageItems, arr);
-          break;
-        case 'PathItem':
-          if (currItem.filled && hasColorFill(currItem)) arr.push(currItem);
-          else noColorCounter++;
-          break;
-        case 'CompoundPathItem':
-          if (currItem.pathItems[0].filled && hasColorFill(currItem.pathItems[0])) {
-            arr.push(currItem.pathItems[0]);
-          } else { noColorCounter++; }
-          break;
-        default:
-          break;
+/**
+ * Get paths from a collection of Illustrator PageItems, recursively including paths within groups and compounds
+ * @param {(Object|Array)} coll - The collection of Illustrator PageItems
+ * @returns {Array} An array containing the paths from the provided collection
+ */
+function getPaths(coll) {
+  var result = [];
+
+  for (var i = 0, len = coll.length; i < len; i++) {
+    var item = coll[i];
+    if (/group/i.test(item.typename) && item.pageItems.length) {
+      result = [].concat(result, getPaths(item.pageItems));
+    } else if (/compound/i.test(item.typename) && item.pathItems.length) {
+      if (item.pathItems[0].filled && hasColorFill(item.pathItems[0])) {
+        result.push(item.pathItems[0]);
       }
-    } catch (e) {}
-  }
-  return noColorCounter;
-}
-
-// Apply color to stroke
-function applyColor(obj, shift, max, keys, isRgb, isSpotRplc) {
-  var _fill = obj.fillColor,
-      sColor = isRgb ? new RGBColor() : new CMYKColor(),
-      currColor,
-      delta = 0;
-
-  if (_fill.typename === 'GradientColor') _fill = interpolateColor(isRgb, _fill.gradient);
-
-  currColor = _fill;
-
-  if (_fill.typename === 'SpotColor' && isSpotRplc) {
-    if (_fill.tint === 100) {
-      currColor = _fill.spot.color; 
-    } else {
-      currColor = tint2process(_fill, isRgb);
-    }
-  }
-
-  // For Grayscale mode color is set individually
-  if (currColor.typename === 'GrayColor') {
-    sColor = new GrayColor();
-    var grayColor = Math.round(currColor.gray),
-        grayDelta = grayColor - shift;
-
-    if (grayDelta > 100) sColor.gray = 100;
-    else if (grayDelta < 0) sColor.gray = 0;
-    else sColor.gray = grayDelta;
-  }
-
-  // For Spot or Global color is set individually
-  if (currColor.typename === 'SpotColor' && !isSpotRplc) {
-    sColor = new SpotColor();
-    var spotColor = currColor.spot,
-        spotDelta = currColor.tint - shift;
-
-    sColor.spot = currColor.spot;
-
-    if (spotDelta > 100) sColor.tint = 100;
-    else if (spotDelta < 0) sColor.tint = 0;
-    else sColor.tint = spotDelta;
-  } else {
-    // Set color for RGB || CMYK channels
-    for (var j = 0, cLen = keys.length; j < cLen; j++) {
-      var keyName = keys[j],
-          currKeyColor = Math.round(currColor[keyName]);
-      delta = isRgb ? currKeyColor + shift : currKeyColor - shift;
-
-      if (delta > max) sColor[keyName] = max;
-      else if (delta < 0) sColor[keyName] = 0;
-      else sColor[keyName] = delta;
-    }
-  }
-
-  // Set a new color to stroke
-  if (obj.stroked) obj.strokeColor = sColor;
-}
-
-// Convert Spot color tint to process color
-function tint2process(fill, isRgb) {
-  var sColor = fill.spot.color,
-      value = 1 - fill.tint / 100,
-      newColor = isRgb ? new RGBColor() : new CMYKColor();
-  if (isRgb) {
-    newColor.red = sColor.red + (255 - sColor.red) * value;
-    newColor.green = sColor.green + (255 - sColor.green) * value;
-    newColor.blue = sColor.blue + (255 - sColor.blue) * value;
-  } else {
-    newColor.cyan = sColor.cyan * (1 - value);
-    newColor.magenta = sColor.magenta * (1 - value);
-    newColor.yellow = sColor.yellow * (1 - value);
-    newColor.black = sColor.black * (1 - value);
-  }
-  return newColor;
-}
-
-// Color interpolation by moody allen (moodyallen7@gmail.com)
-function interpolateColor(isRgb, color) {
-  var gStopsLength = color.gradientStops.length,
-      cSum = {}; // Sum of color channels
-  for (var j = 0; j < gStopsLength; j++) {
-    var c = color.gradientStops[j].color;
-    if (c.typename === 'SpotColor') c = c.spot.color;
-    if (c.typename === 'GrayColor') c.red = c.green = c.blue = c.black = c.gray;
-    for (var key in c) {
-      if (typeof c[key] === 'number') {
-        if (cSum[key]) cSum[key] += c[key];
-        else cSum[key] = c[key];
+    } else if (/pathitem/i.test(item.typename)) {
+      if (item.filled && hasColorFill(item)) {
+        result.push(item);
       }
     }
   }
-  var iColor = isRgb ? new RGBColor() : new CMYKColor();
-  for (var key in cSum) { iColor[key] = cSum[key] / gStopsLength; }
-  return iColor;
+
+  return result;
 }
 
+/**
+ * Check if the provided object has a color fill
+ * @param {Object} obj - The Illustrator PageItem to check for color fill
+ * @returns {boolean} Returns true if the object has a color fill; otherwise, returns false
+ */
 function hasColorFill(obj) {
   var _type = obj.fillColor.typename;
   if (_type === 'RGBColor' || _type === 'CMYKColor' || _type === 'GrayColor' ||
@@ -412,18 +382,465 @@ function hasColorFill(obj) {
   return false;
 }
 
-// Convert string to number
+/**
+ * Check whether there are stroked Paths in the array
+ * @param {Array} arr - The array of Illustrator PathItems to check
+ * @returns {boolean} Returns true if there is at least one PathItem with a stroke in the array; otherwise, returns false
+ */
+function hasStrokedPath(arr) {
+  for (var i = 0, len = arr.length; i < len; i++) {
+    if (arr[i].stroked) return true;
+  }
+  return false;
+}
+
+/**
+ * Add a specified string to the 'note' property of each item in the collection
+ * @param {(Object|Array)} coll - The collection of Illustrator PageItems
+ * @param {string} str - The string to be added to the 'note' property
+ */
+function addNote(coll, str) {
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].note += str;
+  }
+}
+
+/**
+ * Remove occurrences of a specified string from the 'note' property of each item in the collection
+ * @param {(Object|Array)} coll - The collection of Illustrator PageItems
+ * @param {string} str - The string to be removed from the 'note' property
+ */
+function removeNote(coll, str) {
+  var regex = new RegExp(str, 'gi');
+  for (var i = 0; i < coll.length; i++) {
+    coll[i].note = coll[i].note.replace(regex, '');
+  }
+}
+
+/**
+ * Calculate a color for applying to a stroke
+ * @param {Object} color - The original color to be modified
+ * @param {number} value - The shift brightness value used for calculating the modified color
+ * @param {Array} keys - An array of color property keys to be modified
+ * @param {boolean} isRgb - Indicates whether the color type is RGB (true) or CMYK (false)
+ * @returns {Object} Returns the calculated color for applying to the stroke
+ */
+function calcColor(color, value, keys, isRgb) {
+  var _stroke, currColor = color;
+
+  // Process gradient
+  if (currColor.typename === 'GradientColor') {
+    currColor = averageGradient(currColor.gradient, isRgb);
+  }
+
+  if (value === 0 || isNaN(value)) {
+    return currColor;
+  }
+
+  // Process Spot
+  if (currColor.typename === 'SpotColor') {
+    currColor = getSpotTint(currColor, isRgb);
+  }
+
+  // Process Grayscale
+  if (currColor.typename === 'GrayColor') {
+    _stroke = new GrayColor();
+    var grayVal = currColor.gray;
+    var grayDelta = clamp(grayVal - value, 0, 100);
+    _stroke.gray = grayDelta;
+    return _stroke;
+  }
+
+  // Process other color
+  var rawColor = [];
+  for (var i = 0; i < keys.length; i++) {
+    rawColor.push(Math.round(currColor[keys[i]]));
+  }
+
+  if (!isRgb) rawColor = cmykToRgb(rawColor);
+
+  // Change lightness
+  var hsl = rgbToHsl(rawColor);
+  var modifiedHsl = lightenDarkenHSLColor(hsl, value);
+  rawColor = hslToRgb(modifiedHsl);
+
+  if (!isRgb) rawColor = rgbToCmyk(rawColor);
+
+  // Create stroke color
+  _stroke = isRgb ? new RGBColor() : new CMYKColor()
+  for (var j = 0; j < keys.length; j++) {
+    _stroke[keys[j]] = Math.round(rawColor[j]);
+  }
+
+  return _stroke;
+}
+
+/**
+ * Calculate the average color from a gradient
+ * @param {Object} gradient - The gradient from which to calculate the average color
+ * @param {boolean} isRgb - Indicates whether the color type is RGB (true) or CMYK (false)
+ * @returns {Object} Returns the averaged color from the gradient
+ */
+function averageGradient(gradient, isRgb) {
+  var length = gradient.gradientStops.length,
+      total = {}; // Sum of color channels
+
+  for (var i = 0; i < length; i++) {
+    var stopColor = gradient.gradientStops[i].color;
+
+    if (stopColor.typename === 'SpotColor') {
+      stopColor = stopColor.spot.color;
+    } else if (stopColor.typename === 'GrayColor') {
+      stopColor.red = stopColor.green = stopColor.blue = stopColor.black = stopColor.gray;
+    }
+
+    for (var key in stopColor) {
+      if (typeof stopColor[key] === 'number') {
+        total[key] = (total[key] || 0) + stopColor[key];
+      }
+    }
+  }
+
+  var averagedColor = isRgb ? new RGBColor() : new CMYKColor();
+
+  for (var key in total) {
+    averagedColor[key] = total[key] / length;
+  }
+
+  return averagedColor;
+}
+
+/**
+ * Gets the true solid color from a SpotColor by interpolating between white and the spot color
+ * @param {Object} color - The SpotColor from which to get the spot tint
+ * @param {boolean} isRgb - Indicates whether the color type is RGB (true) or CMYK (false)
+ * @returns {Object} Returns the spot tint color
+ */
+function getSpotTint(color, isRgb) {
+  var white, tintVal = [];
+
+  if (isRgb) {
+    white = new RGBColor();
+    white.red = 255;
+    white.green = 255;
+    white.blue = 255;
+  } else {
+    white = new CMYKColor();
+  }
+
+  var t = color.tint / 100,
+      spot = color.spot.color;
+
+  for (var key in spot) {
+    if (typeof spot[key] === 'number') {
+      tintVal.push(lerp(white[key], spot[key], t));
+    }
+  }
+
+  return setColor(tintVal, isRgb);
+}
+
+/**
+ * Linear interpolation between two values
+ * @param {number} start - The starting value
+ * @param {number} end - The ending value
+ * @param {number} t - The interpolation parameter (0 to 1)
+ * @returns {number} Returns the interpolated value
+ */
+function lerp(start, end, t) {
+  return start + (end - start) * t;
+}
+
+/**
+ * Create a color from an array of values
+ * @param {Array} arr - An array of color channel values
+ * @param {boolean} isRgb - Indicates whether the color type is RGB (true) or CMYK (false)
+ * @returns {Object} Returns the created color
+ */
+function setColor(arr, isRgb) {
+  var color;
+
+  if (isRgb) {
+    color = new RGBColor();
+    color.red = arr[0];
+    color.green = arr[1];
+    color.blue = arr[2];
+  } else {
+    color = new CMYKColor();
+    color.cyan = arr[0];
+    color.magenta = arr[1];
+    color.yellow = arr[2];
+    color.black = arr[3];
+  }
+
+  return color;
+}
+
+/**
+ * Convert CMYK to RGB color space
+ * @param {Array} cmyk - The input array of CMYK values
+ * @returns {Array} Array of RGB values
+ */
+function cmykToRgb(cmyk) {
+  return convertColor('CMYK', 'RGB', cmyk);
+}
+
+/**
+ * Convert RGB to CMYK color space
+ * @param {Array} rgb - The input array of RGB values
+ * @returns {Array} Array of CMYK values
+ */
+function rgbToCmyk(rgb) {
+  return convertColor('RGB', 'CMYK', rgb);
+}
+
+/**
+* Convert color via native converter
+* @param {string} src - Source color mode
+* @param {string} dest - Destination color mode
+* @param {Array} srcColor - Array of source color values
+* @returns {Array} Array of destionation color values
+*/
+function convertColor(src, dest, srcColor) {
+  return app.convertSampleColor(ImageColorSpace[src], srcColor, ImageColorSpace[dest], ColorConvertPurpose.defaultpurpose);
+}
+
+/**
+ * Convert RGB to HSL color space
+ * @param {Array} rgb - Array of RGB values
+ * @returns {Array} Array of HSL values
+ */
+function rgbToHsl(rgb) {
+  var r = rgb[0] / 255,
+      g = rgb[1] / 255,
+      b = rgb[2] / 255;
+
+  var max = Math.max(r, g, b),
+      min = Math.min(r, g, b);
+
+  var h, s, l = (max + min) / 2;
+
+  if (max == min) {
+    h = s = 0; // Achromatic
+  } else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+  }
+
+  h *= 60;
+
+  return [h, s, l];
+}
+
+/**
+ * Convert HSL to RGB color space
+ * https://github.com/gka/chroma.js/blob/master/src/io/hsl/hsl2rgb.js
+ * @param {Array} hsl - Array of HSL values
+ * @returns {Array} Array of RGB values
+ */
+function hslToRgb(hsl) {
+  var h = hsl[0] / 360,
+      s = hsl[1],
+      l = hsl[2];
+
+  if (s == 0) {
+    r = g = b = l; // Achromatic
+  } else {
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    }
+
+    var q = l < 0.5 ? (l * (1 + s)) : (l + s - l * s);
+    var p = 2 * l - q;
+
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+
+  var r = clamp(255 * r, 0, 255),
+      g = clamp(255 * g, 0, 255),
+      b = clamp(255 * b, 0, 255);
+
+  return [r, g, b];
+}
+
+/**
+ * Clamp value to the range
+ * @param {number} n - Value
+ * @param {number} min - Minimum value
+ * @param {number} max - Maximum value
+ * @returns {number} Clamped value
+ */
+function clamp(n, min, max) {
+  return Math.max(min, Math.min(max, n));
+}
+
+/**
+ * Adjust the lightness of an HSL color
+ * @param {Array} hsl - An array representing the HSL values [hue, saturation, lightness].
+ * @param {number} value - The adjustment value for lightness. Positive values lighten the color, negative values darken it
+ * @returns {Array} - The adjusted HSL values.
+ */
+function lightenDarkenHSLColor(hsl, value) {
+  if (arguments.length == 1 || value == undefined) value = 100;
+
+  var h = hsl[0],
+      s = hsl[1],
+      l = hsl[2];
+
+  l += (value < 0) ? l * (value / 100) : (1 - l) * (value / 100);
+  l = clamp(l, 0, 1);
+
+  return [h, s, l];
+}
+
+/**
+ * Converts a string to a number, handling commas and non-numeric characters
+ * @param {string} str - The string to convert to a number
+ * @param {number} def - The default value to return if the conversion fails
+ * @returns {number} Returns the numeric value of the string or the default value if the conversion fails
+ */
 function strToNum(str, def) {
   if (arguments.length == 1 || def == undefined) def = 1;
+
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
   str = str.split('.');
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
   str = str.substr(0, 1) + str.substr(1).replace(/-/g, '');
+
   if (isNaN(str) || !str.length) return parseFloat(def);
   else return parseFloat(str);
+}
+
+/**
+ * Convert a value from one set of units to another
+ * @param {string} value - The numeric value to be converted
+ * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
+ * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
+ * @returns {number} - The converted value in the specified units
+ */
+function convertUnits(value, currUnits, newUnits) {
+  var convertedVal = UnitValue(value, currUnits).as(newUnits);
+  return convertedVal;
+}
+
+/**
+ * Opens a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+ */
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
+}
+
+/**
+ * Generate an action for selecting objects based on the provided note
+ * @param {string} str - The note used for selecting objects in the generated action
+ */
+function selectByNote(str) {
+  var set = 'StrokeColorFromFill',
+      name = 'Select-objects',
+      path = Folder.myDocuments + '/Adobe Scripts/';
+
+  if (!Folder(path).exists) Folder(path).create();
+
+  var actionCode = '''/version 3
+  /name [ ''' + set.length + '''
+    ''' + ascii2Hex(set) + '''
+  ]
+  /isOpen 1
+  /actionCount 1
+  /action-1 {
+    /name [ ''' + name.length + '''
+      ''' + ascii2Hex(name) + '''
+    ]
+    /keyIndex 0
+    /colorIndex 0
+    /isOpen 1
+    /eventCount 1
+    /event-1 {
+      /useRulersIn1stQuadrant 0
+      /internalName (adobe_setSelection)
+      /localizedName [ 13
+        5365742053656c656374696f6e
+      ]
+      /isOpen 0
+      /isOn 1
+      /hasDialog 0
+      /parameterCount 3
+      /parameter-1 {
+        /key 1952807028
+        /showInPalette 4294967295
+        /type (ustring)
+        /value [ ''' + str.length + '''
+          ''' + ascii2Hex(str) + '''
+        ]
+      }
+      /parameter-2 {
+        /key 2003792484
+        /showInPalette 4294967295
+        /type (boolean)
+        /value 0
+      }
+      /parameter-3 {
+        /key 1667330917
+        /showInPalette 4294967295
+        /type (boolean)
+        /value 0
+      }
+    }
+  }''';
+
+  try { app.unloadAction(set, ''); } catch (err) {}
+  createAction(actionCode, set, path);
+  app.doScript(name, set);
+  try { app.unloadAction(set, ''); } catch (err) {}
+}
+
+/**
+ * Create an Adobe Illustrator action from the given action code
+ * @param {string} str - The action code to be used for creating the action
+ * @param {string} set - The name of the action set
+ * @param {string} path - The path where the action file will be saved
+ */
+function createAction (str, set, path) {
+  var f = new File('' + path + '/' + set + '.aia');
+  f.open('w');
+  f.write(str);
+  f.close();
+  app.loadAction(f);
+  f.remove();
+}
+
+/**
+ * Convert ASCII characters to their corresponding hexadecimal representation
+ * @param {string} hex - The ASCII string to be converted to hexadecimal.
+ * @returns {string} The hexadecimal representation of the input ASCII string.
+ */
+function ascii2Hex(hex) {
+  return hex.replace(/./g, function(a) {
+    return a.charCodeAt(0).toString(16)
+  });
 }
 
 // Run script
 try {
   main();
-} catch (e) {}
+} catch (err) {}

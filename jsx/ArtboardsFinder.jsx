@@ -2,16 +2,18 @@
   ArtboardsFinder.jsx for Adobe Illustrator
   Description: Search and navigate to artboards by name or size
   Date: December, 2022
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.1.1 Minor improvements
-  0.1.2 Fixed input activation in Windows OS
-  0.1.3 Added size correction in large canvas mode
+  0.1.5 Removed input activation on Windows OS below CC v26.4
   0.1.4 Added new units API for CC 2023 v27.1.1
+  0.1.3 Added size correction in large canvas mode
+  0.1.2 Fixed input activation in Windows OS
+  0.1.1 Minor improvements
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -21,8 +23,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), CS6, 2023 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -38,12 +40,11 @@ $.localize = true; // Enabling automatic localization
 function main() {
   var SCRIPT = {
         name: 'Artboards Finder',
-        version: 'v.0.1.4'
+        version: 'v0.1.5'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         defZoom: 0.75, // Zoom ratio in document window
         minZoom: 0.1, // Minimal zoom ratio
         width: 280, // Units: px
@@ -83,8 +84,7 @@ function main() {
 
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
+
   var resAbs = []; // Array of found artboards
 
   // Dialog
@@ -106,9 +106,7 @@ function main() {
 
   var userInp = dialog.add('edittext', undefined, LANG.input);
       userInp.preferredSize.width = CFG.width;
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 8);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     userInp.active = true;
   }
 
@@ -298,34 +296,6 @@ function addRadio(place, x, y, label) {
   rb.bounds = [x, y, x + 120, y + 20];
 
   return rb;
-}
-
-/**
- * Simulate keyboard keys on Windows OS via VBScript
- * 
- * This function is in response to a known ScriptUI bug on Windows.
- * Basically, on some Windows Ai versions, when a ScriptUI dialog is
- * presented and the active attribute is set to true on a field, Windows
- * will flash the Windows Explorer app quickly and then bring Ai back
- * in focus with the dialog front and center.
- *
- * @param {String} k - Key to simulate
- * @param {Number} n - Number of times to simulate the keypress
- */
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 /**

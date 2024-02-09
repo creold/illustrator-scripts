@@ -14,7 +14,7 @@
 ## Scripts
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `new, 10.03.2023`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `upd, 22.12.2022`
-* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `upd, 14.10.2022`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `upd, 09.02.2024`
 
 ## DrawPathBySelectedPoints
 [![Direct](https://img.shields.io/badge/Direct%20Link-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://rebrand.ly/drawbyselpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

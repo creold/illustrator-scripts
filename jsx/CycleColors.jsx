@@ -2,17 +2,18 @@
   CycleColors.jsx for Adobe Illustrator
   Description: Swap the colors of the selected objects
   Date: September, 2022
-  Modification date: June, 2023
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.2 Transfer stroke width, minor improvements
-  0.3 Added shift steps, reset button
-  0.4 Added flip button, text changed to icons
+  0.4.2 Changed function to unfocus buttons after their click
   0.4.1 Minor improvements
+  0.4 Added flip button, text changed to icons
+  0.3 Added shift steps, reset button
+  0.2 Transfer stroke width, minor improvements
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -22,8 +23,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), CS6, CC 2022 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -39,7 +40,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Cycle Colors',
-        version: 'v.0.4.1'
+        version: 'v.0.4.2'
       },
       CFG = {
         steps: 1,
@@ -145,27 +146,27 @@ function main() {
 
   fwdBtn.onClick = function () {
     swapColors(selItems, stepsInp.text, 'forward', isStroke.value, isFill.value);
-    resetBtn();
+    resetBtn(this);
   }
 
   bkwdBtn.onClick = function () {
     swapColors(selItems, stepsInp.text, 'backward', isStroke.value, isFill.value);
-    resetBtn();
+    resetBtn(this);
   }
 
   flipBtn.onClick = function () {
     swapColors(selItems, stepsInp.text, 'flip', isStroke.value, isFill.value);
-    resetBtn();
+    resetBtn(this);
   }
 
   rndBtn.onClick = function () {
     swapColors(selItems, stepsInp.text, 'randomize', isStroke.value, isFill.value);
-    resetBtn();
+    resetBtn(this);
   }
 
   reset.onClick = function () {
     restoreColors(selItems, origColors);
-    resetBtn();
+    resetBtn(this);
   }
 
   ok.onClick = function () {
@@ -185,10 +186,9 @@ function main() {
   win.show();
 
   // Reset button highlight after click
-  function resetBtn() {
-    var tmpUI = win.add('checkbox', undefined, 'checkbox');
-    tmpUI.active = true;
-    tmpUI.remove();
+  function resetBtn(btn) {
+    btn.active = true;
+    btn.active = false;
   }
 }
 

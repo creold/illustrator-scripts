@@ -1,19 +1,22 @@
 /*
   SelectPointsByType.jsx for Adobe Illustrator
   Description: Selects points on the selected paths according to their type
-  Date: September, 2022
+  Date: May, 2020
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  1.0 Initial version. Tolerance for broken points handles 0..180 degrees
-  1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
-  2.0 Added more points type. Minor improvements
-  2.1.0 Added Ortho points. Minor improvements
-  2.1.1 UI improvements
-  2.1.2 Fixed "Illustrator quit unexpectedly" error
+  2.1.4 Changed function to unfocus buttons after their click
+        Removed input activation on Windows OS below CC v26.4
   2.1.3 Fixed input activation in Windows OS
+  2.1.2 Fixed "Illustrator quit unexpectedly" error
+  2.1.1 UI improvements
+  2.1.0 Added Ortho points. Minor improvements
+  2.0 Added more points type. Minor improvements
+  1.1 Changed points type algorithm. Broken points 0..15 degrees. Corner points > 15 degrees
+  1.0 Initial version. Tolerance for broken points handles 0..180 degrees
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -23,8 +26,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -40,12 +43,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectPointsByType',
-        version: 'v.2.1.3'
+        version: 'v.2.1.4'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         minAngle: 0, // Degrees range for the Tolerance
         maxAngle: 180, // Degrees range for the Tolerance
         cosTolerance: -0.999999, // Correction of coordinate inaccuracy
@@ -86,9 +88,6 @@ function main() {
   var selPaths = [];
 
   getPaths(selection, selPaths);
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // START DIALOG
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -147,9 +146,7 @@ function main() {
   var tolValue = tolerance.add('edittext', undefined, '180');
       tolValue.characters = 4;
       tolValue.helpTip = 'Tolerance angle in degrees\nbetween handles\nfor Corner & Broken points';
-      if (winFlickerFix) {
-        if (!CFG.isTabRemap) simulateKeyPress('TAB', 7);
-      } else {
+      if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
         tolValue.active = true;
       }
 
@@ -208,12 +205,9 @@ function main() {
   for (var i = 0; i < btns.children.length; i++) {
     btns.children[i].onClick = function () {
       run();
-      // Reset button highlight
-      var temp = dialog.add('checkbox', undefined, 'checkbox');
-      temp.active = true;
-      dialog.update();
-      temp.remove();
-      dialog.update();
+      // Reset button highlight after click
+      this.active = true;
+      this.active = false;
     }
   }
 
@@ -327,34 +321,6 @@ function calcSelectedPoints(paths) {
     }
   }
   return count;
-}
-
-/**
- * Simulate keyboard keys on Windows OS via VBScript
- * 
- * This function is in response to a known ScriptUI bug on Windows.
- * Basically, on some Windows Ai versions, when a ScriptUI dialog is
- * presented and the active attribute is set to true on a field, Windows
- * will flash the Windows Explorer app quickly and then bring Ai back
- * in focus with the dialog front and center.
- *
- * @param {String} k - Key to simulate
- * @param {Number} n - Number of times to simulate the keypress
- */
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 /**

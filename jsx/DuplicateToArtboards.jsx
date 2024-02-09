@@ -2,14 +2,16 @@
   DuplicateToArtboards.jsx for Adobe Illustrator
   Description: Copy and paste selected artboard objects to the same position on specific artboards
   Date: September, 2022
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.1.1 Fixed input activation in Windows OS
+  0.1.3 Removed input activation on Windows OS below CC v26.4
   0.1.2 Fixed display of indexes when launched by action
+  0.1.1 Fixed input activation in Windows OS
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -19,8 +21,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2022 (Mac), 2022 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -36,12 +38,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Duplicate To Artboards',
-        version: 'v.0.1.2'
+        version: 'v0.1.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isPreserve: app.preferences.getBooleanPreference('layers/pastePreserve'), // Default Paste Remembers Layers
         color: [255, 0, 0], // RGB artboard index color
         tmpLyr: 'ARTBOARD_INDEX',
@@ -54,9 +55,6 @@ function main() {
 
   if (!isCorrectEnv('version:16', 'selection')) return;
   polyfills();
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // Dialog
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -74,9 +72,7 @@ function main() {
       absPnl.margins = [10, 15, 10, 10];
 
   var absInp = absPnl.add('edittext', undefined, 1);
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     absInp.active = true;
   }
 
@@ -270,29 +266,6 @@ function polyfills() {
     }
     return arr;
   };
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Output artboard indexes as text

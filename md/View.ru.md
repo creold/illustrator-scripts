@@ -12,7 +12,7 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `upd, 14.09.2022`
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `upd, 09.02.2024`
 
 ## Zoom and center
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-Zoom--and--center.jsx-FF6900.svg)](https://rebrand.ly/zoomnctr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

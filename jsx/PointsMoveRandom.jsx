@@ -1,21 +1,23 @@
 /*
   PointsMoveRandom.jsx for Adobe Illustrator
   Description: Random movement of selected points in an user range
-  Date: December, 2022
+  Date: May, 2020
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.2 Added deselect some anchors, move handles
-  0.3 Added step, saving settings. Minor improvements
-  0.3.1 Fixed 'Fixed H' and 'Fixed V' options and entering identical from / to range
-  0.4 Fixed "Illustrator quit unexpectedly" error. Updated units conversion
-  0.4.1 Fixed input activation in Windows OS
-  0.4.2 Added size correction in large canvas mode
-  0.4.3 Added new units API for CC 2023 v27.1.1
+  0.4.5 Removed input activation on Windows OS below CC v26.4
   0.4.4 Fixed step check condition
+  0.4.3 Added new units API for CC 2023 v27.1.1
+  0.4.2 Added size correction in large canvas mode
+  0.4.1 Fixed input activation in Windows OS
+  0.4 Fixed "Illustrator quit unexpectedly" error. Updated units conversion
+  0.3.1 Fixed 'Fixed H' and 'Fixed V' options and entering identical from / to range
+  0.3 Added step, saving settings. Minor improvements
+  0.2 Added deselect some anchors, move handles
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -25,8 +27,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -42,12 +44,11 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Points Move Random',
-        version: 'v.0.4.4'
+        version: 'v0.4.5'
       },
       CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         move: 1,
         chance: 50,
         step: 1.0,
@@ -93,9 +94,6 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
       tmpChance = 0,
       isRandChanged = false;
 
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
-
   var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       dialog.orientation = 'column';
       dialog.alignChildren = 'fill';
@@ -122,9 +120,7 @@ function showUI(points, SCRIPT, CFG, SETTINGS, MSG) {
 
   var hToVal = hRangeGroup.add('edittext', undefined, CFG.move);
       hToVal.characters = 5;
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 2);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     hToVal.active = true;
   }
 
@@ -457,29 +453,6 @@ function getPoints(collection) {
     }
   }
   return out;
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Check current Point is selected

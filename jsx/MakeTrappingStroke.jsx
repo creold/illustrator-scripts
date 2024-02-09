@@ -3,11 +3,13 @@
   Description: Sets the stroke color based on the fill of the object, with the Overprint Stroke attribute enabled, for prepress
   Based on StrokeColorFromFill.jsx
   Date: December, 2022
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.1 Removed input activation on Windows OS below CC v26.4
   0.1 Initial version
 
   Donate (optional):
@@ -18,8 +20,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2023 (Mac/Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -36,7 +38,7 @@ function main() {
 
   var SCRIPT = {
         name: 'Make Trapping Stroke',
-        version: 'v.0.1'
+        version: 'v0.1.1'
       },
       CFG = {
         width: 1, // Default stroke width
@@ -45,7 +47,6 @@ function main() {
         isRndCorner: true, // Force round stroke corner
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isTabRemap: false, // Set to true if you work on PC and the Tab key is remapped
         isRgb: (activeDocument.documentColorSpace === DocumentColorSpace.RGB) ? true : false,
         uiOpacity: .98, // UI window opacity. Range 0-1
         preview: false,
@@ -59,9 +60,6 @@ function main() {
 
   var badFills = getPaths(selection, paths),
       hasStroke = checkStroke(paths);
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -83,9 +81,7 @@ function main() {
       widthGrp.alignChildren = ['fill', 'center'];
   widthGrp.add('statictext', undefined, 'Weight:');
   var widthInp = widthGrp.add('edittext', [0, 0, 70, 25], CFG.width);
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     widthInp.active = true;
   }
 
@@ -298,29 +294,6 @@ function checkStroke(arr) {
     if (arr[i].stroked) return true;
   }
   return false;
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center.
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Apply color to stroke

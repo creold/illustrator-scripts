@@ -2,11 +2,13 @@
   SetPointsCoordinates.jsx for Adobe Illustrator
   Description:  Sets the path points to the entered X and Y coordinate values. Supports offset delta, similar to the Move menu
   Date: July, 2023
+  Modification date: February, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.1 Removed input activation on Windows OS below CC v26.4
   0.1 Initial version
 
   Donate (optional):
@@ -17,8 +19,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2023 (Mac/Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -40,8 +42,7 @@ function main() {
         tolerance: 0.0, // Inaccuracy of point coordinates
         units: getUnits(),
         aiVers: parseFloat(app.version),
-        isMac: /mac/i.test($.os),
-        isTabRemap: false // Set to true if you work on PC and the Tab key is remapped
+        isMac: /mac/i.test($.os)
       };
   
   if (!isCorrectEnv('selection')) return;
@@ -52,9 +53,6 @@ function main() {
   var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
       isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
   CFG.isFlipY = isRulerTopLeft && isRulerInFourthQuad;
-
-  // Disable Windows Screen Flicker Bug Fix on newer versions
-  var winFlickerFix = !CFG.isMac && CFG.aiVers < 26.4 && CFG.aiVers >= 17;
 
   var defCoordSys = app.coordinateSystem;
   var paths = getPaths(selection);
@@ -84,9 +82,7 @@ function main() {
       xGrp.add('statictext', undefined, 'X:');
   var xInp = xGrp.add('edittext', undefined, '');
       xInp.characters = 8;
-  if (winFlickerFix) {
-    if (!CFG.isTabRemap) simulateKeyPress('TAB', 1);
-  } else {
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     xInp.active = true;
   }
 
@@ -298,29 +294,6 @@ function getUnits() {
 // Convert units of measurement
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
-}
-
-// Simulate keyboard keys on Windows OS via VBScript
-// 
-// This function is in response to a known ScriptUI bug on Windows.
-// Basically, on some Windows Ai versions, when a ScriptUI dialog is
-// presented and the active attribute is set to true on a field, Windows
-// will flash the Windows Explorer app quickly and then bring Ai back
-// in focus with the dialog front and center
-function simulateKeyPress(k, n) {
-  if (!/win/i.test($.os)) return false;
-  if (!n) n = 1;
-  try {
-    var f = new File(Folder.temp + '/' + 'SimulateKeyPress.vbs');
-    var s = 'Set WshShell = WScript.CreateObject("WScript.Shell")\n';
-    while (n--) {
-      s += 'WshShell.SendKeys "{' + k.toUpperCase() + '}"\n';
-    }
-    f.open('w');
-    f.write(s);
-    f.close();
-    f.execute();
-  } catch(e) {}
 }
 
 // Get single items from selection
