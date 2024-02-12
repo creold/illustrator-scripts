@@ -8,6 +8,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.4.1 Shifting lightness to white keeps spot swatches
   0.4 Changed color shift method. Spot conversion always.
       Fixed bug with strokes on Mac OS. Added weight input for new strokes.
       Minor improvements
@@ -42,7 +43,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Stroke Color From Fill',
-        version: 'v0.4'
+        version: 'v0.4.1'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -89,8 +90,8 @@ function main() {
       win.alignChildren = ['fill', 'center'];
       win.opacity = CFG.uiOpacity;
 
-  // Brightness
-  var shiftPnl = win.add('panel', undefined, 'Shift Brightness');
+  // Lightness
+  var shiftPnl = win.add('panel', undefined, 'Shift Ligthness');
       shiftPnl.orientation = 'row';
       shiftPnl.alignChildren = ['left', 'center'];
       shiftPnl.margins = [10, 15, 10, 8];
@@ -439,7 +440,20 @@ function calcColor(color, value, keys, isRgb) {
 
   // Process Spot
   if (currColor.typename === 'SpotColor') {
-    currColor = getSpotTint(currColor, isRgb);
+    if (value < 0) {
+      currColor = getSpotTint(currColor, isRgb);
+    } else {
+      _stroke = new SpotColor();
+      _stroke.spot = currColor.spot;
+
+      var tint = currColor.tint;
+    
+      tint = tint * (1 - value / 100);
+      tint = clamp(tint, 0, 100);
+      _stroke.tint = Math.round(tint);
+
+      return _stroke;
+    }
   }
 
   // Process Grayscale
