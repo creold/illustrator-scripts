@@ -13,7 +13,7 @@
 
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `upd, 09.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `upd, 19.02.2024`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `upd, 18.09.2023`
@@ -32,9 +32,9 @@ Search for artboards by name or size and shows the selected artboards in the cen
 ## ArtboardsRemapper
 [![Direct](https://img.shields.io/badge/Direct%20Link-ArtboardsRemapper.jsx-FF6900.svg)](https://rebrand.ly/abremap) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Writes artboard names to a text file or applies from it. The script starts saving or renaming artboards from the specified index to the last artboard.
+Writes artboard names to a text file or applies from it. Actions occur in the range of specified indexes corresponding to numbers in the Artboards panel.
 
-![ArtboardsRemapper](https://i.ibb.co/XVgb9Lj/Artboards-Remapper.gif)
+![ArtboardsRemapper](https://i.ibb.co/xG8sSNr/Artboards-Remapper.gif)
 
 ## BatchRenamer
 [![Direct](https://img.shields.io/badge/Direct%20Link-BatchRenamer.jsx-FF6900.svg)](https://rebrand.ly/batchren) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

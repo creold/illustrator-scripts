@@ -13,7 +13,7 @@
 
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `upd, 09.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `upd, 19.02.2024`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `upd, 18.09.2023`
@@ -32,9 +32,9 @@
 ## ArtboardsRemapper
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ArtboardsRemapper.jsx-FF6900.svg)](https://rebrand.ly/abremap) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Сохраняет имена артбордов в текстовый файл либо переименовывает их из него. Сбор или присвоение имён артбордов начинается с указанного индекса и до последнего артборда.
+Сохраняет имена артбордов в текстовый файл либо переименовывает их из него. Операции с именами происходят в диапазоне указанных индексов, соответствующих номерам из панели Artboards.
 
-![ArtboardsRemapper](https://i.ibb.co/XVgb9Lj/Artboards-Remapper.gif)
+![ArtboardsRemapper](https://i.ibb.co/xG8sSNr/Artboards-Remapper.gif)
 
 ## BatchRenamer
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-BatchRenamer.jsx-FF6900.svg)](https://rebrand.ly/batchren) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
