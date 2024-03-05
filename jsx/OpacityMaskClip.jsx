@@ -1,16 +1,18 @@
 /*
   OpacityMaskClip.jsx for Adobe Illustrator
-  Description: The script activates the 'Clip' checkbox in Transparency > Opacity Mask
+  Description: Enable the Clip checkbox for selected objects with opacity masks in the Transparency panel
   Date: April, 2019
+  Modification date: March, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
+  Warning: Don't put this script in the action slot for a quick run. It will freeze Illustrator
 
   Release notes:
-  0.1 Initial version
-  0.2 To improve performance, the script only works with selected objects;
-      Added progress bar
+  0.3 Moves processing to a temporary layer for stability. Progress bar removed
   0.2.1 Minor improvements
+  0.2 To improve performance, the script only works with selected objects. Progress bar added
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -20,7 +22,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2021 (Mac), 2021 (Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -31,64 +33,92 @@
 */
 
 //@target illustrator
-$.localize = true; // Enabling automatic localization
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
 
 function main() {
   var SCRIPT = {
         name: 'OpacityMaskClip',
-        version: 'v.0.2.1'
+        version: 'v.0.3'
       },
       CFG = {
         aiVers: parseInt(app.version),
         actionSet: SCRIPT.name + SCRIPT.version,
         actionName: 'ActivateClip',
         actionPath: Folder.myDocuments + '/Adobe Scripts/',
-        percent: '%',
+        lay: 'Remove This Layer',
         limit: 10 // When the amount of selected items, full-screen mode is enabled
-      },
-      LANG = {
-        errDoc: { en: 'Error\nOpen a document and try again',
-                  ru: 'Ошибка\nОткройте документ и запустите скрипт' },
-        errVers: { en: 'Error\nSorry, script only works in Illustrator CS6 and later',
-                  ru: 'Ошибка\nСкрипт работает в Illustrator CS6 и выше' },
-        errSel: { en: 'Error\nPlease select at least 1 object and try again',
-                  ru: 'Ошибка\nВыберите хотя бы один объект и запустите скрипт' },
-        status: { en: 'Preparing objects', ru: 'Подготовка объектов' }
       };
 
   if (!documents.length) {
-    alert(LANG.errDoc);
+    alert('Error\nOpen a document and try again', 'Script error');
     return;
   }
 
   if (CFG.aiVers < 16) {
-    alert(LANG.errVers);
+    alert('Wrong app version\nSorry, script only works in Illustrator CS6 and later', 'Script error');
     return;
   }
 
   if (!selection.length || selection.typename === 'TextRange') {
-    alert(LANG.errSel);
+    alert('Error\nPlease select at least 1 object with opacity mask and try again', 'Script error');
     return;
   }
 
-  var doc = activeDocument,
-      userScreen = doc.views[0].screenMode,
-      selItems = [];
+  var isReady = confirm('This script requires you to select opacity masks only to enable the Clip. Have you selected them only?');
+  if (!isReady) return;
 
-  if (!Folder(CFG.actionPath).exists) Folder(CFG.actionPath).create();
+  var doc = activeDocument,
+      sel = get(app.selection),
+      userScreen = doc.views[0].screenMode;
+  
+  app.selection = [];
+  var tmpLay = doc.layers.add();
+  tmpLay.name = CFG.lay;
+
+  addClipAction(CFG.actionName, CFG.actionSet, CFG.actionPath);
+
+  if (sel.length > CFG.limit) {
+    doc.views[0].screenMode = ScreenMode.FULLSCREEN;
+  }
+
+  app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+  try {
+    enableClip(sel, tmpLay, CFG.actionName, CFG.actionSet);
+  } catch (err) {}
+  app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
+
+  app.selection = [];
+  tmpLay.remove();
+  try { 
+    app.unloadAction(CFG.actionSet, '');
+  } catch (err) {}
+  doc.views[0].screenMode = userScreen;
+}
+
+// Convert collection into standard Array
+function get(coll) {
+  var result = [];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    result.push(coll[i]);
+  }
+  return result;
+}
+
+// Load action to enable clip checkbox for opacity masks
+function addClipAction(name, set, path) {
+  if (!Folder(path).exists) Folder(path).create();
 
   // Generate action
   var actionStr =  [
       '/version 3',
-      '/name [' + CFG.actionSet.length,
-          ascii2Hex(CFG.actionSet),
+      '/name [' + set.length,
+          ascii2Hex(set),
       ']',
       '/isOpen 1',
       '/actionCount 1',
       '/action-1 {',
-          '/name [' + CFG.actionName.length,
-              ascii2Hex(CFG.actionName),
+          '/name [' + name.length,
+              ascii2Hex(name),
           ']',
           '/keyIndex 0',
           '/colorIndex 0',
@@ -113,52 +143,14 @@ function main() {
           '}',
       '}'].join('\n');
 
-  createAction(actionStr, CFG.actionSet, CFG.actionPath);
-
-  getItems(selection, selItems);
-
-  selection = null;
-
-  if (selItems.length > CFG.limit) {
-    doc.views[0].screenMode = ScreenMode.FULLSCREEN;
-  }
-
-  // Create progress bar
-  var minValue = 0,
-      maxValue = 100;
-  var win = new Window('palette', SCRIPT.name + ' ' + SCRIPT.version);
-      win.opacity = .95;
-  var progPnl = win.add('panel', undefined, LANG.status);
-      progPnl.margins = [10, 20, 10, 10];
-      win.alignChildren = ['fill','center'];
-  var progBar = progPnl.add('progressbar', [20, 15, 300, 25], minValue, maxValue);
-  var progLabel = progPnl.add('statictext', undefined, minValue + CFG.percent);
-      progLabel.preferredSize.width = 35;
-
-  win.center();
-  win.show();
-
-  for (var i = 0, sLen = selItems.length; i < sLen; i++) {
-    activateClip(selItems[i], CFG.actionName, CFG.actionSet);
-
-    // Update Progress bar
-    progBar.value = parseInt((i / sLen) * 100);
-    progLabel.text = progBar.value + CFG.percent;
-    win.update();
-  }
-
-  app.unloadAction(CFG.actionSet, '');
-  doc.views[0].screenMode = userScreen;
-
-  // The final progress bar value
-  progBar.value = maxValue;
-  progLabel.text = progBar.value + CFG.percent;
-  win.update();
-  win.close();
+  try { 
+    app.unloadAction(set, '');
+  } catch (err) {}
+  createAction(actionStr, set, path);
 }
 
-// Load Action to Adobe Illustrator
-function createAction(str, set, path) {
+// Create an Adobe Illustrator action from the given action code
+function createAction (str, set, path) {
   var f = new File('' + path + '/' + set + '.aia');
   f.open('w');
   f.write(str);
@@ -167,37 +159,47 @@ function createAction(str, set, path) {
   f.remove();
 }
 
+// Convert ASCII characters to their corresponding hexadecimal representation
 function ascii2Hex(hex) {
-  return hex.replace(/./g, function (a) { return a.charCodeAt(0).toString(16) });
+  return hex.replace(/./g, function(a) {
+    return a.charCodeAt(0).toString(16)
+  });
 }
 
-function getItems(collection, arr) {
-  for (var i = 0, len = collection.length; i < len; i++) {
-    var currItem = collection[i];
+// Enable clip for opacity masks
+function enableClip(arr, lay, name, set) {
+  var i = arr.length - 1;
+  var item, tmpItem;
+
+  while (i > -1) {
+    item = arr[i];
+
+    tmpItem = item.layer.pathItems.add();
+    tmpItem.move(item, ElementPlacement.PLACEBEFORE);
+    app.selection = [];
+
+    // Edit opacity mask in a temporary layer to avoid errors on PC
+    item.move(lay, ElementPlacement.PLACEATBEGINNING);
+    app.selection = [item];
+
+    // Clip opacity mask
     try {
-      switch (currItem.typename) {
-        case 'GroupItem':
-          arr.push(currItem);
-          getItems(currItem.pageItems, arr);
-          break;
-        default:
-          arr.push(currItem);
-          break;
-      }
-    } catch (e) {}
-  }
-}
+      app.doScript(name, set);
+    } catch (err) {}
 
-function activateClip(item, name, set) {
-  try {
-    item.selected = true;
-    app.doScript(name, set);
-    selection = null;
-    redraw();
-  } catch (e) {}
+    app.selection[0].move(tmpItem, ElementPlacement.PLACEBEFORE);
+    tmpItem.remove();
+    app.selection = [];
+
+    if (item.typename === 'GroupItem' && item.pageItems.length) {
+      enableClip(item.pageItems, lay, name, set);
+    }
+
+    i--;
+  }
 }
 
 // Run script
 try {
   main();
-} catch (e) {}
+} catch (err) {}

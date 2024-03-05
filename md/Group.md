@@ -54,7 +54,7 @@ Automatically trims all clip groups in a selection or a document using `Pathfind
 ![TrimMasks](https://i.ibb.co/prkQGyt/demo-Trim-Masks.gif)
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee], [Tinkoff], [ЮMoney], [Donatty], [DonatePay]. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/osokin
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
