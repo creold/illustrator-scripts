@@ -47,13 +47,13 @@
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
-[Buymeacoffee]: https://www.buymeacoffee.com/osokin
+[Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
-<a href="https://www.buymeacoffee.com/osokin">
+<a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
@@ -70,13 +70,14 @@
 </a>
 
 ## Платные скрипты
-* [ColorToner](https://www.buymeacoffee.com/osokin/e/184236) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
-* [GradientBlender](https://www.buymeacoffee.com/osokin/e/121327) — скрипт для создания аккуратных переходов цветов в градиентах
-* [Ai2Ae](https://www.buymeacoffee.com/osokin/e/184233) — скрипт раскладывает объекты по слоям для импорта в After Effects
-* [ArtboardsFromCSV](https://www.buymeacoffee.com/osokin/e/121326) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
-* [Duplicate Artboards Pro](https://www.buymeacoffee.com/osokin/e/184235) — скрипт создаёт заданное количество копий артбордов
-* [HighlightText](https://www.buymeacoffee.com/osokin/e/184101) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
-* [ImportImagesByName](https://www.buymeacoffee.com/osokin/e/184237) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
+* [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
+* [ColorToner](https://www.buymeacoffee.com/aiscripts/e/231463) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
+* [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — скрипт для создания аккуратных переходов цветов в градиентах
+* [Ai2Ae](https://www.buymeacoffee.com/aiscripts/e/231609) — скрипт раскладывает объекты по слоям для импорта в After Effects
+* [ArtboardsFromCSV](https://www.buymeacoffee.com/aiscripts/e/231618) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
+* [Duplicate Artboards Pro](https://www.buymeacoffee.com/aiscripts/e/231621) — скрипт создаёт заданное количество копий артбордов
+* [HighlightText](https://www.buymeacoffee.com/aiscripts/e/231626) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
+* [ImportImagesByName](https://www.buymeacoffee.com/aiscripts/e/231629) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
 
 ## Категории
 Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
@@ -147,6 +148,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `upd, 22.12.2022`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `new, 15.03.2024`
 
 ### [Layer](md/Layer.ru.md)  
 Скрипты для работы со слоями

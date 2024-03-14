@@ -23,6 +23,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `new, 15.03.2024`
 
 ## AlignToArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -133,16 +134,26 @@ The script rounds the coordinates of each selected object. The reference point g
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
+## SwapObjects
+[![Direct](https://img.shields.io/badge/Direct%20Link-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Swaps the coordinates of two selected objects by reference point and the order within the layer optionally.
+
+> **Warning**   
+> The script doesn't support opacity masks. The objects will be moved, but the masks will remain at the previous coordinates.
+
+![SwapObjects](https://i.ibb.co/L5SkN4W/Swap-Objects.gif)
+
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
-[Buymeacoffee]: https://www.buymeacoffee.com/osokin
+[Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
-<a href="https://www.buymeacoffee.com/osokin">
+<a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 

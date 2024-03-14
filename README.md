@@ -47,13 +47,13 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
-[Buymeacoffee]: https://www.buymeacoffee.com/osokin
+[Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
-<a href="https://www.buymeacoffee.com/osokin">
+<a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
@@ -70,13 +70,14 @@ Many scripts are free to download thanks to user support. Help me to develop new
 </a>
 
 ## Paid scripts
-* [ColorToner](https://www.buymeacoffee.com/osokin/e/184236) — script for generating tints, shades, and tones from base colors.
-* [GradientBlender](https://www.buymeacoffee.com/osokin/e/121327) — script to make gradients more accurate, smooth.
-* [Ai2Ae](https://www.buymeacoffee.com/osokin/e/184233) — script for prepare Adobe Illustrator Layers for import into Adobe After Effects.
-* [ArtboardsFromCSV](https://www.buymeacoffee.com/osokin/e/121326) — script for batch creation of artboards with names and dimensions defined in a CSV table.
-* [Duplicate Artboards Pro](https://www.buymeacoffee.com/osokin/e/184235) —script for copying the selected Artboard with or without his Artwork.
-* [HighlightText](https://www.buymeacoffee.com/osokin/e/184101) — script for adding highlighting strokes based on text lines.
-* [ImportImagesByName](https://www.buymeacoffee.com/osokin/e/184237) — script for imports images from the specified folder by names from the contents of the selected text objects.
+* [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) — script for toggle visibility of numbered objects in selected groups and exports document as sequence to PNGs or JPGs.
+* [ColorToner](https://www.buymeacoffee.com/aiscripts/e/231463) — script for generating tints, shades, and tones from base colors.
+* [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — script to make gradients more accurate, smooth.
+* [Ai2Ae](https://www.buymeacoffee.com/aiscripts/e/231609) — script for prepare Adobe Illustrator Layers for import into Adobe After Effects.
+* [ArtboardsFromCSV](https://www.buymeacoffee.com/aiscripts/e/231618) — script for batch creation of artboards with names and dimensions defined in a CSV table.
+* [Duplicate Artboards Pro](https://www.buymeacoffee.com/aiscripts/e/231621) —script for copying the selected Artboard with or without his Artwork.
+* [HighlightText](https://www.buymeacoffee.com/aiscripts/e/231626) — script for adding highlighting strokes based on text lines.
+* [ImportImagesByName](https://www.buymeacoffee.com/aiscripts/e/231629) — script for imports images from the specified folder by names from the contents of the selected text objects.
 
 ## Categories
 Click the category name to learn more about the scripts in the selected category.   
@@ -141,6 +142,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `new, 15.03.2024`
 
 ### [Layer](md/Layer.md)  
 

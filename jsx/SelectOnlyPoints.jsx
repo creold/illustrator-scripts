@@ -15,7 +15,7 @@
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
-  - via Buymeacoffee: https://www.buymeacoffee.com/osokin
+  - via Buymeacoffee: https://www.buymeacoffee.com/aiscripts
   - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
