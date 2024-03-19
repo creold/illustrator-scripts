@@ -23,7 +23,7 @@
 
 Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The script selects points with fractional coordinates. Useful for checking the main points of the shape, as points on line curves are difficult to fit on the grid.
 
-> **Note**   
+> [!TIP]   
 > In the `CFG` variable: `rgb`, `d`, `opa` you can set the RGB color of the markers, their diameter and opacity.
 
 ![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
@@ -33,7 +33,7 @@ Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The sc
 
 Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
 
-> **Warning**   
+> [!WARNING]   
 > Notice: on large files it works slowly, just wait.
 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)

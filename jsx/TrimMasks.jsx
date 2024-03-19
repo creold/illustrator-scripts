@@ -6,6 +6,10 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
+  *************************************************************************************************
+  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
+  *************************************************************************************************
+
   Release notes:
   0.1 Initial version.
   0.2 Added "isSaveMask" boolean flag for save the filled mask path, fixed the live text masks.

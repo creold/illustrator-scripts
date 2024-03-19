@@ -24,7 +24,7 @@
 
 Divides the bottom path at the intersections with the top paths. The paths must have a stroke. This script replaces Pathfinder → Outline, which resets the color and doesn't remove the top paths segments. Scissors tool requires precise clicking and takes time with many points. 
 
-> **Note**   
+> [!TIP]   
 > If you want to keep the top paths, change `var isRmvTop = true` to `false`. To recolor the segments in random colors, set `isRndColor = true`.
 
 ![DivideBottomPath](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
@@ -63,7 +63,7 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 
 Subtracts the top selected shape from all the shapes below it. Pathfinder panel in Adobe Illustrator does not do it. Change the value of `isRmvTop` to `false` to keep the original shape. The `isUseFS: true` speeds up processing with a large number of objects. 
 
-> **Warning**   
+> [!WARNING]   
 > Align Stroke to Inside / Outside doesn't work correctly. Apply `Object > Path > Outline Stroke` before running the script.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)

@@ -7,6 +7,10 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
+  *************************************************************************************************
+  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
+  *************************************************************************************************
+
   Release notes:
   0.4.1 Shifting lightness to white keeps spot swatches
   0.4 Changed color shift method. Spot conversion always.

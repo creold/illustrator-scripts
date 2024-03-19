@@ -23,14 +23,14 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `upd, 22.12.2022`
-* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `new, 15.03.2024`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `upd, 19.03.2024`
 
 ## AlignToArtboards
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт выравнивает выбранные объекты по их родительским артбордам или содержимое всех артбордов документа. Если объект лежит на нескольких артбордах, скрипт проверит, в какой артборд попадает центр объекта — по нему и выровняет. Если же центр объекта вне артбордов — то выровняет по первому.
 
-> **Warning**   
+> [!WARNING]   
 > Чем больше у вас артбордов с содержимым и выбранных для выравнивания объектов, тем скрипт медленнее будет работать.
 
 ![AlignToArtboards](https://i.ibb.co/XFQSmvR/Align-To-Artboards.gif)
@@ -40,10 +40,10 @@
 
 Пакетно трассирует выбранные пользователем линкованные и внедрённые изображения в документе или все изображения из папки. Штатное меню `Object → Image Trace → Make` доступно для одного выбранного изображения. Запись экшена не поможет, так как в нём не сохраняются настройки трассировки. В Adobe Bridge возможна трассировка только папки с изображениями: `Tools → Illustrator → Image Trace`. 
 
-> **Note**   
+> [!IMPORTANT]   
 > Скорость работы скрипта зависит от характеристик вашего компьютера, пресета и количества изображений.
 
-> **Warning**   
+> [!WARNING]   
 > Скрипты Adobe некорректно применяют значение Colors из пользовательских пресетов, поэтому результат трассировки может не совпасть с пресетом. Сильно заметно в CC 2023. Проголосовать за исправление на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
 
 Тонкие настройки в коде скрипта:
@@ -139,7 +139,7 @@
 
 Меняет местами два выбранных объекта по опорной точке (Reference Point). Опционально можно поменять только X или Y координату, место объектов в слоях.
 
-> **Warning**   
+> [!WARNING]   
 > Скрипт не поддерживает маски прозрачности (Opacity Mask). Объекты переместятся, но маски останутся на старых координатах
 
 ![SwapObjects](https://i.ibb.co/L5SkN4W/Swap-Objects.gif)

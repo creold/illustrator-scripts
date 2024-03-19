@@ -7,6 +7,10 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
+  *************************************************************************************************
+  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
+  *************************************************************************************************
+
   Release notes:
   0.3.1 Removed input activation on Windows OS below CC v26.4
   0.3 Added third option "Fill or Stroke"

@@ -47,7 +47,7 @@
 
 Для препресса применяет к обводке цвет на основе заливки объекта при включенном атрибуте Overprint Stroke. 
 
-> **Note**   
+> [!IMPORTANT]   
 > В Мак ОС версии Иллюстратора обводки не всегда добавляются на несколько объектов с опцией `Force add stroke`. Если столкнулись с проблемой, то добавьте вручную любую обводку объектам и потом запустите скрипт.
 
 ![MakeTrappingStroke](https://i.ibb.co/QQkJ451/Make-Trapping-Stroke.gif)
@@ -56,6 +56,9 @@
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-OpacityMaskClip.jsx-FF6900.svg)](https://rebrand.ly/opamclip) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Активирует чекбокс `Clip` в панели `Transparency > Opacity Mask` для выделенных объектов с масками прозрачности.
+
+> [!WARNING]   
+> Не добавляйте этот скрипт в панель операций (Action) для быстрого запуска. Это приведёт к зависанию Иллюстратора.
 
 ![OpacityMaskClip](https://i.ibb.co/Kbn4vqB/Opacity-Mask-Clip.gif)
 

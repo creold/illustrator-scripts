@@ -55,7 +55,7 @@ Batch renames Artboards, top-level Layers and selected objects in the document. 
 
 The Find & Replace supports [regular expression symbols](https://cheatography.com/davechild/cheat-sheets/regular-expressions/). Example: to remove numbers in names, enter `\d` in Find and keep Replace blank. To replace spaces with another character: enter `\s+` in Find and the your symbol in Replace.
 
-> **Note**   
+> [!TIP]   
 > If you want to change the number of rows, change the CFG `rows: 5` in the script file and the same value in `listHeight: 5 * 32`. In `precision: 0` sets the number of decimal places for height and width of artboards and objects.
 
 ![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)

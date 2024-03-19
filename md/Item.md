@@ -23,14 +23,14 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
-* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `new, 15.03.2024`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `upd, 19.03.2024`
 
 ## AlignToArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script aligns selected objects to their parent artboards or aligns the contents of all artboards in the document. If the object is on multiple artboards, the script checks which artboard has the center of the object and aligns to it. If the center of the object is outside the artboards, it aligns to the first artboard.
 
-> **Warning**   
+> [!WARNING]   
 > The script runs slower the more artboards you have with content and objects selected for alignment.
 
 ![AlignToArtboards](https://i.ibb.co/XFQSmvR/Align-To-Artboards.gif)
@@ -40,10 +40,10 @@ The script aligns selected objects to their parent artboards or aligns the conte
 
 Batch tracing of selected placed and embedded images in a document or all images from a user-selected folder. The native menu `Object → Image Trace → Make` is available for one selected image. Recording the action will not help, because the trace preset are not saved in it. In Adobe Bridge, only the image folder can be traced: `Tools → Illustrator → Image Trace`. 
 
-> **Note**   
+> [!IMPORTANT]   
 > The speed of the script depends on the specifications of your PC, the tracing preset and the amount of images.
 
-> **Warning**   
+> [!WARNING]   
 Adobe scripts incorrectly apply the Colors value from custom presets, so the tracing result may not match the preset. The big difference is seen in CC 2023. Vote for a fix at [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
 
 Tweaks in the script code:
@@ -139,7 +139,7 @@ The script rounds the coordinates of each selected object. The reference point g
 
 Swaps the coordinates of two selected objects by reference point and the order within the layer optionally.
 
-> **Warning**   
+> [!WARNING]   
 > The script doesn't support opacity masks. The objects will be moved, but the masks will remain at the previous coordinates.
 
 ![SwapObjects](https://i.ibb.co/L5SkN4W/Swap-Objects.gif)

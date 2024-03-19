@@ -7,6 +7,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.1 Fixed selection bug in preview mode
   0.1 Initial version
 
   Donate (optional):
@@ -33,7 +34,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Swap Objects',
-    version: 'v0.1'
+    version: 'v0.1.1'
   };
 
   var SETTINGS = {
@@ -73,7 +74,7 @@ function main() {
   var isSwapY = swapPnl.add('checkbox', undefined, 'Y-axis');
       isSwapY.value = true;
 
-  var isSwapOrder = swapPnl.add('checkbox', undefined, 'Order in Layer');
+  var isSwapOrder = swapPnl.add('checkbox', undefined, 'Order in Layers');
       isSwapOrder.value = true;
 
   var refPnl = wrapper.add('panel', undefined, 'Reference Point');
@@ -116,6 +117,11 @@ function main() {
   var dataA = getObjectData(doc.selection[0]);
   var dataB = getObjectData(doc.selection[1]);
 
+  // Fix selection bug in preview mode
+  app.executeMenuCommand('deselectall');
+  var tmpLayer = app.activeDocument.layers.add();
+  tmpLayer.name = 'Remove_Temp_Layer';
+
   // Events
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
@@ -141,9 +147,10 @@ function main() {
       isUndo = false;
     }
   }
+
   function start() {
-    app.selection = null;
     var refPoint = getReferencePoint(refHints, refPointArr);
+
     if (isSwapX.value || isSwapY.value) {
       swapPositions(dataA, dataB, isSwapX.value, isSwapY.value, geoRb.value, refPoint);
     }
@@ -168,6 +175,7 @@ function main() {
   win.onClose = function () {
     try {
       if (isUndo) app.undo();
+      doc.layers.getByName('Remove_Temp_Layer').remove();
     } catch (err) {}
     app.selection = [dataA.obj, dataB.obj];
   }
@@ -507,17 +515,13 @@ function swapPositions(dataA, dataB, isX, isY, isGeometric, ref) {
  * @param {object} objB - The second selected item whose order needs to be swapped
  */
 function swapOrderInLayer(objA, objB) {
-  var tmpA = objA.layer.pathItems.add();
-  var tmpB = objB.layer.pathItems.add();
+  var tmpObj = objA.parent.pathItems.add();
 
-  tmpA.move(objA, ElementPlacement.PLACEAFTER);
-  tmpB.move(objB, ElementPlacement.PLACEAFTER);
+  tmpObj.move(objA, ElementPlacement.PLACEBEFORE);
+  objA.move(objB, ElementPlacement.PLACEBEFORE);
+  objB.move(tmpObj, ElementPlacement.PLACEBEFORE);
 
-  objA.move(tmpB, ElementPlacement.PLACEAFTER);
-  objB.move(tmpA, ElementPlacement.PLACEAFTER);
-
-  tmpA.remove();
-  tmpB.remove();
+  tmpObj.remove();
 }
 
 /**

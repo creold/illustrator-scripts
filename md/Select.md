@@ -51,11 +51,11 @@ The SelectAllLayersAbove script selects objects in all layers above the active l
 
 The Magic Wand tool selects objects that match the color of the sample. Selecting samples with the <kbd>Shift</kbd> key will select items of different colors. The script will select items if a fill or stroke color matches the colors selected in the Swatches panel.
 
-> **Note**   
+> [!TIP]   
 > To select objects with a different spot color tint, first uncheck Illustrator: Preferences → General → Select Same Tint %.
 
-> **Warning**   
-> Do not put the script inside an action to run with hotkeys. Running SelectBySwatches through an action can cause Illustrator to freeze.
+> [!WARNING]   
+> Don't put this script in the action slot for a quick run. It will freeze Illustrator.
 
 ![SelectBySwatches](https://i.ibb.co/JR5h4pq/Select-By-Swatches.gif)
 
@@ -71,7 +71,7 @@ After using the Lasso tool <kbd>A</kbd> or Direct Selection Tool <kbd>Q</kbd>, b
 
 Selects points on the selected paths according to their type. Does the thing that even Astute Graphics plugins can't do :)   
 
-> **Note**   
+> [!TIP]   
 > Select `View → Hide Bounding Box` to see active points in real time.   
 
 <a href="https://youtu.be/pjHmBDLIWbw">

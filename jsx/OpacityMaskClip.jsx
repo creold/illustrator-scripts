@@ -6,7 +6,10 @@
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
-  Warning: Don't put this script in the action slot for a quick run. It will freeze Illustrator
+
+  *************************************************************************************************
+  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
+  *************************************************************************************************
 
   Release notes:
   0.3 Moves processing to a temporary layer for stability. Progress bar removed

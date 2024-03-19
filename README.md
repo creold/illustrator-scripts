@@ -41,7 +41,7 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
-> **Warning**   
+> [!WARNING]   
 > To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
 
 ## Donate
@@ -142,7 +142,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
-* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `new, 15.03.2024`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `upd, 19.03.2024`
 
 ### [Layer](md/Layer.md)  
 

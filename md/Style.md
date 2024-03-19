@@ -47,7 +47,7 @@ Convert selection colors to Grayscale and set identical Opacity value.
 
 Sets the stroke color based on the fill of the object, with the Overprint Stroke attribute enabled, for prepress. 
 
-> **Note**   
+> [!IMPORTANT]   
 > In the Mac OS version of Adobe Illustrator strokes are not always added to multiple objects with the `Force add stroke` option. If you have a problem on Mac, manually add any stroke to objects and then run the script.
 
 ![MakeTrappingStroke](https://i.ibb.co/QQkJ451/Make-Trapping-Stroke.gif)
@@ -56,6 +56,9 @@ Sets the stroke color based on the fill of the object, with the Overprint Stroke
 [![Direct](https://img.shields.io/badge/Direct%20Link-OpacityMaskClip.jsx-FF6900.svg)](https://rebrand.ly/opamclip) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script activates `Clip` checkbox in `Transparency > Opacity Mask`.
+
+> [!WARNING]   
+> Don't put this script in the action slot for a quick run. It will freeze Illustrator.
 
 ![OpacityMaskClip](https://i.ibb.co/Kbn4vqB/Opacity-Mask-Clip.gif)
 
