@@ -23,7 +23,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `upd, 22.12.2022`
-* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `upd, 19.03.2024`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `upd, 20.03.2024`
 
 ## AlignToArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -140,7 +140,7 @@ The script rounds the coordinates of each selected object. The reference point g
 Swaps the coordinates of two selected objects by reference point and the order within the layer optionally.
 
 > [!WARNING]   
-> The script doesn't support opacity masks. The objects will be moved, but the masks will remain at the previous coordinates.
+> The script doesn't support opacity masks. The objects will be moved, but the masks will remain at the previous coordinates. Use the [SwapObjects-OpMasksMod](https://ais.sergosokin.ru/dl/swap-objects.zip) script to swap objects with opacity masks.
 
 ![SwapObjects](https://i.ibb.co/L5SkN4W/Swap-Objects.gif)
 

@@ -117,11 +117,6 @@ function main() {
   var dataA = getObjectData(doc.selection[0]);
   var dataB = getObjectData(doc.selection[1]);
 
-  // Fix selection bug in preview mode
-  app.executeMenuCommand('deselectall');
-  var tmpLayer = app.activeDocument.layers.add();
-  tmpLayer.name = 'Remove_Temp_Layer';
-
   // Events
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
@@ -140,6 +135,7 @@ function main() {
       if (isUndo) app.undo();
       else isUndo = true;
       start();
+      app.selection = null;
       app.redraw();
     } else if (isUndo) {
       app.undo();
@@ -175,7 +171,6 @@ function main() {
   win.onClose = function () {
     try {
       if (isUndo) app.undo();
-      doc.layers.getByName('Remove_Temp_Layer').remove();
     } catch (err) {}
     app.selection = [dataA.obj, dataB.obj];
   }
