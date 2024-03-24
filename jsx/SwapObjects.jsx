@@ -6,7 +6,12 @@
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
+  *************************************************************************************************
+  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
+  *************************************************************************************************
+
   Release notes:
+  0.2 Added support Opacity Masks (without preview)
   0.1.1 Fixed selection bug in preview mode
   0.1 Initial version
 
@@ -34,7 +39,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Swap Objects',
-    version: 'v0.1.1'
+    version: 'v0.2'
   };
 
   var SETTINGS = {
@@ -102,15 +107,23 @@ function main() {
   var visRb = bndsPnl.add('radiobutton', undefined, 'Visible (stroke & effects)');
       visRb.helpTip = 'The visible bounds of object\nincluding stroke width and effects';
 
+  // Bounds
+  var opaPnl = win.add('panel', undefined, 'Opacity Masks Mode');
+      opaPnl.orientation = 'row';
+      opaPnl.alignment = 'fill';
+      opaPnl.margins = [10, 15, 10, 7];
+  var isOpaMasks = opaPnl.add('checkbox', undefined, 'Objects have opacity masks');
+
   var btns = win.add('group');
       btns.orientation = 'row';
-      btns.alignment = 'right';
+      btns.alignChildren = ['fill', 'center'];
 
   var isPreview = btns.add('checkbox', undefined, 'Preview');
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
   var ok = btns.add('button', undefined, 'OK', {name: 'ok'});
   
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+      copyright.justify  = 'center';
 
   loadSettings(SETTINGS);
 
@@ -130,8 +143,13 @@ function main() {
     refPointArr[i].onClick = preview;
   }
 
+  isOpaMasks.onClick = function () {
+    isPreview.enabled = !this.value;
+    preview();
+  }
+
   function preview() {
-    if (isPreview.value) {
+    if (isPreview.enabled && isPreview.value) {
       if (isUndo) app.undo();
       else isUndo = true;
       start();
@@ -148,7 +166,7 @@ function main() {
     var refPoint = getReferencePoint(refHints, refPointArr);
 
     if (isSwapX.value || isSwapY.value) {
-      swapPositions(dataA, dataB, isSwapX.value, isSwapY.value, geoRb.value, refPoint);
+      swapPositions(dataA, dataB, isSwapX.value, isSwapY.value, geoRb.value, refPoint, isOpaMasks.value);
     }
 
     if (isSwapOrder.value) {
@@ -442,8 +460,9 @@ function addRadio(place, x, y, val, info) {
  * @param {boolean} isY - Indicates whether the swap should happen along the Y-axis
  * @param {boolean} isGeometric - Indicates whether to use geometric bounds or visible bounds for calculations
  * @param {string} ref - The reference point for the swap, e.g., 'TOPLEFT', 'CENTER', etc
+ * @param {boolean} isUseAction - Indicates whether the swap should happen using the generated action
  */
-function swapPositions(dataA, dataB, isX, isY, isGeometric, ref) {
+function swapPositions(dataA, dataB, isX, isY, isGeometric, ref, isUseAction) {
   var deltaX = isX ? (isGeometric ? dataB.gBounds[0] - dataA.gBounds[0] : dataB.vBounds[0] - dataA.vBounds[0]) : 0;
   var deltaY = isY ? (isGeometric ? dataB.gBounds[1] - dataA.gBounds[1] : dataB.vBounds[1] - dataA.vBounds[1]) : 0;
 
@@ -497,10 +516,202 @@ function swapPositions(dataA, dataB, isX, isY, isGeometric, ref) {
       break;
   }
 
+  if (!isUseAction) {
+    try {
+      dataA.obj.translate(translateX, translateY);
+      dataB.obj.translate(-translateX, -translateY); // Reverse translation for second object
+    } catch (err) {}
+  } else {
+    var moveAct = { 
+          set: 'SwapObjects',
+          nameA: 'MoveFirst',
+          nameB: 'MoveSecond',
+          path: Folder.myDocuments + '/Adobe Scripts/'
+        };
+
+    try {
+      app.unloadAction(moveAct.set, '');
+    } catch (err) {}
+    
+    var doc = app.activeDocument;
+    // Scale factor for Large Canvas mode
+    var sf = doc.scaleFactor ? doc.scaleFactor : 1;
+    var tmpLay = doc.layers.add();
+
+    addMoveAct(moveAct, translateX * sf, translateY * sf);
+    app.executeMenuCommand('deselectall');
+
+    try {
+      dataA.obj = moveObjectViaAction(dataA.obj, tmpLay, moveAct.nameA, moveAct.set);
+      dataB.obj = moveObjectViaAction(dataB.obj, tmpLay, moveAct.nameB, moveAct.set);
+
+      tmpLay.remove();
+      dataA.obj.selected = true;
+      dataB.obj.selected = true;
+    } catch (err) {}
+
+    try {
+      app.unloadAction(moveAct.set, '');
+    } catch (err) {}
+  }
+}
+
+
+/**
+ * Generate a move action for Adobe Illustrator
+ * Illustrator forcibly converts the script value inside the action to the document units in large canvas mode
+ *
+ * @param {Object} action - The move action object containing nameA, nameB, set, and file path properties
+ * @param {number} x - The X translation value
+ * @param {number} y - The Y translation value
+ */
+function addMoveAct(action, x, y) {
+  var aX = parseFloat(x) + (/\./.test('' + x) ? '' : '.0');
+  var aY = parseFloat(y) + (/\./.test('' + y) ? '' : '.0');
+  var bX = parseFloat(-x) + (/\./.test('' + x) ? '' : '.0');
+  var bY = parseFloat(-y) + (/\./.test('' + y) ? '' : '.0');
+
+  var str = [
+      '/version 3',
+      '/name [' + action.set.length + ' ' + ascii2Hex(action.set) + ']',
+      '/isOpen 1',
+      '/actionCount 2',
+      '/action-1 {',
+      '/name [' + action.nameA.length + ' ' + ascii2Hex(action.nameA) + ']',
+      '  /keyIndex 0',
+      '  /colorIndex 0',
+      '  /isOpen 1',
+      '  /eventCount 1',
+      '  /event-1 {',
+      '    /useRulersIn1stQuadrant 0',
+      '    /internalName (adobe_move)',
+      '    /localizedName [ 4',
+      '      4d6f7665',
+      '    ]',
+      '    /isOpen 1',
+      '    /isOn 1',
+      '    /hasDialog 1',
+      '    /showDialog 0',
+      '    /parameterCount 3',
+      '    /parameter-1 {',
+      '      /key 1752136302',
+      '      /showInPalette 4294967295',
+      '      /type (unit real)',
+      '      /value ' + aX,
+      '      /unit 592476268',
+      '    }',
+      '    /parameter-2 {',
+      '      /key 1987339116',
+      '      /showInPalette 4294967295',
+      '      /type (unit real)',
+      '      /value ' + aY,
+      '      /unit 592476268',
+      '    }',
+      '    /parameter-3 {',
+      '      /key 1668247673',
+      '      /showInPalette 4294967295',
+      '      /type (boolean)',
+      '      /value 0',
+      '    }',
+      '  }',
+      '}',
+      '/action-2 {',
+      '/name [' + action.nameB.length + ' ' + ascii2Hex(action.nameB) + ']',
+      '  /keyIndex 0',
+      '  /colorIndex 0',
+      '  /isOpen 1',
+      '  /eventCount 1',
+      '  /event-1 {',
+      '    /useRulersIn1stQuadrant 0',
+      '    /internalName (adobe_move)',
+      '    /localizedName [ 4',
+      '      4d6f7665',
+      '    ]',
+      '    /isOpen 1',
+      '    /isOn 1',
+      '    /hasDialog 1',
+      '    /showDialog 0',
+      '    /parameterCount 3',
+      '    /parameter-1 {',
+      '      /key 1752136302',
+      '      /showInPalette 4294967295',
+      '      /type (unit real)',
+      '      /value ' + bX,
+      '      /unit 592476268',
+      '    }',
+      '    /parameter-2 {',
+      '      /key 1987339116',
+      '      /showInPalette 4294967295',
+      '      /type (unit real)',
+      '      /value ' + bY,
+      '      /unit 592476268',
+      '    }',
+      '    /parameter-3 {',
+      '      /key 1668247673',
+      '      /showInPalette 4294967295',
+      '      /type (boolean)',
+      '      /value 0',
+      '    }',
+      '  }',
+      '}'
+      ].join('');
+  createAction(str, action.set, action.path);
+}
+
+/**
+ * Create an Adobe Illustrator action from the given action code
+ *
+ * @param {string} str - The action code to be used for creating the action
+ * @param {string} set - The name of the action set
+ * @param {string} path - The path where the action file will be saved
+ */
+function createAction(str, set, path) {
+  if (!Folder(path).exists) Folder(path).create();
+  var f = new File('' + path + '/' + set + '.aia');
+  f.open('w');
+  f.write(str);
+  f.close();
+  app.loadAction(f);
+  f.remove();
+}
+
+/**
+ * Convert ASCII characters to their corresponding hexadecimal representation
+ *
+ * @param {string} hex - The ASCII string to be converted to hexadecimal
+ * @returns {string} The hexadecimal representation of the input ASCII string
+ */
+function ascii2Hex(hex) {
+  return hex.replace(/./g, function(a) {
+    return a.charCodeAt(0).toString(16)
+  });
+}
+
+/**
+ * Move an object using a specified action
+ *
+ * @param {Object} obj - The object to move
+ * @param {Object} target - The target object to move the object relative to
+ * @param {string} name - The name of the action to execute
+ * @param {string} set - The name of the action set to execute
+ * @returns {Object} The moved object
+ */
+function moveObjectViaAction(obj, target, name, set) {
+  var tmpObj = obj.parent.pathItems.add();
+  tmpObj.move(obj, ElementPlacement.PLACEBEFORE);
+  obj.move(target, ElementPlacement.PLACEATBEGINNING);
+
+  obj.selected = true;
   try {
-    dataA.obj.translate(translateX, translateY);
-    dataB.obj.translate(-translateX, -translateY); // Reverse translation for second object
+    app.doScript(name, set);
   } catch (err) {}
+
+  obj = app.selection[0];
+  obj.move(tmpObj, ElementPlacement.PLACEBEFORE);
+  tmpObj.move(target, ElementPlacement.PLACEATBEGINNING);
+  app.executeMenuCommand('deselectall');
+
+  return obj;
 }
 
 /**

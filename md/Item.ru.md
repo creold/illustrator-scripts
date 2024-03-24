@@ -23,7 +23,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 14.10.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `upd, 22.12.2022`
-* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `upd, 20.03.2024`
+* [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `upd, 24.03.2024`
 
 ## AlignToArtboards
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -140,7 +140,7 @@
 Меняет местами два выбранных объекта по опорной точке (Reference Point). Опционально можно поменять только X или Y координату, место объектов в слоях.
 
 > [!WARNING]   
-> Скрипт не поддерживает маски прозрачности (Opacity Mask). Объекты переместятся, но маски останутся на старых координатах. Используйте версию [SwapObjects-OpMasksMod](https://ais.sergosokin.ru/dl/swap-objects.zip) для перемещения объектов с масками прозрачности.
+> Не добавляйте этот скрипт в панель операций (Action) для быстрого запуска. Это приведёт к зависанию Иллюстратора.
 
 ![SwapObjects](https://i.ibb.co/L5SkN4W/Swap-Objects.gif)
 
