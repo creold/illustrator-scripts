@@ -87,6 +87,9 @@ A set of two scripts that change the weight of the strokes of the selected paths
 * +/- 0.5 if < 5
 * +/- 1 if >= 5
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/37981045-change-a-group-of-vector-s-stroke-size-relative-to) to add this feature to Illustrator.
+
 ![StrokesWeight](https://i.ibb.co/kKXhnxN/Strokes-Weight.gif)
 
 ## Donate

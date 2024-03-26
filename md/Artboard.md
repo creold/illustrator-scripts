@@ -27,6 +27,9 @@
 
 Search for artboards by name or size and shows the selected artboards in the center of the window. Width and height in document units. Landscape, portrait, square artboards are displayed in descending order of size when searching by orientation.
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/32321188-artboard-search-function) to add this feature to Illustrator.
+
 ![ArtboardsFinder](https://i.ibb.co/VJXKjWQ/artboards-finder.gif)
 
 ## ArtboardsRemapper
@@ -56,7 +59,10 @@ Batch renames Artboards, top-level Layers and selected objects in the document. 
 The Find & Replace supports [regular expression symbols](https://cheatography.com/davechild/cheat-sheets/regular-expressions/). Example: to remove numbers in names, enter `\d` in Find and keep Replace blank. To replace spaces with another character: enter `\s+` in Find and the your symbol in Replace.
 
 > [!TIP]   
-> If you want to change the number of rows, change the CFG `rows: 5` in the script file and the same value in `listHeight: 5 * 32`. In `precision: 0` sets the number of decimal places for height and width of artboards and objects.
+> If you want to change the number of rows, change the CFG `rows: 5` in the script file and the same value in `listHeight: 5 * 32`. In `precision: 0` sets the number of decimal places for height and width of artboards and objects.   
+
+> [!NOTE]   
+> Vote on [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43575576-bulk-re-naming-of-layers), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39925396-find-and-replace-text-in-object-name-in-the-layers), [Uservoice #3](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35567803-advanced-rename-tools-for-artboards-with-find-re), [Uservoice #4](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/34698628-can-we-rename-multiple-layers-in-one-go) to add this feature to Illustrator.
 
 ![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)
 
@@ -96,6 +102,9 @@ The script renames each Artboard by the custom name of Layer with the first visi
 [![Direct](https://img.shields.io/badge/Direct%20Link-RenameArtboardAsSize.jsx-FF6900.svg)](https://rebrand.ly/renabsassize) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Renames artboards according to their size in document units.
+
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/41686762-artboard-auto-naming-preferences-one-click-artboa) to add this feature to Illustrator.
 
 ![RenameArtboardAsSize](https://i.ibb.co/GR488JH/Rename-Artboard-As-Size.gif)
 

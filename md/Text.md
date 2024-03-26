@@ -13,13 +13,16 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `upd, 09.02.2024`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 09.02.2024`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 26.03.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `new, 29.12.2022`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://rebrand.ly/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Allows point texts to be vertically aligned based on the baseline of its font, not its bounds. The native Align panel is tied either to the bounding box of the point text or to the curves via Align to Glyph Bounds, which does not give a consistent result for mixed fonts and sizes.
+
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43970070-align-text-elements-on-their-baseline) to add this feature to Illustrator.
 
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
 

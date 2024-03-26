@@ -87,6 +87,9 @@
 * +/- 0.5, если < 5
 * +/- 1, если >= 5
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/37981045-change-a-group-of-vector-s-stroke-size-relative-to) за внедрение этой функции в Иллюстратор.
+
 ![StrokesWeight](https://i.ibb.co/kKXhnxN/Strokes-Weight.gif)
 
 ## Поддержка

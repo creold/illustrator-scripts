@@ -33,7 +33,10 @@ Renames layers by name, if any, or by the contents of the text object in the lay
 ## SortLayerItems
 [![Direct](https://img.shields.io/badge/Direct%20Link-SortLayerItems.jsx-FF6900.svg)](https://rebrand.ly/sortlyrit) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Sorts objects alphabetically inside layers. The sublayers are sorted with the objects and when you select `Include all sublayers` their contents too. The layer count is automatically updated. Objects without a name (in pointy brackets `<Group>`, `<Ellipse>`, etc.) are placed top / bottom.
+Sorts objects alphabetically inside layers. The sublayers are sorted with the objects and when you select `Include all sublayers` their contents too. The layer count is automatically updated. Objects without a name (in pointy brackets `<Group>`, `<Ellipse>`, etc.) are placed top / bottom.   
+
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657/suggestions/48181298) to add a sort feature to Illustrator.
 
 ![SortLayerItems](https://i.ibb.co/R9wQS7t/Sort-Layer-Items.gif)
 

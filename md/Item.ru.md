@@ -40,16 +40,19 @@
 
 Пакетно трассирует выбранные пользователем линкованные и внедрённые изображения в документе или все изображения из папки. Штатное меню `Object → Image Trace → Make` доступно для одного выбранного изображения. Запись экшена не поможет, так как в нём не сохраняются настройки трассировки. В Adobe Bridge возможна трассировка только папки с изображениями: `Tools → Illustrator → Image Trace`. 
 
-> [!IMPORTANT]   
-> Скорость работы скрипта зависит от характеристик вашего компьютера, пресета и количества изображений.
-
-> [!WARNING]   
-> Скрипты Adobe некорректно применяют значение Colors из пользовательских пресетов, поэтому результат трассировки может не совпасть с пресетом. Сильно заметно в CC 2023. Проголосовать за исправление на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
-
 Тонкие настройки в коде скрипта:
 
 * `CFG.extList` — список обрабатываемых форматов из папки. Можно добавить свои или удалить некоторые для пропуска скриптом;
 * `CFG.isReverse` — развернуть список пресетов (true), пользовательские будут наверху.
+
+> [!IMPORTANT]   
+> Скорость работы скрипта зависит от характеристик вашего компьютера, пресета и количества изображений.   
+
+> [!WARNING]   
+> Скрипты Adobe некорректно применяют значение Colors из пользовательских пресетов, поэтому результат трассировки может не совпасть с пресетом. Сильно заметно в CC 2023. Проголосовать за исправление на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).   
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657/suggestions/47385983) за внедрение этой функции в Иллюстратор.   
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
 
@@ -121,6 +124,9 @@
 
 В Illustrator есть панель `Transform`, но в ней нельзя трансформировать каждый выделенный объект до заданной величины. При стандартном способе периодически появляются дробные значения в размере. Скрипт трансформирует выделенные объекты со 100% точностью, в зависимости от стороны: ширины, высоты или бОльшей стороны. Все настройки переключаются горячими клавишами <kbd>Q</kbd> + подчеркнутая буква или цифра. Вместо <kbd>Q</kbd> можно задать свою клавишу-модификатор в коде `modKey: 'Q'`.
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/33252640-an-ability-to-resize-all-selected-objects-to-a-spe), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35740054-match-width-or-height-to-key-object) за внедрение этой функции в Иллюстратор.
+
 <a href="https://youtu.be/PN3dAf6rac8">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">
 </a>
@@ -131,6 +137,9 @@
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RoundCoordinates.jsx-FF6900.svg)](https://rebrand.ly/rndcoord) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Округляет координаты каждого выделенного объекта. Ориентиром для выравнивания будет выбранная контрольная точка из панели `Transform`. Скрипт учитывает единицы измерения документа и толщину обводки, если включено `Preferences → Use Preview Bounds`. В файле скрипта можно изменить шаг округления координат CFG `step: 1`. Если шаг 0, то скрипт выровняет по сетке документа из `Preferences → Guides & Grid`.
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-feature-requests/suggestions/34970752-make-anchor-points-pixel-perfect) за внедрение этой функции в Иллюстратор.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 

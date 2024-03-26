@@ -30,6 +30,9 @@
 Скрипт разгруппировывает объекты и удаляет обтравочные маски в документе.   
 *Сделан на основе скрипта автора Jiwoong Song и модификации от [John Wundes](http://www.wundes.com/).*
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39484654-create-an-ungroup-all-feature-on-layer-s) за внедрение этой функции в Иллюстратор.
+
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
 
 ## MoveToGroup

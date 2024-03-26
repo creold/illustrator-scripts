@@ -184,7 +184,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Text](md/Text.md)  
 
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `upd, 09.02.2024`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 09.02.2024`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 26.03.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `new, 29.12.2022`
 
 ### [Utility](md/Utility.md)  

@@ -45,6 +45,9 @@
 > [!WARNING]   
 > К сожалению, скопированные градиенты связаны друг с другом в Иллюстраторе. Вручную удалите связь, развернув градиент дважды кнопкой `Reverse Gradient`. Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) за исправление этого.   
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40882126-simulate-color-blindness-for-accessibility) за внедрение этой функции в Иллюстратор.
+
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
 
 ## ColorGroupReplacer

@@ -64,6 +64,9 @@
 
 При использовании инструментов Lasso Tool <kbd>A</kbd> или Direct Selection Tool <kbd>Q</kbd> захватываются не только точки, но и сегменты путей. Скрипт оставляет активными только сами точки.
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40280419-direct-selection-tool-to-select-only-points), [Uservoice #2](https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/35846947-clipping-mask-bug-direct-selection-tool-and-smar) за внедрение этой функции в Иллюстратор.   
+
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif)
 
 ## SelectPointsByType

@@ -13,13 +13,16 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `upd, 09.02.2024`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 09.02.2024`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 26.03.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `new, 29.12.2022`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignTextBaseline.jsx-FF6900.svg)](https://rebrand.ly/algntxtbl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выравнивает текстовые слои по вертикали по базовым линиям. Распределение через стандартную панель Align привязано либо к габаритным рамкам строчных текстов, либо к выносным элементам через Align to Glyph Bounds, что не даёт ровного результата на смешанных шрифтах.
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43970070-align-text-elements-on-their-baseline) за внедрение этой функции в Иллюстратор.
 
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
 

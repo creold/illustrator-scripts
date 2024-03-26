@@ -27,6 +27,9 @@
 
 Ищет артборды в документе по имени или размерам и масштабирует выбранные по центру окна. Размеры отображаются в единицах документа. Альбомные, книжные, квадратные артборды выводятся по убыванию размера при поиске по ориентации.
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/32321188-artboard-search-function) за внедрение этой функции в Иллюстратор.
+
 ![ArtboardsFinder](https://i.ibb.co/VJXKjWQ/artboards-finder.gif)
 
 ## ArtboardsRemapper
@@ -56,7 +59,10 @@
 Поле замены поддерживает [символы регулярных выражений](https://proglib.io/p/shpargalka-po-regulyarnym-vyrazheniyam-v-javascript-2022-07-17). Пример: чтобы удалить числа в именах, введите в поле Find `\d` без кавычек, а Replace оставьте пустым. Для замены пробелов на другой символ: в Find введите `\s+`, а в Replace нужный вам символ.
 
 > [!TIP]   
-> Если хотите изменить количество строк в высоту, то откройте файл скрипта текстовым редактором и поменяйте CFG `rows: 5` на другое число и его же в `listHeight: 5 * 32`. В CFG `precision: 0` задаётся число десятичных знаков для высоты и ширины артбордов и объектов.
+> Если хотите изменить количество строк в высоту, то откройте файл скрипта текстовым редактором и поменяйте CFG `rows: 5` на другое число и его же в `listHeight: 5 * 32`. В CFG `precision: 0` задаётся число десятичных знаков для высоты и ширины артбордов и объектов.   
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43575576-bulk-re-naming-of-layers), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39925396-find-and-replace-text-in-object-name-in-the-layers), [Uservoice #3](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35567803-advanced-rename-tools-for-artboards-with-find-re), [Uservoice #4](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/34698628-can-we-rename-multiple-layers-in-one-go) за внедрение этой функции в Иллюстратор.
 
 ![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)
 
@@ -96,6 +102,9 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameArtboardAsSize.jsx-FF6900.svg)](https://rebrand.ly/renabsassize) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Добавляет к имени артборда его размеры в единицах измерения документа.
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/41686762-artboard-auto-naming-preferences-one-click-artboa) за внедрение этой функции в Иллюстратор.
 
 ![RenameArtboardAsSize](https://i.ibb.co/GR488JH/Rename-Artboard-As-Size.gif)
 

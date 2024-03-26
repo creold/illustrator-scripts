@@ -30,6 +30,9 @@ Aligns selected clip groups and their contents to the center of the parent artbo
 Ungroups groups & releases clipping masks, for selected items only or all artwork in the document.   
 *Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39484654-create-an-ungroup-all-feature-on-layer-s) to add this feature to Illustrator.
+
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
 
 ## MoveToGroup

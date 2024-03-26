@@ -64,6 +64,9 @@ The Magic Wand tool selects objects that match the color of the sample. Selectin
 
 After using the Lasso tool <kbd>A</kbd> or Direct Selection Tool <kbd>Q</kbd>, both Points and Path segments are selected. 
 
+> [!NOTE]   
+> Vote on [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40280419-direct-selection-tool-to-select-only-points), [Uservoice #2](https://illustrator.uservoice.com/forums/601447-illustrator-desktop-bugs/suggestions/35846947-clipping-mask-bug-direct-selection-tool-and-smar) to add this feature to Illustrator.
+
 ![SelectOnlyPoints](https://i.ibb.co/NF7bbpQ/demo-Select-Only-Points.gif)
 
 ## SelectPointsByType

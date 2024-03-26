@@ -2,13 +2,14 @@
   MakeNumbersSequence.jsx for Adobe Illustrator
   Description: Fills a range of selected text objects with numbers incremented based on the input data
   Date: December, 2022
-  Modification date: February, 2024
+  Modification date: March, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Idea: Egor Chistyakov (@chegr)
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.5 Added input of a fixed number of digits to control leading zeros
   0.4.2 Removed input activation on Windows OS below CC v26.4
   0.4.1 Fixed array of numbers with zero increment
   0.4 Redesigned, added dynamic example to side panel
@@ -42,7 +43,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v0.4.2'
+        version: 'v0.5'
       },
       CFG = {
         placeholder: '{%n}',
@@ -54,7 +55,7 @@ function main() {
         folder: Folder.myDocuments + '/Adobe Scripts/'
       };
   
-  if (!isCorrectEnv('selection')) return;
+  if (!isCorrectEnv('selection:1')) return;
 
   var tfs = getTextFrames(selection).reverse();
   if (!tfs.length) {
@@ -62,6 +63,7 @@ function main() {
     return;
   }
 
+  // Global variables
   var inc = 0, start = 0, end = 0, strLen = 0;
 
   // Dialog
@@ -104,21 +106,35 @@ function main() {
       incInp.preferredSize.width = 48;
 
   var numOptWrapper = numPnl.add('group');
-      numOptWrapper.alignChildren = 'left';
+      numOptWrapper.alignChildren = ['left', 'top'];
 
+  // Options. Column #1
   var numOpt_1 = numOptWrapper.add('group');
       numOpt_1.orientation = 'column';
       numOpt_1.alignChildren = 'left';
 
   var isUseAll = numOpt_1.add('checkbox', undefined, 'Number to last text');
   var isShuffle = numOpt_1.add('checkbox', undefined, 'Shuffle numbers order');
+  var isRmvTf = numOpt_1.add('checkbox', undefined, 'Remove unused texts');
 
+  // Divider
+  var div = numOptWrapper.add('panel', undefined, undefined);
+      div.alignment = 'fill';
+
+  // Options. Column #2
   var numOpt_2 = numOptWrapper.add('group');
       numOpt_2.orientation = 'column';
       numOpt_2.alignChildren = 'left';
 
-  var isPadZero = numOpt_2.add('checkbox', undefined, 'Add zeros (e.g. 01, 02)');
-  var isRmvTf = numOpt_2.add('checkbox', undefined, 'Remove unused texts');
+  var isPadZero = numOpt_2.add('checkbox', undefined, 'Add leading zeros');
+      isPadZero.helpTip = 'E.g. 01, 02, 006, 00005';
+  var isAutoZero = numOpt_2.add('radiobutton', undefined, 'Auto number of digits');
+      isAutoZero.value = true;
+
+  var zeroOpt = numOpt_2.add('group');
+  var isCstmZero = zeroOpt.add('radiobutton', undefined, 'Fixed, no less than:');
+  var zeroInp = zeroOpt.add('edittext', undefined, 3);
+      zeroInp.characters = 3;
 
   var optWrapper = wrapper.add('group');
       optWrapper.alignChildren = ['fill', 'top'];
@@ -175,23 +191,75 @@ function main() {
   });
 
   startInp.onChange = endInp.onChange = incInp.onChange = preview;
-  isPadZero.onClick = isShuffle.onClick = preview;
   isFullRplc.onClick = isNumRplc.onClick = isPhRplc.onClick = preview;
+  zeroInp.onChange = isShuffle.onClick = preview;
+
+  isPadZero.onClick = function () {
+    isAutoZero.enabled = this.value;
+    zeroOpt.enabled = this.value;
+    preview();
+  }
+
+  isAutoZero.onClick = function () {
+    isCstmZero.value = false;
+    zeroInp.enabled = false;
+    preview();
+  }
+  
+  isCstmZero.onClick = function () {
+    isAutoZero.value = false;
+    zeroInp.enabled = true;
+    preview();
+  };
 
   isUseAll.onClick = function () {
     endGrp.enabled = !this.value;
     isRmvTf.enabled = !this.value;
     preview();
   }
-  
+
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
+  function preview() {
+    var tmpTFs = [].concat(tfs);
+    var isPad = isPadZero.value;
+    var tmpZero = Math.max(1, strToNum(zeroInp.text, 0)); // Total number length
+
+    // Calc data
+    inc = strToNum(incInp.text, 1);
+    start = strToNum(startInp.text, 0);
+    end = isUseAll.value ? start + (tmpTFs.length - 1) * inc : strToNum(endInp.text, 10);
+    // Compare user-defined total length and length from calculated number range
+    strLen = getMaxNumLength(start, end, (isPad && isCstmZero.value ? Math.pow(10, tmpZero - 1) : 1));
+
+    // Filter text frames by criteria
+    if (isNumRplc.value) {
+      tmpTFs = filterByString(tmpTFs, '\\d');
+    } else if (isPhRplc.value) {
+      tmpTFs = filterByString(tmpTFs, CFG.placeholder);
+    }
+
+    var nums = calcNumbers(inc, start, end, tmpTFs.length);
+    if (isShuffle.value) shuffle(nums);
+
+    var i = 0, len = nums.length;
+    while (i < len) {
+      if (isPad && nums[i] >= 0) {
+        nums[i] = padZero(nums[i], strLen);
+      }
+      i++;
+    }
+
+    // Preview array part
+    prvwList.text = getShortArray(nums, 7, 2).join('\n');
+  }
+
   function okClick() {
-    var tolerance = getTolerance(tfs[0]),
-        isPad = isPadZero.value,
-        isNum = isNumRplc.value,
-        isPh = isPhRplc.value;
+    var tolerance = getTextTolerance(tfs[0]);
+    var isPad = isPadZero.value; // Add zeros
+    var isNum = isNumRplc.value; // Numbers in text
+    var isPh = isPhRplc.value; // Only placeholder
 
     if (isRows.value && !isShuffle.value) {
       sortByRows(tfs, tolerance);
@@ -205,12 +273,12 @@ function main() {
       tfs = filterByString(tfs, CFG.placeholder);
     }
 
-    var nums = getNumbers(inc, start, end, tfs.length);
+    var nums = calcNumbers(inc, start, end, tfs.length);
     if (isShuffle.value) shuffle(nums);
 
-    var i = 0,
-        curNum = 0,
-        regex = new RegExp(isNum ? '(\\d+([.,]\\d+)*)' : CFG.placeholder, 'gi');
+    var i = 0;
+    var curNum = 0;
+    var regex = new RegExp(isNum ? '(\\d+([.,]\\d+)*)' : CFG.placeholder, 'gi');
 
     while (i < nums.length) {
       curNum = isPad && nums[i] >= 0 ? padZero(nums[i], strLen) : nums[i];
@@ -229,36 +297,10 @@ function main() {
     win.close();
   }
 
-  function preview() {
-    var tmp = [].concat(tfs);
-
-    inc = strToNum(incInp.text, 1);
-    start = strToNum(startInp.text, 0);
-    end = isUseAll.value ? start + (tmp.length - 1) * inc : strToNum(endInp.text, 10);
-    strLen = getMaxNumLength(start, end);
-    isPad = isPadZero.value;
-
-    if (isNumRplc.value) {
-      tmp = filterByString(tmp, '\\d');
-    } else if (isPhRplc.value) {
-      tmp = filterByString(tmp, CFG.placeholder);
-    }
-
-    var nums = getNumbers(inc, start, end, tmp.length);
-    if (isShuffle.value) shuffle(nums);
-
-    var i = 0, len = nums.length;
-    while (i < len) {
-      if (isPad && nums[i] >= 0) {
-        nums[i] = padZero(nums[i], strLen);
-      }
-      i++;
-    }
-
-    prvwList.text = getShortArray(nums, 7, 2).join('\n');
-  }
-
-  // Save UI options to file
+  /**
+   * Save UI options to a file
+   * @param {Object} prefs - Object containing preferences
+   */
   function saveSettings(prefs) {
     if(!Folder(prefs.folder).exists) Folder(prefs.folder).create();
     var f = new File(prefs.folder + prefs.name);
@@ -273,13 +315,18 @@ function main() {
     pref.all = isUseAll.value;
     pref.rndm = isShuffle.value;
     pref.zero = isPadZero.value;
+    pref.auto = isAutoZero.value;
+    pref.total = zeroInp.text;
     pref.rmv = isRmvTf.value;
     var data = pref.toSource();
     f.write(data);
     f.close();
   }
 
-  // Load options from file
+  /**
+   * Load options from a file
+   * @param {Object} prefs - Object containing preferences
+   */
   function loadSettings(prefs) {
     var f = File(prefs.folder + prefs.name);
     if (f.exists) {
@@ -302,6 +349,12 @@ function main() {
           isUseAll.value = pref.all;
           isShuffle.value = pref.rndm;
           isPadZero.value = pref.zero;
+          isAutoZero.value = pref.auto;
+          isCstmZero.value = !pref.auto;
+          zeroInp.text = pref.total ? pref.total : 1;
+          isAutoZero.enabled = isPadZero.value;
+          zeroOpt.enabled = isPadZero.value;
+          zeroInp.enabled = !isAutoZero.value;
           isRmvTf.value = pref.rmv;
         }
       } catch (e) {}
@@ -314,7 +367,11 @@ function main() {
   win.show();
 }
 
-// Check the script environment
+/**
+ * Check the script environment
+ * @param {string} List of initial data for verification
+ * @returns {boolean} Continue or abort script
+ */
 function isCorrectEnv() {
   var args = ['app', 'document'];
   args.push.apply(args, arguments);
@@ -336,14 +393,15 @@ function isCorrectEnv() {
         }
         break;
       case /document/g.test(arg):
-        if (!documents.length) {
+        if (!app.documents.length) {
           alert('No documents\nOpen a document and try again', 'Script error');
           return false;
         }
         break;
       case /selection/g.test(arg):
-        if (!selection.length || selection.typename === 'TextRange') {
-          alert('Nothing selected\nPlease, select at least one TextFrame', 'Script error');
+        var rqdLen = parseFloat(arg.split(':')[1]);
+        if (app.selection.length < rqdLen || selection.typename === 'TextRange') {
+          alert('Few objects are selected\nPlease select at least ' + rqdLen + ' path(s) and try again', 'Script error');
           return false;
         }
         break;
@@ -353,94 +411,31 @@ function isCorrectEnv() {
   return true;
 }
 
-// Get TextFrames array from collection
+/**
+ * Get an array of TextFrames from a collection
+ * @param {(Object|Array)} coll - The collection to search for TextFrames
+ * @returns {Array} An array of TextFrame objects
+ */
 function getTextFrames(coll) {
   var tfs = [];
+
   for (var i = 0, len = coll.length; i < len; i++) {
-    if (/text/i.test(coll[i].typename)) tfs.push(coll[i]);
-    else if (/group/i.test(coll[i].typename)) tfs = tfs.concat(getTextFrames(coll[i].pageItems));
+    if (/text/i.test(coll[i].typename)) {
+      tfs.push(coll[i]);
+    } else if (/group/i.test(coll[i].typename)) {
+      tfs = tfs.concat(getTextFrames(coll[i].pageItems));
+    }
   }
+
   return tfs;
 }
 
-// Get tolerance of letter size for sorting
-function getTolerance(tf) {
-  var val = 0;
-  if (/text/i.test(tf.typename)) {
-    var str = tf.contents;
-    tf.contents = '0';
-    val = tf.height;
-    tf.contents = str;
-  }
-  return val;
-}
-
-// Get maximum number length
-function getMaxNumLength(a, b) {
-  var strA = ('' + Math.abs(a)).length,
-      strB = ('' + Math.abs(b)).length;
-  return Math.max(strA, strB);
-}
-
-// Sort objects coords from left to right by rows
-function sortByRows(arr, tolerance) {
-  arr.sort(function(a, b) {
-    if (Math.abs(b.top - a.top) <= tolerance) {
-      return a.left - b.left;
-    }
-    return b.top - a.top;
-  });
-}
-
-// Sort objects coords from top to bottom by columns
-function sortByColumns(arr, tolerance) {
-  arr.sort(function(a, b) {
-    if (Math.abs(a.left - b.left) <= tolerance) {
-      return b.top - a.top;
-    }
-    return a.left - b.left;
-  });
-}
-
-// Filter text frames by string
-function filterByString(tfs, str) {
-  var out = [],
-      regex = new RegExp(str, 'gi');
-  for (var i = 0, len = tfs.length; i < len; i++) {
-    if (regex.test(tfs[i].contents)) out.push(tfs[i]);
-  }
-  return out;
-}
-
-// Get numbers from range
-function getNumbers(inc, start, end, amt) {
-  var out = [],
-      curNum = start,
-      i = 0;
-
-  if (start <= end && inc > 0) {
-    while ((curNum + inc <= end) && (i < amt)) {
-      curNum = start + i * inc;
-      out.push(curNum);
-      i++;
-    }
-  } else if (inc < 0) {
-    while ((curNum + inc >= end) && (i < amt)) {
-      curNum = start + i * inc;
-      out.push(curNum);
-      i++;
-    }
-  } else if (inc == 0) {
-    while (i < amt) {
-      out.push(start);
-      i++;
-    }
-  }
-
-  return out;
-}
-
-// Convert string to number
+/**
+ * Converts a string to a number, handling commas and non-numeric characters
+ * @param {string} str - The string to convert to a number
+ * @param {number} def - The default value to return if the conversion fails
+ * @returns {number} Returns the numeric value of the string or the default value if the conversion fails
+ */
 function strToNum(str, def) {
   if (arguments.length == 1 || def == undefined) def = 1;
   str = str.replace(/,/g, '.').replace(/[^\d.-]/g, '');
@@ -451,26 +446,113 @@ function strToNum(str, def) {
   else return parseFloat(str);
 }
 
-// Shuffle array
+/**
+ * Get maximum length of numbers among the provided arguments
+ * @param {...number} arguments - The numbers to compare
+ * @returns {number} The maximum length of numbers among the provided arguments
+ */
+function getMaxNumLength() {
+  var max = 0;
+
+  for (var i = 0, len = arguments.length; i < len; i++) {
+    if (typeof arguments[i] === 'number') {
+      var numLength = (Math.abs(arguments[i])).toString().length;
+      if (numLength > max) max = numLength;
+    }
+  }
+
+  return max;
+}
+
+/**
+ * Filter an array of Text Frames by a given string
+ * @param {Array} tfs - An array of TextFrame objects to filter
+ * @param {string} str - The string to filter Text Frames by
+ * @returns {Array} An array of TextFrame objects that match the filtering string
+ */
+function filterByString(tfs, str) {
+  var result = [];
+  var regex = new RegExp(str, 'gi');
+
+  for (var i = 0, len = tfs.length; i < len; i++) {
+    if (regex.test(tfs[i].contents)) result.push(tfs[i]);
+  }
+
+  return result;
+}
+
+/**
+ * Calculate numbers within a specified range with a given increment
+ * @param {number} inc - The increment between each calculated number
+ * @param {number} start - The starting number of the range
+ * @param {number} end - The ending number of the range
+ * @param {number} amt - The maximum amount of numbers to calculate
+ * @returns {Array} An array of numbers calculated from the specified range and increment
+ */
+function calcNumbers(inc, start, end, amt) {
+  var result = [];
+  var curNum = start;
+  var i = 0;
+
+  if (start <= end && inc > 0) {
+    while ((curNum + inc <= end) && (i < amt)) {
+      curNum = start + i * inc;
+      result.push(curNum);
+      i++;
+    }
+  } else if (inc < 0) {
+    while ((curNum + inc >= end) && (i < amt)) {
+      curNum = start + i * inc;
+      result.push(curNum);
+      i++;
+    }
+  } else if (inc == 0) {
+    while (i < amt) {
+      result.push(start);
+      i++;
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Shuffle the elements of an array randomly
+ * @param {Array} arr - The array to shuffle
+ * @returns {Array} The shuffled array
+ */
 function shuffle(arr) {
   var j, tmp;
+
   for (var i = arr.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
     tmp = arr[j];
     arr[j] = arr[i];
     arr[i] = tmp;
   }
+
   return arr;
 }
 
-// Add leading zero to number
+/**
+ * Add leading zeros to a number to make it of a specified length
+ * @param {number} num - The number to pad with leading zeros
+ * @param {number} len - The desired length of the resulting padded number
+ * @returns {string} The number with leading zeros
+ */
 function padZero(num, len) {
   num = num.toString();
   while (num.length < len) num = '0' + num;
   return num;
 }
 
-// Get first N elements from array and M last
+/**
+ * Retrieves a shortened version of an array, including the first N elements and the last M elements, with ellipsis in between
+ * @param {Array} arr - The array to shorten
+ * @param {number} amt - The number of elements to include from the beginning of the array
+ * @param {number} last - The number of elements to include from the end of the array
+ * @returns {Array} A shortened version of the array with ellipsis separating the elements
+ */
 function getShortArray(arr, amt, last) {
   if (arr.length <= amt) {
     return arr;
@@ -482,7 +564,58 @@ function getShortArray(arr, amt, last) {
   }
 }
 
-// Open link in browser
+/**
+ * Get tolerance of symbol size for sorting
+ * @param {Object} tf - The TextFrame to calculate the tolerance from
+ * @returns {number} The tolerance of symbol size for sorting
+ */
+function getTextTolerance(tf) {
+  var tolerance = 0;
+
+  if (/text/i.test(tf.typename)) {
+    var dup = tf.duplicate();
+    dup.selected = false;
+    dup.contents = '0';
+    tolerance = dup.height;
+    dup.remove();
+  }
+
+  return tolerance;
+}
+
+/**
+ * Sorts objects' coordinates from left to right by rows
+ * @param {Array} arr - An array of objects with coordinates
+ * @param {number} tolerance - The tolerance value for determining row proximity
+ */
+function sortByRows(arr, tolerance) {
+  arr.sort(function(a, b) {
+    if (Math.abs(b.top - a.top) <= tolerance) {
+      return a.left - b.left;
+    }
+    return b.top - a.top;
+  });
+}
+
+/**
+ * Sort objects' coordinates from top to bottom by columns
+ * @param {Array} arr - An array of objects with coordinates
+ * @param {number} tolerance - The tolerance value for determining column proximity
+ */
+function sortByColumns(arr, tolerance) {
+  arr.sort(function(a, b) {
+    if (Math.abs(a.left - b.left) <= tolerance) {
+      return b.top - a.top;
+    }
+    return a.left - b.left;
+  });
+}
+
+/**
+ * Open a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+ */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');

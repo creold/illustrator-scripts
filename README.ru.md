@@ -195,7 +195,7 @@
 Скрипты для работы с текстовыми объектами
 
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `upd, 09.02.2024`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `upd, 09.02.2024`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `upd, 26.03.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `new, 29.12.2022`
 
 ### [Utility](md/Utility.ru.md)  

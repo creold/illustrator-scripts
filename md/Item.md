@@ -40,16 +40,19 @@ The script aligns selected objects to their parent artboards or aligns the conte
 
 Batch tracing of selected placed and embedded images in a document or all images from a user-selected folder. The native menu `Object → Image Trace → Make` is available for one selected image. Recording the action will not help, because the trace preset are not saved in it. In Adobe Bridge, only the image folder can be traced: `Tools → Illustrator → Image Trace`. 
 
-> [!IMPORTANT]   
-> The speed of the script depends on the specifications of your PC, the tracing preset and the amount of images.
-
-> [!WARNING]   
-Adobe scripts incorrectly apply the Colors value from custom presets, so the tracing result may not match the preset. The big difference is seen in CC 2023. Vote for a fix at [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).
-
 Tweaks in the script code:
 
 * `CFG.extList` — a list of extensions to be processed from the folder. You can add your own or remove some to skip the script;
 * `CFG.isReverse` — reverse the order of the presets list (true), the user presets will be at the top.
+
+> [!IMPORTANT]   
+> The speed of the script depends on the specifications of your PC, the tracing preset and the amount of images.   
+
+> [!WARNING]   
+Adobe scripts incorrectly apply the Colors value from custom presets, so the tracing result may not match the preset. The big difference is seen in CC 2023. Vote for a fix at [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/46741876-tracing-bugs-in-scripts).   
+
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657/suggestions/47385983) to add this feature to Illustrator.
 
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
 
@@ -121,6 +124,9 @@ Resize of the selected objects to the specified amount on the larger side. Works
 
 Adobe Illustrator has a Transform panel, but you cannot use it to transform several selected objects to a specified value. It also has problems with the accuracy of the result. The script can transform selected objects with 100% accuracy, depending on the selected side: width, height or automatically the larger side. Units associated with "Document Setup". Quick access with <kbd>Q</kbd> + underlined key or digit. Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey: 'Q'`.
 
+> [!NOTE]   
+> Vote on [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/33252640-an-ability-to-resize-all-selected-objects-to-a-spe), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35740054-match-width-or-height-to-key-object) to add this feature to Illustrator.
+
 <a href="https://youtu.be/PN3dAf6rac8">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
@@ -131,6 +137,9 @@ Adobe Illustrator has a Transform panel, but you cannot use it to transform seve
 [![Direct](https://img.shields.io/badge/Direct%20Link-RoundCoordinates.jsx-FF6900.svg)](https://rebrand.ly/rndcoord) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script rounds the coordinates of each selected object. The reference point gets from the `Transform` panel. The script aligns to the stroke if `Preferences > Use Preview Bounds` is enabled. In the script file, you can change the coordinate rounding step in the CFG `step: 1`. If the step is 0, the script aligns to the document grid from `Preferences > Guides & Grid`.
+
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-feature-requests/suggestions/34970752-make-anchor-points-pixel-perfect) to add this feature to Illustrator.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 

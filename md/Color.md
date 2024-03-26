@@ -45,6 +45,9 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 > [!WARNING]   
 > Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40882126-simulate-color-blindness-for-accessibility) to add this feature to Illustrator.
+
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
 
 ## ColorGroupReplacer
