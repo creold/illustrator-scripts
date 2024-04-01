@@ -21,6 +21,9 @@
 Экспортирует выбранные объекты в отдельные файлы формата .ai.    
 *Сделан на основе Layers to SVG 0.1 автора Anton Ball.*
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/33210145-add-ai-eps-and-tif-formats-in-export-for-screens) за внедрение этой функции в Иллюстратор.
+
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif)
 
 ## ExportToDXF

@@ -53,6 +53,9 @@ Automatically trims all clip groups in a selection or a document using `Pathfind
 > [!WARNING]   
 > Don't put this script in the action slot for a quick run. It will freeze Illustrator.
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35456389-flatten-expand-clipping-group-crop-each-object) to add this feature to Illustrator.
+
 <a href="https://youtu.be/liui0ZUAN50">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>

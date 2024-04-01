@@ -20,6 +20,9 @@
 Масштабирует по центру экрана выбранные объекты. Если ничего не выбрано, то появится диалоговое окно с вариантами. Если нужен другой коэффициент увеличения, то откройте файл скрипта текстовым редактором и поменяйте числовое значение (дробь) `SCALE_RATIO = .75;`.   
 *Основано на оригинальном скрипте от [John Wundes](http://www.wundes.com/).*
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/31427962-zoom-to-selection-fit-selection-on-screen-with), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/46456405-fit-selected-object-to-window) за внедрение этой функции в Иллюстратор.
+
 ![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif)
 
 ## Поддержка

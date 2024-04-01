@@ -20,6 +20,9 @@
 Zooms active view to selection or to all object(s) in a document. If you want a different scale ratio, open the script file with a text editor and change the `SCALE_RATIO = .75;`.   
 *Based on original script by [John Wundes](http://www.wundes.com/).*
 
+> [!NOTE]   
+> Vote on [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/31427962-zoom-to-selection-fit-selection-on-screen-with), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/46456405-fit-selected-object-to-window) to add this feature to Illustrator.
+
 ![Zoom-And-Center](https://i.ibb.co/4Kqx7J1/demo-Zoom-And-Center.gif)
 
 ## Donate

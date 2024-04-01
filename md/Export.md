@@ -21,6 +21,9 @@
 Exports all selected objects to AI files.    
 *Based on Layers to SVG 0.1 by Anton Ball.*
 
+> [!NOTE]   
+> Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/33210145-add-ai-eps-and-tif-formats-in-export-for-screens) to add this feature to Illustrator.
+
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif)
 
 ## ExportToDXF

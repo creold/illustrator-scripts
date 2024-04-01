@@ -53,6 +53,9 @@
 > [!WARNING]   
 > Не добавляйте этот скрипт в панель операций (Action) для быстрого запуска. Это приведёт к зависанию Иллюстратора.
 
+> [!NOTE]   
+> Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35456389-flatten-expand-clipping-group-crop-each-object) за внедрение этой функции в Иллюстратор.
+
 <a href="https://youtu.be/liui0ZUAN50">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">
 </a>
