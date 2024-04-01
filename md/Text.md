@@ -38,8 +38,8 @@ Fills a range of selected text items with numbers incremented based on the input
 
 ![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
 
-## MultiTextEdit
-[![Direct](https://img.shields.io/badge/Direct%20Link-MultiTextEdit.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+## MultiEditText
+[![Direct](https://img.shields.io/badge/Direct%20Link-MultiEditText.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Multi-editing of selected text frames. The script allows you to enter the same text, replace the current text frame content or add the entered text to the current one.
 
@@ -50,7 +50,7 @@ Multi-editing of selected text frames. The script allows you to enter the same t
 > [!TIP]   
 > If you want to change the size of the text area, open the script file with a text editor and change the CFG `width: 300` and `height: 210` to another value. The key to displaying different content is `ph: '<text>'` and the text divider `divider: '\n@@@@@\n'`, where `\n` is a line break.  
 
-<a href="https://youtu.be/02SLTH26sMQ">
+<a href="https://youtu.be/PcyT0KmuepI">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 

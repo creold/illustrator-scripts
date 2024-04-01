@@ -38,8 +38,8 @@
 
 ![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
 
-## MultiTextEdit
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MultiTextEdit.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+## MultiEditText
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MultiEditText.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Мультиредактирование выбранных текстовых объектов. Скрипт позволяет вводить одинаковый текст, заменяя текущее содержимое текстового фрейма или добавляя введенный текст к текущему.
 
@@ -50,7 +50,7 @@
 > [!TIP]   
 > Если хотите изменить размер текстовой области, то откройте файл скрипта текстовым редактором и поменяйте CFG `width: 300` и `height: 210` на другое число. Ключ для отображения разного контента `ph: '<text>'` и разделитель текстов `divider: '\n@@@\n'`, где `\n` — перенос строки.  
 
-<a href="https://youtu.be/02SLTH26sMQ">
+<a href="https://youtu.be/PcyT0KmuepI">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
