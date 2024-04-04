@@ -2,15 +2,17 @@
   MultiEditText.jsx for Adobe Illustrator
   Description: Bulk editing of text frame contents. Replaces content separately or with the same text
   Date: March, 2024
+  Modification date: April, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  ********************************************************************************************
-  * WARNING: The font properties of the first character are applied to the entire text frame *
-  ********************************************************************************************
+  *******************************************************************************************
+  * WARNING: The script does not support the mixed appearance of characters in a text frame *
+  *******************************************************************************************
 
   Release notes:
+  0.2 Added option to keep paragraph formatting (experimental)
   0.1 Initial version
 
   Donate (optional):
@@ -38,12 +40,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Multi-edit Text',
-        version: 'v0.1'
+        version: 'v0.2'
       };
 
   var CFG = {
         width: 300, // Text area width, px
-        height: 210, // Text area height, px
+        height: 240, // Text area height, px
         ph: '<text>', // Content display placeholder
         divider: '\n@@@\n', // Symbol for separating multiple text frames
         coordTolerance: 10, // Object alignment tolerance for sorting
@@ -88,11 +90,16 @@ function main() {
   var opt = win.add('group');
       opt.orientation = 'column';
       opt.alignChildren = ['fill', 'center'];
-  
-  var isSeparate = opt.add('checkbox', undefined, 'Edit separately');
+
+  var isFormat = opt.add('checkbox', undefined, 'Keep Para Format');
+      isFormat.helpTip = 'Keep paragraphs formatting.\nText length affects script\nperformance';
+  var isSeparate = opt.add('checkbox', undefined, 'Edit Separately');
+      isSeparate.helpTip = 'Edit each text frame\nindividually';
   var isSort = opt.add('checkbox', undefined, 'List by XY');
+      isSort.helpTip = 'List text frames\nsorted by position';
       isSort.enabled = isSeparate.value;
-  var isReverse = opt.add('checkbox', undefined, 'Reverse apply');
+  var isReverse = opt.add('checkbox', undefined, 'Reverse Apply');
+      isReverse.helpTip = 'Replace the contents\nof text frames in\nreverse order';
       isReverse.enabled = isSeparate.value;
 
   var cancel, ok;
@@ -119,6 +126,11 @@ function main() {
   }
 
   loadSettings(SETTINGS);
+
+  isFormat.onClick = function () {
+    isPreview.enabled = !this.value;
+    preview();
+  };
 
   isSeparate.onClick = function () {
     isSort.enabled = this.value;
@@ -147,6 +159,8 @@ function main() {
 
   ok.onClick = function () {
     if (isPreview.value && isUndo) app.undo();
+    ok.text = 'Wait...';
+    win.update();
     changeTexts();
     isUndo = false;
     saveSettings(SETTINGS);
@@ -166,7 +180,7 @@ function main() {
   function preview() {
     if (CFG.is2020) return;
     try {
-      if (isPreview.value) {
+      if (isPreview.enabled && isPreview.value) {
         if (isUndo) app.undo();
         else isUndo = true;
         changeTexts();
@@ -192,13 +206,17 @@ function main() {
 
       for (var i = 0; i < min; i++) {
         var tf = srcTfs[i];
-        if (tf.contents !== texts[i]) tf.contents = texts[i];
+        if (tf.contents !== texts[i]) {
+          replaceContent(tf, texts[i], isFormat.value);
+        }
       }
     } else {
       for (var i = 0, len = tfs.length; i < len; i++) {
         var tf = tfs[i];
         var str = input.text.replace(/<text>/gi, tfContents[i]);
-        if (tf.contents !== str) tf.contents = str;
+        if (tf.contents !== str) {
+          replaceContent(tf, str, isFormat.value);
+        }
       }
     }
   }
@@ -206,6 +224,8 @@ function main() {
   win.onClose = function () {
     try {
       if (isUndo) app.undo();
+    } catch (err) {}
+    try {
       var tmpPath = app.activeDocument.pathItems.getByName('Remove_Path');
       tmpPath.remove();
     } catch (err) {}
@@ -226,6 +246,7 @@ function main() {
     f.encoding = 'UTF-8';
     f.open('w');
     var pref = {};
+    pref.formatting = isFormat.value;
     pref.separated = isSeparate.value;
     pref.sorted = isSort.value;
     pref.reversed = isReverse.value;
@@ -249,11 +270,13 @@ function main() {
         var pref = new Function('return ' + json)();
         f.close();
         if (typeof pref != 'undefined') {
+          isFormat.value = pref.formatting;
           isSeparate.value = pref.separated;
           isSort.value = pref.sorted;
           isSort.enabled = pref.separated;
           isReverse.value = pref.reversed;
           isReverse.enabled = pref.separated;
+          isPreview.enabled = !pref.formatting;
           input.text = getInputText(placeholder);
         }
       } catch (err) {}
@@ -403,6 +426,121 @@ function reverseText(str, divider) {
  */
 function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
+}
+
+/**
+ * Replace the content of a text frame and optionally retains the original paragrah appearance
+ *
+ * @param {Object} tf - The text frame to replace the content
+ * @param {string} str - The new content to replace the original text with
+ * @param {boolean} isKeepStyle - Determines whether to keep the original paragrah appearance
+ */
+function replaceContent(tf, str, isKeepStyle) {
+  if (!/text/i.test(tf.typename)) return;
+
+  if (!isKeepStyle) {
+    tf.contents = str;
+    return;
+  }
+
+  var para = get(tf.paragraphs);
+  var styles = [];
+  // Whitelist of paragraph attributes (short keys)
+  var paraKeys = [
+    'attributes', 'font', 'color', 'size', 'scale', 'leading', 'tracking', 'baseline', 'rotation', 
+    'kerning', 'capitalization', 'italics', 'language', 'alignment', 'overprint', 'stroke', 'underline',
+    'strikeThrough', 'justification', 'indent', 'space', 'tab', 'romanHanging', 'direction', 'composer'
+    ];
+
+  try {
+    for (var i = 0; i < para.length; i++) {
+      if (!trim(para[i].contents).length) continue;
+      styles.push( getProps(para[i], paraKeys) );
+    }
+  } catch (err) {}
+
+  // Replace original text
+  tf.contents = str;
+  para = get(tf.paragraphs);
+
+  var style = null;
+  var idx = 0;
+
+  for (var j = 0; j < para.length; j++) {
+    if (!trim(para[j].contents).length) continue;
+    style = styles[idx] ? styles[idx] : styles[styles.length - 1];
+    pasteProps(style, para[j]);
+    idx++;
+  }
+}
+
+/**
+ * Convert a Adobe Illustrator collection into a standard Array
+ *
+ * @param {Object} coll - The collection to convert
+ * @returns {Array} arr - An array containing the elements of the collection
+ */
+function get(coll) {
+  var arr = [];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    try {
+      arr.push(coll[i]);
+    } catch (err) {
+      // Skip 'No such element' error
+    }
+  }
+  return arr;
+}
+
+/**
+ * Remove leading and trailing whitespace from a string
+ *
+ * @param {string} str - The string to trim
+ * @returns {string} - The trimmed string
+ */
+function trim(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+}
+
+/**
+ * Collect specified properties from an object
+ *
+ * @param {Object} obj - The object to get properties from
+ * @param {Array} whiteList - An array of property names to collect
+ * @returns {Object} - An object containing the copied properties
+ */
+function getProps(obj, whiteList) {
+  var props = {};
+  var regex = new RegExp(whiteList.join('|'), 'i');
+
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key)) continue;
+    if (!regex.test(key)) continue;
+    try {
+      props[key] = obj[key];
+    } catch (err) {
+      // Skip undefined properties
+    }
+  }
+
+  return props;
+}
+
+/**
+ * Paste properties from one object to another
+ *
+ * @param {Object} props - The object containing properties to paste
+ * @param {Object} obj - The object to paste properties into
+ */
+function pasteProps(props, obj) {
+  for (var key in props) {
+    // Fix Illustrator bug with empty text color
+    if (/weight/i.test(key) && /nocolor/i.test(props.strokeColor)) {
+      obj.strokeWeight = 0;
+    } else {
+      obj[key] = props[key];
+    }
+  }
 }
 
 /**
