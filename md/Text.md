@@ -14,7 +14,7 @@
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `upd, 09.02.2024`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `upd, 04.04.2024`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `upd, 10.04.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `29.12.2022`
 
 ## AlignTextBaseline
@@ -49,13 +49,16 @@ Multi-editing of selected text frames. The script allows you to enter the same t
 * Reverse Apply - replace contents in reverse order
 
 > [!TIP]   
-> If you want to change the size of the text area, open the script file with a text editor and change the CFG `width: 300` and `height: 210` to another value. The key to displaying different content is `ph: '<text>'` and the text divider `divider: '\n@@@@@\n'`, where `\n` is a line break.  
+> If you want to change the size of the text area, open the script file with a text editor and change the CFG `width: 300` and `height: 210` to another value. The key to displaying different content is `ph: '<text>'` and the text divider `divider: '\n@@@@@\n'`, where `\n` is a line break. `softBreak: '@#'` — soft line break char.   
+> For a line break (new paragraph), use <kbd>Ctrl</kbd> + <kbd>Enter</kbd> on a PC or <kbd>Enter</kbd> on Mac OS. To insert a soft line break chat (no paragraph indent), press <kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 <a href="https://youtu.be/PcyT0KmuepI">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![MultiTextEdit](https://i.ibb.co/JmBVHCy/Multi-Edit-Text.gif)
+See also [Adobe Photoshop version](https://github.com/creold/photoshop-scripts)   
+
+![MultiTextEdit](https://i.ibb.co/58HHRFK/Multi-Edit-Text.gif)
 
 ## ReplaceFormattedText
 [![Direct](https://img.shields.io/badge/Direct%20Link-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

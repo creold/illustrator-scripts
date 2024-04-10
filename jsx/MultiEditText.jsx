@@ -12,6 +12,7 @@
   *******************************************************************************************
 
   Release notes:
+  0.2.1 Added Shift+Enter shortcut to insert soft line break
   0.2 Added option to keep paragraph formatting (experimental)
   0.1 Initial version
 
@@ -40,7 +41,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Multi-edit Text',
-        version: 'v0.2'
+        version: 'v0.2.1'
       };
 
   var CFG = {
@@ -48,6 +49,7 @@ function main() {
         height: 240, // Text area height, px
         ph: '<text>', // Content display placeholder
         divider: '\n@@@\n', // Symbol for separating multiple text frames
+        softBreak: '@#', // Soft line break char
         coordTolerance: 10, // Object alignment tolerance for sorting
         aiVers: parseFloat(app.version),
         is2020: parseInt(app.version) == 24, // Current AI is CC 2020
@@ -71,10 +73,10 @@ function main() {
   var sortedTfs = [].concat(tfs);
   sortByPosition(sortedTfs, CFG.coordTolerance);
 
-  var tfContents = extractContents(tfs);
-  var sortedTfContents = extractContents(sortedTfs);
+  var tfContents = extractContents(tfs, CFG.softBreak);
+  var sortedTfContents = extractContents(sortedTfs, CFG.softBreak);
 
-  var placeholder = isEqualContents(tfs) ? tfs[0].contents : CFG.ph;
+  var placeholder = isEqualContents(tfs, CFG.softBreak) ? tfs[0].contents.replace(/\x03/g, CFG.softBreak) : CFG.ph;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -82,6 +84,7 @@ function main() {
       win.alignChildren = ['fill', 'top'];
 
   var input = win.add('edittext', [0, 0, CFG.width, CFG.height], placeholder, {multiline: true, scrolling: true });
+      input.helpTip = 'Use Shift+Enter to insert soft line break special char';
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     input.active = true;
   }
@@ -119,13 +122,13 @@ function main() {
   var copyright = opt.add('statictext', undefined, 'Visit Github');
   copyright.justify = 'center';
 
+  loadSettings(SETTINGS);
+
   // CC 2020 v24.3 crashes when undoing text frame changes
   if (CFG.is2020) {
     isPreview.enabled = false;
     isPreview.helpTip = "Preview disabled for CC 2020\ndue to critical bug";
   }
-
-  loadSettings(SETTINGS);
 
   isFormat.onClick = function () {
     isPreview.enabled = !this.value;
@@ -153,8 +156,19 @@ function main() {
   }
 
   input.onChange = input.onChanging = preview;
+
   isPreview.onClick = preview;
 
+  // Insert soft line break char
+  input.addEventListener('keydown', function (kd) {
+    var isShift = ScriptUI.environment.keyboardState['shiftKey'];
+    if (isShift && kd.keyName === 'Enter') {
+      this.textselection = CFG.softBreak;
+      kd.preventDefault();
+      preview();
+    }
+  });
+  
   cancel.onClick = win.close;
 
   ok.onClick = function () {
@@ -198,10 +212,11 @@ function main() {
     tmpPath.name = 'Remove_Path';
 
     if (isEmpty(input.text)) return;
+    var regex = new RegExp(CFG.softBreak, 'gmi');
 
     if (isSeparate.value) {
       var srcTfs = [].concat(isSort.value ? sortedTfs : tfs);
-      var texts = input.text.split(CFG.divider);
+      var texts = input.text.replace(regex, '\x03').split(CFG.divider);
       var min = Math.min(srcTfs.length, texts.length);
 
       for (var i = 0; i < min; i++) {
@@ -213,7 +228,7 @@ function main() {
     } else {
       for (var i = 0, len = tfs.length; i < len; i++) {
         var tf = tfs[i];
-        var str = input.text.replace(/<text>/gi, tfContents[i]);
+        var str = input.text.replace(/<text>/gi, tfContents[i]).replace(regex, '\x03');
         if (tf.contents !== str) {
           replaceContent(tf, str, isFormat.value);
         }
@@ -375,13 +390,15 @@ function sortByPosition(coll, tolerance) {
  * Extract the contents of TextFrames from a given collection
  * 
  * @param {Array} coll - The collection of TextFrames
+ * @param {string} softBreak - The soft line break special char
  * @returns {Array} - An array containing the contents of TextFrames
  */
-function extractContents(coll) {
+function extractContents(coll, softBreak) {
   var result = [];
 
   for (var i = 0, len = coll.length; i < len; i++) {
-    result.push(coll[i].contents);
+    // Replace End of Text (ETX) to line break
+    result.push(coll[i].contents.replace(/\x03/g, softBreak));
   }
 
   return result;
@@ -391,13 +408,14 @@ function extractContents(coll) {
  * Check if the contents of all TextFrames in the collection are equal
  * 
  * @param {Array} coll - The collection of TextFrames to compare
- * @returns {boolean} - Returns true if all TextFrames have equal contents, otherwise false
+ * @param {string} softBreak - The soft line break special char
+ * @returns {boolean} - Return true if all TextFrames have equal contents, otherwise false
  */
-function isEqualContents(coll) {
-  var str = coll[0].contents;
+function isEqualContents(coll, softBreak) {
+  var str = coll[0].contents.replace(/\x03/g, softBreak);
 
   for (var i = 1, len = coll.length; i < len; i++) {
-    if (coll[i].contents !== str) return false;
+    if (coll[i].contents.replace(/\x03/g, softBreak) !== str) return false;
   }
 
   return true;

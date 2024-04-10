@@ -14,7 +14,7 @@
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `upd, 09.02.2024`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `upd, 04.04.2024`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `upd, 10.04.2024`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `29.12.2022`
 
 ## AlignTextBaseline
@@ -49,13 +49,16 @@
 * Reverse Apply - заменить контент в обратном порядке
 
 > [!TIP]   
-> Если хотите изменить размер текстовой области, то откройте файл скрипта текстовым редактором и поменяйте CFG `width: 300` и `height: 210` на другое число. Ключ для отображения разного контента `ph: '<text>'` и разделитель текстов `divider: '\n@@@\n'`, где `\n` — перенос строки.  
+> Если хотите изменить размер текстовой области, то откройте файл скрипта текстовым редактором и поменяйте CFG `width: 300` и `height: 210` на другое число. Ключ для отображения разного контента `ph: '<text>'` и разделитель текстов `divider: '\n@@@\n'`, где `\n` — перенос строки.`softBreak: '@#'` — символ мягкого переноса.   
+> Для переноса строки (новый абзац) используйте <kbd>Ctrl</kbd> + <kbd>Enter</kbd> на ПК или <kbd>Enter</kbd> на Mac OS. Для вставки специального символа мягкого переноса (без абзацного отступа) нажмите <kbd>Shift</kbd> + <kbd>Enter</kbd>.
 
 <a href="https://youtu.be/PcyT0KmuepI">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![MultiTextEdit](https://i.ibb.co/JmBVHCy/Multi-Edit-Text.gif)
+Смотрите также [версию для Adobe Photoshop](https://github.com/creold/photoshop-scripts)   
+
+![MultiTextEdit](https://i.ibb.co/58HHRFK/Multi-Edit-Text.gif)
 
 ## ReplaceFormattedText
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
