@@ -12,6 +12,7 @@
   *******************************************************************************************
 
   Release notes:
+  0.2.2 Fixed paragraph formatting with soft line breaks
   0.2.1 Added Shift+Enter shortcut to insert soft line break
   0.2 Added option to keep paragraph formatting (experimental)
   0.1 Initial version
@@ -41,7 +42,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Multi-edit Text',
-        version: 'v0.2.1'
+        version: 'v0.2.2'
       };
 
   var CFG = {
@@ -351,7 +352,7 @@ function isCorrectEnv() {
  * Get an array of TextFrames from a given collection
  * 
  * @param {Array} coll - The collection to search for TextFrames
- * @returns {Array} - An array containing TextFrames found in the collection
+ * @returns {Array} tfs - An array containing TextFrames found in the collection
  */
 function getTextFrames(coll) {
   var tfs = [];
@@ -391,7 +392,7 @@ function sortByPosition(coll, tolerance) {
  * 
  * @param {Array} coll - The collection of TextFrames
  * @param {string} softBreak - The soft line break special char
- * @returns {Array} - An array containing the contents of TextFrames
+ * @returns {Array} result - An array containing the contents of TextFrames
  */
 function extractContents(coll, softBreak) {
   var result = [];
@@ -425,7 +426,7 @@ function isEqualContents(coll, softBreak) {
  * Reverse the order of texts within a string separated by a specified divider
  * @param {string} str - The delimited string to reverse
  * @param {string} divider - The divider used to split
- * @returns {string} - A reversed string
+ * @returns {string} str - A reversed string
  */
 function reverseText(str, divider) {
   var tmp = str.split(divider);
@@ -461,7 +462,7 @@ function replaceContent(tf, str, isKeepStyle) {
     return;
   }
 
-  var para = get(tf.paragraphs);
+  var paras = getParagraphs(tf);
   var styles = [];
   // Whitelist of paragraph attributes (short keys)
   var paraKeys = [
@@ -471,50 +472,33 @@ function replaceContent(tf, str, isKeepStyle) {
     ];
 
   try {
-    for (var i = 0; i < para.length; i++) {
-      if (!trim(para[i].contents).length) continue;
-      styles.push( getProps(para[i], paraKeys) );
+    for (var i = 0; i < paras.length; i++) {
+      if (!trim(paras[i].contents).length) continue;
+      styles.push( getProps(paras[i], paraKeys) );
     }
   } catch (err) {}
 
+
   // Replace original text
   tf.contents = str;
-  para = get(tf.paragraphs);
+  paras = getParagraphs(tf);
 
   var style = null;
   var idx = 0;
 
-  for (var j = 0; j < para.length; j++) {
-    if (!trim(para[j].contents).length) continue;
+  for (var j = 0; j < paras.length; j++) {
+    if (!trim(paras[j].contents).length) continue;
     style = styles[idx] ? styles[idx] : styles[styles.length - 1];
-    pasteProps(style, para[j]);
+    pasteProps(style, paras[j]);
     idx++;
   }
-}
-
-/**
- * Convert a Adobe Illustrator collection into a standard Array
- *
- * @param {Object} coll - The collection to convert
- * @returns {Array} arr - An array containing the elements of the collection
- */
-function get(coll) {
-  var arr = [];
-  for (var i = 0, len = coll.length; i < len; i++) {
-    try {
-      arr.push(coll[i]);
-    } catch (err) {
-      // Skip 'No such element' error
-    }
-  }
-  return arr;
 }
 
 /**
  * Remove leading and trailing whitespace from a string
  *
  * @param {string} str - The string to trim
- * @returns {string} - The trimmed string
+ * @returns {string} str - The trimmed string
  */
 function trim(str) {
   return str.replace(/^\s+|\s+$/g, '');
@@ -525,7 +509,7 @@ function trim(str) {
  *
  * @param {Object} obj - The object to get properties from
  * @param {Array} whiteList - An array of property names to collect
- * @returns {Object} - An object containing the copied properties
+ * @returns {Object} props - An object containing the copied properties
  */
 function getProps(obj, whiteList) {
   var props = {};
@@ -559,6 +543,47 @@ function pasteProps(props, obj) {
       obj[key] = props[key];
     }
   }
+}
+
+/**
+ * Get valid paragraphs from a text frame without soft line breaks
+ * Based on https://community.adobe.com/t5/illustrator-discussions/issue-while-using-force-line-break/td-p/12990331 by m1b
+ *
+ * @param {Object} obj - The object containing the story
+ * @returns {Array} paras - An array of objects representing paragraphs
+ */
+function getParagraphs(obj) {
+  if (!obj.hasOwnProperty('story')) return;
+  // Return native paragraphs
+  // because AI older than CC 2018 does not have 'start', 'end' keys in textRanges
+  if (parseInt(app.version) < 22) return obj.paragraphs;
+
+  var story = obj.story;
+  var txt = story.textRange.contents;
+  var regex = /\u000D/g; // Carriage returns
+  var lastStart = 0;
+  var paras = [];
+  var para;
+
+  // Add paragraphs between carriage returns
+  regex.lastIndex = 0;
+  while ((regex.exec(txt)) !== null) {
+    para = story.textRange.textRanges[lastStart];
+    para.start = lastStart;
+    para.end = regex.lastIndex - 1;
+    paras.push(para);
+    lastStart = regex.lastIndex;
+  }
+
+  // Add last paragraph
+  if (regex.lastIndex > 0 && regex.lastIndex <= txt.length - 1) {
+    para = story.textRange.textRanges[lastStart];
+    para.start = regex.lastIndex;
+    para.end = txt.length;
+    paras.push(para);
+  }
+
+  return paras;
 }
 
 /**
