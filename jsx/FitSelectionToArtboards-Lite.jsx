@@ -2,15 +2,16 @@
   FitSelectionToArtboards-Lite.jsx for Adobe Illustrator
   Description: Proportional resizing one selected object to fit in parent artboard
   Date: July, 2022
-  Modification date: September, 2023
+  Modification date: April, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Full version: https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.2 Fixed objects alignment with modified artboard rulers
   0.1.1 Fixed text object fitting
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -20,7 +21,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2022 (Mac), 2022 (Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -42,10 +43,6 @@ function main() {
         aiVers: parseInt(app.version),
       };
 
-  var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
-      isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
-  CFG.isFlipY = (isRulerTopLeft && isRulerInFourthQuad) ? true : false;
-
   if (CFG.aiVers < 16) {
     alert('Error\nSorry, script only works in Illustrator CS6 and later', 'Script error');
     return;
@@ -65,16 +62,19 @@ function main() {
       abIdx = doc.artboards.getActiveArtboardIndex(),
       abBnds = doc.artboards[abIdx].artboardRect,
       item = selection[0],
-      coord = app.coordinateSystem;
+      coord = app.coordinateSystem,
+      ruler = doc.artboards[abIdx].rulerOrigin;
 
   // If the active artboard contains the selected object
   if (!CFG.isContains || isContains(item, CFG.tag)) {
     app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
+    doc.artboards[abIdx].rulerOrigin = [0, 0];
 
     fitToArtboard(item, abBnds, CFG.visBnds, CFG.isScaleStroke);
-    centerToArtboard(item, abBnds, CFG.isFlipY);
+    centerToArtboard(item, abBnds);
 
     app.coordinateSystem = coord;
+    doc.artboards[abIdx].rulerOrigin = ruler;
   }
 
   selection = [item];
@@ -238,7 +238,7 @@ function getVisibleBounds(obj, type) {
 }
 
 // Place the item in the center of the artboard
-function centerToArtboard(item, abBnds, isFlipY) {
+function centerToArtboard(item, abBnds) {
   var bnds = item.geometricBounds,
       itemSize = {
         left: bnds[0],
@@ -280,7 +280,7 @@ function centerToArtboard(item, abBnds, isFlipY) {
   var left = itemSize.left - itemSize.inLeft,
       top = itemSize.top - itemSize.inTop,
       centerX = left + (abWidth - itemSize.w) / 2,
-      centerY = top + (itemSize.h + (isFlipY ? -1 : 1) * abHeight) / 2;
+      centerY = top + (itemSize.h - abHeight) / 2;
 
   item.position = [centerX, centerY];
 }

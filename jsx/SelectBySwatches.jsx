@@ -2,7 +2,7 @@
   SelectBySwatches.jsx for Adobe Illustrator
   Description: Select objects if the stroke color matches the selected swatches
   Date: June, 2021
-  Modification date: February, 2024
+  Modification date: April, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,6 +12,7 @@
   *************************************************************************************************
 
   Release notes:
+  0.3.2 Fixed bug on PC when top layer is hidden or locked
   0.3.1 Removed input activation on Windows OS below CC v26.4
   0.3 Added third option "Fill or Stroke"
   0.2.2 Fixed input activation in Windows OS
@@ -45,7 +46,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'SelectBySwatches',
-        version: 'v0.3.1'
+        version: 'v0.3.2'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -134,6 +135,9 @@ function main() {
   win.show();
 
   function process(code) {
+    // Fix bug on PC when top layer is hidden or locked
+    var tmpLay = doc.layers.add();
+
     var items = [];
     switch (selSwatch.length) {
       case 1:
@@ -147,7 +151,12 @@ function main() {
         selectItems(items, 3, CFG);
         break;
     }
+
     if (!items.length) alert(LANG.empty);
+
+    try {
+      tmpLay.remove();
+    } catch(err) {}
     win.close();
   }
 }

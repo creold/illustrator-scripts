@@ -4,12 +4,13 @@
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
   Date: December, 2019
-  Modification date: February, 2024
+  Modification date: April, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  1.6.9 Added prefilled name if same for all objects. Minor improvements
   1.6.8 Removed input activation on Windows OS below CC v26.4
   1.6.7 Fixed text frame content as names for various options
   1.6.6 Added display of text frame content as name if it is empty
@@ -51,7 +52,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v1.6.8'
+        version: 'v1.6.9'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -176,12 +177,12 @@ function main() {
   // Load settings and fill name input field
   loadSettings();
   nameInp.text = getPlaceholder();
-  if (!isUndefined(layerRb) && layerRb.value) {
+  if (layerRb && layerRb.value) {
     nameTitle.text = nameTitle.text.replace('items', 'layers');
   }
 
-  // Сhange the amount of items and placeholder
-  if (!isUndefined(selRb)) {
+  // Change the amount of items and placeholder
+  if (selRb) {
     var layerTmpInp = '',
         selTmpInp = ''
         isEditSel = selRb.value;
@@ -202,11 +203,11 @@ function main() {
       if (isEditSel) selTmpInp = nameInp.text;
       nameTitle.text = nameTitle.text.replace(/\d+/g, uniqLayers.length);
       nameTitle.text = nameTitle.text.replace('items', 'layers');
-      if (!isUndefined(isReplcSym)) isReplcSym.value = false;
+      if (isReplcSym) isReplcSym.value = false;
       nameInp.text = !isEmpty(layerTmpInp) ? layerTmpInp : getPlaceholder();
       isEditSel = false;
     }
-  } else if (!isUndefined(abRb)) {
+  } else if (abRb) {
     var layerTmpInp = '',
         abTmpInp = ''
         isEditAb = abRb.value;
@@ -236,7 +237,7 @@ function main() {
 
   function okClick() {
     var name = nameInp.text,
-        replc = !isUndefined(replcInp) ? replcInp.text : '';
+        replc = replcInp ? replcInp.text : '';
   
     switch (selection.length) {
       case 0: // Empty selection
@@ -255,7 +256,7 @@ function main() {
         break;
       case 1: // One item
         if (selRb.value) {
-          if (!isUndefined(isReplcSym) && isReplcSym.value && !isEmpty(name)) {
+          if (isReplcSym && isReplcSym.value && !isEmpty(name)) {
             selection[0].symbol.name = name;
           }
           if (name !== getPlaceholder()) { // Input is modified
@@ -266,7 +267,7 @@ function main() {
         }
         break;
       default: // Multiple items
-        if (!isUndefined(selRb) && selRb.value) {
+        if (selRb && selRb.value) {
           rename(selection, name, replc, countInp.text, PH);
         } else if (!isEmpty(name)) {
           rename(uniqLayers, name, replc, countInp.text, PH);
@@ -288,9 +289,9 @@ function main() {
 
   // Get name placeholder
   function getPlaceholder() {
+    if (selection.typename === 'TextRange') return '';
+
     var str = '';
-    
-    if (selection.typename === 'TextRange') return str;
 
     switch (selection.length) {
       case 0: // Empty selection
@@ -298,10 +299,11 @@ function main() {
         break;
       case 1: // One item
         var item = selection[0];
-        if (layerRb.value) {
-          str = getTopLayer(item).name;
-        } else {
-          str = getName(item);
+        str = layerRb.value ? getTopLayer(item).name : getName(item);
+        break;
+      default: // Multiple items
+        if(selRb && selRb.value) {
+          str = isEqualNames(selection) ? getName(selection[0]) : '';
         }
         break;
     }
@@ -344,11 +346,11 @@ function main() {
     $file.encoding = 'UTF-8';
     $file.open('w');
     var pref = {};
-    if (!isUndefined(selRb)) pref.selection = selRb.value;
-    if (!isUndefined(abRb)) pref.artboard = abRb.value;
-    if (!isUndefined(replcInp)) pref.pattern = replcInp.text;
-    if (!isUndefined(countInp)) pref.number = countInp.text;
-    if (!isUndefined(isAll)) pref.layers = isAll.value;
+    if (selRb) pref.selection = selRb.value;
+    if (abRb) pref.artboard = abRb.value;
+    if (replcInp) pref.pattern = replcInp.text;
+    if (countInp) pref.number = countInp.text;
+    if (isAll) pref.layers = isAll.value;
     var data = pref.toSource();
     $file.write(data);
     $file.close();
@@ -364,15 +366,15 @@ function main() {
         var pref = new Function('return ' + json)();
         $file.close();
         if (typeof pref != 'undefined') {
-          if (!isUndefined(selRb) && !isUndefined(pref.selection))
+          if (selRb && pref.selection)
             pref.selection ? selRb.value = true : layerRb.value = true;
-          if (!isUndefined(abRb) && !isUndefined(pref.artboard))
+          if (abRb && pref.artboard)
             pref.artboard ? abRb.value = true : layerRb.value = true;
-          if (!isUndefined(replcInp) && !isUndefined(pref.pattern))
+          if (replcInp && pref.pattern)
             replcInp.text = pref.pattern;
-          if (!isUndefined(countInp) && !isUndefined(pref.number))
+          if (countInp && pref.number)
             countInp.text = pref.number;
-          if (!isUndefined(isAll) && !isUndefined(pref.layers))
+          if (isAll && pref.layers)
             isAll.value = pref.layers;
         }
       } catch (err) {}
@@ -429,8 +431,8 @@ function rename(target, pattern, replc, counter, ph) {
         item = target[i];
 
     newName = pattern.replaceAll(ph.name, getName(item));
-    newName = newName.replaceAll(ph.numUp, fillZero(min + i, max.toString().length));
-    newName = newName.replaceAll(ph.numDown, fillZero(max - i, max.toString().length));
+    newName = newName.replaceAll(ph.numUp, padZero(min + i, max.toString().length));
+    newName = newName.replaceAll(ph.numDown, padZero(max - i, max.toString().length));
 
     if (!isEmpty(replc)) {
       item.name = getName(item).replaceAll(replc, newName);
@@ -461,6 +463,15 @@ function getName(item) {
   return str;
 }
 
+// Check if the names of items in the collection are equal
+function isEqualNames(coll) {
+  var str = getName(coll[0]);
+  for (var i = 1, len = coll.length; i < len; i++) {
+    if (getName(coll[i]) !== str) return false;
+  }
+  return true;
+}
+
 // Replace all occurrences
 if (!String.prototype.replaceAll) {
   String.prototype.replaceAll = function(pattern, replc) {
@@ -470,19 +481,14 @@ if (!String.prototype.replaceAll) {
 
 // Check empty string
 function isEmpty(str) {
-  return !str || !str.length;
+  return str.replace(/\s/g, '').length == 0;
 }
 
 // Add zero before number
-function fillZero(number, size) {
-  var minus = (number < 0) ? '-' : '',
-      str = '00000000000' + Math.abs(number);
-  return minus + str.slice(str.length - size);
-}
-
-// Check for undefined
-function isUndefined(el) {
-  return typeof el == 'undefined';
+function padZero(num, len) {
+  num = num.toString();
+  while (num.length < len) num = '0' + num;
+  return num;
 }
 
 // Open link in browser

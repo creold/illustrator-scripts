@@ -2,18 +2,19 @@
   FitSelectionToArtboards.jsx for Adobe Illustrator
   Description: Proportional resizing of objects to fit one in each artboard
   Date: December, 2022
-  Modification date: September, 2023
+  Modification date: April, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.2 Added more options
-  0.3 Added silent mode when holding the Alt key
-  0.3.1 Added size correction in large canvas mode
-  0.3.2 Added new units API for CC 2023 v27.1.1
+  0.3.4 Fixed objects alignment with modified artboard rulers
   0.3.3 Fixed text object fitting
+  0.3.2 Added new units API for CC 2023 v27.1.1
+  0.3.1 Added size correction in large canvas mode
+  0.3 Added silent mode when holding the Alt key
+  0.2 Added more options
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -23,7 +24,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -39,7 +40,7 @@ preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag a
 function main() {
   var SCRIPT = {
         name: 'Fit Selection To Artboards',
-        version: 'v.0.3.3'
+        version: 'v.0.3.4'
       },
       CFG = {
         pads: 0,
@@ -72,10 +73,6 @@ function main() {
 
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
-
-  var isRulerTopLeft = preferences.getBooleanPreference('isRulerOriginTopLeft'),
-      isRulerInFourthQuad = preferences.getBooleanPreference('isRulerIn4thQuad');
-  CFG.isFlipY = (isRulerTopLeft && isRulerInFourthQuad) ? true : false;
 
   var isAltPressed = false;
   if (ScriptUI.environment.keyboardState.altKey) isAltPressed = true;
@@ -173,7 +170,8 @@ function process(cfg) {
       abBnds = docAbs[abIdx].artboardRect,
       docSel = selection,
       item = docSel[0],
-      coord = app.coordinateSystem;
+      coord = app.coordinateSystem,
+      ruler = docAbs[abIdx].rulerOrigin;
 
   app.coordinateSystem = CoordinateSystem.ARTBOARDCOORDINATESYSTEM;
 
@@ -181,7 +179,9 @@ function process(cfg) {
     if (cfg.isFit) {
       fitToArtboard(item, abBnds, cfg.isVisBnds, cfg.isScaleStroke, cfg.pads);
     }
-    centerToArtboard(item, abBnds, cfg.isFlipY);
+    docAbs[abIdx].rulerOrigin = [0, 0];
+    centerToArtboard(item, abBnds);
+    docAbs[abIdx].rulerOrigin = ruler;
     if (cfg.isRename) {
       renameArtboard(item, docAbs[abIdx]);
     }
@@ -191,14 +191,18 @@ function process(cfg) {
 
     for (var i = len - 1; i >= 0; i--) {
       item = docSel[i];
-      abBnds = docAbs[emptyAbs[i]].artboardRect;
-      docAbs.setActiveArtboardIndex(emptyAbs[i]);
+      abIdx = emptyAbs[i];
+      abBnds = docAbs[abIdx].artboardRect;
+      docAbs.setActiveArtboardIndex(abIdx);
       if (cfg.isFit) {
         fitToArtboard(item, abBnds, cfg.isVisBnds, cfg.isScaleStroke, cfg.pads);
       }
-      centerToArtboard(item, abBnds, cfg.isFlipY);
+      ruler = docAbs[abIdx].rulerOrigin;
+      docAbs[abIdx].rulerOrigin = [0, 0];
+      centerToArtboard(item, abBnds);
+      docAbs[abIdx].rulerOrigin = ruler;
       if (cfg.isRename) {
-        renameArtboard(item, docAbs[emptyAbs[i]]);
+        renameArtboard(item, docAbs[abIdx]);
       }
     }
   }
@@ -365,7 +369,7 @@ function getVisibleBounds(obj, type) {
 }
 
 // Place the item in the center of the artboard
-function centerToArtboard(item, abBnds, isFlipY) {
+function centerToArtboard(item, abBnds) {
   var bnds = item.geometricBounds,
       itemSize = {
         left: bnds[0],
@@ -407,7 +411,7 @@ function centerToArtboard(item, abBnds, isFlipY) {
   var left = itemSize.left - itemSize.inLeft,
       top = itemSize.top - itemSize.inTop,
       centerX = left + (abWidth - itemSize.w) / 2,
-      centerY = top + (itemSize.h + (isFlipY ? -1 : 1) * abHeight) / 2;
+      centerY = top + (itemSize.h - abHeight) / 2;
 
   item.position = [centerX, centerY];
 }
