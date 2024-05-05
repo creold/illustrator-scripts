@@ -13,6 +13,7 @@
 
 ## Scripts
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards)
+* [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
@@ -23,6 +24,13 @@
 Aligns selected clip groups and their contents to the center of the parent artboards. You can also align all selected clip groups on a single artboard. 
 
 ![CenterClipsToArtboards](https://i.ibb.co/ykHy3rM/Center-Clips-To-Artboards.gif)
+
+## ExtractFromGroup
+[![Direct](https://img.shields.io/badge/Direct%20Link-ExtractFromGroup.jsx-FF6900.svg)](https://rebrand.ly/extrgrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Extracts the selected items from parent groups. By default, each item is moved before the top parent group. If <kbd>Alt / Option (⌥)</kbd> key is pressed, move item before the first parent group.
+
+![ExtractFromGroup](https://i.ibb.co/pK5yzqS/Extract-From-Group.gif)
 
 ## ExtUngroup
 [![Direct](https://img.shields.io/badge/Direct%20Link-ExtUngroup.jsx-FF6900.svg)](https://rebrand.ly/extungrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

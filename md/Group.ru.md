@@ -13,6 +13,7 @@
 
 ## Scripts
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#centerclipstoartboards)
+* [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup)
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks)
@@ -23,6 +24,13 @@
 Выравнивает все обтравочные маски (clipping masks) и их содержимое по центру артбордов, на которых они лежат. Также можно выравнивать только выделенные маски по одному артборду. 
 
 ![CenterClipsToArtboards](https://i.ibb.co/ykHy3rM/Center-Clips-To-Artboards.gif)
+
+## ExtractFromGroup
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtractFromGroup.jsx-FF6900.svg)](https://rebrand.ly/extrgrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Извлекает выбранные элементы из групп. По умолчанию каждый элемент извлечётся перед самой верхней группой. Если зажата  клавиша <kbd>Alt / Option (⌥)</kbd>, то элемент переместится перед первой родительской группой.
+
+![ExtractFromGroup](https://i.ibb.co/pK5yzqS/Extract-From-Group.gif)
 
 ## ExtUngroup
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtUngroup.jsx-FF6900.svg)](https://rebrand.ly/extungrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
