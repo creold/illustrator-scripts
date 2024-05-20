@@ -4,12 +4,13 @@
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
   Date: December, 2019
-  Modification date: April, 2024
+  Modification date: May, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  1.7 Added options to sort selected objects before numbering
   1.6.9 Added prefilled name if same for all objects. Minor improvements
   1.6.8 Removed input activation on Windows OS below CC v26.4
   1.6.7 Fixed text frame content as names for various options
@@ -52,7 +53,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v1.6.9'
+        version: 'v1.7'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -79,66 +80,66 @@ function main() {
       uniqLayers = getUniqueLayers(selection),
       isMultiSel = selection.length > 1;
 
-  // Dialog
+  // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'column';
       win.alignChildren = ['fill', 'center'];
 
-  // Target
+  // TARGET
   var grpTarget = win.add('group');
 
   if (selection.length && selection.typename !== 'TextRange') {
     var selRb = grpTarget.add('radiobutton', undefined, 'Selection');
         selRb.value = true;
 
-    var layerRb = grpTarget.add('radiobutton', undefined, 'Parent layer(s)');
+    var layerRb = grpTarget.add('radiobutton', undefined, 'Parent Layer(s)');
   } else if (!selection.length) {
     var layerRb = grpTarget.add('radiobutton', undefined, 'Layer');
         layerRb.value = true;
 
-    var abRb = grpTarget.add('radiobutton', undefined, 'Active artboard');
+    var abRb = grpTarget.add('radiobutton', undefined, 'Active Artboard');
   }
 
-  // Name input
+  // NAME INPUT
   var grpName = win.add('group');
       grpName.alignChildren = 'fill';
       grpName.orientation = 'column';
       grpName.maximumSize.width = 200;
 
   var nameTitle = grpName.add('statictext', undefined, 'Rename ');
-      nameTitle.text += isMultiSel ? selection.length + ' items to' : 'to';
+      nameTitle.text += isMultiSel ? selection.length + ' Items to' : 'to';
 
   var nameInp = grpName.add('edittext', undefined, '');
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     nameInp.active = true;
   }
 
-  // Option for Symbol
+  // OPTION FOR SYMBOLS
   if (selection.length === 1 && selection[0].typename === 'SymbolItem') {
-    var isReplcSym = win.add('checkbox', undefined, 'Rename parent symbol');
+    var isReplcSym = win.add('checkbox', undefined, 'Rename Parent Symbol');
   }
 
-  // Replace input
+  // REPLACE INPUT
   if (isMultiSel || !selection.length) {
     var grpReplc = win.add('group');
         grpReplc.alignChildren = 'fill';
         grpReplc.orientation = 'column';
 
-    grpReplc.add('statictext', undefined, 'Search for (optional)');
+    grpReplc.add('statictext', undefined, 'Search for (Optional)');
 
     var replcInp = grpReplc.add('edittext', undefined, '');
         replcInp.helpTip = 'Enter the part of the name\nyou want to replace';
   }
 
-  // Global replace option
+  // GLOBAL REPLACE OPTION
   if (!selection.length) {
-    var isAll = win.add('checkbox', undefined, 'Replace in all ');
-    isAll.text += abRb.value ? 'artboards' : 'doc layers'; 
+    var isAll = win.add('checkbox', undefined, 'Replace in All ');
+    isAll.text += abRb.value ? 'Artboards' : 'Doc Layers'; 
   }
 
-  // Placeholders
+  // PLACEHOLDERS
   if (isMultiSel) {
-    win.add('statictext', undefined, 'Click to add placeholder');
+    win.add('statictext', undefined, 'Click To Add Placeholder');
 
     var grpPH = win.add('group');
         grpPH.alignChildren = ['fill', 'fill'];
@@ -147,20 +148,30 @@ function main() {
     putPlaceholder('Num \u2191', [0, 0, 50, 20], grpPH, PH.numUp);
     putPlaceholder('Num \u2193', [0, 0, 50, 20], grpPH, PH.numDown);
     
-    // Numeration
+    // NUMERATION
     var grpNum = win.add('group');
-    grpNum.add('statictext', undefined, 'Start number at');
+    grpNum.add('statictext', undefined, 'Start Number At:');
     var countInp = grpNum.add('edittext', undefined, 1);
-        countInp.preferredSize.width = 40;
+        countInp.preferredSize.width = 78;
 
     countInp.onChange = function () {
       this.text = convertToInt(countInp.text, 1);
     }
 
     shiftInputNumValue(countInp);
+
+    // Sort objects
+    var sortPnl = win.add('panel', undefined, 'Sort Before Numbering');
+        sortPnl.alignChildren = 'left';
+        sortPnl.margins = [10, 15, 10, 10];
+
+    var isOrder = sortPnl.add('radiobutton', undefined, 'By Order in Layers');
+        isOrder.value = true;
+    var isRows = sortPnl.add('radiobutton', undefined, 'By Rows (Like Z)');
+    var isCols = sortPnl.add('radiobutton', undefined, 'By Columns (Like \u0418)');
   }
 
-  // Buttons
+  // BUTTONS
   var btns = win.add('group');
       btns.alignChildren = ['fill', 'center'];
 
@@ -170,18 +181,18 @@ function main() {
   var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
       ok.helpTip = 'Press Enter to Run';
 
-  // Copyright block
+  // COPYRIGHT
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
-  // Load settings and fill name input field
+  // LOAD SETTINGS AND FILL NAME INPUT FIELD
   loadSettings();
   nameInp.text = getPlaceholder();
   if (layerRb && layerRb.value) {
     nameTitle.text = nameTitle.text.replace('items', 'layers');
   }
 
-  // Change the amount of items and placeholder
+  // CHANGE THE AMOUNT OF ITEMS AND PLACEHOLDER
   if (selRb) {
     var layerTmpInp = '',
         selTmpInp = ''
@@ -197,6 +208,7 @@ function main() {
       nameTitle.text = nameTitle.text.replace('layers', 'items');
       nameInp.text = !isEmpty(selTmpInp) ? selTmpInp : getPlaceholder();
       isEditSel = true;
+      sortPnl.enabled = true;
     }
 
     layerRb.onClick = function () {
@@ -206,6 +218,7 @@ function main() {
       if (isReplcSym) isReplcSym.value = false;
       nameInp.text = !isEmpty(layerTmpInp) ? layerTmpInp : getPlaceholder();
       isEditSel = false;
+      sortPnl.enabled = false;
     }
   } else if (abRb) {
     var layerTmpInp = '',
@@ -267,8 +280,14 @@ function main() {
         }
         break;
       default: // Multiple items
-        if (selRb && selRb.value) {
-          rename(selection, name, replc, countInp.text, PH);
+      if (selRb && selRb.value) {
+          var sortedSel = selection;
+          if (isRows.value) {
+            sortByRows(sortedSel, 0);
+          } else if (isCols.value) {
+            sortByColumns(sortedSel, 0);
+          }
+          rename(sortedSel, name, replc, countInp.text, PH);
         } else if (!isEmpty(name)) {
           rename(uniqLayers, name, replc, countInp.text, PH);
         }
@@ -351,6 +370,7 @@ function main() {
     if (replcInp) pref.pattern = replcInp.text;
     if (countInp) pref.number = countInp.text;
     if (isAll) pref.layers = isAll.value;
+    if (sortPnl) pref.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
     var data = pref.toSource();
     $file.write(data);
     $file.close();
@@ -366,16 +386,26 @@ function main() {
         var pref = new Function('return ' + json)();
         $file.close();
         if (typeof pref != 'undefined') {
-          if (selRb && pref.selection)
+          if (selRb && pref.selection) {
             pref.selection ? selRb.value = true : layerRb.value = true;
-          if (abRb && pref.artboard)
+          }
+          if (abRb && pref.artboard) {
             pref.artboard ? abRb.value = true : layerRb.value = true;
-          if (replcInp && pref.pattern)
+          }
+          if (replcInp && pref.pattern) {
             replcInp.text = pref.pattern;
-          if (countInp && pref.number)
+          }
+          if (countInp && pref.number) {
             countInp.text = pref.number;
-          if (isAll && pref.layers)
+          }
+          if (isAll && pref.layers) {
             isAll.value = pref.layers;
+          }
+          if (sortPnl) {
+            if (pref.sort == 0) isOrder.value = true;
+            else if (pref.sort == 1) isRows.value = true;
+            else if (pref.sort == 2) isCols.value = true;
+          }
         }
       } catch (err) {}
     }
@@ -419,6 +449,28 @@ function replaceInAll(collection, pattern, replc) {
     var newName = getName(item).replaceAll(pattern, replc);
     item.name = newName;
   }
+}
+
+// Sort objects' coordinates from left to right by rows
+function sortByRows(arr, tolerance) {
+  if (arguments.length == 1 || tolerance == undefined) tolerance = 0;
+  arr.sort(function(a, b) {
+    if (Math.abs(b.top - a.top) <= tolerance) {
+      return a.left - b.left;
+    }
+    return b.top - a.top;
+  });
+}
+
+// Sort objects' coordinates from top to bottom by columns
+function sortByColumns(arr, tolerance) {
+  if (arguments.length == 1 || tolerance == undefined) tolerance = 0;
+  arr.sort(function(a, b) {
+    if (Math.abs(a.left - b.left) <= tolerance) {
+      return b.top - a.top;
+    }
+    return a.left - b.left;
+  });
 }
 
 // Rename selection or parent layers

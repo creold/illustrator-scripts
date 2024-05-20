@@ -4,11 +4,13 @@
   Warning: Scripts cannot copy/paste gradient angle and length properties
   Note: Text frames and characters don't support gradient fill
   Date: December, 2023
+  Modification date: May, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.2 Added recolor to selected swatches
   0.1 Initial version
 
   Donate (optional):
@@ -19,8 +21,8 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
-  This script is provided "as is" without warranty of any kind.
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win)
+  This script is provided "as is" without warranty of any kind
   Free to use, not for sale
 
   Released under the MIT license
@@ -36,7 +38,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Match Colors',
-        version: 'v0.1'
+        version: 'v0.2'
       },
       CFG = {
         coordTolerance: 10, // Object alignment tolerance for sorting
@@ -45,8 +47,8 @@ function main() {
         uiOpacity: .97 // UI window opacity. Range 0-1
       },
       SETTINGS = {
-          name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
-          folder: Folder.myDocuments + '/Adobe Scripts/'
+        name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
+        folder: Folder.myDocuments + '/Adobe Scripts/'
       };
 
   if (!/illustrator/i.test(app.name)) {
@@ -59,30 +61,51 @@ function main() {
     return false;
   }
 
-  if (selection.length < 2 
-    || !isType(selection[0], 'group|text') 
-    || !isType(selection[1], 'group|text')) {
-    alert('Few objects are selected\nPlease select two groups or text objects and try again', 'Script error');
+  if (!selection.length || selection.typename === 'TextRange') {
+    alert('Few objects are selected\nPlease select two paths or groups or text objects, '
+    + 'or swatches with objects and try again', 'Script error');
     return false;
   }
+
+  var swatches = app.activeDocument.swatches.getSelected();
 
   // Array of temporary paths for fixing compound paths
   var tmpPaths = [];
 
-  var topItems = isType(selection[0], 'text') 
-      ? getCharacters(selection[0].textRange.characters)
-      : getItems(selection[0].pageItems, tmpPaths);
+  var items = [];
+  if (selection.length === 1 && isType(selection[0], 'text')) {
+    items = getCharacters(selection[0].textRange.characters);
+  } else {
+    items = getItems(selection, tmpPaths);
+  }
 
-  var btmItems = isType(selection[1], 'text') 
-      ? getCharacters(selection[1].textRange.characters)
-      : getItems(selection[1].pageItems, tmpPaths);
+  var topItems = [selection[0]];
+  if (isType(selection[0], 'text')) {
+    topItems = getCharacters(selection[0].textRange.characters);
+  } else if (isType(selection[0], 'group')) {
+    topItems = getItems(selection[0].pageItems, tmpPaths);
+  }
 
-  invokeUI(SCRIPT, CFG, SETTINGS, topItems, btmItems);
+  var btmItems = [selection[1]];
+  if (isType(selection[1], 'text')) {
+    btmItems = getCharacters(selection[1].textRange.characters);
+  } else if (isType(selection[1], 'group')) {
+    btmItems = getItems(selection[1].pageItems, tmpPaths);
+  }
+
+  if (selection.length < 2 && swatches.length < 2) {
+    alert('Few objects are selected\nPlease select two paths or groups or text objects, '
+    + 'or swatches with objects and try again', 'Script error');
+    return false;
+  }
+
+  invokeUI(SCRIPT, CFG, SETTINGS, items, topItems, btmItems, swatches);
 
   // Clear changes in compound paths
   for (var i = tmpPaths.length - 1; i >= 0; i--) {
     tmpPaths[i].remove();
   }
+  tmpPaths = [];
 }
 
 /**
@@ -92,6 +115,7 @@ function main() {
  * @returns {boolean} Returns true if the item's typename matches the specified type
  */
 function isType(item, type) {
+  if (item == undefined) return false;
   var regEx = new RegExp(type, 'i');
   return regEx.test(item.typename);
 }
@@ -115,9 +139,9 @@ function getCharacters(coll) {
 /**
  * Get items from an Adobe Illustrator collection, including nested pageItems.
  * Filter items based on type, excluding non-relevant items
- * @param {Object} coll - The Adobe Illustrator collection to retrieve items from
- * @param {Array} [tmp] - Temporary array for internal use (optional)
- * @returns {Array} Returns a JavaScript Array containing relevant items from the given collection
+ * @param {[Object|Array]} coll - The Adobe Illustrator collection to retrieve items from
+ * @param {Array} tmp - Temporary paths array
+ * @returns {Array} out - An array containing relevant items
  */
 function getItems(coll, tmp) {
   var out = [];
@@ -125,7 +149,7 @@ function getItems(coll, tmp) {
   for (var i = 0, len = coll.length; i < len; i++) {
     var item = coll[i];
     if (item.pageItems && item.pageItems.length) {
-      out = [].concat(out, getItems(item.pageItems));
+      out = [].concat(out, getItems(item.pageItems, tmp));
     } else if (isType(item, 'compound')) {
       // Fix compound path created from groups
       if (!item.pathItems.length) {
@@ -145,10 +169,12 @@ function getItems(coll, tmp) {
  * @param {Object} title - The title of the user interface window
  * @param {Object} cfg - Configuration object for the user interface
  * @param {Object} prefs - User settings file
+ * @param {Array} selArr - All items
  * @param {Array} topArr - Top-level items
  * @param {Array} btmArr - Bottom-level items
+ * @param {[Object|Array]} swatches - Selected swatches
  */
-function invokeUI(title, cfg, prefs, topArr, btmArr) {
+function invokeUI(title, cfg, prefs, selArr, topArr, btmArr, swatches) {
   var isUndo = false; // Undo history
 
   var win = new Window('dialog', title.name + ' ' + title.version);
@@ -157,17 +183,21 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
       win.opacity = cfg.uiOpacity;
 
   // Source
-  var srcPnl = win.add('panel', undefined, 'Source group or text frame');
+  var srcPnl = win.add('panel', undefined, 'Source Group or Text Frame');
       srcPnl.orientation = 'row';
       srcPnl.alignChildren = 'fill';
       srcPnl.margins = cfg.uiMgns;
 
   var isTop = srcPnl.add('radiobutton', undefined, 'Top');
       isTop.value = true;
+      isTop.enabled = selection.length > 1;
   var isBtm = srcPnl.add('radiobutton', undefined, 'Bottom');
+      isBtm.enabled = selection.length > 1;
+  var isSw = srcPnl.add('radiobutton', undefined, 'Swatches');
+      isSw.enabled = swatches.length > 1;
 
   // Sort objects
-  var sortPnl = win.add('panel', undefined, 'Sort objects');
+  var sortPnl = win.add('panel', undefined, 'Sort Objects');
       sortPnl.orientation = 'row';
       sortPnl.alignChildren = 'fill';
       sortPnl.margins = cfg.uiMgns;
@@ -177,7 +207,7 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
   var isByPos = sortPnl.add('radiobutton', undefined, 'By X + Y');
 
   // Direction
-  var dirPnl = win.add('panel', undefined, 'Target recolor direction');
+  var dirPnl = win.add('panel', undefined, 'Target Recolor Direction');
       dirPnl.orientation = 'row';
       dirPnl.alignChildren = 'fill';
       dirPnl.margins = cfg.uiMgns;
@@ -187,7 +217,7 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
   var isBkwd = dirPnl.add('radiobutton', undefined, 'Backward');
 
   // Colors
-  var colPnl = win.add('panel', undefined, 'Match source colors');
+  var colPnl = win.add('panel', undefined, 'Match Source Colors');
       colPnl.alignChildren = 'fill';
       colPnl.margins = cfg.uiMgns;
 
@@ -221,7 +251,7 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
   if (isPreview.value) preview();
 
   isPreview.onClick = preview;
-  isTop.onClick = isBtm.onClick = preview;
+  isTop.onClick = isBtm.onClick = isSw.onClick = preview;
   isByLay.onClick = isByPos.onClick = preview;
   isFwd.onClick = isBkwd.onClick = preview;
   isByNum.onClick = isRpt.onClick = isExt.onClick = preview
@@ -236,6 +266,10 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
   win.onClose = function () {
     try {
       if (isUndo) undo();
+    } catch (err) {}
+    try {
+      var tmpPath = activeDocument.pathItems.getByName('__TempPath');
+      tmpPath.remove();
     } catch (err) {}
   };
 
@@ -256,34 +290,39 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
 
   // Apply new fill colors based on the source array
   function applyColors()  {
-    var srcItems = [].concat([], isTop.value ? topArr : btmArr);
-    var destItems = [].concat([], isTop.value ? btmArr : topArr);
+    var tmpPath = selection[0].layer.pathItems.add();
+    tmpPath.name = '__TempPath';
+
+    var srcArr = [].concat([], isTop.value ? topArr : (isBtm.value ? btmArr : swatches));
+    var destArr = [].concat([], isTop.value ? btmArr : (isBtm.value ? topArr : selArr));
 
     var len = isByNum.value 
-        ? Math.min(destItems.length, srcItems.length) 
-        : destItems.length;
-    var last = srcItems.length - 1;
+        ? Math.min(destArr.length, srcArr.length) 
+        : destArr.length;
+    var last = srcArr.length - 1;
 
-    if (!isType(srcItems[0], 'textrange') && isByPos.value) {
-      sortByPosition(srcItems, cfg.coordTolerance);
+    if (!isSw.value && !isType(srcArr[0], 'textrange') && isByPos.value) {
+      sortByPosition(srcArr, cfg.coordTolerance);
     }
 
-    if (!isType(destItems[0], 'textrange') && isByPos.value) {
-      sortByPosition(destItems, cfg.coordTolerance);
+    if (!isType(destArr[0], 'textrange') && isByPos.value) {
+      sortByPosition(destArr, cfg.coordTolerance);
     }
-    if (isBkwd.value) destItems.reverse();
+    if (isBkwd.value) destArr.reverse();
 
     for (var i = 0; i < len; i++) {
-      var currItem = destItems[i];
-      var j = isExt.value && i > last ? last : i % srcItems.length;
+      var currItem = destArr[i];
+      var j = isExt.value && i > last ? last : i % srcArr.length;
       var srcColor;
 
-      if (isType(srcItems[j], 'textrange')) {
-        srcColor = srcItems[j].characterAttributes.fillColor;
-      } else if (isType(srcItems[j], 'textframe')) {
-        srcColor = srcItems[j].textRange.characters[0].characterAttributes.fillColor;
+      if (isType(srcArr[j], 'swatch')) {
+        srcColor = srcArr[j].color;
+      } else if (isType(srcArr[j], 'textrange')) {
+        srcColor = srcArr[j].characterAttributes.fillColor;
+      } else if (isType(srcArr[j], 'textframe')) {
+        srcColor = srcArr[j].textRange.characters[0].characterAttributes.fillColor;
       } else {
-        srcColor = srcItems[j].fillColor;
+        srcColor = srcArr[j].fillColor;
       }
 
       if (isType(currItem, 'textrange')) {
@@ -314,7 +353,7 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
     f.encoding = 'UTF-8';
     f.open('w');
     var pref = {};
-    pref.source = isTop.value ? 0 : 1;
+    pref.source = isTop.value ? 0 : (isBtm.value ? 1 : 2);
     pref.sort = isByLay.value ? 0 : 1;
     pref.direction = isFwd.value ? 0 : 1;
     pref.match = isByNum.value ? 0 : (isRpt.value ? 1 : 2);
@@ -337,7 +376,13 @@ function invokeUI(title, cfg, prefs, topArr, btmArr) {
         var pref = new Function('return ' + json)();
         f.close();
         if (typeof pref != 'undefined') {
-          srcPnl.children[pref.source].value = true;
+          if (!isTop.enabled && !isBtm.enabled) {
+            srcPnl.children[2].value = true;
+          } else if (!isSw.enabled) {
+            srcPnl.children[0].value = true;
+          } else {
+            srcPnl.children[pref.source].value = true;
+          }
           sortPnl.children[pref.sort].value = true;
           dirPnl.children[pref.direction].value = true;
           colPnl.children[pref.match].value = true;
