@@ -81,8 +81,8 @@ function main() {
 
   // Buttons
   var btns = win.add('group');
+      btns.orientation = 'row';
       btns.alignChildren = ['fill', 'fill'];
-      btns.orientation = 'column';
       btns.margins = [10, 0, 10, 0];
 
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });

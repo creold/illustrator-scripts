@@ -15,6 +15,7 @@
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#centerclipstoartboards)
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup)
+* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `new, 11.06.2024`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks)
 
@@ -42,6 +43,13 @@
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39484654-create-an-ungroup-all-feature-on-layer-s) за внедрение этой функции в Иллюстратор.
 
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
+
+## GroupArtboardObjects
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-GroupArtboardObjects.jsx-FF6900.svg)](https://rebrand.ly/grpabobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Скрипт группирует объекты на артбордах, при этом пропускает заблокированные или скрытые объекты. Опционально можно переименовать полученные группы и сортировать в слоях по порядку.
+
+![GroupArtboardObjects](https://i.ibb.co/GTGDnCF/Group-Artboard-Objects.gif)
 
 ## MoveToGroup
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveToGroup.jsx-FF6900.svg)](https://rebrand.ly/movtogrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

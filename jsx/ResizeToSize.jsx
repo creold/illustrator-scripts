@@ -150,6 +150,7 @@ function main () {
       idx++;
     };
   };
+  sideArr[0].value = true;
 
   var refPointPnl = sideGrp.add('panel', undefined, 'Ref. point');
       refPointPnl.orientation = 'row';
