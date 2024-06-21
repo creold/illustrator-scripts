@@ -14,6 +14,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `27.03.2022`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `18.04.2022`
+* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorgroupreplacer) `08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#contrastchecker) `07.09.2023`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#converttogradient) `upd, 09.02.2024`
@@ -49,6 +50,23 @@
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40882126-simulate-color-blindness-for-accessibility) за внедрение этой функции в Иллюстратор.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
+
+## ColorCorrector
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorCorrector.jsx-FF6900.svg)](https://rebrand.ly/clrcrct) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+До Иллюстратор CS4 можно было массово устанавливать значения цветовых каналов нескольких объектов. С версии CS5 эта возможность пропала. Скрипт позволяет менять значения каналов заливок и обводок следующим образом:   
+
+1. Устанавливать точные числовые значения
+2. Применять математические операции +, -, *, /
+3. Вычислять значение канала относительно другого по его имени
+
+В зависимости от режима документа появятся поля RGB или CMYK.
+
+<a href="https://youtu.be/2Vi9YPGTXEE">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
+![ColorCorrector](https://i.ibb.co/Wyd976r/Color-Corrector.gif)
 
 ## ColorGroupReplacer
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

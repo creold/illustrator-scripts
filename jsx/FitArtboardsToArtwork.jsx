@@ -2,16 +2,17 @@
   FitArtboardsToArtwork.jsx for Adobe Illustrator
   Description: Resize each artboard by editable artwork size with paddings
   Date: December, 2022
-  Modification date: September, 2023
+  Modification date: June, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
-  0.1.1 Added size correction in large canvas mode
-  0.1.2 Added new units API for CC 2023 v27.1.1
+  0.2 Added custom artboards range
   0.1.3 Fixed fitting by text object bounds
+  0.1.2 Added new units API for CC 2023 v27.1.1
+  0.1.1 Added size correction in large canvas mode
+  0.1 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -21,7 +22,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2023 (Mac), 2023 (Win).
+  Tested with Adobe Illustrator CC 2018-2024 (Mac), 2024 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -37,13 +38,14 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
 var SCRIPT = {
       name: 'Fit Artboards To Artwork',
-      version: 'v.0.1.3'
+      version: 'v0.2'
     },
     CFG = {
       aiVers: parseFloat(app.version),
       units: getUnits(), // Active document units
       pads: 10,
       isEqual: true,
+      isMac: /mac/i.test($.os),
       dlgOpacity: .97 // UI window opacity. Range 0-1
     };
 
@@ -60,24 +62,31 @@ var SCRIPT = {
   // Scale factor for Large Canvas mode
   CFG.sf = activeDocument.scaleFactor ? activeDocument.scaleFactor : 1;
 
-  // Dialog
+  var doc = app.activeDocument;
+  var currAb = doc.artboards.getActiveArtboardIndex();
+  var absLength = doc.artboards.length;
+
+  // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'row';
       win.alignChildren = ['fill', 'fill'];
       win.opacity = CFG.dlgOpacity;
 
-  // Paddings
-  var padPnl = win.add('panel', undefined, 'Paddings, ' + CFG.units);
+  var wrapper = win.add('group');
+      wrapper.orientation = 'column';
+
+  // PADDINGS
+  var padPnl = wrapper.add('panel', undefined, 'Paddings, ' + CFG.units);
       padPnl.alignChildren = ['left', 'bottom'];
       padPnl.margins = 10;
 
-  // Wrapper
-  var wrapper = padPnl.add('group');
-      wrapper.alignChildren = ['left', 'bottom'];
-      wrapper.spacing = 10;
+  var padInp = padPnl.add('group');
+      padInp.alignChildren = ['left', 'bottom'];
+      padInp.spacing = 10;
 
-  // Top
-  var top = wrapper.add('group');
-      top.preferredSize.width = 50;
+  // TOP
+  var top = padInp.add('group');
+      top.preferredSize.width = 45;
       top.orientation = 'column';
       top.alignChildren = ['fill', 'center'];
       top.spacing = 5;
@@ -85,9 +94,9 @@ var SCRIPT = {
   top.add('statictext', undefined, 'Top');
   var topInp = top.add('edittext', undefined, CFG.pads);
 
-  // Bottom
-  var bottom = wrapper.add('group');
-      bottom.preferredSize.width = 50;
+  // BOTTOM
+  var bottom = padInp.add('group');
+      bottom.preferredSize.width = 45;
       bottom.orientation = 'column';
       bottom.alignChildren = ['fill', 'center'];
       bottom.spacing = 5;
@@ -95,9 +104,9 @@ var SCRIPT = {
   bottom.add('statictext', undefined, 'Bottom');
   var bottomInp = bottom.add('edittext', undefined, CFG.pads);
 
-  // Left
-  var left = wrapper.add('group');
-      left.preferredSize.width = 50;
+  // LEFT
+  var left = padInp.add('group');
+      left.preferredSize.width = 45;
       left.orientation = 'column';
       left.alignChildren = ['fill', 'center'];
       left.spacing = 5;
@@ -105,9 +114,9 @@ var SCRIPT = {
   left.add('statictext', undefined, 'Left');
   var leftInp = left.add('edittext', undefined, CFG.pads);
 
-  // Right
-  var right = wrapper.add('group');
-      right.preferredSize.width = 50;
+  // RIGHT
+  var right = padInp.add('group');
+      right.preferredSize.width = 45;
       right.orientation = 'column';
       right.alignChildren = ['fill', 'center'];
       right.spacing = 5;
@@ -115,64 +124,123 @@ var SCRIPT = {
   right.add('statictext', undefined, 'Right');
   var rightInp = right.add('edittext', undefined, CFG.pads);
 
-  var isEqual = wrapper.add('checkbox');
+  var isEqual = padInp.add('checkbox');
+      isEqual.helpTip = 'Equal paddings';
       isEqual.value = CFG.isEqual;
 
   bottomInp.enabled = !isEqual.value;
   leftInp.enabled = !isEqual.value;
   rightInp.enabled = !isEqual.value;
 
-  // Artboards
-  var absPnl = win.add('panel', undefined, 'Source');
-      absPnl.orientation = 'row';
-      absPnl.alignChildren = ['fill', 'top'];
-      absPnl.margins = [10, 15, 10, 10];
+  // ARBOARDS RANGE
+  var rangePnl = wrapper.add('panel', undefined, 'Artboards Range');
+      rangePnl.orientation = 'column';
+      rangePnl.alignChildren = ['fill', 'center'];
+      rangePnl.margins = [10, 15, 10, 7];
 
-  var activeRb = absPnl.add('radiobutton', undefined, 'Active artboard');
-      activeRb.value = true;
-  var allRb = absPnl.add('radiobutton', undefined, 'All artboards');
+  var radio = rangePnl.add('group');
+      radio.alignChildren = ['left', 'bottom'];
 
+  var isCstmAb = radio.add('radiobutton', undefined, 'Custom');
+      isCstmAb.value = true;
+
+  var idx = radio.add('group');
+      idx.alignChildren = ['fill', 'center'];
+  
+  var startGrp = idx.add('group');
+      startGrp.alignChildren = ['left', 'center'];
+
+  var startLbl = startGrp.add('statictext', undefined, 'Start:');
+      startLbl.justify = 'left';
+
+  var startInp = startGrp.add('edittext', undefined, '1');
+      startInp.characters = 4;
+      startInp.enabled = isCstmAb.value;
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
+    startInp.active = true;
+  }
+
+  var endGrp = idx.add('group');
+      endGrp.alignChildren = ['left', 'center'];
+
+  var endLbl = endGrp.add('statictext', undefined, 'End:');
+      endLbl.justify = 'left';
+
+  var endInp = endGrp.add('edittext', undefined, absLength);
+      endInp.characters = 4;
+      endInp.enabled = isCstmAb.value;
+
+  var isCurrAb = rangePnl.add('radiobutton', undefined, 'Current: ' + doc.artboards[currAb].name.substr(0, 28));
+
+  // BUTTONS
   var btns = win.add('group');
-      btns.alignChildren = ['center', 'top'];
-  var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
-  var ok = btns.add('button', undefined, 'Ok', {name: 'ok'});
+      btns.orientation = 'column';
+      btns.alignChildren = ['fill', 'top'];
 
-  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var cancel, ok;
+  if (CFG.isMac) {
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
+  } else {
+    ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+  }
+
+  var copyright = btns.add('statictext', undefined, 'Visit Github');
       copyright.justify = 'center';
 
-  copyright.addEventListener('mousedown', function () {
-    openURL('https://github.com/creold/');
-  });
-
+  // EVENTS
   isEqual.onClick = function () {
     bottomInp.enabled = !this.value;
     leftInp.enabled = !this.value;
     rightInp.enabled = !this.value;
   }
 
+  isCstmAb.onClick = function () {
+    startInp.enabled = endInp.enabled = true;
+    isCurrAb.value = false;
+  }
+
+  isCurrAb.onClick = function () {
+    startInp.enabled = endInp.enabled = false;
+    isCstmAb.value = false;
+  }
+
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  function okClick() {
-    var doc = app.activeDocument,
-        pads = {};
+  copyright.addEventListener('mousedown', function () {
+    openURL('https://github.com/creold/');
+  });
 
+  function okClick() {
+    var pads = {};
     pads.top = convertUnits( strToAbsNum(topInp.text, CFG.pads), CFG.units, 'px' ) / CFG.sf;
     pads.bottom = isEqual.value ? pads.top : convertUnits( strToAbsNum(bottomInp.text, CFG.pads), CFG.units, 'px' ) / CFG.sf;
     pads.left = isEqual.value ? pads.top : convertUnits( strToAbsNum(leftInp.text, CFG.pads), CFG.units, 'px' ) / CFG.sf;
     pads.right = isEqual.value ? pads.top : convertUnits( strToAbsNum(rightInp.text, CFG.pads), CFG.units, 'px' ) / CFG.sf;
 
-    selection = null;
-    redraw();
+    app.executeMenuCommand('deselectall');
 
-    if (allRb.value) {
-      for (var i = 0, len = doc.artboards.length; i < len; i++) {
-        doc.artboards.setActiveArtboardIndex(i);
-        resizeArtboard(doc.artboards[i], i, pads);
+    if (isCstmAb.value) {
+      var startIdx = parseInt(startInp.text) - 1 || 0;
+      var endIdx = parseInt(endInp.text) || absLength;
+
+      if (isNaN(startIdx) || startIdx < 0 || startIdx >= absLength) {
+        alert('Start index is invalid', 'Input error');
+        return;
+      }
+    
+      if (isNaN(endIdx) || endIdx < startIdx || endIdx > absLength) {
+        alert('End index is invalid', 'Input error');
+        return;
+      }
+
+      for (var i = startIdx; i < endIdx; i++) {
+        resizeArtboard(doc, i, pads);
       }
     } else {
-      var idx = doc.artboards.getActiveArtboardIndex();
-      resizeArtboard(doc.artboards[idx], idx, pads);
+      resizeArtboard(doc, currAb, pads);
     }
 
     win.close();
@@ -183,25 +251,27 @@ var SCRIPT = {
 }
 
 // Add paddings to artboard
-function resizeArtboard(ab, idx, pads) {
-  activeDocument.selectObjectsOnActiveArtboard();
-  if (!selection.length) return;
+function resizeArtboard(doc, idx, pads) {
+  doc.artboards.setActiveArtboardIndex(idx);
+  var ab = doc.artboards[idx];
+  doc.selectObjectsOnActiveArtboard();
+  if (!app.selection.length) return;
 
-  if (hasTextFrame(selection)) {
-    var abSel = selection;
-    var dupArr = getDuplicates(selection);
-    selection = dupArr;
+  if (hasTextFrame(app.selection)) {
+    var abSel = app.selection;
+    var dupArr = getDuplicates(app.selection);
+    app.selection = dupArr;
     app.executeMenuCommand('Live Outline Object');
     app.executeMenuCommand('expandStyle');
-    dupArr = selection;
+    dupArr = app.selection;
     activeDocument.fitArtboardToSelectedArt(idx);
-    selection = abSel;
+    app.selection = abSel;
     rmvItems(dupArr);
   } else {
     activeDocument.fitArtboardToSelectedArt(idx);
   }
 
-  selection = null;
+  app.executeMenuCommand('deselectall');
 
   var rect = ab.artboardRect,
       left = rect[0],

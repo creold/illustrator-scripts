@@ -14,6 +14,7 @@
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `27.03.2022`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `18.04.2022`
+* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `07.09.2023`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `upd, 09.02.2024`
@@ -49,6 +50,23 @@ Simulates color vision deficiency of 8 types. You can recolor objects or use onl
 > Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/40882126-simulate-color-blindness-for-accessibility) to add this feature to Illustrator.
 
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
+
+## ColorCorrector
+[![Direct](https://img.shields.io/badge/Direct%20Link-ColorCorrector.jsx-FF6900.svg)](https://rebrand.ly/clrcrct) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+In Illustrator prior to CS4, you could set the same color channel values for multiple objects. As of CS5, this feature is no longer available. The script allows you to change the fill and stroke channel values as follows   
+
+1. Set exact numeric values
+2. Apply +, -, *, / mathematical operations
+3. Calculate the value of one channel relative to another by its name
+
+For RGB or CMYK document mode, the script changes the input field list.
+
+<a href="https://youtu.be/2Vi9YPGTXEE">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>  
+
+![ColorCorrector](https://i.ibb.co/Wyd976r/Color-Corrector.gif)
 
 ## ColorGroupReplacer
 [![Direct](https://img.shields.io/badge/Direct%20Link-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
