@@ -316,7 +316,7 @@ function invokeUI(items, CFG) {
     }
 
     for (var i = 0, len = items.length; i < len; i++) {
-      increaseStrokeWidth(items[i], CFG, isPercent.value, value);
+      decreaseStrokeWeight(items[i], CFG, isPercent.value, value);
     }
   }
 
@@ -394,10 +394,10 @@ function invokeUI(items, CFG) {
           isPercent.value = pref.type;
           isDelta.value = !pref.type;
           tmpPercent = pref.percent;
+          slider.value = parseInt(pref.percent);
           tmpDelta = pref.delta;
           if (isPercent.value) {
             inp.text = pref.percent;
-            slider.value = parseFloat(pref.percent);
             inpUnits.text = '%';
           } else {
             inp.text = pref.delta;
@@ -411,6 +411,24 @@ function invokeUI(items, CFG) {
 
   win.center();
   win.show();
+}
+
+/**
+ * Check if any item in the collection or its sub-collections is a TextFrame
+ * 
+ * @param {Array} coll - The collection of items to check
+ * @returns {boolean} - Returns true if a TextFrame is found, otherwise false
+ */
+function hasTextFrame(coll) {
+  for (var i = 0; i < coll.length; i++) {
+    var item = coll[i];
+    if (item.typename === 'TextFrame') {
+      return true;
+    } else if (item.pageItems && item.pageItems.length) {
+      if (hasTextFrame(item.pageItems)) return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -546,6 +564,21 @@ function convertUnits(value, currUnits, newUnits) {
 function roundNum(num, decimals) {
   var pow = Math.pow(10, decimals);
   return Math.round(num * pow) / pow;
+}
+
+/**
+ * Open a URL in the default web browser
+ *
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+*/
+function openURL(url) {
+  var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
+  html.open('w');
+  var htmlBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL=' + url + '"></head><body> <p></body></html>';
+  html.write(htmlBody);
+  html.close();
+  html.execute();
 }
 
 try {

@@ -7,12 +7,14 @@
   WCAG can give a positive result on a bad color pair. You can use the Accessible Perceptual Contrast Algorithm (APCA) calculator, which is more difficult to use.
 
   Date: September, 2023
+  Modification date: July, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.1 Added prompt to set custom contrast ratio
+  0.1.0 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -22,7 +24,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2023 (Mac/Win).
+  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -39,10 +41,10 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Contrast Checker',
-        version: 'v.0.1'
+        version: 'v0.1.1'
       },
       CFG = {
-        defRatio: 4.5, // Set ratio value for autocorrection
+        defRatio: 3, // Set ratio value for autocorrection
         pass: 'Pass',
         fail: 'Fail',
         isDarkUI: app.preferences.getRealPreference('uiBrightness') <= .5,
@@ -431,10 +433,12 @@ function invokeUI(title, cfg, obj1, obj2, c1, c2) {
       btns.orientation = 'column';
       btns.alignChildren = ['fill', 'top'];
 
-  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
-  var reset = btns.add('button', undefined, 'Reset', { name: 'reset' });
-  var auto = btns.add('button', undefined, 'Auto ' + cfg.defRatio + ':1', { name: 'auto' });
-  var apply = btns.add('button', undefined, 'Apply', { name: 'ok' });
+  var resetBtn = btns.add('button', undefined, 'Reset', { name: 'reset' });
+      resetBtn.helpTip = 'Restore original values';
+  var customBtn = btns.add('button', undefined, 'Custom', { name: 'custom' });
+      customBtn.helpTip = 'Set custom contrast ratio';
+  var cancelBtn = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+  var applyBtn = btns.add('button', undefined, 'Apply', { name: 'ok' });
 
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
@@ -466,9 +470,9 @@ function invokeUI(title, cfg, obj1, obj2, c1, c2) {
     uiUpdate(false);
   }
 
-  cancel.onClick = win.close;
+  cancelBtn.onClick = win.close;
 
-  reset.onClick = function () {
+  resetBtn.onClick = function () {
     if (!isUndoC1 && !isUndoC2) return;
 
     tmpC1 = c1.slice();
@@ -480,23 +484,27 @@ function invokeUI(title, cfg, obj1, obj2, c1, c2) {
     isUndoC2 = false;
   }
 
-  auto.onClick = function() {
+  customBtn.onClick = function() {
+    var cstmInput = prompt('Enter custom contrast value from 1.0 to 21.0', cfg.defRatio);
+    if (cstmInput === null) return;
+
+    var cstmRatio = parseFloat(cstmInput.replace(/,/g, '.').split(':')[0]);
+    if (isNaN(cstmRatio)) return;
+
     tmpC1 = c1.slice();
     tmpC2 = c2.slice();
 
-    if (getContrastRatio(tmpC1, tmpC2) < cfg.defRatio) {
-      var data = adjustColor(tmpC1, tmpC2, cfg.defRatio, isRgb);
-      tmpC1 = data.c1.slice();
-      tmpC2 = data.c2.slice();
+    var data = adjustColor(tmpC1, tmpC2, cstmRatio, isRgb);
+    tmpC1 = data.c1.slice();
+    tmpC2 = data.c2.slice();
 
-      isUndoC1 = true;
-      isUndoC2 = true;
-    }
+    isUndoC1 = true;
+    isUndoC2 = true;
 
     uiUpdate(true);
   }
 
-  apply.onClick = function () {
+  applyBtn.onClick = function () {
     if (isUndoC1) {
       obj1.fillColor = isRgb ? setRGBColor(tmpC1) : setCMYKColor(rgb2cmyk(tmpC1));
     }
@@ -604,7 +612,7 @@ function scale01(n) {
 }
 
 // Adjust color to meet a minimum contrast ratio
-function adjustColor(c1, c2, minRatio, isRgb) {
+function adjustColor(c1, c2, cstmRatio, isRgb) {
   var l1 = calcLuminance(c1);
   var l2 = calcLuminance(c2);
   var isDarken = l1 < l2;
@@ -622,29 +630,50 @@ function adjustColor(c1, c2, minRatio, isRgb) {
 
   var maxIterations = 1000;
 
-  for (var i = 0; i < maxIterations && currRatio < minRatio; i++) {
-    if ((isDarken && b1 > 1) || (!isDarken && b1 < 99)) {
-      b1 = isDarken ? b1 - 1 : b1 + 1;
-    } else {
-      b1 = isDarken ? 0 : 100;
+  if (currRatio < cstmRatio) {
+    for (var i = 0; i < maxIterations && currRatio < cstmRatio; i++) {
+      if ((isDarken && b1 > 1) || (!isDarken && b1 < 99)) {
+        b1 = isDarken ? b1 - 1 : b1 + 1;
+      } else {
+        b1 = isDarken ? 0 : 100;
+      }
+
+      if ((isDarken && b2 < 99) || (!isDarken && b2 > 1)) {
+        isDarken ? b2++ : b2--;
+      } else {
+        b2 = isDarken ? 100 : 0;
+      }
+
+      if (s1 >= 0.1) s1 -= 0.1;
+      if (s2 >= 0.1) s2 -= 0.1;
+
+      tmpC1 = fadeColor(hsb2rgb([hsb1[0], s1, b1]), isRgb);
+      tmpC2 = fadeColor(hsb2rgb([hsb2[0], s2, b2]), isRgb);
+
+      currRatio = getContrastRatio(tmpC1, tmpC2);
     }
+  } else if (currRatio > cstmRatio) {
+    for (var i = 0; i < maxIterations && currRatio > cstmRatio; i++) {
+      if ((isDarken && b1 < 99) || (!isDarken && b1 > 1)) {
+        isDarken ? b1++ : b1--;
+      } else {
+        b1 = isDarken ? 100 : 0;
+      }
 
-    if ((isDarken && b2 < 99) || (!isDarken && b2 > 1)) {
-      b2 = isDarken ? b2 + 1 : b2 - 1;
-    } else {
-      b2 = isDarken ? 100 : 0;
+      if ((isDarken && b2 > 1) || (!isDarken && b2 < 99)) {
+        isDarken ? b2-- : b2++;
+      } else {
+        b2 = isDarken ? 0 : 100;
+      }
+
+      if (s1 <= 0.9) s1 += 0.1;
+      if (s2 <= 0.9) s2 += 0.1;
+
+      tmpC1 = fadeColor(hsb2rgb([hsb1[0], s1, b1]), isRgb);
+      tmpC2 = fadeColor(hsb2rgb([hsb2[0], s2, b2]), isRgb);
+
+      currRatio = getContrastRatio(tmpC1, tmpC2);
     }
-
-    if (s1 >= 0.1) s1 -= 0.1;
-    if (s2 >= 0.1) s2 -= 0.1;
-
-    tmpC1 = hsb2rgb([hsb1[0], s1, b1]);
-    tmpC1 = fadeColor(tmpC1, isRgb);
-
-    tmpC2 = hsb2rgb([hsb2[0], s2, b2]);
-    tmpC2 = fadeColor(tmpC2, isRgb);
-
-    currRatio = getContrastRatio(tmpC1, tmpC2);
   }
 
   return {

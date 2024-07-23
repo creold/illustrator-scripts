@@ -401,10 +401,10 @@ function invokeUI(items, CFG) {
           isPercent.value = pref.type;
           isDelta.value = !pref.type;
           tmpPercent = pref.percent;
+          slider.value = parseInt(pref.percent);
           tmpDelta = pref.delta;
           if (isPercent.value) {
             inp.text = pref.percent;
-            slider.value = parseFloat(pref.percent);
             inpUnits.text = '%';
           } else {
             inp.text = pref.delta;

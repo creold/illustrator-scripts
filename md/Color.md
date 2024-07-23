@@ -16,7 +16,7 @@
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `08.10.2023`
-* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `07.09.2023`
+* [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `23.07.2024`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `upd, 09.02.2024`
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `upd, 09.02.2024`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient)
@@ -88,7 +88,7 @@ Helps select color combinations for text and backgrounds, icons and other interf
 > [!WARNING]   
 > Remember that contrast can vary depending on your monitor, device, environmental conditions, typefaces, and many other details. Using common sense can be more helpful than mindlessly following a rule. [Read more](https://ais.sergosokin.ru/color/contrast-checker/)
 
-![ContrastChecker](https://i.ibb.co/YR2mvSY/Contrast-Checker.gif)
+![ContrastChecker](https://i.ibb.co/wwRPNVD/Contrast-Checker.gif)
 
 ## ConvertToGradient
 [![Direct](https://img.shields.io/badge/Direct%20Link-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
