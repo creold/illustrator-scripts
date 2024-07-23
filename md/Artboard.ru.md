@@ -2,7 +2,7 @@
 
 # Artboard | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -69,7 +69,7 @@
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DuplicateArtboardsLight.jsx-FF6900.svg)](https://rebrand.ly/dupabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
+Дублирует заданное количество раз выбранный артборд с его содержимым. Платная Pro версия с большим количеством опций доступна на [Buymeacoffee](https://buymeacoffee.com/aiscripts/extras)   
 
 <a href="https://youtu.be/qDH1YRaYMYk">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">

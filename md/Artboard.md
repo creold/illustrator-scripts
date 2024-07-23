@@ -2,7 +2,7 @@
 
 # Artboard | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -69,7 +69,7 @@ The Find & Replace supports [regular expression symbols](https://cheatography.co
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Direct%20Link-DuplicateArtboardsLight.jsx-FF6900.svg)](https://rebrand.ly/dupabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Gumroad](https://gumroad.com/sergosokin)   
+Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Buymeacoffee](https://buymeacoffee.com/aiscripts/extras)   
 
 <a href="https://youtu.be/qDH1YRaYMYk">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
@@ -116,16 +116,20 @@ The script renames each Artboard by the custom name of the first visible unlocke
 ![RenameArtboardAsTopObj](https://i.ibb.co/WPmf14B/Rename-Artboard-As-Top-Obj.gif)
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

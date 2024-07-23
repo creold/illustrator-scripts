@@ -2,7 +2,7 @@
 
 # Select | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -101,16 +101,20 @@ Finds rotated objects in a selection or in a document. If `isSkipRight: true`, t
 ![SelectRotatedItems](https://i.ibb.co/7YpGm9M/Select-Rotated-Items.gif)
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

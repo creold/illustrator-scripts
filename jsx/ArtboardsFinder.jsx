@@ -63,7 +63,6 @@ function main() {
         byName: { en: 'By name', ru: 'По имени'},
         byWidth: { en: 'By width, ' + CFG.units, ru: 'По ширине, ' + CFG.units},
         byHeight: { en: 'By height, ' + CFG.units, ru: 'По высоте, ' + CFG.units},
-        byName: { en: 'By name', ru: 'По имени'},
         landscape: { en: 'Landscape', ru: 'Альбомные'},
         portrait: { en: 'Portrait', ru: 'Портретные'},
         square: { en: 'Square', ru: 'Квадратные'},

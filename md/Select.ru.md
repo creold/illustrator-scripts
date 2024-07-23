@@ -2,7 +2,7 @@
 
 # Select | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -101,16 +101,20 @@
 ![SelectRotatedItems](https://i.ibb.co/7YpGm9M/Select-Rotated-Items.gif)
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

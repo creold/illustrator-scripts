@@ -2,7 +2,7 @@
 
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md), [Русский](README.ru.md)*
 
@@ -12,7 +12,7 @@
 Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2019-2024 (Windows), CC 2019-2024 (Mac OS). 
 
 ## Как скачать один скрипт
-1. В описании скрипта нажмите кнопку «Прямая ссылка».
+1. В описании скрипта нажмите кнопку ![Direct](https://img.shields.io/badge/Прямая%20ссылка-000000.svg).
 2. Во вкладке откроется код скрипта.
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
@@ -27,6 +27,7 @@
 	- Windows (64 bit): `C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\`
 	- Русскоязычная версия: `C:\Program Files\Adobe\Adobe Illustrator [версия]\Стили\ru_RU\Сценарии\`
 3. Перезапустите программу
+4. Скрипты станут доступны в меню File → Scripts
 
 [Скачайте архив]: https://bit.ly/2M0j95N 
 
@@ -41,20 +42,33 @@
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
+#### Вариант 4 — Утилиты
+С их помощью можно запрограммировать макросы запуска скриптов по горячим клавишам.
+
+1. [SPAi](https://tama-san.com/spai/) (Mac OS, бесплатно)
+2. [Hammerspoon](https://www.hammerspoon.org/) (Mac OS, бесплатно)
+3. [Keyboard Maestro](https://www.keyboardmaestro.com/main/) (Mac OS, платно)
+4. [BetterTouchTool](https://folivora.ai/) (Mac OS, платно)
+5. [AutoHotkey](https://www.autohotkey.com/) (Windows, бесплатно)
+
 > [!WARNING]   
 > Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2023 на Мак и Виндовс.
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -191,8 +205,8 @@
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#maketrappingstroke) `upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#opacitymaskclip) `upd, 05.03.2024`
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#randomstrokewidth) `upd, 14.10.2022`
-* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
-* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 14.10.2022`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 23.07.2024`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `upd, 23.07.2024`
 
 ### [Text](md/Text.ru.md)  
 Скрипты для работы с текстовыми объектами

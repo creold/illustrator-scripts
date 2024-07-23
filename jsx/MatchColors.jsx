@@ -10,6 +10,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.2.1 Fixed preview
   0.2 Added recolor to selected swatches
   0.1 Initial version
 
@@ -38,7 +39,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Match Colors',
-        version: 'v0.2'
+        version: 'v0.2.1'
       },
       CFG = {
         coordTolerance: 10, // Object alignment tolerance for sorting
@@ -265,10 +266,14 @@ function invokeUI(title, cfg, prefs, selArr, topArr, btmArr, swatches) {
 
   win.onClose = function () {
     try {
-      if (isUndo) undo();
+      if (isUndo) {
+        app.undo();
+        app.redraw();
+        isUndo = false;
+      }
     } catch (err) {}
     try {
-      var tmpPath = activeDocument.pathItems.getByName('__TempPath');
+      var tmpPath = app.activeDocument.pageItems.getByName('__TempPath');
       tmpPath.remove();
     } catch (err) {}
   };
@@ -276,13 +281,13 @@ function invokeUI(title, cfg, prefs, selArr, topArr, btmArr, swatches) {
   function preview() {
     try {
       if (isPreview.value) {
-        if (isUndo) undo();
+        if (isUndo) app.undo();
         else isUndo = true;
         applyColors();
-        redraw();
+        app.redraw();
       } else if (isUndo) {
-        undo();
-        redraw();
+        app.undo();
+        app.redraw();
         isUndo = false;
       }
     } catch (err) {}
@@ -292,6 +297,8 @@ function invokeUI(title, cfg, prefs, selArr, topArr, btmArr, swatches) {
   function applyColors()  {
     var tmpPath = selection[0].layer.pathItems.add();
     tmpPath.name = '__TempPath';
+    tmpPath.hidden = true;
+    tmpPath.hidden = false;
 
     var srcArr = [].concat([], isTop.value ? topArr : (isBtm.value ? btmArr : swatches));
     var destArr = [].concat([], isTop.value ? btmArr : (isBtm.value ? topArr : selArr));
@@ -336,7 +343,7 @@ function invokeUI(title, cfg, prefs, selArr, topArr, btmArr, swatches) {
   }
 
   function okClick() {
-    if (isPreview.value && isUndo) undo();
+    if (isPreview.value && isUndo) app.undo();
     applyColors();
     isUndo = false;
     saveSettings(prefs);

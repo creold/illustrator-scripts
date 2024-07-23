@@ -20,7 +20,7 @@
   0.2 Fixed: bounds checking of the Illustrator canvas; position of the first copy
   0.1 Initial version
 
-  Buy Pro version: https://sergosokin.gumroad.com/l/dupartboards
+  Buy Pro version: https://buymeacoffee.com/aiscripts/extras
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee

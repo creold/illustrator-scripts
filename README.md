@@ -2,7 +2,7 @@
 
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-26k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
@@ -12,7 +12,7 @@ This is a collection of JS scripts for Adobe Illustrator. All scripts created by
 The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2019-2024 (Windows), CC 2019-2024 (Mac OS).   
 
 ## How to download one script 
-1. In the script description, click the "Direct Link" button.
+1. In the script description, click ![Direct](https://img.shields.io/badge/Direct%20Link-000000.svg) button.
 2. The tab will open the script code.
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
@@ -27,6 +27,7 @@ The descriptions for each file can be found in the file’s header text. Test en
 	- Windows (64 bit): `C:\Program Files\Adobe\Adobe Illustrator [vers.] (64 Bit)\Presets\en_GB\Scripts\`
 	- RU lang: `C:\Program Files\Adobe\Adobe Illustrator [версия]\Стили\ru_RU\Сценарии\`
 3. Restart Illustrator
+4. Scripts will be available in File → Scripts.
 
 [Download archive]: https://bit.ly/2M0j95N
 
@@ -41,20 +42,33 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
+#### Variant 4 — Utilities
+You can use them to create macros to run scripts with hotkeys.
+
+1. [SPAi](https://tama-san.com/spai/) (Mac OS, free)
+2. [Hammerspoon](https://www.hammerspoon.org/) (Mac OS, free)
+3. [Keyboard Maestro](https://www.keyboardmaestro.com/main/) (Mac OS, paid)
+4. [BetterTouchTool](https://folivora.ai/) (Mac OS, paid)
+5. [AutoHotkey](https://www.autohotkey.com/) (Windows, free)
+
 > [!WARNING]   
 > To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">
@@ -75,7 +89,7 @@ Many scripts are free to download thanks to user support. Help me to develop new
 * [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — script to make gradients more accurate, smooth.
 * [Ai2Ae](https://www.buymeacoffee.com/aiscripts/e/231609) — script for prepare Adobe Illustrator Layers for import into Adobe After Effects.
 * [ArtboardsFromCSV](https://www.buymeacoffee.com/aiscripts/e/231618) — script for batch creation of artboards with names and dimensions defined in a CSV table.
-* [Duplicate Artboards Pro](https://www.buymeacoffee.com/aiscripts/e/231621) —script for copying the selected Artboard with or without his Artwork.
+* [Duplicate Artboards Pro](https://www.buymeacoffee.com/aiscripts/e/231621) — script for copying the selected Artboard with or without his Artwork.
 * [HighlightText](https://www.buymeacoffee.com/aiscripts/e/231626) — script for adding highlighting strokes based on text lines.
 * [ImportImagesByName](https://www.buymeacoffee.com/aiscripts/e/231629) — script for imports images from the specified folder by names from the contents of the selected text objects.
 
@@ -181,8 +195,8 @@ Click the category name to learn more about the scripts in the selected category
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#opacitymaskclip) `upd, 05.03.2024`
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#randomstrokewidth) `upd, 14.10.2022`
-* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 14.10.2022`
-* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 14.10.2022`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 23.07.2024`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `upd, 23.07.2024`
 
 ### [Text](md/Text.md)  
 
