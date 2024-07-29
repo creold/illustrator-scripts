@@ -16,6 +16,7 @@
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
 * [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `new, 11.06.2024`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `new, 29.07.2024`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
 
@@ -50,6 +51,13 @@ Ungroups groups & releases clipping masks, for selected items only or all artwor
 The script groups objects on the artboards. It will skip locked or hidden objects. Optionally, you can rename and sort the resulting groups into layers.
 
 ![GroupArtboardObjects](https://i.ibb.co/GTGDnCF/Group-Artboard-Objects.gif)
+
+## MaskArtboards
+[![Direct](https://img.shields.io/badge/Direct%20Link-MaskArtboards.jsx-FF6900.svg)](https://rebrand.ly/maskab) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Adds visible unlocked objects on artboards to clipping masks by artboard size. In the Custom option, you can enter ranges of artboard numbers with commas and hyphens. If the document is saved with bleed settings, the bleed fields will default to this value.
+
+![MaskArtboards](https://i.ibb.co/Cw3Z0St/Mask-Artboards.gif)
 
 ## MoveToGroup
 [![Direct](https://img.shields.io/badge/Direct%20Link-MoveToGroup.jsx-FF6900.svg)](https://rebrand.ly/movtogrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

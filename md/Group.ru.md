@@ -16,6 +16,7 @@
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup)
 * [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `new, 11.06.2024`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `new, 29.07.2024`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks)
 
@@ -50,6 +51,13 @@
 Скрипт группирует объекты на артбордах, при этом пропускает заблокированные или скрытые объекты. Опционально можно переименовать полученные группы и сортировать в слоях по порядку.
 
 ![GroupArtboardObjects](https://i.ibb.co/GTGDnCF/Group-Artboard-Objects.gif)
+
+## MaskArtboards
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MaskArtboards.jsx-FF6900.svg)](https://rebrand.ly/maskab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Помещает видимые разблокированные объекты на артбордах в обтравочные маски по их размеру. В опции Custom можно вводить диапазоны номеров артбордов через запятую и дефис. Если в параметрах документа установлены выпуски за обрез и документ сохранен, то в полях Bleed по умолчанию будет это значение.
+
+![MaskArtboards](https://i.ibb.co/Cw3Z0St/Mask-Artboards.gif)
 
 ## MoveToGroup
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveToGroup.jsx-FF6900.svg)](https://rebrand.ly/movtogrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

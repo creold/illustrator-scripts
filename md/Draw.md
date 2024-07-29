@@ -13,6 +13,7 @@
 
 ## Scripts
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `10.03.2023`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `new, 29.07.2024`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `upd, 09.02.2024`
 
@@ -24,6 +25,18 @@ Draws a polygon based on the selected points. To avoid self-intersections, the s
 The parameter in the `isClose' code is used to close the polygon (true) or keep the first and last point (false).
 
 ![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
+
+## DrawRectanglesByArtboards
+[![Direct](https://img.shields.io/badge/Direct%20Link-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://rebrand.ly/drawrectbyab) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Draws rectangles to the size of the artboards. In the Custom option, you can enter ranges of artboard numbers with commas and hyphens. If the document is saved with bleed settings, the bleed fields will default to this value.
+
+Code parameters:
+
+* `layer: 'Rectangles'` — the layer name for the New Layer option,
+* `isLower: false` — draw below (true) or above (false) other objects
+
+![DrawRectanglesByArtboards](https://i.ibb.co/yQ2sfQk/Draw-Rectangles-By-Artboard.gif)
 
 ## NumeratesPoints
 [![Direct](https://img.shields.io/badge/Direct%20Link-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -13,6 +13,7 @@
 
 ## Scripts
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `10.03.2023`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `new, 29.07.2024`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `upd, 09.02.2024`
 
@@ -24,6 +25,18 @@
 Параметр в коде `isClose` — замыкать многоугольник (true) или оставлять первую и последнюю точку (false).
 
 ![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
+
+## DrawRectanglesByArtboards
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://rebrand.ly/drawrectbyab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Рисует прямоугольники по размеру артбордов. В опции Custom можно вводить диапазоны номеров артбордов через запятую и дефис. Если в параметрах документа установлены выпуски за обрез и документ сохранен, то в полях Bleed по умолчанию будет это значение.
+
+Параметры в коде:
+
+* `layer: 'Rectangles'` — имя слоя с прямоугольниками для опции New Layer, 
+* `isLower: false` — рисовать ниже остальных объектов (true) или выше (false).
+
+![DrawRectanglesByArtboards](https://i.ibb.co/yQ2sfQk/Draw-Rectangles-By-Artboard.gif)
 
 ## NumeratesPoints
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
