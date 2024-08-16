@@ -2,12 +2,14 @@
   MirrorMove.jsx for Adobe Illustrator
   Description: Mirror movement the object or points using the last values of the Object > Transform > Move...
   Date: May, 2022
+  Modification date: August, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.1 Changed silent start with latest settings
+  0.1.0 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -34,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name    : 'Mirror Move',
-        version : 'v.0.1'
+        version : 'v0.1.1'
       },
       CFG = {
         aiVers  : parseInt(app.version),
@@ -68,13 +70,16 @@ function main() {
     isAltPressed = true;
   }
 
-  if ((CFG.showUI && !isAltPressed) || (!CFG.showUI && isAltPressed)) { // Show dialog
+  // Show dialog
+  if ((CFG.showUI && !isAltPressed) || (!CFG.showUI && isAltPressed)) {
     invokeUI(SCRIPT, CFG, SETTINGS);
-  } else if (CFG.showUI && isAltPressed) { // Silent mode with the latest settings
+  } else {
     var params = loadSettings(SETTINGS);
-    if (params.length) process(params[0], params[1]);
-  } else { // Silent mode with the default settings
-    process(CFG.axis, CFG.ratio);
+    if (params.length) { // Silent mode with the latest settings
+      process(params[0], params[1]);
+    } else { // Silent mode with the default settings
+      process(CFG.axis, CFG.ratio);
+    }
   }
 }
 
@@ -88,12 +93,12 @@ function main() {
 function invokeUI(title, cfg, cfgFile) {
   var params = loadSettings(cfgFile);
 
-  var dialog = new Window('dialog', title.name + ' ' + title.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = ['fill', 'center'];
-      dialog.opacity = .98;
+  var win = new Window('dialog', title.name + ' ' + title.version);
+      win.orientation = 'column';
+      win.alignChildren = ['fill', 'center'];
+      win.opacity = .98;
 
-  var axisPnl = dialog.add('panel', undefined, 'Movement axis');
+  var axisPnl = win.add('panel', undefined, 'Movement axis');
       axisPnl.orientation = 'row';
       axisPnl.margins = [10, 15, 10, 7];
       axisPnl.alignChildren = ['fill', 'center'];
@@ -111,23 +116,23 @@ function invokeUI(title, cfg, cfgFile) {
     xyRb.value = true;
   }
 
-  var ratioGrp = dialog.add('group');
+  var ratioGrp = win.add('group');
       ratioGrp.alignChildren = ['fill', 'center'];
 
   ratioGrp.add('statictext', undefined, 'Movement ratio');
   var ratioInp = ratioGrp.add('edittext', undefined, params.length ? params[1] : cfg.ratio);
       ratioInp.preferredSize.width = 60;
 
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.alignChildren = ['fill', 'center'];
 
   var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   var ok = btns.add('button', undefined, 'Ok',  { name: 'ok' });
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
 
   ok.onClick = function() {
     var params = [
@@ -137,15 +142,15 @@ function invokeUI(title, cfg, cfgFile) {
 
     saveSettings(cfgFile, params);
     process(params[0], params[1]);
-    dialog.close();
+    win.close();
   }
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold');
   });
 
-  dialog.center();
-  dialog.show();
+  win.center();
+  win.show();
 }
 
 /**

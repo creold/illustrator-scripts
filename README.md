@@ -155,7 +155,8 @@ Click the category name to learn more about the scripts in the selected category
 * [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `upd, 09.02.2024`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
-* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `upd, 01.08.2022`
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `upd, 07.08.2024`
+* [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#placesymbols) `new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `upd, 09.02.2024`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`

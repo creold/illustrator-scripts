@@ -17,7 +17,8 @@
 * [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#duplicatetoartboards) `upd, 09.02.2024`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops)
-* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `upd, 01.08.2022`
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `upd, 07.08.2024`
+* [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#placesymbols) `new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `upd, 09.02.2024`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `upd, 22.12.2022`
@@ -97,6 +98,16 @@
 * <kbd>Alt</kbd> + `CFG.showUI: true` — скрипт сработает с последними использованными опциями
 
 ![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif)
+
+## PlaceSymbols
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-PlaceSymbols.jsx-FF6900.svg)](https://rebrand.ly/plsymb) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Ищет символы по имени в библиотеке документа и размещает выбранные на холсте. Скрипт ускоряет работу с большой локальной библиотекой символов. В колонке Instances подсчитаны все экземпляры символа в документе.
+
+> [!NOTE]   
+> Проголосуйте на [Uservoice](http://illustrator.uservoice.com/forums/333657/suggestions/37002922) за улучшение панели символов в Иллюстратор.
+
+![PlaceSymbols](https://i.ibb.co/y5ytbYp/Place-Symbols.gif)
 
 ## RenameItems
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameItems.jsx-FF6900.svg)](https://rebrand.ly/renitems) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

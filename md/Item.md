@@ -17,7 +17,8 @@
 * [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `upd, 09.02.2024`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops)
-* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `upd, 01.08.2022`
+* [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `upd, 07.08.2024`
+* [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#placesymbols) `new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `upd, 09.02.2024`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `upd, 22.12.2022`
@@ -97,6 +98,16 @@ Mirror movement the object or points using the last values of the `Object > Tran
 * <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
 
 ![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif)
+
+## PlaceSymbols
+[![Direct](https://img.shields.io/badge/Direct%20Link-PlaceSymbols.jsx-FF6900.svg)](https://rebrand.ly/plsymb) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Searches the document library for symbols by name and places the selected ones on the canvas. The script speeds up working with a large local symbol library. The Instances column counts all instances of the symbol in the document.
+
+> [!NOTE]   
+> Vote on [Uservoice](http://illustrator.uservoice.com/forums/333657/suggestions/37002922) to improve the Symbols panel in Illustrator.
+
+![PlaceSymbols](https://i.ibb.co/y5ytbYp/Place-Symbols.gif)
 
 ## RenameItems
 [![Direct](https://img.shields.io/badge/Direct%20Link-RenameItems.jsx-FF6900.svg)](https://rebrand.ly/renitems) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

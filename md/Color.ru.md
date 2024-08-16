@@ -88,6 +88,10 @@
 > [!WARNING]   
 > Учтите, что контрастность может варьироваться в зависимости от монитора, устройства, условий окружающей среды, рисунка шрифта и множества других деталей. Следование здравому смыслу может быть полезнее, чем бездумное выполнение какого-то правила. [Подробнее на сайте](https://ais.sergosokin.ru/color/contrast-checker/)
 
+<a href="https://youtu.be/rlKrraKJ91U">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
 ![ContrastChecker](https://i.ibb.co/wwRPNVD/Contrast-Checker.gif)
 
 ## ConvertToGradient
