@@ -223,6 +223,7 @@
 Вспомогательные скрипты
 
 * [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#checkpixelperfect) `03.02.2022`
+* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#documentswitcher) `new, 28.08.2024`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#savealldocs)
@@ -231,7 +232,7 @@
 ### [View](md/View.ru.md)  
 Скрипты для просмотра документа
 
-* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `upd, 09.02.2024`
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `upd, 28.08.2024`
 
 ## Отзывы
 * *I am very thankful for such a nice and useful scripts.

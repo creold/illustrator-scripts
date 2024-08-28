@@ -1,6 +1,8 @@
 ﻿/*
   Zoom And Center.jsx
-  Requirements: Adobe Illustrator CS6 / CC
+  Requirements: Adobe Illustrator CS6 and later
+  Author: Sergey Osokin, email: hi@sergosokin.ru
+  Modification date: August, 2024
   
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
@@ -13,6 +15,7 @@
   Used code from FitArtboardToArt.jsx by Darryl Zurn
 
   Release notes:
+  1.2.3 Added deselecting guides to exclude from zooming
   1.2.2 Removed radiobutton activation on Windows OS below CC v26.4
   1.2.1 Fixed radiobutton activation in Windows OS
   1.2 Fixed "Illustrator quit unexpectedly" error
@@ -43,7 +46,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Zoom \u0026 Center',
-        version: 'v1.2.2'
+        version: 'v1.2.3'
       },
       CFG = {
         aiVers: parseFloat(app.version),
@@ -64,12 +67,12 @@ function main() {
   if (!doc.pageItems.length) return;
 
   // Create Main Window
-  var dialog = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
-      dialog.orientation = 'column';
-      dialog.alignChildren = 'fill';
+  var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
+      win.alignChildren = 'fill';
 
   // Zoom to locked item checkbox
-  var option = dialog.add('panel', undefined, 'Zoom in');
+  var option = win.add('panel', undefined, 'Zoom in');
       option.orientation = 'column';
       option.alignChildren = 'fill';
       option.margins = [10, 20, 10, 10];
@@ -86,7 +89,7 @@ function main() {
   // The number depends on the performance of the computer 
   var objCounter = getCountObj(doc);
   if (objCounter > CFG.limit) {
-      var warning = dialog.add('panel');
+      var warning = win.add('panel');
       warning.orientation = 'column';
       warning.margins = 5;
       var warningTxt = warning.add('statictext', undefined, { multiline: true });
@@ -95,7 +98,7 @@ function main() {
   }
 
   // Buttons
-  var btns = dialog.add('group');
+  var btns = win.add('group');
       btns.alignChildren = 'center';
       btns.margins = [0, 10, 0, 0];
   var cancel = btns.add('button', undefined, 'Cancel', {name: 'cancel'});
@@ -104,7 +107,7 @@ function main() {
       ok.helpTip = 'Press Enter to Run';
 
   // Begin access key shortcut
-  dialog.addEventListener('keydown', function(kd) {
+  win.addEventListener('keydown', function(kd) {
     var key = kd.keyName;
     if (key.match(/1/)) zoomVis.notify();
     if (key.match(/2/)) zoomLock.notify();
@@ -112,10 +115,10 @@ function main() {
   });
   // End access key shortcut
 
-  cancel.onClick = dialog.close;
+  cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  var copyright = dialog.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
+  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   copyright.addEventListener('mousedown', function () {
@@ -125,61 +128,66 @@ function main() {
   function okClick() {
     if (zoomVis.value) {
       app.executeMenuCommand('selectall');
-      calcBounds(selection);
-      selection = null;
+      deselectGuides(app.selection);
+      calcBounds(app.selection);
+      app.selection = null;
     } else if (zoomLock.value) {
       saveItemsState(doc, lockedItems, lockedLayers);
       app.executeMenuCommand('selectall');
-      calcBounds(selection);
-      selection = null;
+      deselectGuides(app.selection);
+      calcBounds(app.selection);
+      app.selection = null;
       restoreItemsState(doc, lockedItems, lockedLayers);
     } else if (zoomAll.value) {
       // The VisibleBounds rect is in this order: 0 - left, 1 - right, 2 - top, 3 - bottom
-      var myVisibleBounds = doc.pageItems[0].visibleBounds;
-      for (var i = 1, piLen = doc.pageItems.length; i < piLen; i++) {
+      var totalBnds = [Infinity, -Infinity, -Infinity, Infinity];
+      for (var i = 0, piLen = doc.pageItems.length; i < piLen; i++) {
+        var item = doc.pageItems[i];
+        if (item.typename === 'GroupItem' || isGuide(item)) continue;
         // We want the ultimate maximum bounds, so select the minimum left and bottom, and max right and top of our rect.
-        myVisibleBounds[0] = Math.min(myVisibleBounds[0], doc.pageItems[i].visibleBounds[0]);
-        myVisibleBounds[1] = Math.max(myVisibleBounds[1], doc.pageItems[i].visibleBounds[1]);
-        myVisibleBounds[2] = Math.max(myVisibleBounds[2], doc.pageItems[i].visibleBounds[2]);
-        myVisibleBounds[3] = Math.min(myVisibleBounds[3], doc.pageItems[i].visibleBounds[3]);
+        totalBnds[0] = Math.min(totalBnds[0], item.visibleBounds[0]);
+        totalBnds[1] = Math.max(totalBnds[1], item.visibleBounds[1]);
+        totalBnds[2] = Math.max(totalBnds[2], item.visibleBounds[2]);
+        totalBnds[3] = Math.min(totalBnds[3], item.visibleBounds[3]);
       }
-      ul_x = myVisibleBounds[0];
-      ul_y = myVisibleBounds[1];
-      lr_x = myVisibleBounds[2];
-      lr_y = myVisibleBounds[3];
+      ul_x = totalBnds[0];
+      ul_y = totalBnds[1];
+      lr_x = totalBnds[2];
+      lr_y = totalBnds[3];
     }
-      
+
     zoom(CFG.ratio);
-    dialog.close();
+    win.close();
   }
 
   // Start zoom
   // Define the current TextFrames to zoom, if text editing mode is active
-  if (selection.typename === 'TextRange') {
+  deselectGuides(app.selection);
+  if (app.selection.typename === 'TextRange') {
     var selTextFrames = getActiveTextFrames();
     calcBounds(selTextFrames);
     zoom(CFG.ratio);
-  } else if (selection.length > 0) {
-    calcBounds(selection);
+  } else if (app.selection.length > 0) {
+    calcBounds(app.selection);
     zoom(CFG.ratio);
   } else {
-    dialog.center();
-    dialog.show();
+    win.center();
+    win.show();
   }
 }
 
 function getActiveTextFrames() {
-  var parentTextFrames = selection.parent.textFrames,
+  var parentTextFrames = app.selection.parent.textFrames,
       selTextFrames = [],
       firstFrameIdx, lastFrameIdx;
 
   for (var i = 0, tfLen = parentTextFrames.length; i < tfLen; i++) {
-    if (selection.start >= parentTextFrames[i].textRange.start &&
-        selection.start <= parentTextFrames[i].textRange.end) {
+    if (app.selection.start >= parentTextFrames[i].textRange.start &&
+        app.selection.start <= parentTextFrames[i].textRange.end) {
       firstFrameIdx = i;
     }
-    if (selection.end >= parentTextFrames[i].textRange.start &&
-        selection.end <= parentTextFrames[i].textRange.end) {
+    if (app.selection.end >= parentTextFrames[i].textRange.start &&
+        app.selection.end <= parentTextFrames[i].textRange.end) {
       lastFrameIdx = i;
     }
   }
@@ -217,6 +225,24 @@ function calcBounds(sel) {
       }
     }
   }
+}
+
+function deselectGuides(arr) {
+  var item = null;
+
+  for (var i = 0, len = arr.length; i < len; i++) {
+    var item = arr[i];
+    if (item.typename === 'GroupItem' && item.pageItems.length) {
+      deselectGuides(item.pageItems);
+    } else if (isGuide(item)) {
+      item.selected = false;
+    }
+  }
+}
+
+function isGuide(item) {
+  return (item.hasOwnProperty('guides') && item.guides)
+      || (item.typename === 'CompoundPathItem' && item.pathItems.length && item.pathItems[0].guides);
 }
 
 function zoom(ratio) {

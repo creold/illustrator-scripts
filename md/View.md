@@ -12,7 +12,7 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `upd, 09.02.2024`
+* [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `upd, 28.08.2024`
 
 ## Zoom and center
 [![Direct](https://img.shields.io/badge/Direct%20Link-Zoom--and--center.jsx-FF6900.svg)](https://rebrand.ly/zoomnctr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

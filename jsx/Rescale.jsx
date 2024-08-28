@@ -160,7 +160,7 @@ function main () {
       }
 
       // Grouping for better performance. Thanks for help @moodyallen
-      var items = selection;
+      var items = selection,
           tmpArray = [],
           aLayer = doc.activeLayer,
           selGroup = aLayer.groupItems.add();

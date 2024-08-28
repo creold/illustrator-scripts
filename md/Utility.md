@@ -13,6 +13,7 @@
 
 ## Scripts
 * [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `03.02.2022`
+* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#documentswitcher) `new, 28.08.2024`
 * [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
 * [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
 * [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
@@ -27,6 +28,13 @@ Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The sc
 > In the `CFG` variable: `rgb`, `d`, `opa` you can set the RGB color of the markers, their diameter and opacity.
 
 ![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
+
+## DocumentSwitcher
+[![Direct](https://img.shields.io/badge/Direct%20Link-DocumentSwitcher.jsx-FF6900.svg)](https://rebrand.ly/docswt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Displays a list of open documents and allows you to activate a document by clicking a line in the list. The list can be filtered by entering part of the name. The first column of the list shows an asterisk * if the document has been modified and not saved. In addition, the name of the active document and the total number of opened or filtered files are displayed.
+
+![DocumentSwitcher](https://i.ibb.co/qxb2Rnh/Document-Switcher.gif)
 
 ## FileVersionInformer
 [![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](https://rebrand.ly/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
