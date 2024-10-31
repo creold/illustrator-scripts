@@ -2,14 +2,14 @@
 
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md), [Русский](README.ru.md)*
 
 ## 👨‍💻 Привет
 Это коллекция авторских скриптов для Adobe Illustrator. Небольшие скрипты, не вошедшие в основную коллекцию, выкладываю на [Github Gist](https://gist.github.com/creold).
 
-Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2019-2024 (Windows), CC 2019-2024 (Mac OS). 
+Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2019-2025 (Windows), CC 2019-2025 (Mac OS). 
 
 ## Как скачать один скрипт
 1. В описании скрипта нажмите кнопку ![Direct](https://img.shields.io/badge/Прямая%20ссылка-000000.svg).
@@ -52,7 +52,7 @@
 5. [AutoHotkey](https://www.autohotkey.com/) (Windows, бесплатно)
 
 > [!WARNING]   
-> Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2023 на Мак и Виндовс.
+> Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2025 на Мак и Виндовс.
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
@@ -115,6 +115,7 @@
 Скрипты для работы с цветом объектов
 
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `27.03.2022`
+* [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#beautifyswatchnames) `31.10.2024`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorgroupreplacer) `08.10.2023`

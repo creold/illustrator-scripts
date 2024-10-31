@@ -2,7 +2,7 @@
 
 # Color | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -13,6 +13,7 @@
 
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `27.03.2022`
+* [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#beautifyswatchnames) `31.10.2024`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorgroupreplacer) `08.10.2023`
@@ -37,6 +38,21 @@
 * <kbd>Alt</kbd> + `CFG.showUI: true` — скрипт сработает с последними использованными опциями
 
 ![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif)
+
+## BeautifySwatchNames
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames.jsx-FF6900.svg)](https://rebrand.ly/bswn) [![Direct2](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames%20Lite.jsx-48C794.svg)](https://rebrand.ly/bswnlite) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Подбирает уникальные, звучные названия для выбранных цветов в панели Swatches. Можно создавать ассоциативные палитры, как в брендбуках некоторых компаний. С помощью скрипта получим «Jasmine Green» вместо стандартных «R=122 G=201 B=67» или «Saffron Gold», а не «C=0 M=50 Y=100 K=0».   
+
+* BeautifySwatchNames — с базой из 30241 цветов. Для тех, кто ищет максимально разнообразное описание цветов. Названия могут быть неординарными: Midnight in Saigon, Black Dragon’s Caldron, Shawarma, Worcestershire Sauce.
+
+* BeautifySwatchNames Lite — сокращённая версия из 4506 цветов. Работает быстрее, но из-за сокращённой базы больше схожих цветов получат одинаковые имена.
+
+Базы цветов обоих версий взяты из проекта [Color Names](https://github.com/meodai/color-names)
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/color/beautify-swatch-names/)
+
+![BeautifySwatchNames](https://i.ibb.co/1KN1cfD/Beautify-Swatch-Names.gif)
 
 ## ColorBlindSimulator
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorBlindSimulator.jsx-FF6900.svg)](https://rebrand.ly/colblindsim) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

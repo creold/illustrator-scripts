@@ -2,14 +2,14 @@
 
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-43k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
 ## Hi
 This is a collection of JS scripts for Adobe Illustrator. All scripts created by me, sometimes using parts of other authors’ code. The [Github Gist](https://gist.github.com/creold) contains the small scripts that are not included in the main collection.
 
-The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2019-2024 (Windows), CC 2019-2024 (Mac OS).   
+The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2019-2025 (Windows), CC 2019-2025 (Mac OS).   
 
 ## How to download one script 
 1. In the script description, click ![Direct](https://img.shields.io/badge/Direct%20Link-000000.svg) button.
@@ -52,7 +52,7 @@ You can use them to create macros to run scripts with hotkeys.
 5. [AutoHotkey](https://www.autohotkey.com/) (Windows, free)
 
 > [!WARNING]   
-> To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2023 on Mac and Windows.
+> To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2025 on Mac and Windows.
 
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
@@ -113,6 +113,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Color](md/Color.md)  
 
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `27.03.2022`
+* [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#beautifyswatchnames) `31.10.2024`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `new, 21.06.2024`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `08.10.2023`

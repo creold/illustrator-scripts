@@ -23,7 +23,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2024 (Mac/Win).
+  Tested with Adobe Illustrator CC 2019-2025 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
