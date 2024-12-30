@@ -84,14 +84,16 @@
 </a>
 
 ## Платные скрипты
-* [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
-* [ColorToner](https://www.buymeacoffee.com/aiscripts/e/231463) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
-* [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — скрипт для создания аккуратных переходов цветов в градиентах
-* [Ai2Ae](https://www.buymeacoffee.com/aiscripts/e/231609) — скрипт раскладывает объекты по слоям для импорта в After Effects
-* [ArtboardsFromCSV](https://www.buymeacoffee.com/aiscripts/e/231618) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
-* [Duplicate Artboards Pro](https://www.buymeacoffee.com/aiscripts/e/231621) — скрипт создаёт заданное количество копий артбордов
-* [HighlightText](https://www.buymeacoffee.com/aiscripts/e/231626) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
-* [ImportImagesByName](https://www.buymeacoffee.com/aiscripts/e/231629) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
+* [BentoGrid](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1667%3FcategoryId=5705) — генерирует случайные сетки в стиле Bento UI с ячейками разных пропорций.
+* [RandomColors](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1666%3FcategoryId=5705) — генерирует случайные цвета для заливок и обводок выбранных объектов или текстов.
+* [ExportSequence](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1665%3FcategoryId=5705) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
+* [ColorToner](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1653%3FcategoryId=5705) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
+* [GradientBlender](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1661%3FcategoryId=5705) — скрипт для создания аккуратных переходов цветов в градиентах
+* [Ai2Ae](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1659%3FcategoryId=5705) — скрипт раскладывает объекты по слоям для импорта в After Effects
+* [ArtboardsFromCSV](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1662%3FcategoryId=5705) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
+* [Duplicate Artboards Pro](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1660%3FcategoryId=5705) — скрипт создаёт заданное количество копий артбордов
+* [HighlightText](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1663%3FcategoryId=5705) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
+* [ImportImagesByName](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1664%3FcategoryId=5705) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
 
 ## Категории
 Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
@@ -195,6 +197,7 @@
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `upd, 09.02.2024`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
+* [SelectArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectartboardobjects) `new, 30.12.2024`
 * [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectbyswatches) `upd, 22.04.2024`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `upd, 09.02.2024`

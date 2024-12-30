@@ -16,6 +16,7 @@
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `upd, 09.02.2024`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectartboardobjects) `new, 30.12.2024`
 * [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectbyswatches) `upd, 22.04.2024`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `upd, 09.02.2024`
@@ -45,6 +46,28 @@
 Скрипт SelectAllLayersAbove выбирает объекты во всех слоях выше активного. SelectAllLayersBelow - в слоях ниже. Если в документе что-то выбрано, активным будет считаться родительский слой выбранного объекта. В ином случае - слой, который подсвечен в панели Layers. Поменяйте значение `var isInclActive = false` в коде на `true`, чтобы выделились объекты и в исходном слое.
 
 ![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
+
+## SelectArtboardObjects
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectArtboardObjects.jsx-FF6900.svg)](https://rebrand.ly/selabobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Выбирает все объекты, которые пересекают границы активного артборда с числовым допуском или наоборот за его границами. Проблема функции Select → All on Active Artboard в том, что она выбирает целиком группы, если в них хотя бы один объект попадает на артборд. Скрипт проверяет все объекты индивидуально.
+
+> [!TIP]   
+> На сложных документах для ускорения скрипта заблокируйте или скройте объекты и слои, которые точно не нужны. Другой вариант: переведите Иллюстратор в полноэкранный режим (<kbd>F</kbd>) или скройте панели инструментов (<kbd>Tab</kbd>).
+
+**Как работает Artboard Tolerance**
+
+All Indside Artboard:
+
+* > 0 — выбирает объекты, край которых снаружи от границ артборда в пределах значения или попадает внутрь артборда;
+* < 0 — объекты, внешний край которых внутри артборда глубже заданной дистанции.
+
+Для опции All Outside Artboard наоборот:
+
+* > 0 — выбирает объекты, если их край попадает внутрь артборда на заданное число;
+* < 0 — выбирает объекты, если их край дальше от границ артборда.
+
+![SelectArtboardObjects](https://i.ibb.co/kHqQFtD/Select-Artboard-Objects.gif)
 
 ## SelectBySwatches
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SelectBySwatches.jsx-FF6900.svg)](https://rebrand.ly/selbyswat) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

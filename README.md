@@ -84,6 +84,8 @@ Many scripts are free to download thanks to user support. Help me to develop new
 </a>
 
 ## Paid scripts
+* [BentoGrid](https://www.buymeacoffee.com/aiscripts/e/341609) — script generates random bento grids with different cell proportions.
+* [RandomColors](https://www.buymeacoffee.com/aiscripts/e/332147) — script generates random fill and stroke colors for selected objects and editable text.
 * [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) — script for toggle visibility of numbered objects in selected groups and exports document as sequence to PNGs or JPGs.
 * [ColorToner](https://www.buymeacoffee.com/aiscripts/e/231463) — script for generating tints, shades, and tones from base colors.
 * [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — script to make gradients more accurate, smooth.
@@ -186,6 +188,7 @@ Click the category name to learn more about the scripts in the selected category
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `upd, 09.02.2024`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
+* [SelectArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `new, 30.12.2024`
 * [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `upd, 22.04.2024`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `upd, 09.02.2024`

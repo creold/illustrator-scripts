@@ -16,6 +16,7 @@
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `upd, 09.02.2024`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `new, 30.12.2024`
 * [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `upd, 22.04.2024`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `upd, 09.02.2024`
@@ -45,6 +46,28 @@ Search items in the document by name and zoom to them contents. Inspired by Phot
 The SelectAllLayersAbove script selects objects in all layers above the active layer. And the SelectAllLayersBelow script is in the layers below. If something is selected in the document, the parent layer of the selected object becomes active. Otherwise, the active layer is the layer that is selected in the Layers panel. Change `var isInclActive = false` in the code to `true` so that objects in the source layer are also selected.
 
 ![SelectAllLayersAbove](https://i.ibb.co/t3f2Mvr/Select-All-Layers-Above.gif)
+
+## SelectArtboardObjects
+[![Direct](https://img.shields.io/badge/Direct%20Link-SelectArtboardObjects.jsx-FF6900.svg)](https://rebrand.ly/selabobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Selects all objects that overlap the bounds of the active artboard with a tolerance, or objects outside the bounds. The problem with the native Select → All on Active Artboard function is that it selects entire groups if at least one object in them is on the artboard. The script checks each object individually.  
+
+> [!TIP]   
+> For complex documents, lock or hide unneeded objects and layers to speed up the script. Alternatively, switch Illustrator to full-screen mode (<kbd>F</kbd>) or hide the toolbars (<kbd>Tab</kbd>).
+
+**How Artboard Tolerance Works**
+
+All Indside Artboard:
+
+* > 0 - selects objects whose edge is outside the artboard bounds within the value or falls inside the artboard.
+* < 0 - selects objects whose edge is deeper inside the artboard than the specified distance.
+
+All Outside Artboard:
+
+* > 0 - selects objects if their edge inside the artboard by the specified number.
+* < 0 - selects objects if their edge is further from the artboard bounds.
+
+![SelectArtboardObjects](https://i.ibb.co/kHqQFtD/Select-Artboard-Objects.gif)
 
 ## SelectBySwatches
 [![Direct](https://img.shields.io/badge/Direct%20Link-SelectBySwatches.jsx-FF6900.svg)](https://rebrand.ly/selbyswat) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
