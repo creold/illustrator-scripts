@@ -2,7 +2,7 @@
 
 # Layer | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -12,9 +12,9 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#rememberselectionlayers) `upd, 26.02.2022`
-* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#renamelayerastext) `upd, 09.02.2024`
-* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#sortlayeritems) `29.08.2022`
+* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#rememberselectionlayers) `v0.3 — 26.02.2022`
+* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#renamelayerastext) `v0.1.1 — upd, 09.02.2024`
+* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.md#sortlayeritems) `v0.1 — 29.08.2022`
 
 ## RememberSelectionLayers
 [![Direct](https://img.shields.io/badge/Direct%20Link-RememberSelectionLayers.jsx-FF6900.svg)](https://rebrand.ly/rmbsellyr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

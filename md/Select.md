@@ -2,7 +2,7 @@
 
 # Select | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -12,15 +12,15 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `21.04.2023`
-* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `upd, 09.02.2024`
-* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `21.02.2022`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `new, 30.12.2024`
-* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `upd, 22.04.2024`
-* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints)
-* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `upd, 09.02.2024`
-* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `22.06.2022`
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#cornersselector) `v0.1 — 21.04.2023`
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `v0.2.3 — upd, 09.02.2024`
+* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `v0.1 — 21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `v0.1 — 21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `v0.1 — new, 30.12.2024`
+* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `v0.3.2 — upd, 22.04.2024`
+* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints) `v0.3.2`
+* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `v2.1.4 — upd, 09.02.2024`
+* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectrotateditems) `v0.1 — 22.06.2022`
 
 ## CornersSelector
 [![Direct](https://img.shields.io/badge/Direct%20Link-CornersSelector.jsx-FF6900.svg)](https://rebrand.ly/corslctr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -59,13 +59,13 @@ Selects all objects that overlap the bounds of the active artboard with a tolera
 
 All Indside Artboard:
 
-* > 0 - selects objects whose edge is outside the artboard bounds within the value or falls inside the artboard.
-* < 0 - selects objects whose edge is deeper inside the artboard than the specified distance.
+* `> 0` - selects objects whose edge is outside the artboard bounds within the value or falls inside the artboard.
+* `< 0` - selects objects whose edge is deeper inside the artboard than the specified distance.
 
 All Outside Artboard:
 
-* > 0 - selects objects if their edge inside the artboard by the specified number.
-* < 0 - selects objects if their edge is further from the artboard bounds.
+* `> 0` - selects objects if their edge inside the artboard by the specified number.
+* `< 0` - selects objects if their edge is further from the artboard bounds.
 
 ![SelectArtboardObjects](https://i.ibb.co/kHqQFtD/Select-Artboard-Objects.gif)
 

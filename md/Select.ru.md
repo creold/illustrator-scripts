@@ -2,7 +2,7 @@
 
 # Select | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -12,15 +12,15 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#cornersselector) `21.04.2023`
-* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `upd, 09.02.2024`
-* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `21.02.2022`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectartboardobjects) `new, 30.12.2024`
-* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectbyswatches) `upd, 22.04.2024`
-* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints)
-* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `upd, 09.02.2024`
-* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectrotateditems) `22.06.2022`
+* [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#cornersselector) `v0.1 — 21.04.2023`
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `v0.2.3 — upd, 09.02.2024`
+* [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `v0.1 — 21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `v0.1 — 21.02.2022`
+* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectartboardobjects) `v0.1 — new, 30.12.2024`
+* [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectbyswatches) `v0.3.2 — upd, 22.04.2024`
+* [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectonlypoints) `v0.3.2`
+* [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectpointsbytype) `v2.1.4 — upd, 09.02.2024`
+* [SelectRotatedItems](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectrotateditems) `v0.1 — 22.06.2022`
 
 ## CornersSelector
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-CornersSelector.jsx-FF6900.svg)](https://rebrand.ly/corslctr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -59,13 +59,13 @@
 
 All Indside Artboard:
 
-* > 0 — выбирает объекты, край которых снаружи от границ артборда в пределах значения или попадает внутрь артборда;
-* < 0 — объекты, внешний край которых внутри артборда глубже заданной дистанции.
+* `> 0` — выбирает объекты, край которых снаружи от границ артборда в пределах значения или попадает внутрь артборда;
+* `< 0` — объекты, внешний край которых внутри артборда глубже заданной дистанции.
 
 Для опции All Outside Artboard наоборот:
 
-* > 0 — выбирает объекты, если их край попадает внутрь артборда на заданное число;
-* < 0 — выбирает объекты, если их край дальше от границ артборда.
+* `> 0` — выбирает объекты, если их край попадает внутрь артборда на заданное число;
+* `< 0` — выбирает объекты, если их край дальше от границ артборда.
 
 ![SelectArtboardObjects](https://i.ibb.co/kHqQFtD/Select-Artboard-Objects.gif)
 

@@ -2,7 +2,7 @@
 
 # Layer | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -12,9 +12,9 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#rememberselectionlayers) `upd, 26.02.2022`
-* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#renamelayerastext) `upd, 09.02.2024`
-* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#sortlayeritems) `29.08.2022`
+* [RememberSelectionLayers](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#rememberselectionlayers) `v0.3 — 26.02.2022`
+* [RenameLayerAsText](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#renamelayerastext) `v0.1.1 — upd, 09.02.2024`
+* [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#sortlayeritems) `v0.1 — 29.08.2022`
 
 ## RememberSelectionLayers
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RememberSelectionLayers.jsx-FF6900.svg)](https://rebrand.ly/rmbsellyr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

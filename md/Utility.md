@@ -2,7 +2,7 @@
 
 # Utility | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -12,12 +12,12 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `03.02.2022`
-* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#documentswitcher) `new, 28.08.2024`
-* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer)
-* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter)
-* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs)
-* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames)
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#checkpixelperfect) `v0.1 — 03.02.2022`
+* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#documentswitcher) `v0.1 — new, 28.08.2024`
+* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#fileversioninformer) `v0.1 — 12.2017`
+* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#objectscounter) `v0.1 — 08.2020`
+* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#savealldocs) `v0.1 — upd, 03.2023`
+* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames) `v0.1 — 04.2021`
 
 ## CheckPixelPerfect
 [![Direct](https://img.shields.io/badge/Direct%20Link-CheckPixelPerfect.jsx-FF6900.svg)](https://rebrand.ly/ckpxperf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

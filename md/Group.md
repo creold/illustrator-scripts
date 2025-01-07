@@ -2,7 +2,7 @@
 
 # Group & Mask | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -12,13 +12,13 @@
 3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
 
 ## Scripts
-* [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards)
-* [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `new, 05.05.2024`
-* [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup)
-* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `new, 11.06.2024`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `new, 29.07.2024`
-* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `upd, 09.02.2024`
-* [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks)
+* [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards) `v0.1 — 05.2021`
+* [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `v0.1 — new, 05.05.2024`
+* [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup) `v1.2.1`
+* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `v0.2 — new, 11.06.2024`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `v0.1 — new, 29.07.2024`
+* [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
+* [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks) `v0.3`
 
 ## CenterClipsToArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-CenterClipsToArtboards.jsx-FF6900.svg)](https://rebrand.ly/ctrcliptoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

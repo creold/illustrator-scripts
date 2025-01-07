@@ -2,7 +2,7 @@
 
 # Utility | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-59k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -12,12 +12,12 @@
 3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
 
 ## Scripts
-* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#checkpixelperfect) `03.02.2022`
-* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#documentswitcher) `new, 28.08.2024`
-* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#fileversioninformer)
-* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#objectscounter)
-* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#savealldocs)
-* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#syncglobalcolorsnames)
+* [CheckPixelPerfect](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#checkpixelperfect) `v0.1 — 03.02.2022`
+* [DocumentSwitcher](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#documentswitcher) `v0.1 — new, 28.08.2024`
+* [FileVersionInformer](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#fileversioninformer) `v0.1 — 12.2017`
+* [ObjectsCounter](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#objectscounter) `v0.1 — 08.2020`
+* [SaveAllDocs](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#savealldocs) `v0.1 — upd, 03.2023`
+* [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#syncglobalcolorsnames) `v0.1 — 04.2021`
 
 ## CheckPixelPerfect
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-CheckPixelPerfect.jsx-FF6900.svg)](https://rebrand.ly/ckpxperf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -32,7 +32,7 @@
 ## DocumentSwitcher
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DocumentSwitcher.jsx-FF6900.svg)](https://rebrand.ly/docswt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Отображает список открытых документов и позволяет активировать документ кликом на соответствующюю строку в списке. Список можно фильтровать, вводя часть имени. В первом столбце списка выводится символ звёздочки *, если документ изменён и не сохранён. Дополнительно показано имя активного документа и общее количество открытых или отфильтрованных файлов.
+Отображает список открытых документов и позволяет активировать документ кликом на соответствующюю строку в списке. Список можно фильтровать, вводя часть имени. В первом столбце списка выводится символ звёздочки `*`, если документ изменён и не сохранён. Дополнительно показано имя активного документа и общее количество открытых или отфильтрованных файлов.
 
 ![DocumentSwitcher](https://i.ibb.co/qxb2Rnh/Document-Switcher.gif)
 
