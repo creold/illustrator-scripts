@@ -1,11 +1,13 @@
 /*
   SelectArtboardObjects.jsx for Adobe Illustrator
-  Select objects overlapping or non-overlapping active artboard with bounds tolerance
+  Description: Select objects overlapping or non-overlapping active artboard with bounds tolerance
+  Date: January, 2024
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.1 Fixed selection of a large number of objects
   0.1 Initial version
 
   Donate (optional):
@@ -32,7 +34,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Select Artboard Objects',
-    version: 'v0.1'
+    version: 'v0.1.1'
   };
 
   var CFG = {
@@ -138,7 +140,10 @@ function main() {
       }
     }
 
-    app.selection = isOverlapRb.value ? overlapArr : nonOverlapArr;
+    selectItems(isOverlapRb.value ? overlapArr : nonOverlapArr);
+
+    overlapArr = [];
+    nonOverlapArr = [];
 
     win.close();
   }
@@ -301,6 +306,16 @@ function isOverlap(bnds1, bnds2, t) {
     return false;
   } else {
     return true;
+  }
+}
+
+/**
+ * Select all items in the specified collection
+ * @param {(Object|Array))} coll - An array of items to be selected
+ */
+function selectItems(coll) {
+  for (var i = 0, len = coll.length; i < len; i++) {
+    coll[i].selected = true;
   }
 }
 

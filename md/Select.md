@@ -16,7 +16,7 @@
 * [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#named-items-finder) `v0.2.3 — upd, 09.02.2024`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `v0.1 — 21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectalllayersabove) `v0.1 — 21.02.2022`
-* [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `v0.1 — new, 30.12.2024`
+* [SelectArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectartboardobjects) `v0.1.1 — upd, 13.01.2025`
 * [SelectBySwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectbyswatches) `v0.3.2 — upd, 22.04.2024`
 * [SelectOnlyPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectonlypoints) `v0.3.2`
 * [SelectPointsByType](https://github.com/creold/illustrator-scripts/blob/master/md/Select.md#selectpointsbytype) `v2.1.4 — upd, 09.02.2024`
