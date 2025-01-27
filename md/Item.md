@@ -24,6 +24,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.2 — new, 27.01.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -153,6 +154,18 @@ The script rounds the coordinates of each selected object. The reference point g
 > Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-feature-requests/suggestions/34970752-make-anchor-points-pixel-perfect) to add this feature to Illustrator.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
+
+## ShowObjectNames
+[![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Adds file names of placed or embedded images (PNG, JPG, TIFF, PSD, PDF and others) and names of other selected objects. If the source image file is not found in the folder, the script adds "Missing Image". For objects without a name, the caption is "Unnamed Object".
+
+Parameters in the code:
+
+* `fontSize: 14` — font size of the created text in pt;
+* `Name: 'Object_Names'` — name of the new layer.
+
+![ShowObjectNames](https://i.ibb.co/HHJRx2P/Show-Object-Names.gif)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Direct%20Link-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

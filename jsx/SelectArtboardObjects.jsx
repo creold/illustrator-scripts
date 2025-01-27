@@ -7,6 +7,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.2 Improved selection performance
   0.1.1 Fixed selection of a large number of objects
   0.1 Initial version
 
@@ -34,7 +35,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Select Artboard Objects',
-    version: 'v0.1.1'
+    version: 'v0.1.2'
   };
 
   var CFG = {
@@ -141,9 +142,6 @@ function main() {
     }
 
     selectItems(isOverlapRb.value ? overlapArr : nonOverlapArr);
-
-    overlapArr = [];
-    nonOverlapArr = [];
 
     win.close();
   }
@@ -314,9 +312,28 @@ function isOverlap(bnds1, bnds2, t) {
  * @param {(Object|Array))} coll - An array of items to be selected
  */
 function selectItems(coll) {
+  var tmpArr = [];
+  var lay = coll[0].layer;
+  var tmpGroup = lay.groupItems.add();
+
   for (var i = 0, len = coll.length; i < len; i++) {
-    coll[i].selected = true;
+    var tmpItem = lay.pathItems.add(); // Add a temporary path item
+    tmpItem.move(coll[i], ElementPlacement.PLACEBEFORE);
+    tmpArr.push(tmpItem);
+    coll[i].move(tmpGroup, ElementPlacement.PLACEATEND);
   }
+
+  tmpGroup.selected = true;
+
+  // Return objects to their original positions
+  var groupItems = tmpGroup.pageItems;
+  for (var j = 0, len = groupItems.length; j < len; j++) {
+    groupItems[j].move(tmpArr[j], ElementPlacement.PLACEBEFORE);
+    tmpArr[j].move(tmpGroup, ElementPlacement.PLACEATBEGINNING);
+  }
+
+  tmpGroup.remove();
+  tmpGroup = null;
 }
 
 /**

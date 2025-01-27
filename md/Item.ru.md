@@ -24,6 +24,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.2 — new, 27.01.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -153,6 +154,18 @@
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-feature-requests/suggestions/34970752-make-anchor-points-pixel-perfect) за внедрение этой функции в Иллюстратор.
 
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
+
+## ShowObjectNames
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object».
+
+В коде настраивается:   
+
+* `fontSize: 14` — размер шрифта создаваемых текстов в pt;
+* `name: 'Object_Names'` — имя нового слоя.
+
+![ShowObjectNames](https://i.ibb.co/HHJRx2P/Show-Object-Names.gif)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
