@@ -1,5 +1,5 @@
 /*
-  ShowObjectNames.jsx for Adobe Illustrator
+  ShowObjectNames-FontPicker.jsx for Adobe Illustrator
   Description: Shows names of vector objects, linked or embedded raster images
   Date: June, 2023
   Modicitaion Date: February, 2025
@@ -8,7 +8,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.3 Added more positions, text justification, options to rotate text
+  0.3 Added fonts, more positions, text justification, options to rotate text
   0.2 Added UI with options, support any objects
   0.1 Initial version
 
@@ -40,8 +40,10 @@ function main() {
   };
   
   var CFG = {
-    fontSize: 14, // Default font size, pt
     name: 'Object_Names',
+    fontWidth: 200, // Font list width, px
+    fonts: get(app.textFonts, 'name'),
+    fontUnits: getTypeUnits(),
     units: getUnits(),
     isMac: /mac/i.test($.os),
     aiVers: parseFloat(app.version),
@@ -71,11 +73,33 @@ function main() {
       win.alignChildren = ['fill', 'top'];
       win.opacity = CFG.uiOpacity;
 
+  // WRAPPER 1
+  var wrapper1 = win.add('group');
+      wrapper1.orientation = 'row';
+      wrapper1.alignChildren = ['fill', 'top'];
+
+  // FONT
+  var fontPnl = wrapper1.add('panel', undefined, 'Font');
+      fontPnl.alignChildren = ['fill', 'top'];
+      fontPnl.margins = CFG.uiMargins;
+
+  var fontDdl = fontPnl.add('dropdownlist', undefined, CFG.fonts);
+      fontDdl.preferredSize.width = 100;
+      fontDdl.itemSize.width = CFG.fontWidth;
+      fontDdl.selection = 0;
+      fontDdl.active = true;
+
+  var fontGrp = fontPnl.add('group');
+
+  fontGrp.add('statictext', undefined, 'Size:');
+  var fontInp = fontGrp.add('edittext', undefined, 14);
+      fontInp.preferredSize.width = 40;
+
+  fontGrp.add('statictext', undefined, CFG.fontUnits);
+
   // OFFSET
-  var offsetPnl = win.add('panel', undefined, 'Offset Distance');
-      offsetPnl.orientation = 'row';
-      offsetPnl.alignChildren = ['fill', 'center'];
-      offsetPnl.spacing = 15;
+  var offsetPnl = wrapper1.add('panel', undefined, 'Offset');
+      offsetPnl.alignChildren = ['fill', 'top'];
       offsetPnl.margins = CFG.uiMargins;
 
   // OFFSET X
@@ -83,7 +107,7 @@ function main() {
 
   xGrp.add('statictext', undefined, 'X:');
   var xInp = xGrp.add('edittext', undefined, 0);
-      xInp.preferredSize.width = 55;
+      xInp.preferredSize.width = 40;
 
   xGrp.add('statictext', undefined, CFG.units);
 
@@ -92,7 +116,7 @@ function main() {
 
   yGrp.add('statictext', undefined, 'Y:');
   var yInp = yGrp.add('edittext', undefined, 0);
-      yInp.preferredSize.width = 55;
+      yInp.preferredSize.width = 40;
 
   yGrp.add('statictext', undefined, CFG.units);
 
@@ -143,7 +167,6 @@ function main() {
 
   var posDdl = posPnl.add('dropdownlist', undefined, outPosList);
       posDdl.selection = 0;
-      posDdl.active = true;
 
   // ANGLE
   var angPnl = win.add('panel', undefined, 'Rotate');
@@ -156,13 +179,13 @@ function main() {
   var angleDdl = angPnl.add('dropdownlist', undefined, ['0\u00B0', '90\u00B0 Clockwise', '90\u00B0 Counter Clockwise', '180\u00B0']);
       angleDdl.selection = 0;
 
-  // WRAPPER
-  var wrapper = win.add('group');
-      wrapper.orientation = 'row';
-      wrapper.alignChildren = ['fill', 'top'];
+  // WRAPPER 2
+  var wrapper2 = win.add('group');
+      wrapper2.orientation = 'row';
+      wrapper2.alignChildren = ['fill', 'top'];
 
   // JUSTIFICATION
-  var alignPnl = wrapper.add('panel', undefined, 'Justification');
+  var alignPnl = wrapper2.add('panel', undefined, 'Justification');
       alignPnl.alignChildren = ['fill', 'top'];
       alignPnl.spacing = 7;
       alignPnl.margins = CFG.uiMargins;
@@ -173,7 +196,7 @@ function main() {
   var isAlignR = alignPnl.add('radiobutton', undefined, 'Right');
 
   // LAYER
-  var layPnl = wrapper.add('panel', undefined, 'Move Names To');
+  var layPnl = wrapper2.add('panel', undefined, 'Move Names To');
       layPnl.alignChildren = ['fill', 'top'];
       layPnl.spacing = 7;
       layPnl.margins = CFG.uiMargins;
@@ -222,8 +245,34 @@ function main() {
   // EVENTS
   loadSettings(SETTINGS);
 
+  // Selecting font in dropdown by name using the keyboard
+  // Book: Beginning ScriptUI, author: Peter Kahrel, June 2019
+  var fontQuery = '';
+  fontDdl.onActivate = fontDdl.onDeactivate = function () { 
+    fontQuery = ''; // Clear previous query
+  }
+
+  fontDdl.addEventListener('keydown', function (k) {
+    if (k.keyName == 'Backspace') {
+      fontQuery = fontQuery.replace(/.$/, '');
+    } else {
+      if (k.keyName.length > 0) {
+        fontQuery += k.keyName.toLowerCase();
+      }
+      var i = 0;
+      while (i < CFG.fonts.length - 1 && CFG.fonts[i].toLowerCase().indexOf(fontQuery) != 0) {
+        ++i;
+      }
+      if (CFG.fonts[i].toLowerCase().indexOf(fontQuery) == 0) {
+        fontDdl.selection = i;
+      }
+    }
+  });
+
+  fontInp.onChange = preview;
   xInp.onChange = yInp.onChange = preview;
 
+  shiftInputNumValue(fontInp);
   shiftInputNumValue(xInp);
   shiftInputNumValue(yInp);
 
@@ -237,7 +286,7 @@ function main() {
     updateDropdown(posDdl, inPosList);
   };
 
-  posDdl.onChange = angleDdl.onChange = function () {
+  fontDdl.onChange = posDdl.onChange = angleDdl.onChange = function () {
     this.active = true;
 
     // Adobe Illustrator crash protection
@@ -317,8 +366,14 @@ function main() {
       justification: isAlignL.value ? 'LEFT' : (isAlignR.value ? 'RIGHT' : 'CENTER'),
       isExtension: isAddExtension.value,
       isRename: isRenameImage.value,
-      fontSize: CFG.fontSize
+      fontSize: convertUnits( strToNum(fontInp.text, 14), CFG.fontUnits, 'px' ) / CFG.sf,
+      fontFamily: app.textFonts.getByName(fontDdl.selection.text)
     };
+
+    if (labelParams.fontSize <= 0) {
+      labelParams.fontSize = 14;
+      fontInp.text = 14;
+    }
 
     var labels = []; // Array to store created text frames
 
@@ -406,6 +461,8 @@ function main() {
     f.open('w');
 
     var pref = {};
+    pref.fontFamily = fontDdl.selection.index;
+    pref.fontSize = fontInp.text;
     pref.offsetX = xInp.text;
     pref.offsetY = yInp.text;
     pref.direction = isOutPos.value ? 0 : 1;
@@ -437,10 +494,12 @@ function main() {
       f.close();
 
       if (typeof pref != 'undefined') {
+        fontDdl.selection = pref.fontFamily;
+        fontInp.text = pref.fontSize ? pref.fontSize : 14;
         xInp.text = pref.offsetX;
         yInp.text = pref.offsetY;
         posGrp.children[pref.direction].value = true;
-        if (pref.direction === 1) updateDropdown(posDdl, inPosList);
+        if (pref.direction == 1) updateDropdown(posDdl, inPosList);
         posDdl.selection = pref.pos;
         angleDdl.selection = pref.angle;
         alignPnl.children[pref.justification].value = true;
@@ -463,7 +522,7 @@ function main() {
  */
 function getUnits() {
   if (!documents.length) return '';
-  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  var key = app.activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
   switch (key) {
     case 'Pixels': return 'px';
     case 'Points': return 'pt';
@@ -490,6 +549,24 @@ function getUnits() {
       break;
     default: return 'px';
   }
+}
+
+/**
+ * Get the type measurement units based on the application's preference
+ * @returns {string} - The unit of measurement for text
+ */
+function getTypeUnits() {
+  var code = app.preferences.getIntegerPreference('text/units');
+  var units = 'pt';
+
+  switch (code) {
+    case 0: units = 'in'; break;
+    case 1: units = 'mm'; break;
+    case 2: units = 'pt'; break;
+    case 6: units = 'px'; break;
+  }
+
+  return units;
 }
 
 /**
@@ -550,13 +627,14 @@ function isCorrectEnv() {
 /**
  * Convert a collection into a standard Array
  * @param {Object} coll - The collection to be converted
- * @returns {Array} - A new array containing the elements
+ * @param {string} prop - The property name to extract from each object (optional)
+ * @returns {Array} - A new array with either the extracted properties or the original elements
  */
-function get(coll) {
+function get(coll, prop) {
   var arr = [];
 
   for (var i = 0, len = coll.length; i < len; i++) {
-    arr.push(coll[i]);
+    arr.push(prop && coll[i].hasOwnProperty(prop) ? coll[i][prop] : coll[i]);
   }
 
   return arr;
@@ -689,6 +767,7 @@ function isEmpty(str) {
  * @param {Object} item - The Illustrator item to label. Can be a placed, raster, or other object type
  * @param {Object} itemData - Contains item properties like name, width, height, and bounds
  * @param {Object} params - Labeling parameters including font size, justification, position, and offsets
+ * @param {number} params.fonFamily - The font family for the label text
  * @param {number} params.fontSize - The font size for the label text
  * @param {string} params.justification - Text justification
  * @param {number} params.angle - The rotation angle for the label
@@ -720,6 +799,7 @@ function addNameLabel(item, itemData, params) {
 
   var tf = item.layer.textFrames.add();
   tf.contents = decodeURI(nameStr);
+  tf.textRange.characterAttributes.textFont = params.fontFamily;
   tf.textRange.characterAttributes.size = params.fontSize;
   tf.textRange.paragraphAttributes.justification = Justification[params.justification];
   tf.rotate(params.angle);

@@ -7,9 +7,10 @@
 [Back to homepage](../README.md)
 
 ## How to download one script 
-1. In the script description, click the "Direct Link" button.
-2. The tab will open the script code.
-3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
+1. In the script description, click the "Direct Link" button
+2. The tab will open the script code
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
+4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`

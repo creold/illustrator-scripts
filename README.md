@@ -12,9 +12,10 @@ This is a collection of JS scripts for Adobe Illustrator. All scripts created by
 The descriptions for each file can be found in the file’s header text. Test environment: Illustrator CS6, CC 2019-2025 (Windows), CC 2019-2025 (Mac OS).   
 
 ## How to download one script 
-1. In the script description, click ![Direct](https://img.shields.io/badge/Direct%20Link-000000.svg) button.
-2. The tab will open the script code.
-3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
+1. In the script description, click the "Direct Link" button
+2. The tab will open the script code
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
+4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## How to run scripts
 
@@ -165,7 +166,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.2 — new, 27.01.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.md)  

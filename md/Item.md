@@ -7,9 +7,10 @@
 [Back to homepage](../README.md)
 
 ### How to download one script 
-1. In the script description, click the "Direct Link" button.
-2. The tab will open the script code.
-3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
+1. In the script description, click the "Direct Link" button
+2. The tab will open the script code
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
+4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## Scripts
 * [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#aligntoartboards) `v0.2 — upd, 06.11.2023`
@@ -24,7 +25,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.2 — new, 27.01.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.3 — upd, 09.02.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -156,16 +157,18 @@ The script rounds the coordinates of each selected object. The reference point g
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
 ## ShowObjectNames
-[![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://rebrand.ly/shwObjNmsFont) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Adds file names of placed or embedded images (PNG, JPG, TIFF, PSD, PDF and others) and names of other selected objects. If the source image file is not found in the folder, the script adds "Missing Image". For objects without a name, the caption is "Unnamed Object".
+Adds file names of placed or embedded images (PNG, JPG, TIFF, PSD, PDF and others) and names of other selected objects. If the source image file is not found in the folder, the script adds "Missing Image". For objects without a name, the caption is "Unnamed Object".   
+
+The ShowObjectNames-FontPicker modification includes font selection and font size. If you have thousands of fonts installed on your computer, this version of the script will be slower due to font processing.
 
 Parameters in the code:
 
 * `fontSize: 14` — font size of the created text in pt;
 * `Name: 'Object_Names'` — name of the new layer.
 
-![ShowObjectNames](https://i.ibb.co/HHJRx2P/Show-Object-Names.gif)
+![ShowObjectNames](https://i.ibb.co/PZ93d6Rk/Show-Object-Names-Font-Picker.jpg)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Direct%20Link-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

@@ -7,9 +7,10 @@
 [Back to homepage](../README.md)
 
 ### How to download one script 
-1. In the script description, click the "Direct Link" button.
-2. The tab will open the script code.
-3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download.
+1. In the script description, click the "Direct Link" button
+2. The tab will open the script code
+3. Press <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd> for download
+4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## Scripts
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards) `v0.1 — 05.2021`

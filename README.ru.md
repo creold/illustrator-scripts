@@ -12,9 +12,10 @@
 Описание каждого скрипта также находится внутри его файла. Тестировалось в Illustrator CS6, CC 2019-2025 (Windows), CC 2019-2025 (Mac OS). 
 
 ## Как скачать один скрипт
-1. В описании скрипта нажмите кнопку ![Direct](https://img.shields.io/badge/Прямая%20ссылка-000000.svg).
-2. Во вкладке откроется код скрипта.
-3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
+1. В описании скрипта нажмите кнопку «Прямая ссылка»
+2. Во вкладке откроется код скрипта
+3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск
+4. Если при сохранении видите в имени «.jsx.txt», удалите последнюю часть «.txt»
 
 ## Как запускать скрипты
 
@@ -171,7 +172,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.2 — new, 27.01.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.ru.md)  

@@ -7,9 +7,10 @@
 [На главную](../README.ru.md)
 
 ### Как скачать один скрипт
-1. В описании скрипта нажмите кнопку «Прямая ссылка».
-2. Во вкладке откроется код скрипта.
-3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск.
+1. В описании скрипта нажмите кнопку «Прямая ссылка»
+2. Во вкладке откроется код скрипта
+3. Нажмите <kbd>Cmd/Ctrl</kbd> + <kbd>S</kbd>, чтобы сохранить файл на диск
+4. Если при сохранении видите в имени «.jsx.txt», удалите последнюю часть «.txt»
 
 ## Scripts
 * [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#aligntoartboards) `v0.2 — upd, 06.11.2023`
@@ -24,7 +25,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.2 — new, 27.01.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -156,16 +157,18 @@
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
 ## ShowObjectNames
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://rebrand.ly/shwObjNmsFont) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object».
+Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object».   
+
+Модификация ShowObjectNames-FontPicker содержит выбор шрифта и его размера. Если у вас на компьютере установлены тысячи шрифтов, то эта версия скрипта будет работать медленней из-за их обработки.
 
 В коде настраивается:   
 
 * `fontSize: 14` — размер шрифта создаваемых текстов в pt;
 * `name: 'Object_Names'` — имя нового слоя.
 
-![ShowObjectNames](https://i.ibb.co/HHJRx2P/Show-Object-Names.gif)
+![ShowObjectNames](https://i.ibb.co/PZ93d6Rk/Show-Object-Names-Font-Picker.jpg)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
