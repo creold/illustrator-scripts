@@ -22,21 +22,21 @@
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks) `v0.3`
 
 ## CenterClipsToArtboards
-[![Direct](https://img.shields.io/badge/Direct%20Link-CenterClipsToArtboards.jsx-FF6900.svg)](https://rebrand.ly/ctrcliptoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-CenterClipsToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/ctrcliptoabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Aligns selected clip groups and their contents to the center of the parent artboards. You can also align all selected clip groups on a single artboard. 
 
 ![CenterClipsToArtboards](https://i.ibb.co/ykHy3rM/Center-Clips-To-Artboards.gif)
 
 ## ExtractFromGroup
-[![Direct](https://img.shields.io/badge/Direct%20Link-ExtractFromGroup.jsx-FF6900.svg)](https://rebrand.ly/extrgrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ExtractFromGroup.jsx-FF6900.svg)](https://link.aiscripts.ru/extrgrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Extracts the selected items from parent groups. By default, each item is moved before the top parent group. If <kbd>Alt / Option (⌥)</kbd> key is pressed, move item before the first parent group.
 
 ![ExtractFromGroup](https://i.ibb.co/pK5yzqS/Extract-From-Group.gif)
 
 ## ExtUngroup
-[![Direct](https://img.shields.io/badge/Direct%20Link-ExtUngroup.jsx-FF6900.svg)](https://rebrand.ly/extungrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ExtUngroup.jsx-FF6900.svg)](https://link.aiscripts.ru/extungrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Ungroups groups & releases clipping masks, for selected items only or all artwork in the document.   
 *Based on original script by Jiwoong Song & modification by [John Wundes](http://www.wundes.com/).*
@@ -47,28 +47,28 @@ Ungroups groups & releases clipping masks, for selected items only or all artwor
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
 
 ## GroupArtboardObjects
-[![Direct](https://img.shields.io/badge/Direct%20Link-GroupArtboardObjects.jsx-FF6900.svg)](https://rebrand.ly/grpabobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-GroupArtboardObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/grpabobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script groups objects on the artboards. It will skip locked or hidden objects. Optionally, you can rename and sort the resulting groups into layers.
 
 ![GroupArtboardObjects](https://i.ibb.co/GTGDnCF/Group-Artboard-Objects.gif)
 
 ## MaskArtboards
-[![Direct](https://img.shields.io/badge/Direct%20Link-MaskArtboards.jsx-FF6900.svg)](https://rebrand.ly/maskab) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-MaskArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/maskab) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Adds visible unlocked objects on artboards to clipping masks by artboard size. In the Custom option, you can enter ranges of artboard numbers with commas and hyphens. If the document is saved with bleed settings, the bleed fields will default to this value.
 
 ![MaskArtboards](https://i.ibb.co/Cw3Z0St/Mask-Artboards.gif)
 
 ## MoveToGroup
-[![Direct](https://img.shields.io/badge/Direct%20Link-MoveToGroup.jsx-FF6900.svg)](https://rebrand.ly/movtogrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-MoveToGroup.jsx-FF6900.svg)](https://link.aiscripts.ru/movtogrp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Moves all objects in a selection into a group selected. The order is preserved: the objects above the group are placed inside at the top, the lower ones go at the bottom of the group. If there are several groups in a selection, the dialog allows you to pick between topmost or bottommost groups to be the target.
 
 ![MoveToGroup](https://i.ibb.co/jkD5Zx4/Move-To-Group.gif)
 
 ## TrimMasks
-[![Direct](https://img.shields.io/badge/Direct%20Link-TrimMasks.jsx-FF6900.svg)](https://rebrand.ly/trimcm) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-TrimMasks.jsx-FF6900.svg)](https://link.aiscripts.ru/trimcm) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Automatically trims all clip groups in a selection or a document using `Pathfinder > Crop`.
 

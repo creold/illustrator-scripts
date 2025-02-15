@@ -21,7 +21,7 @@
 * [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.md#syncglobalcolorsnames) `v0.1 — 04.2021`
 
 ## CheckPixelPerfect
-[![Direct](https://img.shields.io/badge/Direct%20Link-CheckPixelPerfect.jsx-FF6900.svg)](https://rebrand.ly/ckpxperf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-CheckPixelPerfect.jsx-FF6900.svg)](https://link.aiscripts.ru/ckpxperf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The script selects points with fractional coordinates. Useful for checking the main points of the shape, as points on line curves are difficult to fit on the grid.
 
@@ -31,14 +31,14 @@ Checks snapping of path points to pixel grid in 0.5 or 1.0 px increments. The sc
 ![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
 
 ## DocumentSwitcher
-[![Direct](https://img.shields.io/badge/Direct%20Link-DocumentSwitcher.jsx-FF6900.svg)](https://rebrand.ly/docswt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-DocumentSwitcher.jsx-FF6900.svg)](https://link.aiscripts.ru/docswt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Displays a list of open documents and allows you to activate a document by clicking a line in the list. The list can be filtered by entering part of the name. The first column of the list shows an asterisk * if the document has been modified and not saved. In addition, the name of the active document and the total number of opened or filtered files are displayed.
 
 ![DocumentSwitcher](https://i.ibb.co/qxb2Rnh/Document-Switcher.gif)
 
 ## FileVersionInformer
-[![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](https://rebrand.ly/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-FileVersionInformer.jsx-FF6900.svg)](https://link.aiscripts.ru/fverinfo) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Script for collecting information about the program version of .ai & .eps files in selected folder & subfolder.   
 
@@ -48,19 +48,19 @@ Script for collecting information about the program version of .ai & .eps files 
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)
 
 ## ObjectsCounter
-[![Direct](https://img.shields.io/badge/Direct%20Link-ObjectsCounter.jsx-FF6900.svg)](https://rebrand.ly/objcntr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ObjectsCounter.jsx-FF6900.svg)](https://link.aiscripts.ru/objcntr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Counts the number of selected objects.
 
 ![ObjectsCounter](https://i.ibb.co/cbmYfNV/Objects-Counter.gif)
 
 ## SaveAllDocs
-[![Direct](https://img.shields.io/badge/Direct%20Link-SaveAllDocs.jsx-FF6900.svg)](https://rebrand.ly/savealldocs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SaveAllDocs.jsx-FF6900.svg)](https://link.aiscripts.ru/savealldocs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Save all opened docs in one click.
 
 ## SyncGlobalColorsNames
-[![Direct](https://img.shields.io/badge/Direct%20Link-SyncGlobalColorsNames.jsx-FF6900.svg)](https://rebrand.ly/syncglblclr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SyncGlobalColorsNames.jsx-FF6900.svg)](https://link.aiscripts.ru/syncglblclr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Syncs the names of the same global colors between open documents. After that, all changes will be saved.
 

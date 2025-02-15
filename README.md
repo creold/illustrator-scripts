@@ -118,7 +118,7 @@ Click the category name to learn more about the scripts in the selected category
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `v0.1 — 27.03.2022`
 * [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#beautifyswatchnames) `v0.1 — new, 31.10.2024`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `v0.1 — 18.04.2022`
-* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `v0.1 — new, 21.06.2024`
+* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `v0.1 — 08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#contrastchecker) `v0.1.1 — upd,23.07.2024`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#converttogradient) `v0.1.4 — upd, 09.02.2024`
@@ -166,7 +166,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.3 — upd, 09.02.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.md)  
@@ -211,7 +211,7 @@ Click the category name to learn more about the scripts in the selected category
 
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.2.2 — upd, 12.04.2024`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
 
 ### [Utility](md/Utility.md)  

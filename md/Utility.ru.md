@@ -21,7 +21,7 @@
 * [SyncGlobalColorsNames](https://github.com/creold/illustrator-scripts/blob/master/md/Utility.ru.md#syncglobalcolorsnames) `v0.1 — 04.2021`
 
 ## CheckPixelPerfect
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CheckPixelPerfect.jsx-FF6900.svg)](https://rebrand.ly/ckpxperf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CheckPixelPerfect.jsx-FF6900.svg)](https://link.aiscripts.ru/ckpxperf) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Проверяет привязку точек выбранных линий к пиксельной сетке с шагом координат 0,5 или 1,0 px. Скрипт выделит точки с дробными координатами. Подойдет для проверки основных точек формы, так как точки на изгибах линий сложно подогнать к сетке.
 
@@ -31,14 +31,14 @@
 ![CheckPixelPerfect](https://i.ibb.co/Ps2WNqp/Check-Pixel-Perfect.gif)
 
 ## DocumentSwitcher
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DocumentSwitcher.jsx-FF6900.svg)](https://rebrand.ly/docswt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DocumentSwitcher.jsx-FF6900.svg)](https://link.aiscripts.ru/docswt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Отображает список открытых документов и позволяет активировать документ кликом на соответствующюю строку в списке. Список можно фильтровать, вводя часть имени. В первом столбце списка выводится символ звёздочки `*`, если документ изменён и не сохранён. Дополнительно показано имя активного документа и общее количество открытых или отфильтрованных файлов.
 
 ![DocumentSwitcher](https://i.ibb.co/qxb2Rnh/Document-Switcher.gif)
 
 ## FileVersionInformer
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-FileVersionInformer.jsx-FF6900.svg)](https://rebrand.ly/fverinfo) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-FileVersionInformer.jsx-FF6900.svg)](https://link.aiscripts.ru/fverinfo) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт собирает в текстовый файл информацию о том в какой версии Adobe Illustrator были созданы файлы .ai или .eps из папки.   
 
@@ -48,19 +48,19 @@
 ![FileVersionInformer](https://i.ibb.co/mz94Tn0/demo-File-Version-Informer.gif)
 
 ## ObjectsCounter
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ObjectsCounter.jsx-FF6900.svg)](https://rebrand.ly/objcntr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ObjectsCounter.jsx-FF6900.svg)](https://link.aiscripts.ru/objcntr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Подсчитывает количество выделенных объектов. Группы не учитываются, как отдельный объект, только вложенные в них элементы.
 
 ![ObjectsCounter](https://i.ibb.co/cbmYfNV/Objects-Counter.gif)
 
 ## SaveAllDocs
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SaveAllDocs.jsx-FF6900.svg)](https://rebrand.ly/savealldocs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SaveAllDocs.jsx-FF6900.svg)](https://link.aiscripts.ru/savealldocs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Сохраняет все открытые документы.
 
 ## SyncGlobalColorsNames
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SyncGlobalColorsNames.jsx-FF6900.svg)](https://rebrand.ly/syncglblclr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SyncGlobalColorsNames.jsx-FF6900.svg)](https://link.aiscripts.ru/syncglblclr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Синхронизирует имена совпадающих глобальных цветов между всеми открытыми документами. После синронизации сохраняет изменения.
 

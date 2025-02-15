@@ -17,7 +17,7 @@
 * [ExportToDXF](https://github.com/creold/illustrator-scripts/blob/master/md/Export.md#exporttodxf) `v0.1.1 — upd, 04.05.2023`
 
 ## Export selection as AI
-[![Direct](https://img.shields.io/badge/Direct%20Link-Export--selection--as--AI.jsx-FF6900.svg)](https://rebrand.ly/exptoai) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-Export--selection--as--AI.jsx-FF6900.svg)](https://link.aiscripts.ru/exptoai) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Exports all selected objects to AI files.    
 *Based on Layers to SVG 0.1 by Anton Ball.*
@@ -28,7 +28,7 @@ Exports all selected objects to AI files.
 ![Export-selection-as-AI](https://i.ibb.co/CPSRxq8/demo-Export-selection-as-AI.gif)
 
 ## ExportToDXF
-[![Direct](https://img.shields.io/badge/Direct%20Link-ExportToDXF.jsx-FF6900.svg)](https://rebrand.ly/exptodxf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ExportToDXF.jsx-FF6900.svg)](https://link.aiscripts.ru/exptodxf) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Export multiple artboards with visible unlocked contents or selection to separate DXF files for CAD systems. 
 

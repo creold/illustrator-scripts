@@ -16,7 +16,7 @@
 * [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.ru.md#zoom-and-center) `v1.3 — upd, 03.01.2025`
 
 ## Zoom and center
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Zoom--and--center.jsx-FF6900.svg)](https://rebrand.ly/zoomnctr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Zoom--and--center.jsx-FF6900.svg)](https://link.aiscripts.ru/zoomnctr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Масштабирует по центру экрана выбранные объекты. Если ничего не выбрано, то появится диалоговое окно с вариантами. Если нужен другой коэффициент увеличения, то откройте файл скрипта текстовым редактором и поменяйте числовое значение (дробь) `SCALE_RATIO = .75;`.   
 *Основано на оригинальном скрипте от [John Wundes](http://www.wundes.com/).*

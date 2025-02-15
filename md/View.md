@@ -16,7 +16,7 @@
 * [Zoom And Center](https://github.com/creold/illustrator-scripts/blob/master/md/View.md#zoom-and-center) `v1.3 — upd, 03.01.2025`
 
 ## Zoom and center
-[![Direct](https://img.shields.io/badge/Direct%20Link-Zoom--and--center.jsx-FF6900.svg)](https://rebrand.ly/zoomnctr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-Zoom--and--center.jsx-FF6900.svg)](https://link.aiscripts.ru/zoomnctr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Zooms active view to selection or to all object(s) in a document. If you want a different scale ratio, open the script file with a text editor and change the `SCALE_RATIO = .75;`.   
 *Based on original script by [John Wundes](http://www.wundes.com/).*

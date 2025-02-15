@@ -2,11 +2,14 @@
   ColorCorrector.jsx for Adobe Illustrator
   Description: Adjust color channels for selected objects by setting exact values or calculating relative changes
   Date: June, 2024
+  Modification Date: February, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.1.2 Fixed adjustment of gradient duplicates in selection
+  0.1.1 Fixed typo for correct work with gradients
   0.1 Initial version
 
   Donate (optional):
@@ -33,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Color Corrector',
-    version: 'v0.1'
+    version: 'v0.1.2'
   };
 
   var CFG = {
@@ -201,10 +204,16 @@ function main() {
     win.close();
   }
 
+  /**
+   * Starts the color adjustment process for selected items
+   * It applies color modifications based on user-defined values,
+   * skipping duplicate gradient names
+   */
   function start() {
     // Fix preview
     tmpPaths.push( selection[0].layer.pathItems.add() );
 
+    // Set default text values based on color mode
     if (isRgb) {
       setDefaultText(r, 'R');
       setDefaultText(g, 'G');
@@ -217,11 +226,28 @@ function main() {
     }
 
     var values = isRgb ? [r.text, g.text, b.text] : [c.text, m.text, y.text, k.text];
+    var props = ['fillColor', 'strokeColor'];
+    var appear = [isFill, isStroke]; // Appearance checkboxes
+    var uniqueGradients = {}; // Store gradients to avoid duplicate adjustments
 
     for (var i = 0, len = items.length; i < len; i++) {
+      // If the item is Text Frame, use its textRange, otherwise use the item itself
       var item = /text/i.test(items[i].typename) ? items[i].textRange : items[i];
-      if (isFill.value) adjustColors(item, 'fillColor', values, channels, isEditGlobal.value, isRgb);
-      if (isStroke.value) adjustColors(item, 'strokeColor', values, channels, isEditGlobal.value, isRgb);
+
+      for (var j = 0; j < 2; j++) {
+        // Skip processing if the corresponding checkbox is not enabled
+        if (!appear[j].value) continue;
+
+        var color = item[props[j]];
+
+        if (/gradient/i.test(color)) {
+          var gradName = color.gradient.name.replace(/\s/g, '_');
+          if (uniqueGradients[gradName]) continue; // Skip if already handled
+          uniqueGradients[gradName] = true; // Mark as processed
+        }
+
+        adjustColors(item, props[j], values, channels, isEditGlobal.value, isRgb);
+      }
     }
   }
 
@@ -383,7 +409,7 @@ function adjustColors(item, type, values, channels, isGlobal, isRgb) {
   if (/gradient/i.test(item[type])) {
     for (var i = 0; i < item[type].gradient.gradientStops.length; i++) {
       var gradStop = item[type].gradient.gradientStops[i];
-      adjustColors(gradStop, 'color', values, channels, isRgb);
+      adjustColors(gradStop, 'color', values, channels, isGlobal, isRgb);
     }
   } else {
     for (var j = 0; j < channels.length; j++) {

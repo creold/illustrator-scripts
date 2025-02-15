@@ -19,7 +19,7 @@
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
 
 ## DrawPathBySelectedPoints
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://rebrand.ly/drawbyselpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/drawbyselpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Рисует многоугольник по выбранным точкам фигур. Чтобы не было самопересечений скрипт сортирует выбранные точки по полярным координатам от геометрического центра фигуры с вершинами в точках. Так формируется направление рисования многоугольника.
 
@@ -28,7 +28,7 @@
 ![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
 
 ## DrawRectanglesByArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://rebrand.ly/drawrectbyab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/drawrectbyab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Рисует прямоугольники по размеру артбордов. В опции Custom можно вводить диапазоны номеров артбордов через запятую и дефис. Если в параметрах документа установлены выпуски за обрез и документ сохранен, то в полях Bleed по умолчанию будет это значение.
 
@@ -40,14 +40,14 @@
 ![DrawRectanglesByArtboards](https://i.ibb.co/yQ2sfQk/Draw-Rectangles-By-Artboard.gif)
 
 ## NumeratesPoints
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](https://rebrand.ly/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-NumeratesPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/numpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Нумерует выделенные точки и помечает их круглыми маркерами. Пригодится, например, для создания рисунков в стиле «Соедини по точкам (цифрам)».
 
 ![NumeratesPoints](https://i.ibb.co/bdJ8tvV/Numerates-Points.gif)
 
 ## RandomScribble
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomScribble.jsx-FF6900.svg)](https://rebrand.ly/randscrib) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomScribble.jsx-FF6900.svg)](https://link.aiscripts.ru/randscrib) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Создаёт случайные пути с заданным количеством точек. Это могут быть случайные отрезки из 2 точек или сложные фигуры, имитирующие каракули. Точки не выходят за границы активного артборда. Если в документе сначала выделили несколько фигур, то скрипт сгенерирует отдельные пути с точками, лежащими в пределах их границ (bounding box).
 

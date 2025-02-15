@@ -15,11 +15,11 @@
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.2.2 — upd, 12.04.2024`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
 
 ## AlignTextBaseline
-[![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://rebrand.ly/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Allows point texts to be vertically aligned based on the baseline of its font, not its bounds. The native Align panel is tied either to the bounding box of the point text or to the curves via Align to Glyph Bounds, which does not give a consistent result for mixed fonts and sizes.
 
@@ -29,7 +29,7 @@ Allows point texts to be vertically aligned based on the baseline of its font, n
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
 
 ## MakeNumbersSequence
-[![Direct](https://img.shields.io/badge/Direct%20Link-MakeNumbersSequence.jsx-FF6900.svg)](https://rebrand.ly/mknumseq) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-MakeNumbersSequence.jsx-FF6900.svg)](https://link.aiscripts.ru/mknumseq) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Fills a range of selected text items with numbers incremented based on the input data. Can only replace numbers or `{%N}` placeholder within the selected text objects.
 
@@ -40,7 +40,7 @@ Fills a range of selected text items with numbers incremented based on the input
 ![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
 
 ## MultiEditText
-[![Direct](https://img.shields.io/badge/Direct%20Link-MultiEditText.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-MultiEditText.jsx-FF6900.svg)](https://link.aiscripts.ru/metxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Multi-editing of selected text frames. The script allows you to enter the same text, replace the current text frame content or add the entered text to the current one.
 
@@ -62,7 +62,7 @@ See also [Adobe Photoshop version](https://github.com/creold/photoshop-scripts)
 ![MultiTextEdit](https://i.ibb.co/58HHRFK/Multi-Edit-Text.gif)
 
 ## ReplaceFormattedText
-[![Direct](https://img.shields.io/badge/Direct%20Link-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-ReplaceFormattedText.jsx-FF6900.svg)](https://link.aiscripts.ru/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Pasting text from the clipboard without formatting, preserving the paragraph styles of the original text. The style is saved from the first character of each paragraph.
 

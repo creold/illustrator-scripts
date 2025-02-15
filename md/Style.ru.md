@@ -23,28 +23,28 @@
 * [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.3 — upd, 23.07.2024`
 
 ## AverageStrokesWidth
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageStrokesWidth.jsx-FF6900.svg)](https://rebrand.ly/avgstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageStrokesWidth.jsx-FF6900.svg)](https://link.aiscripts.ru/avgstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Усредняет толщину обводок выбранных объектов, пропуская те, что без обводки. Поддерживает пути, компаунды и текстовые объекты. 
 
 ![AverageStrokesWidth](https://i.ibb.co/3shb651/Average-Strokes-Width.gif)
 
 ## ChangeOpacity
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ChangeOpacity.jsx-FF6900.svg)](https://rebrand.ly/chngopa) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ChangeOpacity.jsx-FF6900.svg)](https://link.aiscripts.ru/chngopa) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Задаёт точное значение непрозрачности (Opacity) выбранных объектов. Со знаком плюс или минус впереди числа произойдёт сдвиг относительно текущего значения у каждого объекта. Внутри групп масок (Clipping Group) не меняет непрозрачность самой маски. Но можно учитывать маски, если в коде поменять `inclMask: false` на `true`. 
 
 ![ChangeOpacity](https://i.ibb.co/zP3Vkww/Change-Opacity.gif)
 
 ## GrayscaleToOpacity
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-GrayscaleToOpacity.jsx-FF6900.svg)](https://rebrand.ly/graytoopa) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-GrayscaleToOpacity.jsx-FF6900.svg)](https://link.aiscripts.ru/graytoopa) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Преобразует цвет выбранных объектов в оттенки серого (Grayscale) и устанавливает прозрачность (Opacity) численно равную каналу серого цвета.
 
 ![GrayscaleToOpacity](https://i.ibb.co/qY1Cx68/Grayscale-To-Opacity.gif)
 
 ## MakeTrappingStroke
-[![Direct](https://img.shields.io/badge/Direct%20Link-MakeTrappingStroke.jsx-FF6900.svg)](https://rebrand.ly/mktrapstroke) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-MakeTrappingStroke.jsx-FF6900.svg)](https://link.aiscripts.ru/mktrapstroke) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Для препресса применяет к обводке цвет на основе заливки объекта при включенном атрибуте Overprint Stroke. 
 
@@ -54,7 +54,7 @@
 ![MakeTrappingStroke](https://i.ibb.co/QQkJ451/Make-Trapping-Stroke.gif)
 
 ## OpacityMaskClip
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-OpacityMaskClip.jsx-FF6900.svg)](https://rebrand.ly/opamclip) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-OpacityMaskClip.jsx-FF6900.svg)](https://link.aiscripts.ru/opamclip) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Активирует чекбокс `Clip` в панели `Transparency > Opacity Mask` для выделенных объектов с масками прозрачности.
 
@@ -64,7 +64,7 @@
 ![OpacityMaskClip](https://i.ibb.co/Kbn4vqB/Opacity-Mask-Clip.gif)
 
 ## RandomStrokeWidth
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomStrokeWidth.jsx-FF6900.svg)](https://rebrand.ly/rndstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RandomStrokeWidth.jsx-FF6900.svg)](https://link.aiscripts.ru/rndstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Применяет случайное значение из диапазона с заданным шагом к толщине обводки выбранных объектов. Единицы измерения берет из `Preferences > Units > Stroke`. Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`.   
 
@@ -76,7 +76,7 @@
 ![RandomStrokeWidth](https://i.ibb.co/PQN1qkV/Random-Stroke-Width.gif)
 
 ## StrokesWeight
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightDown.jsx-FF6900.svg)](https://rebrand.ly/strwtdn) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightUp.jsx-FF6900.svg)](https://rebrand.ly/strwtup) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightDown.jsx-FF6900.svg)](https://link.aiscripts.ru/strwtdn) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightUp.jsx-FF6900.svg)](https://link.aiscripts.ru/strwtup) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 * StrokesWeightDown.jsx
 * StrokesWeightUp.jsx

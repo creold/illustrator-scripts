@@ -18,21 +18,21 @@
 * [SortLayerItems](https://github.com/creold/illustrator-scripts/blob/master/md/Layer.ru.md#sortlayeritems) `v0.1 — 29.08.2022`
 
 ## RememberSelectionLayers
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RememberSelectionLayers.jsx-FF6900.svg)](https://rebrand.ly/rmbsellyr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RememberSelectionLayers.jsx-FF6900.svg)](https://link.aiscripts.ru/rmbsellyr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Перемещает объекты в их оригинальные слои. Предварительно информацию необходимо сохранить. Объекты переносятся в начало слоя.
 
 ![RememberSelectionLayers](https://i.ibb.co/SJq5rj9/Remember-Selection-Layers.gif)
 
 ## RenameLayerAsText
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameLayerAsText.jsx-FF6900.svg)](https://rebrand.ly/renlyrtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameLayerAsText.jsx-FF6900.svg)](https://link.aiscripts.ru/renlyrtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Переименовывает слои по имени текстового объекта в слое, если оно есть, или контенту. Источник опционально первый сверху или нижний текст в слое.
 
 ![RenameLayerAsText](https://i.ibb.co/vQ1p7gx/Rename-Layer-As-Text.gif)
 
 ## SortLayerItems
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SortLayerItems.jsx-FF6900.svg)](https://rebrand.ly/sortlyrit) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SortLayerItems.jsx-FF6900.svg)](https://link.aiscripts.ru/sortlyrit) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Сортирует объекты по алфавиту внутри слоёв. Подслои сортируются с объектами и при выборе `Include all sublayers` их содержимое тоже. Счётчик слоёв обновляется динамически. Объекты без имени (в угловых скобках `<Group>`, `<Ellipse>` и т.д.) помещаются вверх / вниз.
 

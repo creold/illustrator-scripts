@@ -15,11 +15,11 @@
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `v0.2.2 — upd, 12.04.2024`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `v0.1 — 29.12.2022`
 
 ## AlignTextBaseline
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignTextBaseline.jsx-FF6900.svg)](https://rebrand.ly/algntxtbl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выравнивает текстовые слои по вертикали по базовым линиям. Распределение через стандартную панель Align привязано либо к габаритным рамкам строчных текстов, либо к выносным элементам через Align to Glyph Bounds, что не даёт ровного результата на смешанных шрифтах.
 
@@ -29,7 +29,7 @@
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
 
 ## MakeNumbersSequence
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](https://rebrand.ly/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](https://link.aiscripts.ru/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Заменяет выделенные текстовые объекты диапазоном чисел с шагом, заданным в диалоговом окне. Может заменять внутри выбранных текстовых объектов только числа или плейсхолдер `{%N}`.
 
@@ -40,7 +40,7 @@
 ![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
 
 ## MultiEditText
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MultiEditText.jsx-FF6900.svg)](https://rebrand.ly/metxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MultiEditText.jsx-FF6900.svg)](https://link.aiscripts.ru/metxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Мультиредактирование выбранных текстовых объектов. Скрипт позволяет вводить одинаковый текст, заменяя текущее содержимое текстового фрейма или добавляя введенный текст к текущему.
 
@@ -62,7 +62,7 @@
 ![MultiTextEdit](https://i.ibb.co/58HHRFK/Multi-Edit-Text.gif)
 
 ## ReplaceFormattedText
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](https://rebrand.ly/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReplaceFormattedText.jsx-FF6900.svg)](https://link.aiscripts.ru/rplcfmtdtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Вставляет текст из буфера обмена без форматирования, сохраняя стили исходных абзацев выбранного текстового объекта. Стили сохраняются по первым символам каждого абзаца.
 

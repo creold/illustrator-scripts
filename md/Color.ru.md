@@ -16,7 +16,7 @@
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `v0.1 — 27.03.2022`
 * [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#beautifyswatchnames) `v0.1 — new, 31.10.2024`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `v0.1 — 18.04.2022`
-* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `v0.1 — new, 21.06.2024`
+* [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorgroupreplacer) `v0.1 — 08.10.2023`
 * [ContrastChecker](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#contrastchecker) `v0.1.1 — upd, 23.07.2024`
 * [ConvertToGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#converttogradient) `v0.1.4 — upd, 09.02.2024`
@@ -29,7 +29,7 @@
 * [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#strokecolorfromfill) `v0.4.1 — upd, 12.02.2024`
 
 ## AverageColors
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageColors.jsx-FF6900.svg)](https://rebrand.ly/avgcols) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageColors.jsx-FF6900.svg)](https://link.aiscripts.ru/avgcols) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Усредняет цвета выбранных объектов, отдельных групп или градиентов. Скрипт пропускает объекты без цвета или с паттерном. Если ничего не выбрано, скрипт предложит обработать все группы в документе. Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`.   
 
@@ -41,7 +41,7 @@
 ![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif)
 
 ## BeautifySwatchNames
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames.jsx-FF6900.svg)](https://rebrand.ly/bswn) [![Direct2](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames%20Lite.jsx-48C794.svg)](https://rebrand.ly/bswnlite) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames.jsx-FF6900.svg)](https://link.aiscripts.ru/bswn) [![Direct2](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames%20Lite.jsx-48C794.svg)](https://link.aiscripts.ru/bswnlite) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Подбирает уникальные, звучные названия для выбранных цветов в панели Swatches. Можно создавать ассоциативные палитры, как в брендбуках некоторых компаний. С помощью скрипта получим «Jasmine Green» вместо стандартных «R=122 G=201 B=67» или «Saffron Gold», а не «C=0 M=50 Y=100 K=0».   
 
@@ -56,7 +56,7 @@
 ![BeautifySwatchNames](https://i.ibb.co/1KN1cfD/Beautify-Swatch-Names.gif)
 
 ## ColorBlindSimulator
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorBlindSimulator.jsx-FF6900.svg)](https://rebrand.ly/colblindsim) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorBlindSimulator.jsx-FF6900.svg)](https://link.aiscripts.ru/colblindsim) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Имитирует нарушение восприятия цветов 8 типов. Можно перекрасить объекты или ограничиться предпросмотром. Программы Adobe ограничены просмотром двух типов в меню `View > Proof Setup` и не могут применить цвета. Скрипт поддерживает: пути, составные пути, текст, заливки и обводки. Вы можете изменить гамма-коррекцию в расчётах `CFG.gamma: 2.2` и активировать предпросмотр по умолчанию `CFG.defPreview: true`.
 
@@ -69,7 +69,7 @@
 ![ColorBlindSimulator](https://i.ibb.co/ccps1mg/Color-Blind-Simulator.gif)
 
 ## ColorCorrector
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorCorrector.jsx-FF6900.svg)](https://rebrand.ly/clrcrct) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorCorrector.jsx-FF6900.svg)](https://link.aiscripts.ru/clrcrct) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 До Иллюстратор CS4 можно было массово устанавливать значения цветовых каналов нескольких объектов. С версии CS5 эта возможность пропала. Скрипт позволяет менять значения каналов заливок и обводок следующим образом:   
 
@@ -86,14 +86,14 @@
 ![ColorCorrector](https://i.ibb.co/Wyd976r/Color-Corrector.gif)
 
 ## ColorGroupReplacer
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorGroupReplacer.jsx-FF6900.svg)](https://rebrand.ly/clrgrprplc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ColorGroupReplacer.jsx-FF6900.svg)](https://link.aiscripts.ru/clrgrprplc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Заменяет глобальные цвета из одной группы на другую группу по совпадению имён или по порядку расположения образцов в группах. В примере мы заменяем группу Default. Если в целевой группе у цвета имя `Accent`, то скрипт будет искать образцы, у которых имя содержит имя целевого цвета. Вы можете не создавать палитры с семантическими именами, а разложить цвета внутри групп в нужном порядке и выбирать опцию `By swatches order`.
 
 ![ColorGroupReplacer](https://i.ibb.co/FVYrty0/Color-Group-Replacer.gif)
 
 ## ContrastChecker
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ContrastChecker.jsx-FF6900.svg)](https://rebrand.ly/contchkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ContrastChecker.jsx-FF6900.svg)](https://link.aiscripts.ru/contchkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Помогает подобрать различимые для людей сочетания цветов для текста и фонов, иконок и других элементов интерфейса, диаграмм, проверяя контрастность пар цветов на соответствие критериям [WCAG 2.1](https://www.w3.org/TR/2008/REC-WCAG20-20081211/#visual-audio-contrast-contrast). Коэффициент автокоррекции редактируется в коде скрипта в переменной `CFG.defRatio: 4.5`.
 
@@ -112,7 +112,7 @@
 ![ContrastChecker](https://i.ibb.co/wwRPNVD/Contrast-Checker.gif)
 
 ## ConvertToGradient
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ConvertToGradient.jsx-FF6900.svg)](https://rebrand.ly/cnvttograd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ConvertToGradient.jsx-FF6900.svg)](https://link.aiscripts.ru/cnvttograd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Преобразует одноцветную заливку в градиент на базец исходного цвета.   
 Работает с документами в RGB и CMYK, Spot и Grayscale цветами. Распознает составные пути и группы.   
@@ -121,7 +121,7 @@
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
 
 ## CycleColors
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CycleColors.jsx-FF6900.svg)](https://rebrand.ly/cyclecol) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CycleColors.jsx-FF6900.svg)](https://link.aiscripts.ru/cyclecol) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Меняет местами цвета заливки и обводки выделенных объектов по порядку их расположения в панели Layers. Сохраняет толщину обводок, но если у объекта нет обводки, то копирует с другого объекта. Если ваши выделенные объекты хаотичны, то может показаться, что кнопки `Forward` и `Backward` переносят цвет случайным образом.  Кнопка `Reset` не возвращает кастомные кисти, пунктир, применённый к обводке. Вы можете использовать стандартную отмену истории после закрытия диалога.   
 
@@ -130,7 +130,7 @@
 ![CycleColors](https://i.ibb.co/qNXFHry/cycle-colors.gif)
 
 ## CycleGradient
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CycleGradient.jsx-FF6900.svg)](https://rebrand.ly/cyclegrad) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CycleGradient.jsx-FF6900.svg)](https://link.aiscripts.ru/cyclegrad) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 * CycleGradient.jsx (UI версия)
 * CycleGradientBackward.jsx
@@ -145,7 +145,7 @@
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
 
 ## MatchColors
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MatchColors.jsx-FF6900.svg)](https://rebrand.ly/matchclrs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MatchColors.jsx-FF6900.svg)](https://link.aiscripts.ru/matchclrs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Переносит цвета заливок с одной группы объектов на другую или на символы текстовых объектов без группировки. Может перекрасить выбранные объекты в выбранные образцы цветов в панели Swatches. Цвета определяются на путях, составных путях или текстах. Остальные объекты в группах будут пропущены.
 
@@ -155,7 +155,7 @@
 ![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
 
 ## DistributeGradientStops
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DistributeGradientStops.jsx-FF6900.svg)](https://rebrand.ly/distgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DistributeGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/distgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Распределяет равномерно расстояние между всеми точками на слайдере градиента, не меняя положения крайних. 
 
@@ -165,7 +165,7 @@
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
 
 ## RemoveGradientStops
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RemoveGradientStops.jsx-FF6900.svg)](https://rebrand.ly/rmvgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RemoveGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/rmvgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Удаляет промежуточные цветовые точки градиента в заливке и обводке выбранных объектов. Остаются крайние левая и правая точки.
 
@@ -175,7 +175,7 @@
 ![RemoveGradientStops](https://i.ibb.co/cv6wgPq/remove-Gradient-Stops.gif)
 
 ## ReverseGradientColor
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReverseGradientColor.jsx-FF6900.svg)](https://rebrand.ly/rvsgradcol) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ReverseGradientColor.jsx-FF6900.svg)](https://link.aiscripts.ru/rvsgradcol) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Зеркально переворачивает цвета градиента: каждую точку (Color stop) вместе с прозрачностью. Само расположение точек сохраняется. 
 
@@ -185,7 +185,7 @@
 ![ReverseGradient](https://i.ibb.co/Fg8nnHZ/Reverse-Gradient-Color.gif)
 
 ## StrokeColorFromFill
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokeColorFromFill.jsx-FF6900.svg)](https://rebrand.ly/strokefromfill) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokeColorFromFill.jsx-FF6900.svg)](https://link.aiscripts.ru/strokefromfill) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Применяет к обводке (Stroke) каждого выбранного объекта цвет из его сплошной или градиентной заливки. Если заливка градиентная, то цвета всех стопов градиента усредняются для цвета обводки.   
 

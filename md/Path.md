@@ -21,7 +21,7 @@
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
 
 ## DivideBottomPath
-[![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://rebrand.ly/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://link.aiscripts.ru/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Divides the bottom path at the intersections with the top paths. The paths must have a stroke. This script replaces Pathfinder → Outline, which resets the color and doesn't remove the top paths segments. Scissors tool requires precise clicking and takes time with many points. 
 
@@ -31,7 +31,7 @@ Divides the bottom path at the intersections with the top paths. The paths must 
 ![DivideBottomPath](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
 
 ## Points Move Random
-[![Direct](https://img.shields.io/badge/Direct%20Link-PointsMoveRandom.jsx-FF6900.svg)](https://rebrand.ly/ptsmovrnd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-PointsMoveRandom.jsx-FF6900.svg)](https://link.aiscripts.ru/ptsmovrnd) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 The script moves randomly in numeric ranges horizontally and vertically selected points or all points on objects. Quick access with <kbd>Q</kbd> + underlined key. Instead of <kbd>Q</kbd> you can set your modifier key in the script file `modKey: 'Q'`.
 
@@ -42,7 +42,7 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 ![PointsMoveRandom](https://i.ibb.co/qNpdKTr/Points-Move-Random.gif)
 
 ## SetPointsCoordinates
-[![Direct](https://img.shields.io/badge/Direct%20Link-SetPointsCoordinates.jsx-FF6900.svg)](https://rebrand.ly/setptscrds) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SetPointsCoordinates.jsx-FF6900.svg)](https://link.aiscripts.ru/setptscrds) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Sets the same X, Y coordinates for the selected points. In the native Transform panel, after you type X, Y, the shape moves, not the selected points. The script works with artboard rulers or global rulers toggled in the `View → Rulers` menu. To move points by a delta, use the double signs `--` or `++` in front of the number. If the points have a common coordinate, it is displayed in the input. Illustrator has coordinate inaccuracies, so you can set the `CFG.tolerance' in the script code to make the coordinates of the points appear the same in the dialog box.
 
@@ -52,7 +52,7 @@ Sets the same X, Y coordinates for the selected points. In the native Transform 
 ![SetPointsCoordinates](https://i.ibb.co/KmR2gSS/Set-Points-Coordinates.gif)
 
 ## SplitPath
-[![Direct](https://img.shields.io/badge/Direct%20Link-SplitPath.jsx-FF6900.svg)](https://rebrand.ly/splpath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SplitPath.jsx-FF6900.svg)](https://link.aiscripts.ru/splpath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illustrator does not do it.   
 
@@ -66,7 +66,7 @@ Powerfull script for subtract shapes from paths. Pathfinder panel in Adobe Illus
 ![SplitPath](https://i.ibb.co/c6HNZwJ/Split-Path.gif)
 
 ## SubtractTopPath
-[![Direct](https://img.shields.io/badge/Direct%20Link-SubtractTopPath.jsx-FF6900.svg)](https://rebrand.ly/subtoppath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-SubtractTopPath.jsx-FF6900.svg)](https://link.aiscripts.ru/subtoppath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Subtracts the top selected shape from all the shapes below it. Pathfinder panel in Adobe Illustrator does not do it. Change the value of `isRmvTop` to `false` to keep the original shape. The `isUseFS: true` speeds up processing with a large number of objects. 
 
@@ -76,7 +76,7 @@ Subtracts the top selected shape from all the shapes below it. Pathfinder panel 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
 
 ## TrimOpenEnds
-[![Direct](https://img.shields.io/badge/Direct%20Link-TrimOpenEnds.jsx-FF6900.svg)](https://rebrand.ly/trimends) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Direct%20Link-TrimOpenEnds.jsx-FF6900.svg)](https://link.aiscripts.ru/trimends) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Removes the ends of open paths up to their intersection points. It's an alternative to the Shape Builder tool.
 

@@ -22,21 +22,21 @@
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks) `v0.3`
 
 ## CenterClipsToArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CenterClipsToArtboards.jsx-FF6900.svg)](https://rebrand.ly/ctrcliptoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-CenterClipsToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/ctrcliptoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выравнивает все обтравочные маски (clipping masks) и их содержимое по центру артбордов, на которых они лежат. Также можно выравнивать только выделенные маски по одному артборду. 
 
 ![CenterClipsToArtboards](https://i.ibb.co/ykHy3rM/Center-Clips-To-Artboards.gif)
 
 ## ExtractFromGroup
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtractFromGroup.jsx-FF6900.svg)](https://rebrand.ly/extrgrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtractFromGroup.jsx-FF6900.svg)](https://link.aiscripts.ru/extrgrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Извлекает выбранные элементы из групп. По умолчанию каждый элемент извлечётся перед самой верхней группой. Если зажата  клавиша <kbd>Alt / Option (⌥)</kbd>, то элемент переместится перед первой родительской группой.
 
 ![ExtractFromGroup](https://i.ibb.co/pK5yzqS/Extract-From-Group.gif)
 
 ## ExtUngroup
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtUngroup.jsx-FF6900.svg)](https://rebrand.ly/extungrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ExtUngroup.jsx-FF6900.svg)](https://link.aiscripts.ru/extungrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт разгруппировывает объекты и удаляет обтравочные маски в документе.   
 *Сделан на основе скрипта автора Jiwoong Song и модификации от [John Wundes](http://www.wundes.com/).*
@@ -47,28 +47,28 @@
 ![ExtUngroup](https://i.ibb.co/QngnpZL/demo-Ext-Ungroup.gif)
 
 ## GroupArtboardObjects
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-GroupArtboardObjects.jsx-FF6900.svg)](https://rebrand.ly/grpabobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-GroupArtboardObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/grpabobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт группирует объекты на артбордах, при этом пропускает заблокированные или скрытые объекты. Опционально можно переименовать полученные группы и сортировать в слоях по порядку.
 
 ![GroupArtboardObjects](https://i.ibb.co/GTGDnCF/Group-Artboard-Objects.gif)
 
 ## MaskArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MaskArtboards.jsx-FF6900.svg)](https://rebrand.ly/maskab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MaskArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/maskab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Помещает видимые разблокированные объекты на артбордах в обтравочные маски по их размеру. В опции Custom можно вводить диапазоны номеров артбордов через запятую и дефис. Если в параметрах документа установлены выпуски за обрез и документ сохранен, то в полях Bleed по умолчанию будет это значение.
 
 ![MaskArtboards](https://i.ibb.co/Cw3Z0St/Mask-Artboards.gif)
 
 ## MoveToGroup
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveToGroup.jsx-FF6900.svg)](https://rebrand.ly/movtogrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveToGroup.jsx-FF6900.svg)](https://link.aiscripts.ru/movtogrp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Если выделенные объекты содержат группу, то перемещает все объекты в нее. Порядок сохраняется: объекты выше группы помещаются внутри наверх, нижние — вниз группы. Если групп несколько, то выбирается в диалоге куда переместить: в верхнюю или нижюю.
 
 ![MoveToGroup](https://i.ibb.co/jkD5Zx4/Move-To-Group.gif)
 
 ## TrimMasks
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimMasks.jsx-FF6900.svg)](https://rebrand.ly/trimcm) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimMasks.jsx-FF6900.svg)](https://link.aiscripts.ru/trimcm) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Автоматические обрезает объекты внутри Clipping Mask, применяя команду `Pathfinder > Crop`. Такая задача может возникнуть, когда при открытии PDF или SVG в Illustrator множество объектов помещаются внутри отдельных масок.  
 

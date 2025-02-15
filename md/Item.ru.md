@@ -29,7 +29,7 @@
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignToArtboards.jsx-FF6900.svg)](https://rebrand.ly/alitoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/alitoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Скрипт выравнивает выбранные объекты по их родительским артбордам или содержимое всех артбордов документа. Если объект лежит на нескольких артбордах, скрипт проверит, в какой артборд попадает центр объекта — по нему и выровняет. Если же центр объекта вне артбордов — то выровняет по первому.
 
@@ -39,7 +39,7 @@
 ![AlignToArtboards](https://i.ibb.co/XFQSmvR/Align-To-Artboards.gif)
 
 ## BatchTrace
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-BatchTrace.jsx-FF6900.svg)](https://rebrand.ly/bchtr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-BatchTrace.jsx-FF6900.svg)](https://link.aiscripts.ru/bchtr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Пакетно трассирует выбранные пользователем линкованные и внедрённые изображения в документе или все изображения из папки. Штатное меню `Object → Image Trace → Make` доступно для одного выбранного изображения. Запись экшена не поможет, так как в нём не сохраняются настройки трассировки. В Adobe Bridge возможна трассировка только папки с изображениями: `Tools → Illustrator → Image Trace`. 
 
@@ -60,7 +60,7 @@
 ![BatchTrace](https://i.ibb.co/YkMGpS9/Batch-Trace.gif)
 
 ## DuplicateToArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DuplicateToArtboards.jsx-FF6900.svg)](https://rebrand.ly/duptoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DuplicateToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/duptoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Дублирует выбранные на активном артборде объекты на ту же позицию в указанные артборды. Номера артбордов перечисляются через запятую или дефис. Пустая строка — объекты продублируются на все артборды, кроме исходного. Выберите `Preserve layers`, если объекты в разных слоях и должны там остаться.
 
@@ -71,7 +71,7 @@
 ![DuplicateToArtboards](https://i.ibb.co/mJqLzHr/Duplicate-To-Artboards.gif)
 
 ## FitSelectionToArtboards
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-FitSelectionToArtboards.jsx-FF6900.svg)](https://rebrand.ly/fittoabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-FitSelectionToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/fittoabs) [![Direct2](https://img.shields.io/badge/Прямая%20ссылка-FitSelectionToArtboards%20Lite.jsx-48C794.svg)](https://link.aiscripts.ru/fittoabs-lite) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Раскладывает выбранные объекты по центру артбордов и опционально подгоняет размеры каждого по наибольшей стороне к размеру артборда. При масштабировании объектов можно задать внутренние отступы от границ артбордов. С включённой опцией `Rename artboards...` артборды получат пользовательские имена помещенных на них объектов.   
 
@@ -85,14 +85,14 @@
 ![FitSelectionToArtboards](https://i.ibb.co/YT0qPWL/Fit-Selection-To-Artboards.gif)
 
 ## MakeEnvelopesWithTops
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeEnvelopesWithTops.jsx-FF6900.svg)](https://rebrand.ly/mkenvel) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeEnvelopesWithTops.jsx-FF6900.svg)](https://link.aiscripts.ru/mkenvel) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Искажает выбранный нижний объект по форме верхних по отдельности. Аналогичен множественному выполнению команды `Object → Envelope Distort → Make with Top Object`.
 
 ![MakeEnvelopesWithTops](https://i.ibb.co/N24Lmy7/Make-Envelopes-With-Tops.gif)
 
 ## MirrorMove
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MirrorMove.jsx-FF6900.svg)](https://rebrand.ly/mirrmov) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MirrorMove.jsx-FF6900.svg)](https://link.aiscripts.ru/mirrmov) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Перемещает выбранные объекты или точки зеркально последней операции `Object → Transform → Move...` или сдвига мышью / клавиатурой. Расширяет стандартную команду `Object → Transform → Transform Again`. Возможные оси: XY, X, Y. Movement ratio — коэффициент на какую дистанцию переместить относительно предыдущей (1 = ту же самую). Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`. Эти режимы меняются без правки кода, если удерживать клавишу Alt при запуске:
 
@@ -102,7 +102,7 @@
 ![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif)
 
 ## PlaceSymbols
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-PlaceSymbols.jsx-FF6900.svg)](https://rebrand.ly/plsymb) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-PlaceSymbols.jsx-FF6900.svg)](https://link.aiscripts.ru/plsymb) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Ищет символы по имени в библиотеке документа и размещает выбранные на холсте. Скрипт ускоряет работу с большой локальной библиотекой символов. В колонке Instances подсчитаны все экземпляры символа в документе.
 
@@ -112,28 +112,28 @@
 ![PlaceSymbols](https://i.ibb.co/y5ytbYp/Place-Symbols.gif)
 
 ## RenameItems
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameItems.jsx-FF6900.svg)](https://rebrand.ly/renitems) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameItems.jsx-FF6900.svg)](https://link.aiscripts.ru/renitems) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Массово переименовывает выбранные объекты или их родительские слои. Если объекты не выбраны, то скрипт переименовывает активный слой или артборд. Функция поиска и замены поддерживает RegExp.       
 
 ![RenameItems](https://i.ibb.co/9T8TfQv/rename-items.gif)
 
 ## Rescale
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Rescale.jsx-FF6900.svg)](https://rebrand.ly/resc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-Rescale.jsx-FF6900.svg)](https://link.aiscripts.ru/resc) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Трансформирует выбранные объекты вместе до заданного размера. Также можно использовать скрипт для трансформирования по коэффициенту. Если перед запуском скрипта нарисовать линию размером объекта, то размер подставится в поле `Old size`. Единицы измерения в окне скрипта, как в настройках документа.      
 
 ![Rescale](https://i.ibb.co/gDj142f/demo-Rescale.gif)
 
 ## ResizeOnLargerSide
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ResizeOnLargerSide.jsx-FF6900.svg)](https://rebrand.ly/reslrgsd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ResizeOnLargerSide.jsx-FF6900.svg)](https://link.aiscripts.ru/reslrgsd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Трансформирует выбранные объекты пропорционально до заданной величины бОльшей стороны. Её скрипт определяет автоматически. Учитывает единицы измерения документа.  
 
 ![ResizeOnLargerSide](https://i.ibb.co/1bSj1kC/Resize-On-Larger-Side.gif)
 
 ## ResizeToSize
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ResizeToSize.jsx-FF6900.svg)](https://rebrand.ly/rsztsz) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ResizeToSize.jsx-FF6900.svg)](https://link.aiscripts.ru/rsztsz) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 В Illustrator есть панель `Transform`, но в ней нельзя трансформировать каждый выделенный объект до заданной величины. При стандартном способе периодически появляются дробные значения в размере. Скрипт трансформирует выделенные объекты со 100% точностью, в зависимости от стороны: ширины, высоты или бОльшей стороны. Все настройки переключаются горячими клавишами <kbd>Q</kbd> + подчеркнутая буква или цифра. Вместо <kbd>Q</kbd> можно задать свою клавишу-модификатор в коде `modKey: 'Q'`.
 
@@ -147,7 +147,7 @@
 ![ResizeToSize](https://i.ibb.co/q0Ktmfm/Resize-To-Size.gif)
 
 ## RoundCoordinates
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RoundCoordinates.jsx-FF6900.svg)](https://rebrand.ly/rndcoord) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-RoundCoordinates.jsx-FF6900.svg)](https://link.aiscripts.ru/rndcoord) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Округляет координаты каждого выделенного объекта. Ориентиром для выравнивания будет выбранная контрольная точка из панели `Transform`. Скрипт учитывает единицы измерения документа и толщину обводки, если включено `Preferences → Use Preview Bounds`. В файле скрипта можно изменить шаг округления координат CFG `step: 1`. Если шаг 0, то скрипт выровняет по сетке документа из `Preferences → Guides & Grid`.
 
@@ -157,7 +157,7 @@
 ![RoundCoordinates](https://i.ibb.co/3y0WpzC/Round-Coordinates.gif)
 
 ## ShowObjectNames
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://rebrand.ly/shwobjnms) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://rebrand.ly/shwObjNmsFont) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://link.aiscripts.ru/shwobjnms) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://link.aiscripts.ru/shwObjNmsFont) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object».   
 
@@ -171,7 +171,7 @@
 ![ShowObjectNames](https://i.ibb.co/PZ93d6Rk/Show-Object-Names-Font-Picker.jpg)
 
 ## SwapObjects
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SwapObjects.jsx-FF6900.svg)](https://rebrand.ly/swapobjs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-SwapObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/swapobjs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Меняет местами два выбранных объекта по опорной точке (Reference Point). Опционально можно поменять только X или Y координату, место объектов в слоях.
 

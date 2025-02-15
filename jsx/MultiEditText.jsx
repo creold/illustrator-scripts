@@ -2,7 +2,7 @@
   MultiEditText.jsx for Adobe Illustrator
   Description: Bulk editing of text frame contents. Replaces content separately or with the same text
   Date: March, 2024
-  Modification date: April, 2024
+  Modification date: February, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,6 +12,7 @@
   *******************************************************************************************
 
   Release notes:
+  0.3 Added button to reset texts, saving entered texts when switching options
   0.2.2 Fixed paragraph formatting with soft line breaks
   0.2.1 Added Shift+Enter shortcut to insert soft line break
   0.2 Added option to keep paragraph formatting (experimental)
@@ -42,12 +43,12 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Multi-edit Text',
-        version: 'v0.2.2'
+        version: 'v0.3'
       };
 
   var CFG = {
         width: 300, // Text area width, px
-        height: 240, // Text area height, px
+        height: 280, // Text area height, px
         ph: '<text>', // Content display placeholder
         divider: '\n@@@\n', // Symbol for separating multiple text frames
         softBreak: '@#', // Soft line break char
@@ -71,6 +72,8 @@ function main() {
     return;
   }
 
+  var isUndo = false;
+
   var sortedTfs = [].concat(tfs);
   sortByPosition(sortedTfs, CFG.coordTolerance);
 
@@ -78,19 +81,25 @@ function main() {
   var sortedTfContents = extractContents(sortedTfs, CFG.softBreak);
 
   var placeholder = isEqualContents(tfs, CFG.softBreak) ? tfs[0].contents.replace(/\x03/g, CFG.softBreak) : CFG.ph;
+  var tmpText = {
+    union: '',
+    separate: ''
+  };
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'row';
       win.alignChildren = ['fill', 'top'];
 
+  // INPUT
   var input = win.add('edittext', [0, 0, CFG.width, CFG.height], placeholder, {multiline: true, scrolling: true });
-      input.helpTip = 'Use Shift+Enter to insert soft line break special char';
+      input.helpTip = 'Insert ' + CFG.divider.replace(/\n/g, '') + ' on a new line\nto separate text objects\n\n';
+      input.helpTip += 'Use Shift+Enter to insert\nsoft line break special char';
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     input.active = true;
   }
 
-  // Options & Buttons
+  // OPTIONS AND BUTTONS
   var opt = win.add('group');
       opt.orientation = 'column';
       opt.alignChildren = ['fill', 'center'];
@@ -109,13 +118,16 @@ function main() {
   var cancel, ok;
   if (CFG.isMac) {
     cancel = opt.add('button', undefined, 'Cancel', { name: 'cancel' });
+    reset = opt.add('button', undefined, 'Reset', { name: 'reset' });
     ok = opt.add('button', undefined, 'OK', { name: 'ok' });
   } else {
     ok = opt.add('button', undefined, 'OK', { name: 'ok' });
+    reset = opt.add('button', undefined, 'Reset', { name: 'reset' });
     cancel = opt.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
 
   cancel.helpTip = 'Press Esc to Close';
+  reset.helpTip = 'Reset to original texts';
   ok.helpTip = 'Press Enter to Run';
 
   var isPreview = opt.add('checkbox', undefined, 'Preview');
@@ -123,6 +135,7 @@ function main() {
   var copyright = opt.add('statictext', undefined, 'Visit Github');
   copyright.justify = 'center';
 
+  // EVENTS
   loadSettings(SETTINGS);
 
   // CC 2020 v24.3 crashes when undoing text frame changes
@@ -145,8 +158,6 @@ function main() {
   };
 
   isSort.onClick = function () {
-    input.text = getInputText(placeholder);
-    win.update();
     preview();
   }
 
@@ -156,7 +167,11 @@ function main() {
     preview();
   }
 
-  input.onChange = input.onChanging = preview;
+  input.onChange = input.onChanging = function () {
+    if (isSeparate.value) tmpText.separate = this.text;
+    else tmpText.union = this.text;
+    preview();
+  }
 
   isPreview.onClick = preview;
 
@@ -169,7 +184,21 @@ function main() {
       preview();
     }
   });
-  
+
+  reset.onClick = function () {
+    tmpText.separate = '';
+    tmpText.union = '';
+    input.text = getInputText(placeholder);
+
+    preview();
+
+    this.active = true;
+    this.active = false;
+
+    input.active = true;
+    win.update();
+  }
+
   cancel.onClick = win.close;
 
   ok.onClick = function () {
@@ -182,16 +211,24 @@ function main() {
     win.close();
   }
 
+  /**
+   * Retrieve the text based on the configuration settings and temporary text storage
+   *
+   * @param {string} def - The default text to return if no valid text is found
+   * @returns {string} - The processed text
+   */
   function getInputText(def) {
     var str = (isSort.value ? sortedTfContents : tfContents).join(CFG.divider);
     if (isSeparate.value) {
-      return isReverse.value ? reverseText(str, CFG.divider) : str;
+      return !isEmpty(tmpText.separate) ? tmpText.separate : (isReverse.value ? reverseText(str, CFG.divider) : str);
     } else {
-      return def;
+      return !isEmpty(tmpText.union) ? tmpText.union : def;
     }
   }
 
-  var isUndo = false;
+  /**
+   * Toggles the preview mode for text changes
+   */
   function preview() {
     if (CFG.is2020) return;
     try {
@@ -208,16 +245,24 @@ function main() {
     } catch (err) {}
   }
 
+  /**
+   * Change the text content of selected text frames based on the provided input text
+   */
   function changeTexts() {
     var tmpPath = app.selection[0].layer.pathItems.add();
     tmpPath.name = 'Remove_Path';
 
     if (isEmpty(input.text)) return;
+
+    // Create a regular expression for soft breaks
     var regex = new RegExp(CFG.softBreak, 'gmi');
 
+    // Handle separate text replacement mode
     if (isSeparate.value) {
       var srcTfs = [].concat(isSort.value ? sortedTfs : tfs);
+      // Split the input text using the configured divider
       var texts = input.text.replace(regex, '\x03').split(CFG.divider);
+      // Determine the minimum length to avoid out-of-bounds errors
       var min = Math.min(srcTfs.length, texts.length);
 
       for (var i = 0; i < min; i++) {
@@ -227,8 +272,10 @@ function main() {
         }
       }
     } else {
+      // Handle combined text replacement mode
       for (var i = 0, len = tfs.length; i < len; i++) {
         var tf = tfs[i];
+        // Replace placeholders in the input text with the original content of the text frame
         var str = input.text.replace(/<text>/gi, tfContents[i]).replace(regex, '\x03');
         if (tf.contents !== str) {
           replaceContent(tf, str, isFormat.value);
@@ -257,17 +304,21 @@ function main() {
    * @param {object} prefs - Object containing preferences
    */
   function saveSettings(prefs) {
-    if(!Folder(prefs.folder).exists) Folder(prefs.folder).create();
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
     var f = new File(prefs.folder + prefs.name);
     f.encoding = 'UTF-8';
     f.open('w');
-    var pref = {};
-    pref.formatting = isFormat.value;
-    pref.separated = isSeparate.value;
-    pref.sorted = isSort.value;
-    pref.reversed = isReverse.value;
-    var data = pref.toSource();
-    f.write(data);
+
+    var data = {};
+    data.formatting = isFormat.value;
+    data.separated = isSeparate.value;
+    data.sorted = isSort.value;
+    data.reversed = isReverse.value;
+
+    f.write( stringify(data) );
     f.close();
   }
 
@@ -278,24 +329,28 @@ function main() {
    */
   function loadSettings(prefs) {
     var f = File(prefs.folder + prefs.name);
-    if (f.exists) {
-      try {
-        f.encoding = 'UTF-8';
-        f.open('r');
-        var json = f.readln();
-        var pref = new Function('return ' + json)();
-        f.close();
-        if (typeof pref != 'undefined') {
-          isFormat.value = pref.formatting;
-          isSeparate.value = pref.separated;
-          isSort.value = pref.sorted;
-          isSort.enabled = pref.separated;
-          isReverse.value = pref.reversed;
-          isReverse.enabled = pref.separated;
-          isPreview.enabled = !pref.formatting;
-          input.text = getInputText(placeholder);
-        }
-      } catch (err) {}
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        isFormat.value = data.formatting === 'true';
+        isSeparate.value = data.separated  === 'true';
+        isSort.value = data.sorted  === 'true';
+        isSort.enabled = isSeparate.value;
+        isReverse.value = data.reversed === 'true';;
+        isReverse.enabled = isSeparate.value;
+        isPreview.enabled = !isFormat.value;
+        input.text = getInputText(placeholder);
+      }
+    } catch (err) {
+      return;
     }
   }
 
@@ -599,6 +654,28 @@ function openURL(url) {
   html.write(htmlBody);
   html.close();
   html.execute();
+}
+
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ *
+ * @param {Object} obj - The object to serialize
+ * @returns {string} - A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\\t")
+        .replace(/\r/g, "\\r")
+        .replace(/\n/g, "\\n")
+        .replace(/"/g, '\\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
 }
 
 // Run script
