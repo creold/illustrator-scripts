@@ -85,6 +85,7 @@
 </a>
 
 ## Платные скрипты
+* [AddObjectGuides](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1668%3FcategoryId=5705) — генерирует направляющие для объектов: горизонтальные, вертикальные, диагональные, а также для центров объектов.
 * [BentoGrid](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1667%3FcategoryId=5705) — генерирует случайные сетки в стиле Bento UI с ячейками разных пропорций.
 * [RandomColors](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1666%3FcategoryId=5705) — генерирует случайные цвета для заливок и обводок выбранных объектов или текстов.
 * [ExportSequence](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1665%3FcategoryId=5705) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
@@ -172,7 +173,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.4 — upd, 20.03.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.ru.md)  

@@ -2,12 +2,13 @@
   ShowObjectNames.jsx for Adobe Illustrator
   Description: Shows names of vector objects, linked or embedded raster images
   Date: June, 2023
-  Modicitaion Date: February, 2025
+  Modicitaion Date: March, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.4 Added character styles
   0.3 Added more positions, text justification, options to rotate text
   0.2 Added UI with options, support any objects
   0.1 Initial version
@@ -36,12 +37,14 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false);// Fix dra
 function main() {
   var SCRIPT = {
     name: 'Show Object Names',
-    version: 'v0.3'
+    version: 'v0.4'
   };
   
   var CFG = {
+    isAddStyle: true, // Add a new character style (true or false)
+    styleName: 'ObjectCaption', // Character style name
     fontSize: 14, // Default font size, pt
-    name: 'Object_Names',
+    layName: 'Object_Names', // New layer name
     units: getUnits(),
     isMac: /mac/i.test($.os),
     aiVers: parseFloat(app.version),
@@ -61,8 +64,12 @@ function main() {
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
 
+  var charStyle = CFG.isAddStyle ? getCharacterStyle(doc, CFG.styleName, CFG.fontSize) : null;
+  var allStyles = get(doc.characterStyles, 'name');
+
   var items = get(app.selection);
   var itemsData = getItemsData(items);
+
   var isUndo = false;
 
   // DIALOG
@@ -71,35 +78,10 @@ function main() {
       win.alignChildren = ['fill', 'top'];
       win.opacity = CFG.uiOpacity;
 
-  // OFFSET
-  var offsetPnl = win.add('panel', undefined, 'Offset Distance');
-      offsetPnl.orientation = 'row';
-      offsetPnl.alignChildren = ['fill', 'center'];
-      offsetPnl.spacing = 15;
-      offsetPnl.margins = CFG.uiMargins;
-
-  // OFFSET X
-  var xGrp = offsetPnl.add('group');
-
-  xGrp.add('statictext', undefined, 'X:');
-  var xInp = xGrp.add('edittext', undefined, 0);
-      xInp.preferredSize.width = 55;
-
-  xGrp.add('statictext', undefined, CFG.units);
-
-  // OFFSET Y
-  var yGrp = offsetPnl.add('group');
-
-  yGrp.add('statictext', undefined, 'Y:');
-  var yInp = yGrp.add('edittext', undefined, 0);
-      yInp.preferredSize.width = 55;
-
-  yGrp.add('statictext', undefined, CFG.units);
-
   // POSITION
   var posPnl = win.add('panel', undefined, 'Position');
       posPnl.alignChildren = ['fill', 'top'];
-      posPnl.spacing = 7;
+      posPnl.spacing = 10;
       posPnl.margins = CFG.uiMargins;
 
   var posGrp = posPnl.add('group');
@@ -145,6 +127,31 @@ function main() {
       posDdl.selection = 0;
       posDdl.active = true;
 
+  // OFFSET
+  var offsetPnl = win.add('panel', undefined, 'Offset Distance');
+      offsetPnl.orientation = 'row';
+      offsetPnl.alignChildren = ['fill', 'center'];
+      offsetPnl.spacing = 15;
+      offsetPnl.margins = CFG.uiMargins;
+
+  // OFFSET X
+  var xGrp = offsetPnl.add('group');
+
+  xGrp.add('statictext', undefined, 'X:');
+  var xInp = xGrp.add('edittext', undefined, 0);
+      xInp.preferredSize.width = 55;
+
+  xGrp.add('statictext', undefined, CFG.units);
+
+  // OFFSET Y
+  var yGrp = offsetPnl.add('group');
+
+  yGrp.add('statictext', undefined, 'Y:');
+  var yInp = yGrp.add('edittext', undefined, 0);
+      yInp.preferredSize.width = 55;
+
+  yGrp.add('statictext', undefined, CFG.units);
+
   // ANGLE
   var angPnl = win.add('panel', undefined, 'Rotate');
       angPnl.orientation = 'row';
@@ -155,6 +162,17 @@ function main() {
   angPnl.add('statictext', undefined, 'Angle:');
   var angleDdl = angPnl.add('dropdownlist', undefined, ['0\u00B0', '90\u00B0 Clockwise', '90\u00B0 Counter Clockwise', '180\u00B0']);
       angleDdl.selection = 0;
+
+  // STYLES
+  var charPnl = win.add('panel', undefined, 'Character Styles');
+      charPnl.orientation = 'row';
+      charPnl.alignChildren = ['fill', 'center'];
+      charPnl.spacing = 7;
+      charPnl.margins = CFG.uiMargins;
+
+  charPnl.add('statictext', undefined, 'Style:');
+  var charDdl = charPnl.add('dropdownlist', undefined, allStyles);
+      charDdl.selection = 0;
 
   // WRAPPER
   var wrapper = win.add('group');
@@ -237,7 +255,7 @@ function main() {
     updateDropdown(posDdl, inPosList);
   };
 
-  posDdl.onChange = angleDdl.onChange = function () {
+  posDdl.onChange = angleDdl.onChange = charDdl.onChange = function () {
     this.active = true;
 
     // Adobe Illustrator crash protection
@@ -254,7 +272,14 @@ function main() {
   isAddExtension.onClick = preview;
   isPreview.onClick = preview;
 
-  cancel.onClick = win.close;
+  cancel.onClick = function () {
+    if (CFG.isAddStyle && !charStyle.isExists) {
+      try {
+        charStyle.style.remove();
+      } catch (err) {}
+    }
+    win.close();
+  }
   ok.onClick = okClick;
 
   copyright.addEventListener('mousedown', function () {
@@ -317,7 +342,7 @@ function main() {
       justification: isAlignL.value ? 'LEFT' : (isAlignR.value ? 'RIGHT' : 'CENTER'),
       isExtension: isAddExtension.value,
       isRename: isRenameImage.value,
-      fontSize: CFG.fontSize
+      charStyle: doc.characterStyles.getByName(charDdl.selection.text)
     };
 
     var labels = []; // Array to store created text frames
@@ -344,12 +369,12 @@ function main() {
     if (isNewLay.value) { // Move text frames into the layer
       var lay; // Get or create the layer
       try {
-        lay = doc.layers.getByName(CFG.name);
+        lay = doc.layers.getByName(CFG.layName);
         lay.visible = true;
         lay.locked = false;
       } catch (err) {
         lay = doc.layers.add();
-        lay.name = CFG.name;
+        lay.name = CFG.layName;
       }
 
       for (var i = 0, len = labels.length; i < len; i++) {
@@ -411,6 +436,7 @@ function main() {
     pref.direction = isOutPos.value ? 0 : 1;
     pref.pos = posDdl.selection.index;
     pref.angle = angleDdl.selection.index;
+    pref.style = charDdl.selection.text;
     pref.justification = isAlignL.value ? 0 : (isAlignC.value ? 1 : 2);
     pref.container = isCurrLay.value ? 0 : (isNewGrp.value ? 1 : 2);
     pref.extension = isAddExtension.value;
@@ -447,6 +473,18 @@ function main() {
         layPnl.children[pref.container].value = true;
         isAddExtension.value = pref.extension === 'true';
         isRenameImage.value = pref.rename === 'true';
+        // Load last used character style by name or last in list
+        if (charDdl && pref.style) {
+          for (var i = 0; i < charDdl.items.length; i++) {
+            if (charDdl.items[i].text === pref.style) {
+              charDdl.selection = i;
+              break;
+            }
+          }
+          if (charDdl.selection.index === 0) {
+            charDdl.selection = charDdl.items.length - 1;
+          }
+        }
       }
     } catch (err) {
       return;
@@ -548,15 +586,38 @@ function isCorrectEnv() {
 }
 
 /**
+ * Get current or create a character style in the document
+ * @param {Object} doc - The Adobe Illustrator document in which to search for or create the character style.
+ * @param {string} name - The name of the character style to retrieve or create
+ * @param {number} fontSize - The font size to apply if the character style is newly created
+ * @returns {Object} - An object containing the character style and a boolean indicating whether the style already existed
+ */
+function getCharacterStyle(doc, name, fontSize) {
+  var charStyle = null;
+  var isExists = false;
+
+  try {
+    charStyle = doc.characterStyles.getByName(name);
+    isExists = true;
+  } catch (err) {
+    charStyle = doc.characterStyles.add(name);
+    charStyle.characterAttributes.size = fontSize;
+  }
+
+  return { 'style': charStyle, 'isExists': isExists };
+}
+
+/**
  * Convert a collection into a standard Array
  * @param {Object} coll - The collection to be converted
- * @returns {Array} - A new array containing the elements
+ * @param {string} prop - The property name to extract from each object (optional)
+ * @returns {Array} - A new array with either the extracted properties or the original elements
  */
-function get(coll) {
+function get(coll, prop) {
   var arr = [];
 
   for (var i = 0, len = coll.length; i < len; i++) {
-    arr.push(coll[i]);
+    arr.push(prop && coll[i].hasOwnProperty(prop) ? coll[i][prop] : coll[i]);
   }
 
   return arr;
@@ -689,7 +750,7 @@ function isEmpty(str) {
  * @param {Object} item - The Illustrator item to label. Can be a placed, raster, or other object type
  * @param {Object} itemData - Contains item properties like name, width, height, and bounds
  * @param {Object} params - Labeling parameters including font size, justification, position, and offsets
- * @param {number} params.fontSize - The font size for the label text
+ * @param {number} params.charStyle - The character style
  * @param {string} params.justification - Text justification
  * @param {number} params.angle - The rotation angle for the label
  * @param {boolean} params.isExtension - Whether to include the file extension in the label
@@ -698,7 +759,6 @@ function isEmpty(str) {
  * @param {number} params.offsetX - Horizontal offset for label positioning
  * @param {number} params.offsetY - Vertical offset for label positioning
  * @param {string} params.position - The label's position relative to the item
- * 
  * @returns {Object} - The created text frame containing the label
  */
 function addNameLabel(item, itemData, params) {
@@ -720,7 +780,7 @@ function addNameLabel(item, itemData, params) {
 
   var tf = item.layer.textFrames.add();
   tf.contents = decodeURI(nameStr);
-  tf.textRange.characterAttributes.size = params.fontSize;
+  params.charStyle.applyTo(tf.textRange);
   tf.textRange.paragraphAttributes.justification = Justification[params.justification];
   tf.rotate(params.angle);
 
@@ -729,7 +789,7 @@ function addNameLabel(item, itemData, params) {
   var halfDiffW = diffW / 2 + params.offsetX;
   var halfDiffH = diffH / 2;
 
-  var topBase = itemData.bounds[1] + (params.isOutside ? tf.height : -params.offsetY);
+  var topBase = itemData.bounds[1] + (params.isOutside ? tf.height : -tf.height) + params.offsetY;
   var bottomBase = itemData.bounds[3] + tf.height + params.offsetY;
   var leftBase = itemData.bounds[0] + (params.isOutside ? -tf.width - params.offsetX : params.offsetX);
   var rightBase = itemData.bounds[2] + (params.isOutside ? params.offsetX : -tf.width - params.offsetX);
@@ -786,7 +846,7 @@ function addNameLabel(item, itemData, params) {
       tf.left = itemData.bounds[2] - tf.width - params.offsetX;
       break;
     case 'CENTER TOP':
-      tf.top = itemData.bounds[1] - params.offsetY;
+      tf.top = itemData.bounds[1] + params.offsetY;
       tf.left = centerX;
       break;
     case 'CENTER CENTER':

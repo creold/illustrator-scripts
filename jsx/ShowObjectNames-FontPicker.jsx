@@ -2,12 +2,13 @@
   ShowObjectNames-FontPicker.jsx for Adobe Illustrator
   Description: Shows names of vector objects, linked or embedded raster images
   Date: June, 2023
-  Modicitaion Date: February, 2025
+  Modicitaion Date: March, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.3.1 Minor fixes
   0.3 Added fonts, more positions, text justification, options to rotate text
   0.2 Added UI with options, support any objects
   0.1 Initial version
@@ -36,7 +37,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false);// Fix dra
 function main() {
   var SCRIPT = {
     name: 'Show Object Names',
-    version: 'v0.3'
+    version: 'v0.3.1'
   };
   
   var CFG = {
@@ -71,54 +72,8 @@ function main() {
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'column';
       win.alignChildren = ['fill', 'top'];
+      win.spacing = 10;
       win.opacity = CFG.uiOpacity;
-
-  // WRAPPER 1
-  var wrapper1 = win.add('group');
-      wrapper1.orientation = 'row';
-      wrapper1.alignChildren = ['fill', 'top'];
-
-  // FONT
-  var fontPnl = wrapper1.add('panel', undefined, 'Font');
-      fontPnl.alignChildren = ['fill', 'top'];
-      fontPnl.margins = CFG.uiMargins;
-
-  var fontDdl = fontPnl.add('dropdownlist', undefined, CFG.fonts);
-      fontDdl.preferredSize.width = 100;
-      fontDdl.itemSize.width = CFG.fontWidth;
-      fontDdl.selection = 0;
-      fontDdl.active = true;
-
-  var fontGrp = fontPnl.add('group');
-
-  fontGrp.add('statictext', undefined, 'Size:');
-  var fontInp = fontGrp.add('edittext', undefined, 14);
-      fontInp.preferredSize.width = 40;
-
-  fontGrp.add('statictext', undefined, CFG.fontUnits);
-
-  // OFFSET
-  var offsetPnl = wrapper1.add('panel', undefined, 'Offset');
-      offsetPnl.alignChildren = ['fill', 'top'];
-      offsetPnl.margins = CFG.uiMargins;
-
-  // OFFSET X
-  var xGrp = offsetPnl.add('group');
-
-  xGrp.add('statictext', undefined, 'X:');
-  var xInp = xGrp.add('edittext', undefined, 0);
-      xInp.preferredSize.width = 40;
-
-  xGrp.add('statictext', undefined, CFG.units);
-
-  // OFFSET Y
-  var yGrp = offsetPnl.add('group');
-
-  yGrp.add('statictext', undefined, 'Y:');
-  var yInp = yGrp.add('edittext', undefined, 0);
-      yInp.preferredSize.width = 40;
-
-  yGrp.add('statictext', undefined, CFG.units);
 
   // POSITION
   var posPnl = win.add('panel', undefined, 'Position');
@@ -168,6 +123,31 @@ function main() {
   var posDdl = posPnl.add('dropdownlist', undefined, outPosList);
       posDdl.selection = 0;
 
+  // OFFSET
+  var offsetPnl = win.add('panel', undefined, 'Offset Distance');
+      offsetPnl.orientation = 'row';
+      offsetPnl.alignChildren = ['fill', 'center'];
+      offsetPnl.spacing = 15;
+      offsetPnl.margins = CFG.uiMargins;
+
+  // OFFSET X
+  var xGrp = offsetPnl.add('group');
+
+  xGrp.add('statictext', undefined, 'X:');
+  var xInp = xGrp.add('edittext', undefined, 0);
+      xInp.preferredSize.width = 55;
+
+  xGrp.add('statictext', undefined, CFG.units);
+
+  // OFFSET Y
+  var yGrp = offsetPnl.add('group');
+
+  yGrp.add('statictext', undefined, 'Y:');
+  var yInp = yGrp.add('edittext', undefined, 0);
+      yInp.preferredSize.width = 55;
+
+  yGrp.add('statictext', undefined, CFG.units);
+
   // ANGLE
   var angPnl = win.add('panel', undefined, 'Rotate');
       angPnl.orientation = 'row';
@@ -178,6 +158,26 @@ function main() {
   angPnl.add('statictext', undefined, 'Angle:');
   var angleDdl = angPnl.add('dropdownlist', undefined, ['0\u00B0', '90\u00B0 Clockwise', '90\u00B0 Counter Clockwise', '180\u00B0']);
       angleDdl.selection = 0;
+
+  // FONT
+  var fontPnl = win.add('panel', undefined, 'Font');
+      fontPnl.orientation = 'row';
+      fontPnl.alignChildren = ['fill', 'top'];
+      fontPnl.margins = CFG.uiMargins;
+
+  var fontDdl = fontPnl.add('dropdownlist', undefined, CFG.fonts);
+      fontDdl.preferredSize.width = 100;
+      fontDdl.itemSize.width = CFG.fontWidth;
+      fontDdl.selection = 0;
+      fontDdl.active = true;
+
+  var fontGrp = fontPnl.add('group');
+
+  fontGrp.add('statictext', undefined, 'Size:');
+  var fontInp = fontGrp.add('edittext', undefined, 14);
+      fontInp.preferredSize.width = 40;
+
+  fontGrp.add('statictext', undefined, CFG.fontUnits);
 
   // WRAPPER 2
   var wrapper2 = win.add('group');
@@ -494,8 +494,10 @@ function main() {
       f.close();
 
       if (typeof pref != 'undefined') {
-        fontDdl.selection = pref.fontFamily;
-        fontInp.text = pref.fontSize ? pref.fontSize : 14;
+        if (fontDdl && fontInp && pref.fontFamily) {
+          fontDdl.selection = pref.fontFamily;
+          fontInp.text = pref.fontSize ? pref.fontSize : 14;
+        }
         xInp.text = pref.offsetX;
         yInp.text = pref.offsetY;
         posGrp.children[pref.direction].value = true;
@@ -809,7 +811,7 @@ function addNameLabel(item, itemData, params) {
   var halfDiffW = diffW / 2 + params.offsetX;
   var halfDiffH = diffH / 2;
 
-  var topBase = itemData.bounds[1] + (params.isOutside ? tf.height : -params.offsetY);
+  var topBase = itemData.bounds[1] + (params.isOutside ? tf.height : -tf.height) + params.offsetY;
   var bottomBase = itemData.bounds[3] + tf.height + params.offsetY;
   var leftBase = itemData.bounds[0] + (params.isOutside ? -tf.width - params.offsetX : params.offsetX);
   var rightBase = itemData.bounds[2] + (params.isOutside ? params.offsetX : -tf.width - params.offsetX);
@@ -866,7 +868,7 @@ function addNameLabel(item, itemData, params) {
       tf.left = itemData.bounds[2] - tf.width - params.offsetX;
       break;
     case 'CENTER TOP':
-      tf.top = itemData.bounds[1] - params.offsetY;
+      tf.top = itemData.bounds[1] + params.offsetY;
       tf.left = centerX;
       break;
     case 'CENTER CENTER':

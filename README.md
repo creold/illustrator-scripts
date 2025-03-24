@@ -85,6 +85,7 @@ Many scripts are free to download thanks to user support. Help me to develop new
 </a>
 
 ## Paid scripts
+* [AddObjectGuides](https://buymeacoffee.com/aiscripts/e/384446) — script draws guidelines around selected objects with custom length.
 * [BentoGrid](https://www.buymeacoffee.com/aiscripts/e/341609) — script generates random bento grids with different cell proportions.
 * [RandomColors](https://www.buymeacoffee.com/aiscripts/e/332147) — script generates random fill and stroke colors for selected objects and editable text.
 * [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) — script for toggle visibility of numbered objects in selected groups and exports document as sequence to PNGs or JPGs.
@@ -166,7 +167,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.3 — upd, 09.02.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.4 — upd, 20.03.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.md)  

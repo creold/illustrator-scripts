@@ -25,7 +25,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.3 — upd, 09.02.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.4 — upd, 20.03.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -159,16 +159,18 @@
 ## ShowObjectNames
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames.jsx-FF6900.svg)](https://link.aiscripts.ru/shwobjnms) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://link.aiscripts.ru/shwObjNmsFont) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object».   
+Выводит имена файлов помещённых или внедрённых изображений (PNG, JPG, TIFF, PSD, PDF и других) и имена прочих выбранных объектов. Если исходный файл изображения не обнаружен в папке, то скрипт выведет «Missing Image». Для объектов без имени — подпись «Unnamed Object». В версии 0.4 подписи создаются выбранным стилем символов.   
 
 Модификация ShowObjectNames-FontPicker содержит выбор шрифта и его размера. Если у вас на компьютере установлены тысячи шрифтов, то эта версия скрипта будет работать медленней из-за их обработки.
 
 В коде настраивается:   
 
-* `fontSize: 14` — размер шрифта создаваемых текстов в pt;
+* `isAddStyle: true` — добавлять новый стиль символов для подписей
+* `styleName` — имя нового стиля символов
+* `fontSize: 14` — размер шрифта для стиля;
 * `name: 'Object_Names'` — имя нового слоя.
 
-![ShowObjectNames](https://i.ibb.co/PZ93d6Rk/Show-Object-Names-Font-Picker.jpg)
+![ShowObjectNames](https://i.ibb.co/Tq4fLkNK/Show-Object-Names.jpg)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SwapObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/swapobjs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
