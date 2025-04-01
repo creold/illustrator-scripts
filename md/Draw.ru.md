@@ -17,6 +17,7 @@
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.2 — new, 29.07.2024`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
+* [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#trianglemaker) `v0.2 — new, 31.03.2025`
 
 ## DrawPathBySelectedPoints
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/drawbyselpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -52,6 +53,18 @@
 Создаёт случайные пути с заданным количеством точек. Это могут быть случайные отрезки из 2 точек или сложные фигуры, имитирующие каракули. Точки не выходят за границы активного артборда. Если в документе сначала выделили несколько фигур, то скрипт сгенерирует отдельные пути с точками, лежащими в пределах их границ (bounding box).
 
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
+
+## TriangleMaker
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TriangleMaker.jsx-FF6900.svg)](https://link.aiscripts.ru/trimkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Создаёт треугольник заданного размера по сторонам, углам по центру экрана или от выбранной точки. Подсчитывает длину трех сторон и углы в градусах. Опционально можно вывести размеры треугольника текстом рядом — *Add Triangle Data As Text*.   
+
+Параметры в коде:
+
+* `rgb: [0, 0, 0]` — цвет заливки треугольника для RGB документов, 
+* `cmyk: [0, 0, 0, 100]` — цвет для CMYK документов.
+
+![TriangleMaker](https://i.ibb.co/ccx5RsW3/Triangle-Maker.jpg)
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   

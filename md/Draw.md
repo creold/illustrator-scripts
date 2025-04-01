@@ -17,6 +17,7 @@
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.2 — new, 29.07.2024`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
+* [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#trianglemaker) `v0.2 — new, 31.03.2025`
 
 ## DrawPathBySelectedPoints
 [![Direct](https://img.shields.io/badge/Direct%20Link-DrawPathBySelectedPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/drawbyselpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -52,6 +53,18 @@ Numerates selected points and marks them with colored circles.
 Creates random paths with a specified number of points. These can be random straight lines from 2 points or complex shapes that imitate scribbles. The points do not go beyond the bounds of the active artboard. If many shapes are first selected in the document, the script will generate individual paths with points into their bounding box.
 
 ![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
+
+## TriangleMaker
+[![Direct](https://img.shields.io/badge/Direct%20Link-TriangleMaker.jsx-FF6900.svg)](https://link.aiscripts.ru/trimkr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Creates a triangle of a given size by sides and angles at the center of the screen or from a selected anchor point. Calculates the length of the three sides and angles in degrees. Optionally, display triangle dimensions in text near the triangle — *Add Triangle Data As Text*.   
+
+Code parameters:
+
+* `rgb: [0, 0, 0]` — triangle fill color for RGB documents, 
+* `cmyk: [0, 0, 0, 100]` — fill color for CMYK documents.
+
+![TriangleMaker](https://i.ibb.co/ccx5RsW3/Triangle-Maker.jpg)
 
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
