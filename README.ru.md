@@ -198,7 +198,7 @@
 Скрипты для выбора объектов в документе
 
 * [CornersSelector](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#cornersselector) `v0.1 — 21.04.2023`
-* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `v0.2.3 — upd, 09.02.2024`
+* [NamedItemsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#named-items-finder) `v0.3 — upd, 10.04.2025`
 * [SelectAllLayersAbove](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `v0.1 — 21.02.2022`
 * [SelectAllLayersBelow](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectalllayersabove) `v0.1 — 21.02.2022`
 * [SelectArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Select.ru.md#selectartboardobjects) `v0.1.1 — upd, 13.01.2025`

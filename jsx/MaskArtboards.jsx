@@ -17,7 +17,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2025 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2024 (Mac), 2024 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -73,7 +73,7 @@ function main() {
   // SOURCE
   var srcPnl = win.add('panel', undefined, 'Source Artboards');
       srcPnl.orientation = 'row';
-      srcPnl.alignChildren = ['left', 'top'];
+      srcPnl.alignChildren = ['left', 'bottom'];
       srcPnl.margins = CFG.mgns;
 
   var isCurrAb = srcPnl.add("radiobutton", undefined, 'Active #' + (currIdx + 1));
@@ -83,7 +83,7 @@ function main() {
       isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
   var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
-      rangeInp.helpTip = 'E.g. "1, 3-5" to export 1, 3, 4, 5';
+      rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
       rangeInp.characters = 10;
       rangeInp.enabled = isCstmAb.value;
 

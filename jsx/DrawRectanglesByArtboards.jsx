@@ -18,7 +18,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2025 (Mac/Win).
+  Tested with Adobe Illustrator CC 2018-2024 (Mac), 2024 (Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -41,7 +41,7 @@ function main() {
         bleed: getBleed(), // Default document bleed
         isEqual: true, // Default same bleed values
         layer: 'Rectangles', // New layer name
-        isLower: false, // Rectangles under the others objects
+        isLower: true, // Rectangles under the others objects
         aiVers: parseFloat(app.version),
         units: getUnits(),
         isMac: /mac/i.test($.os),
@@ -86,7 +86,7 @@ function main() {
       isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
   var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
-      rangeInp.helpTip = 'E.g. "1, 3-5" to export 1, 3, 4, 5';
+      rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
       rangeInp.characters = 10;
       rangeInp.enabled = isCstmAb.value;
 
