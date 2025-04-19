@@ -110,9 +110,9 @@ Click the category name to learn more about the scripts in the selected category
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
-* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `v0.2 — upd, 12.09.2024`
-* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `v0.4 — upd, 12.09.2024`
-* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `v0.3 — upd, 12.09.2024`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `v0.3 — upd, 18.04.2025`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `v0.5 — upd, 18.04.2025`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardastopobj) `v0.4 — upd, 18.04.2025`
 
 ### [Color](md/Color.md)  
 

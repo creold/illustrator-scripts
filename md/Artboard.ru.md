@@ -19,9 +19,9 @@
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
-* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `v0.2 — upd, 12.09.2024`
-* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `v0.4 — upd, 12.09.2024`
-* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `v0.3 — upd, 12.09.2024`
+* [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `v0.3 — upd, 18.04.2025`
+* [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `v0.5 — upd, 18.04.2025`
+* [RenameArtboardAsTopObj](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardastopobj) `v0.4 — 18.04.2025`
 
 ## ArtboardsFinder
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-ArtboardsFinder.jsx-FF6900.svg)](https://link.aiscripts.ru/abfinder) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -97,7 +97,7 @@
 
 Переименовывает каждый артборд по имени слоя, в котором есть элемент, лежащий на соответствующем артборде.
 
-![RenameArtboardAsLayer](https://i.ibb.co/nQ92khj/Rename-Artboard-As-Layer.gif) 
+![RenameArtboardAsLayer](https://i.ibb.co/fV7rHhVK/Rename-Artboard-As-Layer.gif) 
 
 ## RenameArtboardAsSize
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameArtboardAsSize.jsx-FF6900.svg)](https://link.aiscripts.ru/renabsassize) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -107,14 +107,14 @@
 > [!NOTE]   
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/41686762-artboard-auto-naming-preferences-one-click-artboa) за внедрение этой функции в Иллюстратор.
 
-![RenameArtboardAsSize](https://i.ibb.co/GR488JH/Rename-Artboard-As-Size.gif)
+![RenameArtboardAsSize](https://i.ibb.co/My4pLYFB/Rename-Artboard-As-Size.gif)
 
 ## RenameArtboardAsTopObj
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RenameArtboardAsTopObj.jsx-FF6900.svg)](https://link.aiscripts.ru/renabsasobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
 Переименовывает каждый артборд по имени верхнего незаблокированного объекта, лежащего в его пределах. Если верхний объект — текст, то его содержимое станет именем артборда. 
 
-![RenameArtboardAsTopObj](https://i.ibb.co/WPmf14B/Rename-Artboard-As-Top-Obj.gif)
+![RenameArtboardAsTopObj](https://i.ibb.co/3mfd4bFV/Rename-Artboard-As-Top-Obj.gif)
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   

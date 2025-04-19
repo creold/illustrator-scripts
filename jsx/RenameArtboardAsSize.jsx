@@ -2,12 +2,13 @@
   RenameArtboardAsSize.jsx for Adobe Illustrator
   Description: The script Renames artboards according to their size in document units
   Date: September, 2018
-  Modification date: September, 2024
+  Modification date: April, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.5 Added an option to display text labels with artboard names. Save/load settings
   0.4 Added custom artboard range
   0.3 Added user interface
   0.2.2 Added new units API for CC 2023 v27.1.1
@@ -39,32 +40,34 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Rename Artboard As Size',
-    version: 'v0.4'
+    version: 'v0.5'
   };
 
   var CFG = {
-        units: getUnits(), // Active document units
-        isSaveName: true, // Set false to overwrite the full name
-        isRound: true, // Set true to get a round number
-        precision: 2,  // Size rounding precision
-        isAddUnit: true,
-        separator: '_',
-        length: 100, // Name length
+        precision: 2, // Decimal places 
+        separator: '_', // Name words separator symbol
         isMac: /mac/i.test($.os),
         mgns: [10, 15, 10, 7]
       };
 
-  if (!documents.length) {
-    alert('Error: \nOpen a document and try again');
+  var SETTINGS = {
+        name: SCRIPT.name.replace(/\s/g, "_") + "_data.json",
+        folder: Folder.myDocuments + "/Adobe Scripts/"
+      };
+
+  if (!/illustrator/i.test(app.name)) {
+    alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
+    return;
+  }
+
+  if (!app.documents.length) {
+    alert('No documents\nOpen a document and try again', 'Script error');
     return;
   }
 
   var doc = app.activeDocument;
   var docAbs = doc.artboards;
   var currIdx = docAbs.getActiveArtboardIndex();
-
-  // Scale factor for Large Canvas mode
-  CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
 
   // INTERFACE
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -79,9 +82,6 @@ function main() {
 
   var isCurrAb = srcPnl.add('radiobutton', undefined, 'Active #' + (currIdx + 1) + ': \u0022' + truncate(docAbs[currIdx].name, 12) + '\u0022');
       isCurrAb.value = true;
-  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
-    isCurrAb.active = true;
-  }
 
   var wrapper = srcPnl.add('group');
       wrapper.alignChildren = ['left', 'center'];
@@ -94,19 +94,35 @@ function main() {
       rangeInp.characters = 10;
       rangeInp.enabled = isCstmAb.value;
 
+  // FORMAT
+  var formatPnl = win.add('panel', undefined, 'Name Format');
+      formatPnl.alignChildren = ['fill', 'center'];
+      formatPnl.margins = CFG.mgns;
+
+    var isSaveName = formatPnl.add('radiobutton', undefined, 'Original Name And Size');
+        isSaveName.value = true;
+    var isRplcName = formatPnl.add('radiobutton', undefined, 'Only Artboard Size');
+
   // OPTIONS
   var optPnl = win.add('panel', undefined, 'Options');
       optPnl.alignChildren = ['fill', 'center'];
       optPnl.margins = CFG.mgns;
 
-  var isSaveName = optPnl.add('checkbox', undefined, 'Add size as suffix');
-      isSaveName.value = CFG.isSaveName;
+  var isRound = optPnl.add('checkbox', undefined, 'Round Size To Integer');
+      isRound.value = true;
 
-  var isRound = optPnl.add('checkbox', undefined, 'Round to integer');
-      isRound.value = CFG.isRound;
+  var isAddUnit = optPnl.add('checkbox', undefined, 'Add Units After Size');
+      isAddUnit.value = true;
 
-  var isAddUnit = optPnl.add('checkbox', undefined, 'Add units after size');
-      isAddUnit.value = CFG.isAddUnit;
+  var fontGrp = optPnl.add('group');
+      fontGrp.alignChildren = ['left', 'bottom'];
+
+  var isAddLabel = fontGrp.add('checkbox', undefined, 'Add Text Label:');
+      isAddLabel.value = true;
+
+  var fontInp = fontGrp.add('edittext', undefined, '12 pt');
+      fontInp.characters = 6;
+      fontInp.enabled = isAddLabel.value;
 
   // BUTTONS
   var btns = win.add('group');
@@ -125,6 +141,11 @@ function main() {
   copyright.justify = 'center';
 
   // EVENTS
+  loadSettings(SETTINGS);
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
+    isCurrAb.value ? isCurrAb.active = true : isCstmAb.active = true;
+  }
+
   isCurrAb.onClick = function () {
     rangeInp.enabled = false;
     isCstmAb.value = false;
@@ -135,6 +156,17 @@ function main() {
     isCurrAb.value = false;
   }
 
+  isAddLabel.onClick = function () {
+    fontInp.enabled = this.value;
+  }
+
+  fontInp.onChange = function () {
+    var value = parseFloat(this.text);
+    if (isNaN(value)) value = 12;
+    if (value > 1296) value = 1296;
+    this.text = value + ' pt';
+  }
+
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
@@ -143,29 +175,119 @@ function main() {
   });
 
   function okClick() {
-    CFG.isSaveName = isSaveName.value;
-    CFG.isRound = isRound.value;
-    CFG.isAddUnit = isAddUnit.value;
+    saveSettings(SETTINGS);
+
+    if (isAddLabel.value) {
+      var labelLayer = getEditableLayer(doc);
+      var labelGroup;
+      try {
+        labelGroup = labelLayer.groupItems.getByName('Artboard_Names');
+      } catch (err) {
+        labelGroup = labelLayer.groupItems.add();
+        labelGroup.name = 'Artboard_Names';
+      }
+      labelGroup.hidden = false;
+      labelGroup.locked = false;
+    }
+
+    var data = {
+          precision: CFG.precision,
+          length: 100,
+          separator: CFG.separator,
+          isSaveName: isSaveName.value,
+          isAddUnit: isAddUnit.value,
+          fontSize: parseFloat(fontInp.text),
+          isRound: isRound.value,
+          isAddLabel: isAddLabel.value,
+          scaleFactor: doc.scaleFactor ? doc.scaleFactor : 1,
+          units: getUnits()
+        };
 
     if (isCurrAb.value) {
-      renameArtboard(docAbs[currIdx], CFG);
+      renameArtboard(docAbs[currIdx], labelGroup, data);
     } else {
       var range = parseAndFilterIndexes(rangeInp.text, docAbs.length);
       for (i = 0; i < range.length; i++) {
-        renameArtboard(docAbs[range[i]], CFG);
+        renameArtboard(docAbs[range[i]], labelGroup, data);
       }
     }
 
+    if (!labelGroup.pageItems.length) {
+      labelGroup.remove();
+    }
     win.close();
   }
 
-  win.center();
+  /**
+   * Save UI options to a file
+   * @param {object} prefs - Object containing preferences
+   * @returns {void}
+   */
+  function saveSettings(prefs) {
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
+    var f = new File(prefs.folder + prefs.name);
+    f.encoding = 'UTF-8';
+    f.open('w');
+
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.artboard = isCurrAb.value ? 0 : 1;
+    data.saveName = isSaveName.value ? 0 : 1;
+    data.round = isRound.value;
+    data.addUnit = isAddUnit.value;
+    data.addLabel = isAddLabel.value;
+    data.fontSize = fontInp.text;
+
+    f.write( stringify(data) );
+    f.close();
+  }
+
+  /**
+   * Load options from a file
+   * @param {object} prefs - Object containing preferences
+   * @returns {void}
+   */
+  function loadSettings(prefs) {
+    var f = File(prefs.folder + prefs.name);
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x ? parseInt(data.win_x) : 100,
+          data.win_y ? parseInt(data.win_y) : 100
+        ];
+        isCurrAb.value = data.artboard === '0';
+        isCstmAb.value = data.artboard === '1';
+        rangeInp.enabled = isCstmAb.value;
+        isRplcName.value = data.saveName === '1';
+        isRound.value = data.round === 'true';
+        isAddUnit.value = data.addUnit === 'true';
+        isAddLabel.value = data.addLabel === 'true';
+        fontInp.text = parseFloat(data.fontSize) + ' pt';
+        fontInp.enabled = isAddLabel.value;
+      }
+    } catch (err) {
+      return;
+    }
+  }
+
   win.show();
 }
 
 /**
  * Get active document ruler units
- * 
  * @returns {string} Shortened units
  */
 function getUnits() {
@@ -201,11 +323,10 @@ function getUnits() {
 
 /**
 * Convert a value from one set of units to another
-*
 * @param {string} value - The numeric value to be converted
 * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
 * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
-* @returns {number} - The converted value in the specified units
+* @returns {number} The converted value in the specified units
 */
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
@@ -213,10 +334,9 @@ function convertUnits(value, currUnits, newUnits) {
 
 /**
  * Truncate a string to a specific length and add an ellipsis ('...') if it exceeds that length
- *
  * @param {string} str - The string to truncate
  * @param {number} n - The maximum length of the truncated string including the ellipsis
- * @returns {string} - The truncated string with an ellipsis if it was truncated, otherwise the original string
+ * @returns {string} The truncated string with an ellipsis if it was truncated, otherwise the original string
  */
 function truncate(str, n) {
   return str.length > n ? str.slice(0, n - 1) + '...' : str;
@@ -224,10 +344,9 @@ function truncate(str, n) {
 
 /**
  * Parse a string representing a list of indexes and filters them based on a total count
- *
  * @param {string} str - The input string containing the indexes
  * @param {number} total - The maximum allowed number (exclusive)
- * @returns {Array} - An array of valid indexes
+ * @returns {Array} An array of valid indexes
  */
 function parseAndFilterIndexes(str, total) {
   var parsedNums = [];
@@ -268,36 +387,93 @@ function parseAndFilterIndexes(str, total) {
 }
 
 /**
+ * Find the first editable layer in the document
+ * If no such layer is found, it makes the first layer editable
+ * @param {Object} doc - The document object containing layers
+ * @returns {Object} The first editable layer found or made editable
+ */
+function getEditableLayer(doc) {
+  var layers = doc.layers;
+  var len = layers.length;
+  var aLayer = doc.activeLayer;
+
+  // Check if the active layer is editable
+  if (aLayer.visible && !aLayer.locked) return aLayer;
+
+  // Iterate through layers to find an editable one
+  for (var i = 0; i < len; i++) {
+    var currLayer = layers[i];
+    if (currLayer.visible && !currLayer.locked) {
+      doc.activeLayer = currLayer;
+      return currLayer;
+    }
+  }
+
+  // If no editable layer is found, make the active layer editable
+  aLayer.visible = true;
+  aLayer.locked = false;
+  return aLayer;
+}
+
+/**
  * Rename an artboard based on its dimensions and user preferences
- *
  * @param {object} ab - The artboard object to rename.
- * @param {object} prefs - An object containing user preferences for renaming
+ * @param {Object} target - The target object containing labels
+ * @param {object} data - An object containing user preferences
  * @returns {void}
  */
-function renameArtboard(ab, prefs) {
+function renameArtboard(ab, target, data) {
   var abName = ab.name;
   var abRect = ab.artboardRect;
-  var separator = /\s/.test(abName) ? ' ' : ((/-/.test(abName) ? '-' : prefs.separator));
+  var separator = /\s/.test(abName) ? ' ' : ((/-/.test(abName) ? '-' : data.separator));
 
-  var width = prefs.sf * convertUnits(abRect[2] - abRect[0], 'px', prefs.units);
-  var height = prefs.sf * convertUnits(abRect[1] - abRect[3], 'px', prefs.units);
+  var width = calcDimension(abRect[2] - abRect[0], data);
+  var height = calcDimension(abRect[1] - abRect[3], data);
 
-  width = prefs.isRound ? Math.round(width) : width.toFixed(prefs.precision);
-  height = prefs.isRound ? Math.round(height) : height.toFixed(prefs.precision);
+  width = data.isRound ? Math.round(width) : width.toFixed(data.precision);
+  height = data.isRound ? Math.round(height) : height.toFixed(data.precision);
 
   var size = width + 'x' + height;
-  if (prefs.isAddUnit) size += prefs.units;
+  if (data.isAddUnit) size += data.units;
 
-  if (prefs.isSaveName) {
+  if (data.isSaveName) {
     ab.name += separator + size;
   } else {
     ab.name = size;
   }
+
+  if (data.isAddLabel) addLabel(ab, target, data.fontSize);
+}
+
+/**
+ * Calculate the dimension based on the provided value and preferences
+ * @param {number} value - The dimension value
+ * @param {object} data - An object containing user preferences
+ * @returns {(string|number)} The formatted dimension
+ */
+function calcDimension(value, data) {
+  value = data.scaleFactor * convertUnits(value, 'px', data.units);
+  return data.isRound ? Math.round(value) : value.toFixed(data.precision) * 1;
+}
+
+/**
+ * Add a label to the artboard
+ * @param {Object} ab - The artboard object
+ * @param {Object} target - The target object containing labels
+ * @param {object} fontSize - The label text size
+ */
+function addLabel(ab, target, fontSize) {
+  if (isNaN(fontSize)) fontSize = 12;
+  if (fontSize > 1296) fontSize = 1296;
+
+  var label = target.textFrames.add();
+  label.contents = ab.name;
+  label.textRange.characterAttributes.size = fontSize;
+  label.position = [ab.artboardRect[0], ab.artboardRect[1] + label.height];
 }
 
 /**
  * Open a URL in the default web browser
- *
  * @param {string} url - The URL to open in the web browser
  * @returns {void}
 */
@@ -310,6 +486,27 @@ function openURL(url) {
   html.execute();
 }
 
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
+}
+
 try {
   main();
-} catch (e) {}
+} catch (err) {}
