@@ -17,6 +17,7 @@
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
+* [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#textblock) `v0.2 — upd, 30.04.2025`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -67,6 +68,15 @@ See also [Adobe Photoshop version](https://github.com/creold/photoshop-scripts)
 Pasting text from the clipboard without formatting, preserving the paragraph styles of the original text. The style is saved from the first character of each paragraph.
 
 ![ReplaceFormattedText](https://i.ibb.co/LQGmg1W/Replace-Formatted-Text.gif)
+
+## TextBlock
+[![Direct](https://img.shields.io/badge/Direct%20Link-TextBlock.jsx-FF6900.svg)](https://link.aiscripts.ru/txtblck) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)   
+
+Creates a block of selected text layers with specified width and spacing. The order of the layers in the block corresponds to the order of the original layers on the Y-axis. Layers are grouped together. Supported units: px, pt, in, mm, cm, m, ft, and yd.   
+
+See also [Adobe Photoshop version](https://github.com/creold/photoshop-scripts/blob/master/README.md#textblock)
+
+![TextBlock](https://i.ibb.co/twh4SMH0/Text-Block.gif) 
 
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.

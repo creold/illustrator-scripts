@@ -215,6 +215,7 @@ Click the category name to learn more about the scripts in the selected category
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
+* [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#textblock) `v0.2 — upd, 30.04.2025`
 
 ### [Utility](md/Utility.md)  
 

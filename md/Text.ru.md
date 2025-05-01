@@ -17,6 +17,7 @@
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `v0.1 — 29.12.2022`
+* [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#textblock) `v0.2 — upd, 30.04.2025`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -67,6 +68,15 @@
 Вставляет текст из буфера обмена без форматирования, сохраняя стили исходных абзацев выбранного текстового объекта. Стили сохраняются по первым символам каждого абзаца.
 
 ![ReplaceFormattedText](https://i.ibb.co/LQGmg1W/Replace-Formatted-Text.gif)
+
+## TextBlock
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TextBlock.jsx-FF6900.svg)](https://link.aiscripts.ru/txtblck) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)  
+
+Создаёт блок заданной ширины из выбранных текстовых объектов с отступами между ними. Порядок в блоке соответствует расположению исходных текстов по оси Y сверху вниз. Слои объединяются в группу. Поддерживаемые единицы измерения: px, pt, in, mm, cm, m, ft и yd.
+
+Смотрите также [версию для Adobe Photoshop](https://github.com/creold/photoshop-scripts/blob/master/README.ru.md#textblock) 
+
+![TextBlock](https://i.ibb.co/twh4SMH0/Text-Block.gif)
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
