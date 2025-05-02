@@ -2,7 +2,7 @@
   TextBlock.jsx for Adobe Illustrator
   Description: Convert selected point text objects into a block of text
   Date: August, 2023
-  Modification Date: April, 2025
+  Modification Date: May, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Original script by Carlos Canto
 
@@ -12,6 +12,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.2.1 Fixed block alignment to artboard center. Text justification changes to center
   0.2 Added option to center text block and hide/remove original layers
   0.1.1 Keeped text editable, sort texts by Y position
   0.1 Initial version by Carlos Canto (12/04/2011)
@@ -40,7 +41,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
     name: 'Text Block',
-    version: 'v0.2'
+    version: 'v0.2.1'
   };
 
   var CFG = {
@@ -68,7 +69,6 @@ function main() {
 
   var doc = app.activeDocument;
   var abIdx = doc.artboards.getActiveArtboardIndex();
-  var abBnds = doc.artboards[abIdx].artboardRect;
 
   var texts = getTextFrames(app.selection);
   if (texts.length < 2) {
@@ -178,50 +178,48 @@ function main() {
 
     var spUnits = parseUnits(spInp.text, 'pt');
     var blockSpacing = convertUnits( strToNum(spInp.text, CFG.spacing), spUnits, 'pt' );
-  
+
     // Add a group to final output
     var textGroup = texts[0].layer.groupItems.add();
     textGroup.name = "Text Block";
-  
+
     var nextTop = 0;
     var posLeft = texts[0].geometricBounds[0];
     var posRight = texts[0].geometricBounds[2];
     var posTop = texts[0].geometricBounds[1];
-  
+
     // Create text block
     for (var i = texts.length - 1; i >= 0; i--) {
       var currText = texts[i];
       var dupText = currText.duplicate(textGroup, ElementPlacement.PLACEATEND);
       dupText.selected = false;
       var dupCurve = dupText.createOutline(); // Outlined version
-  
+
       // Calc scale factor
       var pct = blockWidth / dupCurve.width * 100;
       var scaleMatrix = app.getScaleMatrix(pct, pct);
-  
+
       dupCurve.remove();
       dupText = currText.duplicate(textGroup, ElementPlacement.PLACEATEND);
       dupText.selected = false;
+      dupText.paragraphs[0].paragraphAttributes.justification = Justification.CENTER;
       dupText.transform(scaleMatrix);
-  
+
       dupCurve = dupText.duplicate().createOutline();
 
       var deltaX = dupText.left - dupCurve.left;
-      var deltaY = dupText.geometricBounds[1] - dupCurve.geometricBounds[1];
-  
+      var deltaY = dupText.top - dupCurve.top;
+
       dupText.left = deltaX;
       dupText.top = nextTop + deltaY + dupCurve.height + blockSpacing;
       nextTop = dupText.top - deltaY;
-  
+
       dupCurve.remove();
     }
 
     // Align text block
     if (isToCenter.value) {
-      textGroup.position = [
-        abBnds[0] + (abBnds[2] - abBnds[0]) / 2 - textGroup.width / 2,
-        abBnds[1] + (abBnds[3] - abBnds[1]) / 2 + textGroup.height / 2
-      ];
+      alignToCenter(doc.artboards[abIdx], textGroup);
     } else if (!isKeep.value) {
       textGroup.position = [posLeft, posTop];
     } else {
@@ -328,14 +326,19 @@ function main() {
   win.show();
 }
 
-// Get TextFrames array from collection
+/**
+ * Get an array of TextFrames from a collection
+ * @param {(Object|Array)} coll - The collection to search for TextFrames
+ * @returns {Array} An array of TextFrame objects
+ */
 function getTextFrames(coll) {
   var tfs = [];
   for (var i = 0, len = coll.length; i < len; i++) {
-    if (/text/i.test(coll[i].typename)) 
+    if (/text/i.test(coll[i].typename)) {
       tfs.push(coll[i]);
-    else if (/group/i.test(coll[i].typename)) 
+    } else if (/group/i.test(coll[i].typename)) {
       tfs = tfs.concat(getTextFrames(coll[i].pageItems));
+    }
   }
   return tfs;
 }
@@ -354,7 +357,6 @@ function comparePosition(x1, x2, y1, y2) {
 
 /**
  * Parse units from a mixed string
- * 
  * @param {string} str - The input string containing the numeric value and units (e.g., '10px').
  * @param {string} def - The default units to be returned if no units are found in the input string
  * @returns {string} - The parsed units or the default units if not found
@@ -376,7 +378,6 @@ function parseUnits(str, def) {
 
 /**
 * Convert a value from one set of units to another
-*
 * @param {string} value - The numeric value to be converted
 * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
 * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
@@ -388,7 +389,6 @@ function convertUnits(value, currUnits, newUnits) {
 
 /**
  * Convert string to absolute number
- * 
  * @param {string} str - The string to convert to a number
  * @param {number} def - The default value to return if the conversion fails
  * @returns {number} - The converted number
@@ -400,6 +400,40 @@ function strToNum(str, def) {
   str = str[0] ? str[0] + '.' + str.slice(1).join('') : '';
   if (isNaN(str) || !str.length) return parseFloat(def);
   else return parseFloat(str);
+}
+
+/**
+ * Center an item within the artboard
+ * @param {Object} ab - The artboard
+ * @param {Object} group - The group to be centered
+ * @returns {void}
+ */
+function alignToCenter(ab, group) {
+  var dupGroup = group.duplicate();
+
+  var items = dupGroup.pageItems;
+  for (var i = 0; i < items.length; i++) {
+    if (/text/i.test(items[i].typename)) {
+      items[i].createOutline();
+    }
+  }
+
+  var groupBounds = group.geometricBounds;
+  var dupBounds = dupGroup.geometricBounds;
+
+  var deltaX = (dupBounds[0] - groupBounds[0]) + (dupBounds[2] - groupBounds[2]);
+  var deltaY = (dupBounds[1] - groupBounds[1]) + (dupBounds[3] - groupBounds[3]);
+
+  dupGroup.remove();
+
+  var abBounds = ab.artboardRect;
+  var abCenterX = (abBounds[2] - abBounds[0]) / 2;
+  var abCenterY = (abBounds[3] - abBounds[1]) / 2;
+
+  group.position = [
+    abBounds[0] + abCenterX - (group.width + deltaX) / 2,
+    abBounds[1] + abCenterY + (group.height - deltaY) / 2
+  ];
 }
 
 /**
