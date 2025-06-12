@@ -2,14 +2,15 @@
   ArtboardsRemapper.jsx for Adobe Illustrator
   Description: Writes artboard names to a text file or applies from it
   Date: April, 2023
-  Modification date: February, 2024
+  Modification date: June, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
   Based on code by Carlos Canto
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.2 Added end index to handle names in range
+  0.2.1 Added starting index by active artboard index. Minor improvements
+  0.2.0 Added end index to handle names in range
   0.1.2 Removed input activation on Windows OS below CC v26.4
   0.1.1 Fixed detection of line breaks in TXT on PC
   0.1 Initial version
@@ -39,47 +40,42 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Artboards Remapper',
-        version: 'v0.2'
-      },
-      CFG = {
+        version: 'v0.2.1'
+      };
+
+  var CFG = {
         start: 1,
         end: 1,
-        f: File(Folder.desktop + '/artboardsRemapper.txt'),
+        file: File(Folder.desktop + '/artboardsRemapper.txt'),
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os)
       };
-  
-  if (!/illustrator/i.test(app.name)) {
-    alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
-    return false;
-  }
 
-  if (!documents.length) {
-    alert('No documents\nOpen a document and try again', 'Script error');
-    return false;
-  }
+  if (!isCorrectEnv()) return;
 
   var doc = app.activeDocument;
-  var length = doc.artboards.length;
+  var absLength = doc.artboards.length;
+  var currAb = doc.artboards.getActiveArtboardIndex();
 
-  CFG.end = length;
-
-  // Dialog
+  // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
+      win.orientation = 'column';
       win.alignChildren = ['fill','top'];
 
+  // MODE
   var actionGrp = win.add('group');
       actionGrp.alignChildren = ['left', 'center'];
 
-  var saveRb = actionGrp.add('radiobutton', undefined, 'Save to file');
+  var saveRb = actionGrp.add('radiobutton', undefined, 'Save To File');
       saveRb.value = true;
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     saveRb.active = true;
   }
 
-  var applyRb = actionGrp.add('radiobutton', undefined, 'Apply from file');
+  var applyRb = actionGrp.add('radiobutton', undefined, 'Apply From File');
 
-  var idxPnl = win.add('panel', undefined, 'Indexes as in panel');
+  // RANGE
+  var idxPnl = win.add('panel', undefined, 'Indexes As In Panel');
       idxPnl.orientation = 'row';
       idxPnl.alignChildren = ['fill', 'center'];
       idxPnl.margins = [10, 15, 10, 7];
@@ -90,7 +86,7 @@ function main() {
   var startLbl = startGrp.add('statictext', undefined, 'Start:');
       startLbl.justify = 'left';
 
-  var startIdxInp = startGrp.add('edittext', undefined, CFG.start);
+  var startIdxInp = startGrp.add('edittext', undefined, (currAb + 1));
       startIdxInp.characters = 4;
 
   var endGrp = idxPnl.add('group');
@@ -99,13 +95,14 @@ function main() {
   var endLbl = endGrp.add('statictext', undefined, 'End:');
       endLbl.justify = 'left';
 
-  var endIdxInp = endGrp.add('edittext', undefined, CFG.end);
+  var endIdxInp = endGrp.add('edittext', undefined, absLength);
       endIdxInp.characters = 4;
 
-  var fileLbl = win.add('statictext', undefined, decodeURIComponent(CFG.f));
-      fileLbl.helpTip = 'Reveal txt file:\n' + decodeURIComponent(CFG.f);
+  // OUTPUT FILE
+  var fileLbl = win.add('statictext', undefined, decodeURIComponent(CFG.file));
+      fileLbl.helpTip = 'Reveal artboard names file:\n' + decodeURIComponent(CFG.file);
 
-  // Buttons
+  // BUTTONS
   var btns = win.add('group');
       btns.alignChildren = ['fill', 'center'];
 
@@ -123,11 +120,15 @@ function main() {
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
   copyright.justify = 'center';
 
+  // EVENTS
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
+  // Open parent folder
   fileLbl.addEventListener('mousedown', function () {
-    if (Folder(CFG.f.path).exists) Folder(CFG.f.path).execute();
+    if (Folder(CFG.file.path).exists) {
+      Folder(CFG.file.path).execute();
+    }
   });
 
   copyright.addEventListener('mousedown', function () {
@@ -136,14 +137,14 @@ function main() {
 
   function okClick() {
     var startIdx = parseInt(startIdxInp.text) - 1 || 0;
-    var endIdx = parseInt(endIdxInp.text) - 1 || length - 1;
+    var endIdx = parseInt(endIdxInp.text) || absLength;
 
-    if (isNaN(startIdx) || startIdx < 0 || startIdx >= length) {
+    if (isNaN(startIdx) || startIdx < 0 || startIdx >= absLength) {
       alert('Start index is invalid', 'Input error');
       return;
     }
   
-    if (isNaN(endIdx) || endIdx < startIdx || endIdx >= length) {
+    if (isNaN(endIdx) || endIdx < startIdx || endIdx > absLength) {
       alert('End index is invalid', 'Input error');
       return;
     }
@@ -152,14 +153,21 @@ function main() {
 
     if (saveRb.value) { // Save to txt
       abNames = getArtboardNames(doc.artboards, startIdx, endIdx);
-      if (abNames.length) writeToText(abNames.join('\n'), CFG.f);
-    } else { // Apply from txt
-      if (!CFG.f.exists) {
-        alert('Txt file not found', 'File error');
-        return;
+      if (abNames.length) {
+        writeToText(abNames.join('\n'), CFG.file);
       }
-      abNames = parseFromText(CFG.f);
-      if (abNames.length) renameArtboards(doc.artboards, abNames, startIdx, endIdx);
+    } else { // Apply from txt
+      if (!CFG.file.exists) {
+        // Select another file if the default file is not found
+        var type = (CFG.isMac) ? function(f) {
+          return f instanceof Folder || (f instanceof File && f.name.match(/(.txt)$/));
+        } : '*.txt;';
+        CFG.file = File.openDialog('Choose TXT file...', type, false);
+      }
+      abNames = parseFromText(CFG.file);
+      if (abNames.length) {
+        renameArtboards(doc.artboards, abNames, startIdx, endIdx);
+      }
     }
 
     if (!abNames.length || (abNames.length == 1 && !abNames[0].length)) {
@@ -175,18 +183,62 @@ function main() {
 }
 
 /**
+ * Check if the environment is correct for running the script
+ * @param {...string} args - Variable number of arguments to check
+ * @returns {boolean} - Return true if the environment is correct, false otherwise
+ */
+function isCorrectEnv() {
+  var args = ['app', 'document'];
+  args.push.apply(args, arguments);
+
+  for (var i = 0; i < args.length; i++) {
+    var arg = args[i].toString().toLowerCase();
+    switch (true) {
+      case /app/g.test(arg):
+        if (!/illustrator/i.test(app.name)) {
+          alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
+          return false;
+        }
+        break;
+      case /version/g.test(arg):
+        var rqdVers = parseFloat(arg.split(':')[1]);
+        if (parseFloat(app.version) < rqdVers) {
+          alert('Wrong app version\nSorry, script only works in Illustrator v.' + rqdVers + ' and later', 'Script error');
+          return false;
+        }
+        break;
+      case /document/g.test(arg):
+        if (!app.documents.length) {
+          alert('No documents\nOpen a document and try again', 'Script error');
+          return false;
+        }
+        break;
+      case /selection/g.test(arg):
+        var rqdLen = parseFloat(arg.split(':')[1]);
+        if (app.selection.length < rqdLen || selection.typename === 'TextRange') {
+          alert('Few objects are selected\nPlease select ' + rqdLen + ' path(s) and try again', 'Script error');
+          return false;
+        }
+        break;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Extract artboard names from a specified range
  * @param {(Object|Array)} abs - The collection of artboards
  * @param {number} start - The starting index of the range
  * @param {number} end - The ending index of the range
- * @returns {Array} An array containing artboard names within the specified range
+ * @returns {Array} names - An array containing artboard names within the specified range
  */
 function getArtboardNames(abs, start, end) {
-  var result = [];
-  for (var i = start; i <= end; i++) {
-    result.push(abs[i].name);
+  var names = [];
+  for (var i = start; i < end; i++) {
+    names.push(abs[i].name);
   }
-  return result;
+  return names;
 }
 
 /**
@@ -221,20 +273,18 @@ function parseFromText(f) {
  * @param {number} end - The ending index of the range
  */
 function renameArtboards(abs, names, start, end) {
-  var str = '';
-  for (var i = start; i < abs.length; i++) {
-    if (i > end) break;
-    str = names[i - start];
-    if (!str) break;
-    abs[i].name = str;
+  var length = Math.min(end, abs.length - 1);
+  for (var i = start, j = 0; i <= length; i++, j++) {
+    if (!names[j]) break;
+    abs[i].name = names[j];
   }
 }
 
 /**
- * Opens a URL in the default web browser
+ * Open a URL in the default web browser
  * @param {string} url - The URL to open in the web browser
  * @returns {void}
- */
+*/
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');

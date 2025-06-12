@@ -1,13 +1,15 @@
 /*
   GroupArtboardObjects.jsx for Adobe Illustrator
-  Description: Group objects on the artboards. It will skip locked or hidden objects
+  Description: Group objects on document artboards. Skips locked or hidden objects
   Date: June, 2024
+  Modification date: June, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.2 Added artboards range, sort groups in layers
+  0.2.1 Added starting index by active artboard index. Minor improvements
+  0.2.0 Added artboards range, sort groups in layers
   0.1 Initial version
 
   Donate (optional):
@@ -34,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Group Artboard Objects',
-        version: 'v0.2'
+        version: 'v0.2.1'
       };
 
   var CFG = {
@@ -80,7 +82,7 @@ function main() {
   var startLbl = startGrp.add('statictext', undefined, 'Start:');
       startLbl.justify = 'left';
 
-  var startInp = startGrp.add('edittext', undefined, '1');
+  var startInp = startGrp.add('edittext', undefined, (currAb + 1));
       startInp.characters = 6;
       startInp.enabled = isCstm.value;
 
@@ -129,6 +131,8 @@ function main() {
     ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
+  cancel.helpTip = 'Press Esc to Close';
+  ok.helpTip = 'Press Enter to Run';
 
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
   copyright.justify = 'center';
@@ -150,6 +154,8 @@ function main() {
   cancel.onClick = win.close;
 
   ok.onClick = function () {
+    saveSettings(SETTINGS);
+
     var zOrder = isToTop.value ? 'top' : (isToBtm.value ? 'bottom' : '');
 
     if (isCurr.value) { // Current artboard
@@ -179,7 +185,6 @@ function main() {
 
     app.executeMenuCommand('deselectall');
 
-    saveSettings(SETTINGS);
     win.close();
   }
 
@@ -187,48 +192,75 @@ function main() {
     openURL('https://github.com/creold');
   });
 
-  // Save UI options to file
+  /**
+   * Save UI options to a file
+   * @param {object} prefs - Object containing preferences
+   * @returns {void}
+   */
   function saveSettings(prefs) {
-    if (!Folder(prefs.folder).exists) Folder(prefs.folder).create();
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
     var f = new File(prefs.folder + prefs.name);
     f.encoding = 'UTF-8';
     f.open('w');
-    var pref = {};
-    pref.artboard = isCurr.value;
-    pref.move = isKeep.value ? 0 : (isToBtm.value ? 1 : 2);
-    pref.group = isGrpSingle.value;
-    pref.rename = isAddName.value;
-    var data = pref.toSource();
-    f.write(data);
+
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.artboard = isCurr.value;
+    data.move = isKeep.value ? 0 : (isToBtm.value ? 1 : 2);
+    data.group = isGrpSingle.value;
+    data.rename = isAddName.value;
+
+    f.write( stringify(data) );
     f.close();
   }
 
-  // Load options from file
+  /**
+   * Load options from a file
+   * @param {object} prefs - Object containing preferences
+   * @returns {void}
+   */
   function loadSettings(prefs) {
     var f = File(prefs.folder + prefs.name);
     if (!f.exists) return;
+
     try {
       f.encoding = 'UTF-8';
       f.open('r');
       var json = f.readln();
-      var pref = new Function('return ' + json)();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
       f.close();
-      if (typeof pref != 'undefined') {
-        isCurr.value = pref.artboard;
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x ? parseInt(data.win_x) : 100,
+          data.win_y ? parseInt(data.win_y) : 100
+        ];
+        isCurr.value = data.artboard === 'true';
         isCstm.value = !isCurr.value;
         startInp.enabled = endInp.enabled = isCstm.value;
-        sortPnl.children[pref.move].value = true;
-        isAddName.value = pref.rename;
-        isGrpSingle.value = pref.group;
+        sortPnl.children[parseInt(data.move) || 0].value = true;
+        isGrpSingle.value = data.group === 'true';
+        isAddName.value = data.rename === 'true';
       }
-    } catch (err) {}
+    } catch (err) {
+      return;
+    }
   }
 
   win.center();
   win.show();
 }
 
-// Check the script environment
+/**
+ * Check if the environment is correct for running the script
+ * @param {...string} args - Variable number of arguments to check
+ * @returns {boolean} - Return true if the environment is correct, false otherwise
+ */
 function isCorrectEnv() {
   var args = ['app', 'document'];
   args.push.apply(args, arguments);
@@ -268,7 +300,14 @@ function isCorrectEnv() {
   return true;
 }
 
-// Group all items on artboard
+/**
+ * Group all items on the specified artboard in the document
+ * @param {Object} doc - The Adobe Illustrator document object
+ * @param {number} i - The index of the artboard to group items on
+ * @param {boolean} isGroup - Whether to group items if only one item is selected
+ * @param {string} zOrder - The z-order position for the grouped items ('top' or 'bottom')
+ * @param {boolean} isAddName - Whether to name the group after the artboard
+ */
 function groupArtboard(doc, i, isGroup, zOrder, isAddName) {
   app.executeMenuCommand('deselectall');
 
@@ -284,6 +323,7 @@ function groupArtboard(doc, i, isGroup, zOrder, isAddName) {
 
   sel = app.selection; // Update selection
 
+  // Adjust the z-order if specified
   if (zOrder === 'top') {
     sel[0].zOrder(ZOrderMethod.BRINGTOFRONT);
   } else if (zOrder === 'bottom') {
@@ -295,7 +335,11 @@ function groupArtboard(doc, i, isGroup, zOrder, isAddName) {
   }
 }
 
-// Open a URL in the default web browser
+/**
+ * Open a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+*/
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');
@@ -303,6 +347,27 @@ function openURL(url) {
   html.write(htmlBody);
   html.close();
   html.execute();
+}
+
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
 }
 
 // Run script

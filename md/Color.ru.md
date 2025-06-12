@@ -121,6 +121,12 @@
 Работает с документами в RGB и CMYK, Spot и Grayscale цветами. Распознает составные пути и группы.   
 *Основано на скрипте автора [Saurabh Sharma](https://tutsplus.com/authors/saurabh-sharma), 2010.*  
 
+Платная Pro версия с большим количеством опций доступна на [Robomarket](https://aiscripts.robo.market/)   
+
+<a href="https://rutube.ru/video/06df919f82d0923b0cfff6e366caf832/">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
 
 ## CycleColors

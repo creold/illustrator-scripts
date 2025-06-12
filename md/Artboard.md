@@ -14,7 +14,7 @@
 
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2 — upd, 19.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `v1.5 — upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
@@ -70,7 +70,7 @@ The Find & Replace supports [regular expression symbols](https://cheatography.co
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Direct%20Link-DuplicateArtboardsLight.jsx-FF6900.svg)](https://link.aiscripts.ru/dupabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Buymeacoffee](https://buymeacoffee.com/aiscripts/extras)   
+Script for copying the selected Artboard with his artwork. The Pro version with more options is available at [Buymeacoffee](https://www.buymeacoffee.com/aiscripts/e/231621)   
 
 <a href="https://youtu.be/qDH1YRaYMYk">
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">

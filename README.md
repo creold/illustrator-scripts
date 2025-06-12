@@ -90,6 +90,7 @@ Many scripts are free to download thanks to user support. Help me to develop new
 * [RandomColors](https://www.buymeacoffee.com/aiscripts/e/332147) — script generates random fill and stroke colors for selected objects and editable text.
 * [ExportSequence](https://www.buymeacoffee.com/aiscripts/e/230926) — script for toggle visibility of numbered objects in selected groups and exports document as sequence to PNGs or JPGs.
 * [ColorToner](https://www.buymeacoffee.com/aiscripts/e/231463) — script for generating tints, shades, and tones from base colors.
+* [ConvertToGradient Pro](https://buymeacoffee.com/aiscripts/e/410661) — script converts flat solid fill colors of selected objects to gradients.
 * [GradientBlender](https://www.buymeacoffee.com/aiscripts/e/231606) — script to make gradients more accurate, smooth.
 * [Ai2Ae](https://www.buymeacoffee.com/aiscripts/e/231609) — script for prepare Adobe Illustrator Layers for import into Adobe After Effects.
 * [ArtboardsFromCSV](https://www.buymeacoffee.com/aiscripts/e/231618) — script for batch creation of artboards with names and dimensions defined in a CSV table.
@@ -105,7 +106,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Artboard](md/Artboard.md)  
 
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2 — upd, 19.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `v1.5 — upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
@@ -134,7 +135,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Draw](md/Draw.md) 
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.2 — new, 29.07.2024`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.2.1 — upd, 12.06.2025`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#trianglemaker) `v0.2 — new, 31.03.2025`
@@ -149,8 +150,8 @@ Click the category name to learn more about the scripts in the selected category
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#centerclipstoartboards) `v0.1 — 05.2021`
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `v0.1 — new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup) `v1.2.1`
-* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `v0.2 — new, 11.06.2024`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `v0.1 — new, 29.07.2024`
+* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `v0.2.1 — upd, 12.06.2025`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `v0.1.1 — upd, 12.06.2025`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks) `v0.3`
 
@@ -242,6 +243,8 @@ It makes my life easy and more productive* - Rizwan Abuzar
 * *Very powerful and user-friendly, cover a lot of gaps* — Egor Chistyakov
 * *I'm a big fan of your scripts. Absolutely amazing work* — David Nightingale
 * *You are the best ever script editor. All scripts are amazing and useful for designers and time saver. Thank you for your supporting* — Tuan Hijas Musaffer
+* *Super useful and probably saved me 45min of monotonous work. Thank you!* — aidentruesdell2451
+* *Thanks a lot for the script and explanation. You saved me a lot of time and effort!* — Majesenmoto
 
 Don't forget sharing link with a friend 🙂 
 

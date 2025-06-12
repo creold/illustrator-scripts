@@ -85,17 +85,18 @@
 </a>
 
 ## Платные скрипты
-* [AddObjectGuides](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1668%3FcategoryId=5705) — генерирует направляющие для объектов: горизонтальные, вертикальные, диагональные, а также для центров объектов.
-* [BentoGrid](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1667%3FcategoryId=5705) — генерирует случайные сетки в стиле Bento UI с ячейками разных пропорций.
-* [RandomColors](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1666%3FcategoryId=5705) — генерирует случайные цвета для заливок и обводок выбранных объектов или текстов.
-* [ExportSequence](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1665%3FcategoryId=5705) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
-* [ColorToner](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1653%3FcategoryId=5705) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов
-* [GradientBlender](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1661%3FcategoryId=5705) — скрипт для создания аккуратных переходов цветов в градиентах
-* [Ai2Ae](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1659%3FcategoryId=5705) — скрипт раскладывает объекты по слоям для импорта в After Effects
-* [ArtboardsFromCSV](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1662%3FcategoryId=5705) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
-* [Duplicate Artboards Pro](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1660%3FcategoryId=5705) — скрипт создаёт заданное количество копий артбордов
-* [HighlightText](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1663%3FcategoryId=5705) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
-* [ImportImagesByName](https://aiscripts.robo.market/#modalProductsByCategories_2_5705_1664%3FcategoryId=5705) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
+* [AddObjectGuides](https://aiscripts.robo.market/) — генерирует направляющие для объектов: горизонтальные, вертикальные, диагональные, а также для центров объектов.
+* [BentoGrid](https://aiscripts.robo.market/) — генерирует случайные сетки в стиле Bento UI с ячейками разных пропорций.
+* [RandomColors](https://aiscripts.robo.market/) — генерирует случайные цвета для заливок и обводок выбранных объектов или текстов.
+* [ExportSequence](https://aiscripts.robo.market/) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
+* [ColorToner](https://aiscripts.robo.market/) — скрипт для генерации светлых оттенков, теней и тонов исходных цветов.
+* [ConvertToGradient Pro](https://aiscripts.robo.market/) — скрипт преобразует одноцветную заливку в градиент со смещением цвета и углом.
+* [GradientBlender](https://aiscripts.robo.market/) — скрипт для создания аккуратных переходов цветов в градиентах
+* [Ai2Ae](https://aiscripts.robo.market/) — скрипт раскладывает объекты по слоям для импорта в After Effects
+* [ArtboardsFromCSV](https://aiscripts.robo.market/) — скрипт пакетно создаёт именованные артборды с размерами, заданными в CSV таблице
+* [Duplicate Artboards Pro](https://aiscripts.robo.market/) — скрипт создаёт заданное количество копий артбордов
+* [HighlightText](https://aiscripts.robo.market/) — скрипт создаёт подчёркивание строк выбранных текстовых объектов
+* [ImportImagesByName](https://aiscripts.robo.market/) — скрипт импортирует в документ изображения из папки по имени, указанному в текстовых фреймах
 
 ## Категории
 Нажмите на название категории, чтобы перейти к описанию и демонстрациям её скриптов.   
@@ -106,7 +107,7 @@
 Скрипты для создания и управления артбордами
 
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2 — upd, 19.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `v1.5 — upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
@@ -137,7 +138,7 @@
 Скрипты, которые что-либо рисуют
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.2 — new, 29.07.2024`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.2.1 — upd, 12.06.2025`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#trianglemaker) `v0.2 — new, 31.03.2025`
@@ -154,8 +155,8 @@
 * [CenterClipsToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#centerclipstoartboards)  `v0.1 — 05.2021`
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `v0.1 — new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup) `v1.2.1`
-* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `v0.2 — new, 11.06.2024`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.1 — new, 29.07.2024`
+* [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `v0.2.1 — upd, 12.06.2025`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.1.1 — upd, 12.06.2025`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks) `v0.3`
 
@@ -255,6 +256,8 @@ It makes my life easy and more productive* - Rizwan Abuzar
 * *Очень мощные и удобные в использовании, покрывают множество потребностей* — Егор Чистяков
 * *I'm a big fan of your scripts. Absolutely amazing work* — David Nightingale
 * *You are the best ever script editor. All scripts are amazing and useful for designers and time saver. Thank you for your supporting* — Tuan Hijas Musaffer
+* *Super useful and probably saved me 45min of monotonous work. Thank you!* — aidentruesdell2451
+* *Thanks a lot for the script and explanation. You saved me a lot of time and effort!* — Majesenmoto
 
 Не забывайте поделиться ссылкой со знакомыми дизайнерами 🙂 
 

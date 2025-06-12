@@ -14,7 +14,7 @@
 
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
-* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2 — upd, 19.02.2024`
+* [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `v1.5 — upd, 21.01.2024`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
@@ -70,7 +70,7 @@
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DuplicateArtboardsLight.jsx-FF6900.svg)](https://link.aiscripts.ru/dupabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Дублирует заданное количество раз выбранный артборд с его содержимым. Платная Pro версия с большим количеством опций доступна на [Buymeacoffee](https://buymeacoffee.com/aiscripts/extras)   
+Дублирует заданное количество раз выбранный артборд с его содержимым. Платная Pro версия с большим количеством опций доступна на [Robomarket](https://aiscripts.robo.market/)   
 
 <a href="https://youtu.be/qDH1YRaYMYk">
   <img width="122" height="47" src="https://i.ibb.co/02CqYYR/youtube-badge-ru.png">

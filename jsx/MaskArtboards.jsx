@@ -2,12 +2,14 @@
   MaskArtboards.jsx for Adobe Illustrator
   Description: Adds visible unlocked objects on artboards to clipping masks by artboard size
   Date: July, 2024
+  Modification date: June, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.1 Added active artboard index to custom range option
+  0.1.0 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -82,7 +84,7 @@ function main() {
   var isCstmAb = srcPnl.add("radiobutton", undefined, 'Custom:');
       isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
-  var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
+  var rangeInp = srcPnl.add('edittext', undefined, (currIdx + 1) + '-' + docAbs.length);
       rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
       rangeInp.characters = 10;
       rangeInp.enabled = isCstmAb.value;

@@ -2,12 +2,14 @@
   DrawRectanglesByArtboards.jsx for Adobe Illustrator
   Description: Draws rectangles to match the size of each artboard, including any specified bleed
   Date: July, 2024
+  Modification date: June, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.2 Added UI with many options
+  0.2.1 Added active artboard index to custom range option
+  0.2.0 Added UI with many options
   0.1 Initial version (thanks for Egor Chistyakov, https://t.me/@egrch)
 
   Donate (optional):
@@ -34,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Draw Rectangles By Artboards',
-        version: 'v0.2'
+        version: 'v0.2.1'
       };
 
   var CFG = {
@@ -85,7 +87,7 @@ function main() {
   var isCstmAb = srcPnl.add('radiobutton', undefined, 'Custom:');
       isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
-  var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
+  var rangeInp = srcPnl.add('edittext', undefined, (currIdx + 1) + '-' + docAbs.length);
       rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
       rangeInp.characters = 10;
       rangeInp.enabled = isCstmAb.value;

@@ -121,6 +121,12 @@ Convert a flat process color into a matching gradient.
 What's new: The script now works with the RGB and CMYK document profile, Spot & Gray colors. Processes compound paths and groups of items.   
 *Based on original script by [Saurabh Sharma](https://tutsplus.com/authors/saurabh-sharma), 2010.*  
 
+The Pro version with more options is available at [Buymeacoffee](https://buymeacoffee.com/aiscripts/e/410661)   
+
+<a href="https://youtu.be/a0-FH_sAHyY/">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
 ![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
 
 ## CycleColors
