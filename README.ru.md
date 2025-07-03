@@ -138,7 +138,7 @@
 Скрипты, которые что-либо рисуют
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.2.1 — upd, 12.06.2025`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.3 — upd, 03.07.2025`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#trianglemaker) `v0.2 — new, 31.03.2025`
@@ -156,7 +156,7 @@
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `v0.1 — new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup) `v1.2.1`
 * [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `v0.2.1 — upd, 12.06.2025`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.1.1 — upd, 12.06.2025`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.2 — upd, 03.07.2025`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks) `v0.3`
 

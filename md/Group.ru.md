@@ -17,7 +17,7 @@
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extractfromgroup) `v0.1 — new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#extungroup) `v1.2.1`
 * [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#groupartboardobjects) `v0.2.1 — upd, 12.06.2025`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.1.1 — upd, 12.06.2025`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#maskartboards) `v0.2 — upd, 03.07.2025`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.ru.md#trimmasks) `v0.3`
 

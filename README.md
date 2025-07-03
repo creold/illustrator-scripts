@@ -135,7 +135,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Draw](md/Draw.md) 
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.2.1 — upd, 12.06.2025`
+* [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.3 — upd, 03.07.2025`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#trianglemaker) `v0.2 — new, 31.03.2025`
@@ -151,7 +151,7 @@ Click the category name to learn more about the scripts in the selected category
 * [ExtractFromGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extractfromgroup) `v0.1 — new, 05.05.2024`
 * [ExtUngroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#extungroup) `v1.2.1`
 * [GroupArtboardObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#groupartboardobjects) `v0.2.1 — upd, 12.06.2025`
-* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `v0.1.1 — upd, 12.06.2025`
+* [MaskArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#maskartboards) `v0.2 — upd, 03.07.2025`
 * [MoveToGroup](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#movetogroup) `v0.1.2 — upd, 09.02.2024`
 * [TrimMasks](https://github.com/creold/illustrator-scripts/blob/master/md/Group.md#trimmasks) `v0.3`
 
