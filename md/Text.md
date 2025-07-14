@@ -14,6 +14,7 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
+* [InsertText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#inserttext) `v0.1 — new, 11.07.2025`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
@@ -28,6 +29,26 @@ Allows point texts to be vertically aligned based on the baseline of its font, n
 > Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43970070-align-text-elements-on-their-baseline) to add this feature to Illustrator.
 
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
+
+## InsertText
+[![Direct](https://img.shields.io/badge/Direct%20Link-InsertText.jsx-FF6900.svg)](https://link.aiscripts.ru/insrtxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Inserts or replaces text at specified positions within selected text frames.
+
+For comparison, the standard Edit → Find and Replace… function searches for character matches in text. InsertText, however, works with character index positions—even if the content of the text frames differs. Supports various insertion modes: fixed positions, every N characters, odd/even positions.   
+
+Examples of bulk insertion tasks   
+
+* Indexes, SKUs, numbers: A123 → SKU-A123
+* Price tags: 1999 → $1,999
+* Phone numbers: +73700957369 → +7 370 095 73 69
+* Date/time separators: 11072025 → 11/07/2025
+
+Prefix/suffix additions: 150 → 150 cm
+
+[Learn more about the script](https://ais.sergosokin.ru/text/insert-text/)
+
+![InsertText](https://i.ibb.co/ZnVGLqY/Insert-Text.gif)
 
 ## MakeNumbersSequence
 [![Direct](https://img.shields.io/badge/Direct%20Link-MakeNumbersSequence.jsx-FF6900.svg)](https://link.aiscripts.ru/mknumseq) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

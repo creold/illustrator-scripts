@@ -14,6 +14,7 @@
 
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
+* [InsertText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#inserttext) `v0.1 — new, 11.07.2025`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `v0.3 — upd, 14.02.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `v0.1 — 29.12.2022`
@@ -28,6 +29,25 @@
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43970070-align-text-elements-on-their-baseline) за внедрение этой функции в Иллюстратор.
 
 ![AlignTextBaseline](https://i.ibb.co/SVbx89c/Align-Text-Baseline.gif)
+
+## InsertText
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-InsertText.jsx-FF6900.svg)](https://link.aiscripts.ru/insrtxt) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Вставляет или заменяет текст по указанным позициям внутри выбранных текстовых фреймов.
+
+Для сравнения стандартная функция Edit → Find and Replace… ищет совпадения символов в текстах. InsertText же работает с порядковыми номерами символов, даже если содержимое текстовых фреймов разное. Поддерживает различные режимы вставки: фиксированные позиции, каждые N символов, нечетные / четные позиции.   
+
+Примеры задач массовой вставки   
+
+* индексы, артикулы, номера: A123 → SKU-A123
+* ценники: 1999 → $1,999
+* номера телефонов: +73700957369 → +7 370 095 73 69
+* разделители в время, даты: 11072025 → 11/07/2025
+* текст в начало или конец фреймов: 150 → 150 см
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/text/insert-text/)
+
+![InsertText](https://i.ibb.co/ZnVGLqY/Insert-Text.gif)
 
 ## MakeNumbersSequence
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-MakeNumbersSequence.jsx-FF6900.svg)](https://link.aiscripts.ru/mknumseq) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
