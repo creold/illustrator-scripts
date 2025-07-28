@@ -16,7 +16,7 @@
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
 * [InsertText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#inserttext) `v0.1 — new, 11.07.2025`
 * [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5 — upd, 26.03.2024`
-* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3 — upd, 14.02.2025`
+* [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3.1 — upd, 18.07.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
 * [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#textblock) `v0.2.1 — upd, 02.05.2025`
 
@@ -43,8 +43,7 @@ Examples of bulk insertion tasks
 * Price tags: 1999 → $1,999
 * Phone numbers: +73700957369 → +7 370 095 73 69
 * Date/time separators: 11072025 → 11/07/2025
-
-Prefix/suffix additions: 150 → 150 cm
+* Prefix/suffix additions: 150 → 150 cm
 
 [Learn more about the script](https://ais.sergosokin.ru/text/insert-text/)
 

@@ -19,6 +19,7 @@
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#fitselectiontoartboards) `v0.3.4 — upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#makeenvelopeswithtops) `v0.1 — 09.2021`
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `v0.1.1 — upd, 07.08.2024`
+* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#offsetobjects) `v0.1.1 — new, 25.07.2025`
 * [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#placesymbols) `v0.1 — new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `v1.7 — upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `v0.3.4 — upd, 09.02.2024`
@@ -101,6 +102,25 @@
 
 ![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif)
 
+## OffsetObjects
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-OffsetObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/offobj) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Создаёт параллельные контуры для любого объекта (текста, изображений,символов, кистей) — в отличие от встроенной функции Offset Path. Использует графический стиль (zip-архив включает файл стиля).   
+
+В коде настраивается:   
+
+* `isUseSwatch: false` — использовать образец цвета из панели Swatches или залить контур временным цветом
+* `swatchName: 'Cut'` — имя образца цвета для покраски контура. Если скрипт не найдёт его, то создаст сам
+* `swatchValue: [0, 100, 0, 0]` — значения CMYK цвета, который применится для заливки и обводки
+* `layerName: 'Contour'` — имя отдельного слоя для контуров, когда выбрана опция Move to New Layer
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/item/offset-objects/)
+
+> [!WARNING]   
+> Поместите файл OffsetObjects_Style.ai в одну папку со скриптом, иначе скрипт не запустится.
+
+![OffsetObjects](https://i.ibb.co/WNW5GCGS/Offset-Objects.gif)
+
 ## PlaceSymbols
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-PlaceSymbols.jsx-FF6900.svg)](https://link.aiscripts.ru/plsymb) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
@@ -167,8 +187,8 @@
 
 * `isAddStyle: true` — добавлять новый стиль символов для подписей
 * `styleName` — имя нового стиля символов
-* `fontSize: 14` — размер шрифта для стиля;
-* `name: 'Object_Names'` — имя нового слоя.
+* `fontSize: 14` — размер шрифта для стиля
+* `name: 'Object_Names'` — имя нового слоя
 
 ![ShowObjectNames](https://i.ibb.co/Tq4fLkNK/Show-Object-Names.jpg)
 

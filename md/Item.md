@@ -19,6 +19,7 @@
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `v0.3.4 — upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops) `v0.1 — 09.2021`
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `v0.1.1 — upd, 07.08.2024`
+* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#offsetobjects) `v0.1.1 — new, 25.07.2025`
 * [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#placesymbols) `v0.1 — new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `v1.7 — upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `v0.3.4 — upd, 09.02.2024`
@@ -101,6 +102,25 @@ Mirror movement the object or points using the last values of the `Object > Tran
 
 ![MirrorMove](https://i.ibb.co/vDPYtQC/Mirror-Move.gif)
 
+## OffsetObjects
+[![Direct](https://img.shields.io/badge/Direct%20Link-OffsetObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/offobj) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Creates offset paths for any object (text, images, vectors, symbols, brushes) — unlike Illustrator's built-in Offset Path. Uses a custom graphic style (zip-archive include style file).   
+
+Parameters in the code:
+
+* `isUseSwatch: false` —  whether to use a color swatch from the Swatches panel or fill the paths with a solid color
+* `swatchName: 'Cut'` — the name of the color swatch for paths. If the script doesn't find it, it will create one automatically
+* `swatchValue: [0, 100, 0, 0]` — the CMYK color values
+* `layerName: 'Contour'` — the name of a new layer for paths when the "Move to New Layer" option is selected
+
+[Learn more about the script](https://ais.sergosokin.ru/item/offset-objects/)
+
+> [!WARNING]   
+> Place OffsetObjects_Style.ai in the same folder as the JSX script; otherwise, the script will not run.
+
+![OffsetObjects](https://i.ibb.co/WNW5GCGS/Offset-Objects.gif)
+
 ## PlaceSymbols
 [![Direct](https://img.shields.io/badge/Direct%20Link-PlaceSymbols.jsx-FF6900.svg)](https://link.aiscripts.ru/plsymb) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
@@ -167,8 +187,8 @@ Parameters in the code:
 
 * `isAddStyle: true` — add new character style for captions
 * `styleName` — name of new character style
-* `fontSize: 14` — font size of the created character style;
-* `Name: 'Object_Names'` — name of the new layer.
+* `fontSize: 14` — font size of the created character style
+* `Name: 'Object_Names'` — name of the new layer
 
 ![ShowObjectNames](https://i.ibb.co/Tq4fLkNK/Show-Object-Names.jpg)
 

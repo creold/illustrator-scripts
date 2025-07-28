@@ -1,8 +1,8 @@
-/*
+﻿/*
   MultiEditText.jsx for Adobe Illustrator
   Description: Bulk editing of text frame contents. Replaces content separately or with the same text
   Date: March, 2024
-  Modification date: February, 2025
+  Modification date: July, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
@@ -12,6 +12,7 @@
   *******************************************************************************************
 
   Release notes:
+  0.3.1 Added Japanese localization
   0.3 Added button to reset texts, saving entered texts when switching options
   0.2.2 Fixed paragraph formatting with soft line breaks
   0.2.1 Added Shift+Enter shortcut to insert soft line break
@@ -38,12 +39,13 @@
 
 //@target illustrator
 app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix drag and drop a .jsx file
+$.localize = true; // Automatic UI localization
 
 // Main function
 function main() {
   var SCRIPT = {
-        name: 'Multi-edit Text',
-        version: 'v0.3'
+        name: { ja: '複数テキスト一括編集', en: 'Multi-edit Text' },
+        version: 'v0.3.1'
       };
 
   var CFG = {
@@ -58,17 +60,59 @@ function main() {
         isMac: /mac/i.test($.os)
       };
 
+  var LANG = {
+    error: { ja: 'スクリプトエラー', en: 'Script error' },
+    alertApp: { ja: 'アプリケーションが違います\nAdobe Illustratorで実行してください', 
+                en: 'Wrong application\nRun script from Adobe Illustrator' },
+    alertDoc: { ja: 'ドキュメントが開かれていません。\nドキュメントを開いて再実行してください',
+                en: 'No documents\nOpen a document and try again' },
+    alertSelection: { ja: 'テキストが見つかりません\n1つ以上のテキストオブジェクトを選択して再実行してください',
+                      en: 'Texts not found\nPlease select at least 1 text object and try again' },
+    alertPreview: { ja: 'CC 2020では重大なバグのためプレビューは無効です',
+                    en: 'Preview disabled for CC 2020\ndue to critical bug' },
+    keepFormat: { ja: '書式を保持', en: 'Keep Para Format' },
+    editSeparately: { ja: '個別に編集', en: 'Edit Separately' },
+    listByXY: { ja: '座標で並び替え', en: 'List by XY' },
+    reverseApply: { ja: '逆順に適用', en: 'Reverse Apply' },
+    preview: { ja: 'プレビュー', en: 'Preview' },
+    cancel: { ja: 'キャンセル', en: 'Cancel' },
+    ok: { ja: 'OK', en: 'OK' },
+    wait: { ja: '待って...', en: 'Wait...' },
+    reset: { ja: 'リセット', en: 'Reset' },
+    github: { ja: 'Githubを開く', en: 'Visit Github' },
+    helpInput: {
+      ja: '新しい行で' + CFG.divider.replace(/\n/g, '') + 'を挿入してテキストオブジェクトを区切ります\nShift+Enterでソフト改行を挿入',
+      en: 'Insert ' + CFG.divider.replace(/\n/g, '') + ' on a new line\nto separate text objects\n\nUse Shift+Enter to insert soft\nline break special char'
+    },
+    helpCancel: { ja: 'Escキーで閉じる', en: 'Press Esc to Close' },
+    helpReset: { ja: '元のテキストに戻す', en: 'Reset to original texts' },
+    helpOk: { ja: 'Enterキーで実行', en: 'Press Enter to Run' },
+    helpFormat: { ja: '書式を保持します。\n文字量が多いと処理が遅くなります',
+                  en: 'Keep paragraphs formatting.\nText length affects script\nperformance' },
+    helpSeparate: { ja: 'テキストを個別に編集', en: 'Edit each text frame\nindividually' },
+    helpSort: { ja: '上→下、左→右にテキストを並べます', en: 'List text frames\nsorted by position' },
+    helpReverse: { ja: 'テキストの内容を逆順に置換します', en: 'Replace the contents\nof text frames in\nreverse order' },
+  };
+
   var SETTINGS = {
-    name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
+    name: SCRIPT.name.en.replace(/\s/g, '_') + '_data.json',
     folder: Folder.myDocuments + '/Adobe Scripts/'
   };
 
-  if (!isCorrectEnv('selection:1')) return;
+  if (!/illustrator/i.test(app.name)) {
+    alert(LANG.alertApp, LANG.error);
+    return;
+  }
+
+  if (!app.documents.length) {
+    alert(LANG.alertDoc, LANG.error);
+    return;
+  }
 
   // INIT DATA
   var tfs = getTextFrames(app.selection);
   if (!tfs.length) {
-    alert('Texts not found\nPlease select at least 1 text object and try again', 'Script error');
+    alert(LANG.alertSelection, LANG.error);
     return;
   }
 
@@ -93,8 +137,7 @@ function main() {
 
   // INPUT
   var input = win.add('edittext', [0, 0, CFG.width, CFG.height], placeholder, {multiline: true, scrolling: true });
-      input.helpTip = 'Insert ' + CFG.divider.replace(/\n/g, '') + ' on a new line\nto separate text objects\n\n';
-      input.helpTip += 'Use Shift+Enter to insert\nsoft line break special char';
+      input.helpTip = LANG.helpInput;
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     input.active = true;
   }
@@ -104,35 +147,35 @@ function main() {
       opt.orientation = 'column';
       opt.alignChildren = ['fill', 'center'];
 
-  var isFormat = opt.add('checkbox', undefined, 'Keep Para Format');
-      isFormat.helpTip = 'Keep paragraphs formatting.\nText length affects script\nperformance';
-  var isSeparate = opt.add('checkbox', undefined, 'Edit Separately');
-      isSeparate.helpTip = 'Edit each text frame\nindividually';
-  var isSort = opt.add('checkbox', undefined, 'List by XY');
-      isSort.helpTip = 'List text frames\nsorted by position';
+  var isFormat = opt.add('checkbox', undefined, LANG.keepFormat);
+      isFormat.helpTip = LANG.helpFormat;
+  var isSeparate = opt.add('checkbox', undefined, LANG.editSeparately);
+      isSeparate.helpTip = LANG.helpSeparate;
+  var isSort = opt.add('checkbox', undefined, LANG.listByXY);
+      isSort.helpTip = LANG.helpSort;
       isSort.enabled = isSeparate.value;
-  var isReverse = opt.add('checkbox', undefined, 'Reverse Apply');
-      isReverse.helpTip = 'Replace the contents\nof text frames in\nreverse order';
+  var isReverse = opt.add('checkbox', undefined, LANG.reverseApply);
+      isReverse.helpTip = LANG.helpReverse;
       isReverse.enabled = isSeparate.value;
 
   var cancel, ok;
   if (CFG.isMac) {
-    cancel = opt.add('button', undefined, 'Cancel', { name: 'cancel' });
-    reset = opt.add('button', undefined, 'Reset', { name: 'reset' });
-    ok = opt.add('button', undefined, 'OK', { name: 'ok' });
+    cancel = opt.add('button', undefined, LANG.cancel, { name: 'cancel' });
+    reset = opt.add('button', undefined, LANG.reset, { name: 'reset' });
+    ok = opt.add('button', undefined, LANG.ok, { name: 'ok' });
   } else {
-    ok = opt.add('button', undefined, 'OK', { name: 'ok' });
-    reset = opt.add('button', undefined, 'Reset', { name: 'reset' });
-    cancel = opt.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = opt.add('button', undefined, LANG.ok, { name: 'ok' });
+    reset = opt.add('button', undefined, LANG.reset, { name: 'reset' });
+    cancel = opt.add('button', undefined, LANG.cancel, { name: 'cancel' });
   }
 
-  cancel.helpTip = 'Press Esc to Close';
-  reset.helpTip = 'Reset to original texts';
-  ok.helpTip = 'Press Enter to Run';
+  cancel.helpTip = LANG.helpCancel;
+  reset.helpTip = LANG.helpReset;
+  ok.helpTip = LANG.helpOk;
 
-  var isPreview = opt.add('checkbox', undefined, 'Preview');
+  var isPreview = opt.add('checkbox', undefined, LANG.preview);
 
-  var copyright = opt.add('statictext', undefined, 'Visit Github');
+  var copyright = opt.add('statictext', undefined, LANG.github);
   copyright.justify = 'center';
 
   // EVENTS
@@ -141,7 +184,7 @@ function main() {
   // CC 2020 v24.3 crashes when undoing text frame changes
   if (CFG.is2020) {
     isPreview.enabled = false;
-    isPreview.helpTip = "Preview disabled for CC 2020\ndue to critical bug";
+    isPreview.helpTip = LANG.alertPreview;
   }
 
   isFormat.onClick = function () {
@@ -203,7 +246,7 @@ function main() {
 
   ok.onClick = function () {
     if (isPreview.value && isUndo) app.undo();
-    ok.text = 'Wait...';
+    ok.text = LANG.wait;
     win.update();
     changeTexts();
     isUndo = false;
@@ -285,6 +328,7 @@ function main() {
   }
 
   win.onClose = function () {
+    $.locale = null;
     try {
       if (isUndo) app.undo();
     } catch (err) {}
@@ -356,51 +400,6 @@ function main() {
 
   win.center();
   win.show();
-}
-
-/**
- * Check the script environment
- * 
- * @param {string} List of initial data for verification
- * @returns {boolean} Continue or abort script
- */
-function isCorrectEnv() {
-  var args = ['app', 'document'];
-  args.push.apply(args, arguments);
-
-  for (var i = 0; i < args.length; i++) {
-    var arg = args[i].toString().toLowerCase();
-    switch (true) {
-      case /app/g.test(arg):
-        if (!/illustrator/i.test(app.name)) {
-          alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
-          return false;
-        }
-        break;
-      case /version/g.test(arg):
-        var rqdVers = parseFloat(arg.split(':')[1]);
-        if (parseFloat(app.version) < rqdVers) {
-          alert('Wrong app version\nSorry, script only works in Illustrator v.' + rqdVers + ' and later', 'Script error');
-          return false;
-        }
-        break;
-      case /document/g.test(arg):
-        if (!app.documents.length) {
-          alert('No documents\nOpen a document and try again', 'Script error');
-          return false;
-        }
-        break;
-      case /selection/g.test(arg):
-        var rqdLen = parseFloat(arg.split(':')[1]);
-        if (app.selection.length < rqdLen || selection.typename === 'TextRange') {
-          alert('Few objects are selected\nPlease select at least' + rqdLen + ' object(s) and try again', 'Script error');
-          return false;
-        }
-        break;
-    }
-  }
-
-  return true;
 }
 
 /**
