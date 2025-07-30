@@ -2,7 +2,7 @@
 
 # Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-88k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-112k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Instructions in other languages: [English](README.md), [Русский](README.ru.md)*
 
@@ -163,7 +163,7 @@ Click the category name to learn more about the scripts in the selected category
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `v0.3.4 — upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops) `v0.1 — 09.2021`
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `v0.1.1 — upd, 07.08.2024`
-* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#offsetobjects) `v0.1.1 — new, 25.07.2025`
+* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#offsetobjects) `v0.1.2 — upd, 30.07.2025`
 * [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#placesymbols) `v0.1 — new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `v1.7 — upd, 20.05.2024`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `v0.3.4 — upd, 09.02.2024`
