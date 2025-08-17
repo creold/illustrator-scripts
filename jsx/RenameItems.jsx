@@ -4,12 +4,14 @@
   Description: Script to batch rename selected items with many options
                 or simple rename one selected item / active layer / artboard
   Date: December, 2019
-  Modification date: May, 2024
+  Modification date: August, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  1.8 Fixed: Compound path renaming with partial point selection, layer/artboard names find & replace
+      Added: Support for empty default names such as <Group>, <Mesh>, etc.
   1.7 Added options to sort selected objects before numbering
   1.6.9 Added prefilled name if same for all objects. Minor improvements
   1.6.8 Removed input activation on Windows OS below CC v26.4
@@ -20,14 +22,14 @@
   1.6.3 Added erase object names by empty input
   1.6.2 Fixed placeholder buttons, input activation in Windows OS
   1.6.1 Fixed UI for Illustrator 26.4.1 on PC
-  1.6 Added renaming of the active artboard.
-      Saving the name input field when switching options
-  1.5 Added placeholders. New UI
-  1.4 Renaming the parent layers of the selected items
-  1.3 Renaming of the parent Symbol
-  1.2 Recursive search in Sublayers names
-  1.1 New option Find and replace string in all Layer names
-  1.0 Initial version
+  1.6.0 Added renaming of the active artboard.
+        Saving the name input field when switching options
+  1.5.0 Added placeholders. New UI
+  1.4.0 Renaming the parent layers of the selected items
+  1.3.0 Renaming of the parent Symbol
+  1.2.0 Recursive search in Sublayers names
+  1.1.0 New option Find and replace string in all Layer names
+  1.0.0 Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -53,32 +55,41 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Rename Items',
-        version: 'v1.7'
-      },
-      CFG = {
+        version: 'v1.8'
+      };
+
+  var CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os)
-      },
-      PH = {
+      };
+
+  var PH = {
         name: '{n}', // Put current name
         numUp: '{nu}', // Put ascending numeration
         numDown: '{nd}' // Put descending numeration
-      },
-      SETTINGS = {
+      };
+
+  var SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
       };
 
-  if (!documents.length) {
-    alert('Error\nOpen a document and try again.');
+  if (!/illustrator/i.test(app.name)) {
+    alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
     return;
   }
 
-  var doc = activeDocument,
-      actLayer = doc.activeLayer,
-      actAb = doc.artboards[doc.artboards.getActiveArtboardIndex()],
-      uniqLayers = getUniqueLayers(selection),
-      isMultiSel = selection.length > 1;
+  if (!app.documents.length) {
+    alert('No documents\nOpen a document and try again', 'Script error');
+    return;
+  }
+
+  var doc = app.activeDocument;
+  var docSel = app.selection;
+  var actLayer = doc.activeLayer;
+  var actAb = doc.artboards[doc.artboards.getActiveArtboardIndex()];
+  var uniqLayers = getUniqueLayers(docSel);
+  var isMultiSel = docSel.length > 1;
 
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
@@ -88,16 +99,14 @@ function main() {
   // TARGET
   var grpTarget = win.add('group');
 
-  if (selection.length && selection.typename !== 'TextRange') {
-    var selRb = grpTarget.add('radiobutton', undefined, 'Selection');
-        selRb.value = true;
-
-    var layerRb = grpTarget.add('radiobutton', undefined, 'Parent Layer(s)');
-  } else if (!selection.length) {
-    var layerRb = grpTarget.add('radiobutton', undefined, 'Layer');
-        layerRb.value = true;
-
-    var abRb = grpTarget.add('radiobutton', undefined, 'Active Artboard');
+  if (docSel.length && docSel.typename !== 'TextRange') {
+    var isSelection = grpTarget.add('radiobutton', undefined, 'Selection');
+        isSelection.value = true;
+    var isLayer = grpTarget.add('radiobutton', undefined, 'Parent Layer(s)');
+  } else if (!docSel.length) {
+    var isLayer = grpTarget.add('radiobutton', undefined, 'Layer');
+        isLayer.value = true;
+    var isArtboard = grpTarget.add('radiobutton', undefined, 'Active Artboard');
   }
 
   // NAME INPUT
@@ -107,7 +116,7 @@ function main() {
       grpName.maximumSize.width = 200;
 
   var nameTitle = grpName.add('statictext', undefined, 'Rename ');
-      nameTitle.text += isMultiSel ? selection.length + ' Items to' : 'to';
+      nameTitle.text += isMultiSel ? docSel.length + ' Items to' : 'to';
 
   var nameInp = grpName.add('edittext', undefined, '');
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
@@ -115,12 +124,12 @@ function main() {
   }
 
   // OPTION FOR SYMBOLS
-  if (selection.length === 1 && selection[0].typename === 'SymbolItem') {
+  if (docSel.length === 1 && docSel[0].typename === 'SymbolItem') {
     var isReplcSym = win.add('checkbox', undefined, 'Rename Parent Symbol');
   }
 
   // REPLACE INPUT
-  if (isMultiSel || !selection.length) {
+  if (isMultiSel || !docSel.length) {
     var grpReplc = win.add('group');
         grpReplc.alignChildren = 'fill';
         grpReplc.orientation = 'column';
@@ -132,9 +141,8 @@ function main() {
   }
 
   // GLOBAL REPLACE OPTION
-  if (!selection.length) {
-    var isAll = win.add('checkbox', undefined, 'Replace in All ');
-    isAll.text += abRb.value ? 'Artboards' : 'Doc Layers'; 
+  if (!docSel.length) {
+    var isFindAll = win.add('checkbox', undefined, 'Replace in All Doc Layers');
   }
 
   // PLACEHOLDERS
@@ -158,7 +166,7 @@ function main() {
       this.text = convertToInt(countInp.text, 1);
     }
 
-    shiftInputNumValue(countInp);
+    bindStepperKeys(countInp, 0);
 
     // Sort objects
     var sortPnl = win.add('panel', undefined, 'Sort Before Numbering');
@@ -175,66 +183,79 @@ function main() {
   var btns = win.add('group');
       btns.alignChildren = ['fill', 'center'];
 
-  var cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
-      cancel.helpTip = 'Press Esc to Close';
+  // Platform-specific button order
+  var cancel, ok;
+  if (CFG.isMac) {
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = btns.add('button', undefined, 'OK', { name: 'ok' });
+  } else {
+    ok = btns.add('button', undefined, 'OK', { name: 'ok' });
+    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+  }
 
-  var ok = btns.add('button', undefined, 'OK', { name: 'ok' });
-      ok.helpTip = 'Press Enter to Run';
+  cancel.helpTip = 'Press Esc to Close';
+  ok.helpTip = 'Press Enter to Run';
 
   // COPYRIGHT
   var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
       copyright.justify = 'center';
 
   // LOAD SETTINGS AND FILL NAME INPUT FIELD
-  loadSettings();
+  loadSettings(SETTINGS);
   nameInp.text = getPlaceholder();
-  if (layerRb && layerRb.value) {
+  if (isLayer && isLayer.value) {
     nameTitle.text = nameTitle.text.replace('items', 'layers');
   }
 
   // CHANGE THE AMOUNT OF ITEMS AND PLACEHOLDER
-  if (selRb) {
-    var layerTmpInp = '',
-        selTmpInp = ''
-        isEditSel = selRb.value;
+  // Selection + Layers mode
+  if (isSelection) {
+    var layerTmpInp = '';
+    var selTmpInp = '';
+    var isEditSel = isSelection.value;
 
-    if (layerRb.value) {
+    if (isLayer.value) {
       nameTitle.text = nameTitle.text.replace(/\d+/g, uniqLayers.length);
     }
 
-    selRb.onClick = function () {
+    // Rename selection
+    isSelection.onClick = function () {
       if (!isEditSel) layerTmpInp = nameInp.text;
-      nameTitle.text = nameTitle.text.replace(/\d+/g, selection.length);
-      nameTitle.text = nameTitle.text.replace('layers', 'items');
+      nameTitle.text = nameTitle.text.replace(/\d+/g, docSel.length);
+      nameTitle.text = nameTitle.text.replace('Layers', 'Items');
       nameInp.text = !isEmpty(selTmpInp) ? selTmpInp : getPlaceholder();
       isEditSel = true;
       sortPnl.enabled = true;
     }
 
-    layerRb.onClick = function () {
+    // Rename layer
+    isLayer.onClick = function () {
       if (isEditSel) selTmpInp = nameInp.text;
       nameTitle.text = nameTitle.text.replace(/\d+/g, uniqLayers.length);
-      nameTitle.text = nameTitle.text.replace('items', 'layers');
+      nameTitle.text = nameTitle.text.replace('Items', 'Layers');
       if (isReplcSym) isReplcSym.value = false;
       nameInp.text = !isEmpty(layerTmpInp) ? layerTmpInp : getPlaceholder();
       isEditSel = false;
       sortPnl.enabled = false;
     }
-  } else if (abRb) {
-    var layerTmpInp = '',
-        abTmpInp = ''
-        isEditAb = abRb.value;
+  } else if (isArtboard) {
+    // Layer + Artboard mode
+    var layerTmpInp = '';
+    var abTmpInp = '';
+    var isEditAb = isArtboard.value;
 
-    layerRb.onClick = function () {
+    // Rename layer
+    isLayer.onClick = function () {
       if (isEditAb) abTmpInp = nameInp.text;
-      isAll.text = isAll.text.replace('artboards', 'doc layers');
+      isFindAll.text = isFindAll.text.replace('Artboards', 'Doc Layers');
       nameInp.text = !isEmpty(layerTmpInp) ? layerTmpInp : getPlaceholder();
       isEditAb = false;
     }
 
-    abRb.onClick = function () {
+    // Rename active artboard
+    isArtboard.onClick = function () {
       if (!isEditAb) layerTmpInp = nameInp.text;
-      isAll.text = isAll.text.replace('doc layers', 'artboards');
+      isFindAll.text = isFindAll.text.replace('Doc Layers', 'Artboards');
       nameInp.text = !isEmpty(abTmpInp) ? abTmpInp : getPlaceholder();
       isEditAb = true;
     }
@@ -249,39 +270,50 @@ function main() {
   ok.onClick = okClick;
 
   function okClick() {
-    var name = nameInp.text,
-        replc = replcInp ? replcInp.text : '';
-  
-    switch (selection.length) {
+    var name = nameInp.text;
+    var replc = replcInp ? replcInp.text : '';
+
+    switch (docSel.length) {
       case 0: // Empty selection
-        if (isAll.value) {
-          if (abRb.value) replaceInAll(doc.artboards, replc, name);
+        if (isFindAll.value) {
+          // Find and replace in all objects
+          if (isArtboard.value) replaceInAll(doc.artboards, replc, name);
           else replaceInAll(doc.layers, replc, name);
         } else {
+          // Find and replace in one object
           if (!isEmpty(replc)) {
-            if (abRb.value) actAb.name = actAb.name.replaceAll(replc, name);
+            // Find and replace in one object
+            if (isArtboard.value) actAb.name = actAb.name.replaceAll(replc, name);
             else actLayer.name = actLayer.name.replaceAll(replc, name);
           } else if (!isEmpty(name)) {
-            if (abRb.value) actAb.name = name;
+            // Rename one object
+            if (isArtboard.value) actAb.name = name;
             else actLayer.name = name;
           }
         }
         break;
-      case 1: // One item
-        if (selRb.value) {
+      case 1: // One selected item
+        if (isSelection.value) {
+          // Rename items
           if (isReplcSym && isReplcSym.value && !isEmpty(name)) {
-            selection[0].symbol.name = name;
+            docSel[0].symbol.name = name;
           }
           if (name !== getPlaceholder()) { // Input is modified
-            selection[0].name = name;
+            var compound = getCompound(docSel[0]);
+            if (compound) {
+              compound.name = name;
+            } else {
+              docSel[0].name = name;
+            }
           }
         } else if (!isEmpty(name)) {
-          getTopLayer(selection[0]).name = name;
+          // Rename parent layers
+          getTopLayer(docSel[0]).name = name;
         }
         break;
       default: // Multiple items
-      if (selRb && selRb.value) {
-          var sortedSel = selection;
+        if (isSelection && isSelection.value) {
+          var sortedSel = [].concat(docSel);
           if (isRows.value) {
             sortByRows(sortedSel, 0);
           } else if (isCols.value) {
@@ -295,34 +327,37 @@ function main() {
     }
   
     // AI doesn't update in realtime the Layers panel until CC 2020
-    if (parseInt(app.version) <= 23 && selection.length && selRb.value) {
+    if (parseInt(app.version) <= 23 && docSel.length && isSelection.value) {
       try {
-        var tmp = selection[0].layer.pathItems.add();
+        var tmp = docSel[0].layer.pathItems.add();
         tmp.remove();
       } catch (err) {}
     }
   
-    saveSettings();
+    saveSettings(SETTINGS);
     win.close();
   }
 
-  // Get name placeholder
+  /**
+   * Retrieve a placeholder name based on the current selection in the document
+   * @returns {string} str - The placeholder name based on the selection criteria
+   */
   function getPlaceholder() {
-    if (selection.typename === 'TextRange') return '';
+    if (docSel.typename === 'TextRange') return '';
 
     var str = '';
 
-    switch (selection.length) {
+    switch (docSel.length) {
       case 0: // Empty selection
-        str = abRb.value ? actAb.name : actLayer.name;
+        str = isArtboard.value ? actAb.name : actLayer.name;
         break;
       case 1: // One item
-        var item = selection[0];
-        str = layerRb.value ? getTopLayer(item).name : getName(item);
+        var item = docSel[0];
+        str = isLayer.value ? getTopLayer(item).name : getName(item);
         break;
       default: // Multiple items
-        if(selRb && selRb.value) {
-          str = isEqualNames(selection) ? getName(selection[0]) : '';
+        if(isSelection && isSelection.value) {
+          str = isEqualNames(docSel) ? getName(docSel[0]) : '';
         }
         break;
     }
@@ -330,7 +365,13 @@ function main() {
     return str;
   }
 
-  // Put placeholder symbols to input
+  /**
+   * Add a button with a placeholder name to the specified parent container
+   * @param {string} name - The name of the button
+   * @param {string|object} size - The size of the button
+   * @param {object} parent - The parent container to which the button will be added
+   * @param {string} value - The value to be inserted into the input field when the button is clicked
+   */
   function putPlaceholder(name, size, parent, value) {
     var ph = parent.add('button', size, name);
 
@@ -343,71 +384,101 @@ function main() {
     }
   }
 
-  // Use Up / Down arrow keys (+ Shift) for change value
-  function shiftInputNumValue(item) {
-    item.addEventListener('keydown', function (kd) {
-      var step;
-      ScriptUI.environment.keyboardState['shiftKey'] ? step = 10 : step = 1;
-      if (kd.keyName == 'Down') {
-        this.text = Number(this.text) - step;
+  /**
+   * Handle keyboard input to shift numerical values
+   * @param {Object} input - The input element to which the event listener will be attached
+   * @param {number} min - The minimum allowed value for the numerical input
+   * @param {number} max - The maximum allowed value for the numerical input
+   * @returns {void}
+   */
+  function bindStepperKeys(input, min, max) {
+    input.addEventListener('keydown', function (kd) {
+      var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
+      var num = parseFloat(this.text);
+      if (kd.keyName == 'Down' || kd.keyName == 'LeftBracket') {
+        this.text = (typeof min !== 'undefined' && (num - step) < min) ? min : num - step;
         kd.preventDefault();
       }
-      if (kd.keyName == 'Up') {
-        this.text = Number(this.text) + step;
+      if (kd.keyName == 'Up' || kd.keyName == 'RightBracket') {
+        this.text = (typeof max !== 'undefined' && (num + step) > max) ? max : num + step;
         kd.preventDefault();
       }
     });
   }
 
-  function saveSettings() {
-    if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
-    var $file = new File(SETTINGS.folder + SETTINGS.name);
-    $file.encoding = 'UTF-8';
-    $file.open('w');
-    var pref = {};
-    if (selRb) pref.selection = selRb.value;
-    if (abRb) pref.artboard = abRb.value;
-    if (replcInp) pref.pattern = replcInp.text;
-    if (countInp) pref.number = countInp.text;
-    if (isAll) pref.layers = isAll.value;
-    if (sortPnl) pref.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
-    var data = pref.toSource();
-    $file.write(data);
-    $file.close();
+  /**
+  * Save UI options to a file
+  * @param {object} prefs - Object containing preferences
+  */
+  function saveSettings(prefs) {
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
+    var f = new File(prefs.folder + prefs.name);
+    f.encoding = 'UTF-8';
+    f.open('w');
+
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+
+    if (isSelection) data.selection = isSelection.value;
+    if (isArtboard) data.artboard = isArtboard.value;
+    if (replcInp) data.pattern = replcInp.text;
+    if (countInp) data.number = countInp.text;
+    if (isFindAll) data.layers = isFindAll.value;
+    if (sortPnl) data.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
+
+    f.write( stringify(data) );
+    f.close();
   }
 
-  function loadSettings() {
-    var $file = File(SETTINGS.folder + SETTINGS.name);
-    if ($file.exists) {
-      try {
-        $file.encoding = 'UTF-8';
-        $file.open('r');
-        var json = $file.readln();
-        var pref = new Function('return ' + json)();
-        $file.close();
-        if (typeof pref != 'undefined') {
-          if (selRb && pref.selection) {
-            pref.selection ? selRb.value = true : layerRb.value = true;
-          }
-          if (abRb && pref.artboard) {
-            pref.artboard ? abRb.value = true : layerRb.value = true;
-          }
-          if (replcInp && pref.pattern) {
-            replcInp.text = pref.pattern;
-          }
-          if (countInp && pref.number) {
-            countInp.text = pref.number;
-          }
-          if (isAll && pref.layers) {
-            isAll.value = pref.layers;
-          }
-          if (sortPnl) {
-            if (pref.sort == 0) isOrder.value = true;
-            else if (pref.sort == 1) isRows.value = true;
-            else if (pref.sort == 2) isCols.value = true;
+  /**
+  * Load options from a file
+  * @param {object} prefs - Object containing preferences
+  */
+  function loadSettings(prefs) {
+    var f = File(prefs.folder + prefs.name);
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x && !isNaN(parseInt(data.win_x)) ? parseInt(data.win_x) : 300,
+          data.win_y && !isNaN(parseInt(data.win_y)) ? parseInt(data.win_y) : 300
+        ];
+        if (isSelection && data.selection) {
+          data.selection === 'true' ? isSelection.value = true : isLayer.value = true;
+        }
+        if (isArtboard && data.artboard) {
+          data.artboard === 'true' ? isArtboard.value = true : isLayer.value = true;
+          if (isArtboard.value) {
+            isFindAll.text = isFindAll.text.replace('Doc Layers', 'Artboards');
           }
         }
-      } catch (err) {}
+        if (replcInp && data.pattern) {
+          replcInp.text = data.pattern;
+        }
+        if (countInp && data.number) {
+          countInp.text = data.number;
+        }
+        if (isFindAll && data.layers) {
+          isFindAll.value = data.layers;
+        }
+        if (sortPnl) {
+          sortPnl.children[parseInt(data.sort) || 0].value = true;
+        }
+      }
+    } catch (err) {
+      return;
     }
   }
 
@@ -415,43 +486,187 @@ function main() {
   win.show();
 }
 
-// Get unique layers for selected items
-function getUniqueLayers(collection) {
-  if (!collection.length) return [];
+/**
+ * String prototype with a replaceAll method if it doesn't already exist
+ * This method replaces all occurrences of a pattern in a string with a replacement string
+ * @memberof String.prototype
+ * @param {string} pattern - The substring or regex pattern to be replaced
+ * @param {string} replc - The string to replace each match of the pattern
+ * @returns {string} A new string with all matches of the pattern replaced by the replacement string
+ */
+if (!String.prototype.replaceAll) {
+  String.prototype.replaceAll = function(pattern, replc) {
+    // Escape the pattern if it's a string to handle special regex characters properly
+    var escapedPattern = typeof pattern === 'string' ? pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : pattern;
+    return this.replace(new RegExp(escapedPattern, 'g'), replc);
+  };
+}
 
-  var raw = [getTopLayer(collection[collection.length - 1])];
+/**
+ * Retrieve unique top layers from a collection of selected items
+ * @param {Array} coll - The collection of selected items
+ * @returns {Array} An array of unique top layers
+ */
+function getUniqueLayers(coll) {
+  if (!coll.length) return [];
 
-  for (var i = collection.length - 1; i >= 0; i--) {
-    var iLayer = getTopLayer(collection[i]);
-    if (iLayer !== raw[raw.length - 1]) raw.push(iLayer);
+  // Start from the end of the collection and move backwards
+  var uniqLays = [getTopLayer(coll[coll.length - 1])];
+
+  for (var i = coll.length - 2; i >= 0; i--) {
+    var curLayer = getTopLayer(coll[i]);
+    if (curLayer !== uniqLays[uniqLays.length - 1]) {
+      uniqLays.push(curLayer);
+    }
   }
 
-  return raw.reverse();
+  return uniqLays.reverse();
 }
 
-// Get top-level parent layer
+/**
+ * Retrieve the topmost layer of an item
+ * @param {Object} item - The starting layer item to check
+ * @returns {Object} The topmost layer of the item
+ */
 function getTopLayer(item) {
-  if (item.parent.typename === 'Document') return item;
-  else return getTopLayer(item.parent);
+  return item.parent.typename === 'Document' ? item : getTopLayer(item.parent);
 }
 
-// Find and replace in top-level layers and sublayers
-function replaceInAll(collection, pattern, replc) {
+/**
+* Get the name of an item, considering its type
+* @param {Object} item - The item for which to get the name
+* @returns {string} str - The name of the item
+*/
+function getName(item) {
+  if (!item || !item.typename) return item.name || '';
+
+  // If part of a compound path, set item
+  var compound = getCompound(item);
+  if (compound) item = compound;
+
+  // If item has a direct name, return it
+  if (!isEmpty(item.name)) {
+    return item.name;
+  }
+
+  // Special cases for derived names
+  if (item.typename === 'TextFrame' && !isEmpty(item.contents)) {
+    return item.contents;
+  }
+
+  if (item.typename === 'SymbolItem') {
+    return item.symbol.name;
+  }
+
+  if (item.typename === 'PlacedItem') {
+    return item.file && item.file.name ? item.file.name : '<Linked File>';
+  }
+
+  // Default system names for unnamed objects
+  switch (item.typename) {
+    case 'PathItem': return '<Path>';
+    case 'CompoundPathItem': return '<Compound Path>';
+    case 'GraphItem': return '<Graph>';
+    case 'GroupItem': return item.clipped ? '<Clipping Group>' : '<Group>';
+    case 'MeshItem': return '<Mesh>';
+    case 'NonNativeItem': return '<Non-Native Art>';
+    case 'RasterItem': return '<Image>';
+    case 'SymbolItem': return '<Symbol>';
+    case 'TextFrame': return '<Text>';
+    default:
+      if (isLegacyText(item)) return '<Legacy Text>';
+      return '<' + item.typename + '>';
+  }
+}
+
+/**
+ * Retrieve the compound path parent of an item
+ * @param {Object} item - The item to check for a compound path parent
+ * @returns {Object|null} The compound path item if found, otherwise null
+ */
+function getCompound(item) {
+  if (!item || !item.typename) return null;
+
+  // Skip top-level objects: layers, artboards, document
+  if (item.typename === 'Layer' || item.typename === 'Artboard' || item.typename === 'Document') {
+    return null;
+  }
+
+  while (item && item.parent) {
+    if (item.parent.typename === 'CompoundPathItem') {
+      return item.parent;
+    }
+    item = item.parent;
+  }
+
+  return null;
+}
+
+/**
+ * Check if an item is considered a legacy text item
+ * @param {Object} item - The item to check
+ * @return {boolean} Returns true if the item is a legacy text item, false otherwise
+ */
+function isLegacyText(item) {
+  return item.typename === 'LegacyTextItem' || 
+        (item.typename === 'TextFrame' && (!item.hasOwnProperty('contents') ||
+        item.hasOwnProperty('converted')));
+}
+
+/**
+ * Check if all names in the collection are equal
+ * @param {Array} coll - The collection of items to check
+ * @returns {boolean} True if all names are equal, false otherwise
+ */
+function isEqualNames(coll) {
+  if (coll.length === 0) return true; // Handle empty collection
+
+  var str = getName(coll[0]);
+  for (var i = 1, len = coll.length; i < len; i++) {
+    if (getName(coll[i]) !== str) return false;
+  }
+  return true;
+}
+
+/**
+ * Check if a string is empty or contains only whitespace characters
+ * @param {string} str - The string to check for emptiness
+ * @returns {boolean} True if the string is empty, false otherwise
+ */
+function isEmpty(str) {
+  return str.replace(/\s/g, '').length == 0;
+}
+
+/**
+ * Replace all occurrences of a pattern in the names of items within a collection
+ * @param {Array} coll - The collection of items to process
+ * @param {string} pattern - The pattern to search for
+ * @param {string} replc - The replacement string
+ */
+function replaceInAll(coll, pattern, replc) {
   if (isEmpty(pattern)) return;
 
-  for (var i = 0, len = collection.length; i < len; i++) {
-    var item = collection[i];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    var item = coll[i];
 
+    // Check if the item is a Layer and has sub-layers
     if (item.typename === 'Layer' && item.layers.length > 0) {
-      replaceLayers(item.layers, pattern, replc);
+      replaceInAll(item.layers, pattern, replc);
     }
 
-    var newName = getName(item).replaceAll(pattern, replc);
+    // Replace pattern in the item's name
+    var srcName = getName(item);
+    var newName = srcName.replaceAll(pattern, replc);
     item.name = newName;
   }
 }
 
-// Sort objects' coordinates from left to right by rows
+/**
+ * Sort an array of objects by their coordinates from left to right by rows
+ * @param {Array} arr - The array of objects to be sorted
+ * @param {number} tolerance - The tolerance within which objects are considered to be on the same row
+ * @returns {void}
+ */
 function sortByRows(arr, tolerance) {
   if (arguments.length == 1 || tolerance == undefined) tolerance = 0;
   arr.sort(function(a, b) {
@@ -462,7 +677,12 @@ function sortByRows(arr, tolerance) {
   });
 }
 
-// Sort objects' coordinates from top to bottom by columns
+/**
+ * Sort an array of objects by their coordinates from top to bottom by columns
+ * @param {Array>} arr - The array of objects to be sorted
+ * @param {number} tolerance - The tolerance within which objects are considered to be in the same column
+ * @returns {void}
+ */
 function sortByColumns(arr, tolerance) {
   if (arguments.length == 1 || tolerance == undefined) tolerance = 0;
   arr.sort(function(a, b) {
@@ -473,28 +693,39 @@ function sortByColumns(arr, tolerance) {
   });
 }
 
-// Rename selection or parent layers
-function rename(target, pattern, replc, counter, ph) {
-  var min = counter * 1,
-      max = target.length + min - 1;
+/**
+ * Rename the items based on a specified pattern
+ * @param {Array} coll - The array of items to rename
+ * @param {string} pattern - The naming pattern to apply
+ * @param {string} replc - The substring to be replaced in the original names
+ * @param {number} counter - The starting index for numbering
+ * @param {Object} ph - Placeholder object containing keys for name, numUp, and numDown
+ */
+function rename(coll, pattern, replc, counter, ph) {
+  var min = counter * 1;
+  var max = coll.length + min - 1;
 
-  for (var i = 0, len = target.length; i < len; i++) {
-    var newName = '',
-        item = target[i];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    var item = coll[i];
+    var compound = getCompound(item);
+    var targetItem = compound || item;
+    var srcName = getName(targetItem);
 
-    newName = pattern.replaceAll(ph.name, getName(item));
-    newName = newName.replaceAll(ph.numUp, padZero(min + i, max.toString().length));
-    newName = newName.replaceAll(ph.numDown, padZero(max - i, max.toString().length));
+    var newName = pattern
+          .replaceAll(ph.name, srcName)
+          .replaceAll(ph.numUp, padZero(min + i, max.toString().length))
+          .replaceAll(ph.numDown, padZero(max - i, max.toString().length));
 
-    if (!isEmpty(replc)) {
-      item.name = getName(item).replaceAll(replc, newName);
-    } else {
-      item.name = newName;
-    }
+    targetItem.name = !isEmpty(replc) ? srcName.replaceAll(replc, newName) : newName;
   }
 }
 
-// Convert a string to an integer
+/**
+ * Convert a string to an integer
+ * @param {string} str - The string to convert
+ * @param {string|number} def - The default value to return if conversion fails
+ * @return {number} The converted integer or the default value if conversion fails
+ */
 function convertToInt(str, def) {
   // Remove unnecessary characters
   str = str.replace(/[^\d]/g, '');
@@ -502,48 +733,23 @@ function convertToInt(str, def) {
   return parseFloat(str);
 }
 
-// Get item name of different types
-function getName(item) {
-  var str = '';
-  if (item.typename === 'TextFrame' && isEmpty(item.name) && !isEmpty(item.contents)) {
-    str = item.contents;
-  } else if (item.typename === 'SymbolItem' && isEmpty(item.name)) {
-    str = item.symbol.name;
-  } else {
-    str = item.name;
-  }
-  return str;
-}
-
-// Check if the names of items in the collection are equal
-function isEqualNames(coll) {
-  var str = getName(coll[0]);
-  for (var i = 1, len = coll.length; i < len; i++) {
-    if (getName(coll[i]) !== str) return false;
-  }
-  return true;
-}
-
-// Replace all occurrences
-if (!String.prototype.replaceAll) {
-  String.prototype.replaceAll = function(pattern, replc) {
-    return this.replace(new RegExp(pattern, 'g'), replc);
-  };
-}
-
-// Check empty string
-function isEmpty(str) {
-  return str.replace(/\s/g, '').length == 0;
-}
-
-// Add zero before number
+/**
+ * Pad a number with leading zeros to ensure it reaches a specified length
+ * @param {number|string} num - The number to pad
+ * @param {number} len - The desired length of the resulting string
+ * @returns {string} num - The padded number as a string
+ */
 function padZero(num, len) {
   num = num.toString();
   while (num.length < len) num = '0' + num;
   return num;
 }
 
-// Open link in browser
+/**
+ * Open a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+*/
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');
@@ -551,6 +757,27 @@ function openURL(url) {
   html.write(htmlBody);
   html.close();
   html.execute();
+}
+
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
 }
 
 try {
