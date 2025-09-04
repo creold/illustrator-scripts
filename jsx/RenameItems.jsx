@@ -427,7 +427,7 @@ function main() {
     if (isArtboard) data.artboard = isArtboard.value;
     if (replcInp) data.pattern = replcInp.text;
     if (countInp) data.number = countInp.text;
-    if (isFindAll) data.layers = isFindAll.value;
+    if (isFindAll) data.isReplace = isFindAll.value;
     if (sortPnl) data.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
 
     f.write( stringify(data) );
@@ -470,8 +470,8 @@ function main() {
         if (countInp && data.number) {
           countInp.text = data.number;
         }
-        if (isFindAll && data.layers) {
-          isFindAll.value = data.layers;
+        if (isFindAll && data.isReplace) {
+          isFindAll.value = data.isReplace === 'true';
         }
         if (sortPnl) {
           sortPnl.children[parseInt(data.sort) || 0].value = true;

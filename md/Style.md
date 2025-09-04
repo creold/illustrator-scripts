@@ -14,7 +14,7 @@
 
 ## Scripts
 * [AverageStrokesWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#averagestrokeswidth) `v0.1 — 07.02.2023`
-* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `v0.1.2 — upd, 09.02.2024`
+* [ChangeOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#changeopacity) `v0.2 — upd, 01.09.2025`
 * [GrayscaleToOpacity](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#grayscaletoopacity) `v0.1`
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `v0.1.1 — upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#opacitymaskclip) `v0.3 — upd, 05.03.2024`
@@ -32,9 +32,17 @@ Averages the stroke width of selected objects, skipping those without strokes. S
 ## ChangeOpacity
 [![Direct](https://img.shields.io/badge/Direct%20Link-ChangeOpacity.jsx-FF6900.svg)](https://link.aiscripts.ru/chngopa) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Set the exact Opacity value of the selected objects. The plus or minus sign before a number will shift relative to the current value at each object. Inside Clipping Groups does not change the Opacity of the mask itself. But you can add masks if you change `inclMask: false` to `true` in the code. 
+Controls the opacity of selected objects.
 
-![ChangeOpacity](https://i.ibb.co/zP3Vkww/Change-Opacity.gif)
+* In the exact input mode, you can use numbers and math operators: +, -, *, /. For example, /2 — halves the opacity.
+* Random opacity generation   
+1) Random value within a specified range with a step.   
+2) Modify the current value by ±X%.   
+3) Gaussian (normal) distribution.
+
+Apply to Objects Inside Groups — change the opacity of nested objects within groups.
+
+![ChangeOpacity](https://i.ibb.co/B5bc2NnT/Change-Opacity.gif)
 
 ## GrayscaleToOpacity
 [![Direct](https://img.shields.io/badge/Direct%20Link-GrayscaleToOpacity.jsx-FF6900.svg)](https://link.aiscripts.ru/graytoopa) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
