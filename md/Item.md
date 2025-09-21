@@ -2,7 +2,7 @@
 
 # Item | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-112k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-120k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -15,11 +15,11 @@
 ## Scripts
 * [AlignToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#aligntoartboards) `v0.2 — upd, 06.11.2023`
 * [BatchTrace](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#batchtrace) `v0.3 — upd, 07.06.2023`
-* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `v0.1.3 — upd, 09.02.2024`
+* [DuplicateToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#duplicatetoartboards) `v0.2 — upd, 20.09.2025`
 * [FitSelectionToArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#fitselectiontoartboards) `v0.3.4 — upd, 22.04.2024`
 * [MakeEnvelopesWithTops](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#makeenvelopeswithtops) `v0.1 — 09.2021`
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#mirrormove) `v0.1.1 — upd, 07.08.2024`
-* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#offsetobjects) `v0.1.3 — upd, 31.07.2025`
+* [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#offsetobjects) `v0.1.4 — upd, 08.09.2025`
 * [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#placesymbols) `v0.1 — new, 16.08.2024`
 * [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#renameitems) `v1.8 — upd, 08.08.2025`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#rescale) `v0.3.4 — upd, 09.02.2024`
@@ -67,9 +67,7 @@ Duplicates the objects selected on the active artboard to the same position on s
 
 The color of temporary artboard indexes changes in the code `CFG.color: [255, 0, 0]`.
 
-[Feature Request on Illustrator Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/32146360--paste-on-selected-artboards)
-
-![DuplicateToArtboards](https://i.ibb.co/mJqLzHr/Duplicate-To-Artboards.gif)
+![DuplicateToArtboards](https://i.ibb.co/HLVktqHh/Duplicate-To-Artboards.gif)
 
 ## FitSelectionToArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-FitSelectionToArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/fittoabs) [![Direct2](https://img.shields.io/badge/Direct%20Link-FitSelectionToArtboards%20Lite.jsx-48C794.svg)](https://link.aiscripts.ru/fittoabs-lite) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

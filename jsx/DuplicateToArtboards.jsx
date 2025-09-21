@@ -2,12 +2,13 @@
   DuplicateToArtboards.jsx for Adobe Illustrator
   Description: Copy and paste selected artboard objects to the same position on specific artboards
   Date: September, 2022
-  Modification date: February, 2024
+  Modification date: September, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.2 Added option to paste on even and odd artboards. Minor improvements
   0.1.3 Removed input activation on Windows OS below CC v26.4
   0.1.2 Fixed display of indexes when launched by action
   0.1.1 Fixed input activation in Windows OS
@@ -38,46 +39,62 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Duplicate To Artboards',
-        version: 'v0.1.3'
-      },
-      CFG = {
+        version: 'v0.2'
+      };
+
+  var CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
-        isPreserve: app.preferences.getBooleanPreference('layers/pastePreserve'), // Default Paste Remembers Layers
+        isPreserveLayer: app.preferences.getBooleanPreference('layers/pastePreserve'), // Default Paste Remembers Layers
         color: [255, 0, 0], // RGB artboard index color
-        tmpLyr: 'ARTBOARD_INDEX',
+        tempLayer: 'ARTBOARD_INDEX',
         uiOpacity: .98 // UI window opacity. Range 0-1
-      },
-      SETTINGS = {
+      };
+
+  var SETTINGS = {
         name: SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
       };
 
-  if (!isCorrectEnv('version:16', 'selection')) return;
+  if (!isCorrectEnv('version:16', 'selection:1')) return;
+  if (CFG.aiVers > 24) { app.selectTool('Adobe Select Tool'); }
   polyfills();
 
-  // Dialog
+  // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'column';
-      win.alignChildren = 'fill';
+      win.alignChildren = ['fill', 'top'];
       win.opacity = CFG.uiOpacity;
 
   var wrapper = win.add('group');
       wrapper.alignChildren = ['fill', 'fill'];
 
-  // Artboards  
-  var absPnl = wrapper.add('panel', undefined, 'Artboards range');
+  // ARTBOARDS
+  var absPnl = wrapper.add('panel', undefined, 'Artboards Range');
       absPnl.orientation = 'column';
       absPnl.alignChildren = 'fill';
       absPnl.margins = [10, 15, 10, 10];
 
+  // ARTBOARDS * INDEX MODE
+  var modeGrp = absPnl.add('group');
+      modeGrp.orientation = 'row';
+      modeGrp.alignChildren = 'left';
+
+  var isCustomIdx = modeGrp.add('radiobutton', undefined, 'Custom');
+      isCustomIdx.value = true;
+  var isOddIdx = modeGrp.add('radiobutton', undefined, 'Odd');
+      isOddIdx.helpTip = '1, 3, 5, 7, etc.'
+  var isEvenIdx = modeGrp.add('radiobutton', undefined, 'Even');
+      isEvenIdx.helpTip = '2, 4, 6, 8, etc.'
+
   var absInp = absPnl.add('edittext', undefined, 1);
+      absInp.enabled = true;
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     absInp.active = true;
   }
 
-  var absDescr = absPnl.add('statictext', undefined, '(e.g. "1, 3-5" to export 1, 3, 4, 5)\nor enter nothing to use all', { multiline: true });
-      absDescr.justify = 'left';
+  var customTip = absPnl.add('statictext', undefined, '(e.g. "1, 5-7" to export 1, 5, 6, 7)\nor leave it empty to paste on all artboards', { multiline: true });
+      customTip.justify = 'left';
 
   // Separator
   wrapper.separator = wrapper.add('panel');
@@ -87,24 +104,37 @@ function main() {
   var optsGrp = wrapper.add('group');
       optsGrp.orientation = 'column';
       optsGrp.alignChildren = 'fill';
+      optsGrp.spacing = 16;
 
   var pasteGrp = optsGrp.add('group');
       pasteGrp.orientation = 'column';
       pasteGrp.alignChildren = 'fill';
-      pasteGrp.spacing = 3;
+      pasteGrp.spacing = 8;
 
-  var isFront = pasteGrp.add('radiobutton', undefined, 'Paste in front');
-      isFront.helpTip = 'Similar to the Edit menu function';
-      isFront.value = true;
-  var isBack = pasteGrp.add('radiobutton', undefined, 'Paste in back');
-      isBack.helpTip = 'Similar to the Edit menu function';
+  var isPasteFront = pasteGrp.add('radiobutton', undefined, 'Paste in Front');
+      isPasteFront.helpTip = 'Similar to the Edit menu function';
+      isPasteFront.value = true;
+  var isPasteBack = pasteGrp.add('radiobutton', undefined, 'Paste in Back');
+      isPasteBack.helpTip = 'Similar to the Edit menu function';
 
-  var isPreserve = optsGrp.add('checkbox', undefined, 'Preserve layers');
-      isPreserve.helpTip = 'Similar to the Layer option\nPaste Remembers Layers';
-      isPreserve.value = CFG.isPreserve;
+  var isPreserveLayer = optsGrp.add('checkbox', undefined, 'Preserve Layers');
+      isPreserveLayer.helpTip = 'Similar to the Layer option\nPaste Remembers Layers';
+      isPreserveLayer.value = CFG.isPreserveLayer;
 
-  var isSelAfter = optsGrp.add('checkbox', undefined, 'Select pasted');
-      isSelAfter.value = true;
+  var isSelectCopies = optsGrp.add('checkbox', undefined, 'Select Pasted');
+      isSelectCopies.value = true;
+
+  // WARNING
+  if (CFG.aiVers >= 29.6) {
+    var warnPnl = win.add('panel', undefined, 'Warning for Adobe Illustrator CC 2025 and later');
+        warnPnl.orientation = 'column';
+        warnPnl.alignChildren = 'fill';
+        warnPnl.margins = [10, 15, 10, 10];
+
+    var warning = warnPnl.add('statictext', undefined, 'For this script to work correctly, no artboards must be selected (highlighted in blue) in the Artboards panel', { multiline: true });
+        warning.justify = 'left';
+        warning.preferredSize.height = 30;
+  }
 
   // Buttons
   var btns = win.add('group');
@@ -121,117 +151,167 @@ function main() {
     ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
+  cancel.helpTip = 'Press Esc to Close';
+  ok.helpTip = 'Press Enter to Run';
 
-  loadSettings();
+  // EVENTS
+  loadSettings(SETTINGS);
+
+  isCustomIdx.onClick = function () { absInp.enabled = true; }
+  isEvenIdx.onClick = function () { absInp.enabled = false; }
+  isOddIdx.onClick = function () { absInp.enabled = false; }
 
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
   });
 
   win.onShow = function () {
-    showAbIndex(CFG.tmpLyr, CFG.color);
+    showArboardIndex(CFG.tempLayer, CFG.color);
   }
 
   win.onClose = function () {
-    removeAbIndex(CFG.tmpLyr);
+    removeArtboardIndex(CFG.tempLayer);
   }
 
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
+  /**
+   * Handle the click event for the OK button
+   */
   function okClick() {
-    var doc = app.activeDocument,
-        actIdx = doc.artboards.getActiveArtboardIndex(),
-        docSel = selection,
-        cmdName = isFront.value ? 'pasteFront' : 'pasteBack',
-        absRange = getArtboardsRange(absInp.text, actIdx),
-        dupItems = [];
+    var doc = app.activeDocument;
+    var docSel = get(app.selection);
+    var currAbIdx = doc.artboards.getActiveArtboardIndex();
+    var cmdName = isPasteFront.value ? 'pasteFront' : 'pasteBack';
 
     // Activate Paste Remembers Layers
-    app.preferences.setBooleanPreference('layers/pastePreserve', isPreserve.value);
+    app.preferences.setBooleanPreference('layers/pastePreserve', isPreserveLayer.value);
+
+    var absRange = [];
+    if (isCustomIdx.value) {
+      absRange = getArtboardsRange(absInp.text, currAbIdx);
+    } else if (isOddIdx.value) {
+      absRange = getOddArtboards(currAbIdx);
+    } else {
+      absRange = getEvenArtboards(currAbIdx);
+    }
+
+    // Copy selected items to clipboard
     app.executeMenuCommand('copy');
     app.executeMenuCommand('deselectall');
 
+    var dupItems = [];
     for (var i = 0; i < absRange.length; i++) {
       pasteToArtboard(cmdName, absRange[i]);
-      dupItems.push.apply(dupItems, selection);
+      dupItems = dupItems.concat( get(app.selection) );
     }
-  
-    selection = isSelAfter.value ? dupItems : docSel;
-    doc.artboards.setActiveArtboardIndex(actIdx);
-    app.preferences.setBooleanPreference('layers/pastePreserve', CFG.isPreserve);
-    saveSettings();
+
+    doc.artboards.setActiveArtboardIndex(currAbIdx);
+    app.executeMenuCommand('deselectall');
+
+    selectItems(isSelectCopies.value && dupItems.length ? dupItems : docSel);
+
+    app.preferences.setBooleanPreference('layers/pastePreserve', CFG.isPreserveLayer);
+    saveSettings(SETTINGS);
     win.close();
   }
 
-  // Save UI options to file
-  function saveSettings() {
-    if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
-    var $file = new File(SETTINGS.folder + SETTINGS.name);
-    $file.encoding = 'UTF-8';
-    $file.open('w');
-    var pref = {};
-    pref.range = absInp.text;
-    pref.isFront = isFront.value;
-    pref.isSelAfter = isSelAfter.value;
-    var data = pref.toSource();
-    $file.write(data);
-    $file.close();
+  /**
+   * Save UI options to a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function saveSettings(prefs) {
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
+    var f = new File(prefs.folder + prefs.name);
+    f.encoding = 'UTF-8';
+    f.open('w');
+
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.range = absInp.text;
+    data.mode = isCustomIdx.value ? 0 : (isOddIdx.value ? 1 : 2);
+    data.isPasteFront = isPasteFront.value;
+    data.isSelect = isSelectCopies.value;
+
+    f.write( stringify(data) );
+    f.close();
   }
 
-  // Load options from file
-  function loadSettings() {
-    var $file = File(SETTINGS.folder + SETTINGS.name);
-    if ($file.exists) {
-      try {
-        $file.encoding = 'UTF-8';
-        $file.open('r');
-        var json = $file.readln();
-        var pref = new Function('return ' + json)();
-        $file.close();
-        if (typeof pref != 'undefined') {
-          pref.isFront ? isFront.value = true : isBack.value = true;
-          absInp.text = pref.range;
-          isSelAfter.value = pref.isSelAfter;
-        }
-      } catch (e) {}
+  /**
+   * Load options from a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function loadSettings(prefs) {
+    var f = File(prefs.folder + prefs.name);
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x && !isNaN(parseInt(data.win_x)) ? parseInt(data.win_x) : 300,
+          data.win_y && !isNaN(parseInt(data.win_y)) ? parseInt(data.win_y) : 300
+        ];
+        modeGrp.children[parseInt(data.mode) || 0].value = true;
+        absInp.enabled = isCustomIdx.value;
+        data.isPasteFront === 'true' ? isPasteFront.value = true : isPasteBack.value = true;
+        absInp.text = data.range;
+        isSelectCopies.value = data.isSelect === 'true';
+      }
+    } catch (err) {
+      return;
     }
   }
 
-  win.center();
   win.show();
 }
 
-// Check the script environment
+/**
+ * Check the script environment
+ * @param {string} List of initial data for verification
+ * @returns {boolean} - Continue or abort script
+ */
 function isCorrectEnv() {
   var args = ['app', 'document'];
   args.push.apply(args, arguments);
 
-  for (var i = 0; i < args.length; i++) {
+  for (var i = 0;i < args.length;i++) {
     var arg = args[i].toString().toLowerCase();
     switch (true) {
       case /app/g.test(arg):
         if (!/illustrator/i.test(app.name)) {
-          alert('Error\nRun script from Adobe Illustrator');
+          alert('Wrong application\nRun script from Adobe Illustrator', 'Script error');
           return false;
         }
         break;
       case /version/g.test(arg):
         var rqdVers = parseFloat(arg.split(':')[1]);
         if (parseFloat(app.version) < rqdVers) {
-          alert('Error\nSorry, script only works in Illustrator v.' + rqdVers + ' and later');
+          alert('Wrong app version\nSorry, script only works in Illustrator v.' + rqdVers + ' and later', 'Script error');
           return false;
         }
         break;
       case /document/g.test(arg):
-        if (!documents.length) {
-          alert('Error\nOpen a document and try again');
+        if (!app.documents.length) {
+          alert('No documents\nOpen a document and try again', 'Script error');
           return false;
         }
         break;
       case /selection/g.test(arg):
-        if (!selection.length || selection.typename === 'TextRange') {
-          alert('Error\nPlease, select at least one object on the artboard');
+        var rqdLen = parseFloat(arg.split(':')[1]);
+        if (app.selection.length < rqdLen || selection.typename === 'TextRange') {
+          alert('Few objects are selected\nPlease select at least ' + rqdLen + ' object and try again', 'Script error');
           return false;
         }
         break;
@@ -241,16 +321,13 @@ function isCorrectEnv() {
   return true;
 }
 
-// Setup JavaScript Polyfills
+/**
+ * Add polyfills for Array.prototype.indexOf, Array.prototype.filter
+ * Optimized for Adobe Illustrator ExtendScript (ECMA3)
+ * @function polyfills
+ * @returns {void}
+ */
 function polyfills() {
-  Array.prototype.forEach = function (callback) {
-    for (var i = 0; i < this.length; i++) callback(this[i], i, this);
-  };
-
-  Array.prototype.includes = function (search) {
-    return this.indexOf(search) !== -1;
-  };
-
   Array.prototype.indexOf = function (obj, start) {
     for (var i = start || 0, j = this.length; i < j; i++) {
       if (this[i] === obj) return i;
@@ -268,99 +345,165 @@ function polyfills() {
   };
 }
 
-// Output artboard indexes as text
-function showAbIndex(layer, color) {
-  if (arguments.length == 1 || color == undefined) color = [0, 0, 0];
+/**
+ * Display the index of each artboard in the active document
+ * @param {string} name - The name of the temporary layer to create
+ * @param {Array} color - The RGB color array for the text. Defaults to black if not provided
+ */
+function showArboardIndex(name, color) {
+  if (arguments.length == 1 || color == undefined) {
+    color = [0, 0, 0];
+  }
 
-  var doc = activeDocument,
-      actLayer = doc.activeLayer,
-      actIdx = doc.artboards.getActiveArtboardIndex(),
-      tmpLayer;
-
-  var idxColor = new RGBColor();
-  idxColor.red = color[0];
-  idxColor.green = color[1];
-  idxColor.blue = color[2];
+  var doc = app.activeDocument;
+  var currAbIdx = doc.artboards.getActiveArtboardIndex();
+  var rgbColor = setRGBColor(color);
+  var tempLayer;
 
   try {
-    tmpLayer = doc.layers.getByName(layer);
-  } catch (e) {
-    tmpLayer = doc.layers.add();
-    tmpLayer.name = layer;
+    tempLayer = doc.layers.getByName(name);
+  } catch (err) {
+    tempLayer = doc.layers.add();
+    tempLayer.name = name;
   }
 
   for (var i = 0, len = doc.artboards.length; i < len; i++)  {
     doc.artboards.setActiveArtboardIndex(i);
-    var currAb = doc.artboards[i],
-        abWidth = currAb.artboardRect[2] - currAb.artboardRect[0],
-        abHeight = currAb.artboardRect[1] - currAb.artboardRect[3],
-        label = tmpLayer.textFrames.add(),
-        labelSize = (abWidth >= abHeight) ? abHeight / 3 : abWidth / 3;
+    var currAb = doc.artboards[i];
+    var abWidth = currAb.artboardRect[2] - currAb.artboardRect[0];
+    var abHeight = currAb.artboardRect[1] - currAb.artboardRect[3];
+    var label = tempLayer.textFrames.add();
+    var labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
+
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
-    label.textRange.characterAttributes.fillColor = idxColor;
+    label.textRange.characterAttributes.fillColor = rgbColor;
     label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
   }
 
-  doc.artboards.setActiveArtboardIndex(actIdx);
-  doc.activeLayer = actLayer;
+  doc.artboards.setActiveArtboardIndex(currAbIdx);
+
+  // Update screen
   if (parseInt(app.version) >= 16) {
-    app.executeMenuCommand('preview');
-    app.executeMenuCommand('preview');
+    app.executeMenuCommand('artboard');
+    app.executeMenuCommand('artboard');
   } else {
-    redraw();
+    app.redraw();
   }
+
+  tempLayer.remove();
 }
 
-// Remove temp layer with artboard indexes
-function removeAbIndex(layer) {
-  try {
-    var layerToRm = activeDocument.layers.getByName(layer);
-    layerToRm.remove();
-  } catch (e) {}
+/**
+ * Set the RGB color
+ * @param {Array} color - The RGB color array
+ * @returns {RGBColor} The RGB color object
+ */
+function setRGBColor(rgb) {
+  var color = new RGBColor();
+  color.red = rgb[0];
+  color.green = rgb[1];
+  color.blue = rgb[2];
+  return color;
 }
 
-// Get artboard indexes from string
-function getArtboardsRange(str, actIdx) {
-  var userAbs = [],
-      docAbs = [];
+/**
+ * Remove a temporary layer by name, typically used for artboard indexes
+ * @param {string} name - Name of the layer to remove
+ * @returns {void}
+ */
+function removeArtboardIndex(name) {
+  var tempLayer = app.activeDocument.layers[name];
+  if (tempLayer) { tempLayer.remove(); }
+}
 
-  for (var i = 0; i < activeDocument.artboards.length; i++) {
+/**
+ * Parse a string range (e.g., "1,3-5") and returns filtered artboard indexes
+ * @param {string} str - Input string (e.g., "1,3-5" or "2-4,6")
+ * @param {number} currIdx - Current artboard index to exclude (optional)
+ * @returns {Array} Array of valid artboard indexes (0-based)
+ */
+function getArtboardsRange(str, currIdx) {
+  var userAbs = [];
+  var docAbs = [];
+  var i, j, extreme, temp, skipIdx = -1;
+
+  // Populate all artboard indexes (0-based)
+  for (i = 0; i < app.activeDocument.artboards.length; i++) {
     docAbs.push(i);
   }
 
+  // If input is empty, return all indexes except `currIdx`
   if (!str.replace(/\s/g, '').length) {
-    var rmvIdx = docAbs.indexOf(actIdx);
-    if (rmvIdx !== -1) docAbs.splice(rmvIdx, 1);
+    skipIdx = docAbs.indexOf(currIdx);
+    if (skipIdx !== -1) docAbs.splice(skipIdx, 1);
     return docAbs;
   }
 
+  // Normalize input: remove spaces, replace dots with commas
   str = str.replace(/\s/g, '').replace(/\./g, ',');
-  var tmp = str.split(',');
+  temp = str.split(',');
 
-  tmp.forEach(function (e) {
-    if (e.match('-') == null) {
-      userAbs.push(e - 1);
-      return;
-    };
-    var extreme = e.split('-'); // Min & max value in range
-    for (var j = (extreme[0] - 1); j <= extreme[1] - 1; j++) {
-      userAbs.push(j);
+  // Parse ranges (e.g., "3-5") and single values (e.g., "1")
+  for (i = 0; i < temp.length; i++) {
+    if (temp[i].indexOf('-') === -1) {
+      userAbs.push(parseInt(temp[i], 10) - 1);
+    } else {
+      extreme = temp[i].split('-');
+      for (j = parseInt(extreme[0], 10) - 1; j <= parseInt(extreme[1], 10) - 1; j++) {
+        userAbs.push(j);
+      }
     }
+  }
+
+  var filtered = docAbs.filter(function (e) {
+    return userAbs.indexOf(e) !== -1;
   });
 
-  return docAbs.filter(function (e) {
-    return userAbs.includes(e);
-  });
+  // Remove current artboard if present
+  skipIdx = filtered.indexOf(currIdx);
+  if (skipIdx !== -1) filtered.splice(skipIdx, 1);
+
+  return filtered;
 }
 
-// Paste from clipboard
+/**
+ * Get indices of odd artboards, excluding the active one
+ * @param {number} currIdx - Index of the active artboard to exclude
+ * @returns {Array} Array of odd artboard indices
+ */
+function getOddArtboards(currIdx) {
+  var results = [];
+  for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+    if ((i + 1) % 2 == 1 && i !== currIdx) results.push(i);
+  }
+  return results;
+}
+
+/**
+ * Get indices of even artboards, excluding the active one
+ * @param {number} currIdx - Index of the active artboard to exclude
+ * @returns {Array} Array of even artboard indices
+ */
+function getEvenArtboards(currIdx) {
+  var results = [];
+  for (var i = 0; i < app.activeDocument.artboards.length; i++) {
+    if ((i + 1) % 2 == 0 && i !== currIdx) results.push(i);
+  }
+  return results;
+}
+
+/**
+ * Paste items from clipboard to specified artboard or all artboards
+ * @param {string} cmdName - Paste command name
+ * @param {number} idx - Index of the target artboard. If omitted, pastes to all artboards
+ */
 function pasteToArtboard(cmdName, idx) {
-  if (arguments.length <= 1) {
+  if (arguments.length <= 1 || idx == undefined) {
     cmdName = 'pasteInAllArtboard';
   } else {
-    activeDocument.artboards.setActiveArtboardIndex(idx);
+    app.activeDocument.artboards.setActiveArtboardIndex(idx);
   }
 
   switch(cmdName) {
@@ -377,7 +520,72 @@ function pasteToArtboard(cmdName, idx) {
   }
 }
 
-// Open link in browser
+/**
+ * Convert a collection into a standard Array
+ * @param {Object} coll - The collection to be converted
+ * @returns {Array} A new array containing the elements
+ */
+function get(coll) {
+  var results = [];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    results.push(coll[i]);
+  }
+  return results;
+}
+
+/**
+ * Fast select an array of Illustrator items by temporarily grouping them
+ * @param {Array} arr - Array of items to select
+ * @returns {void}
+ */
+function selectItems(arr) {
+  // Validate input
+  if (!arr || Object.prototype.toString.call(arr) !== '[object Array]' || !arr.length) return;
+
+  // Create temp layer and group
+  var tempLayer = app.activeDocument.layers.add();
+  tempLayer.name = '__tempSelectionLayer__';
+  var tempGroup = tempLayer.groupItems.add();
+
+  // Store pairs of placeholder and original items
+  var pairs = [];
+  for (var i = 0; i < arr.length; i++) {
+    try {
+      var tempItem = tempLayer.pathItems.add();
+      tempItem.move(arr[i], ElementPlacement.PLACEBEFORE);
+      arr[i].move(tempGroup, ElementPlacement.PLACEATEND);
+      pairs.push({ placeholder: tempItem, original: arr[i] });
+    } catch (err) {
+      if (tempItem) tempItem.remove(); // Cleanup on error
+    }
+  }
+
+  // Select the group
+  try { 
+    tempGroup.selected = true;
+  } catch (err) {}
+
+  // Restore original positions and cleanup
+  for (var j = pairs.length - 1; j >= 0; j--) {
+    var pair = pairs[j];
+    try {
+      pair.original.move(pair.placeholder, ElementPlacement.PLACEBEFORE);
+      pair.placeholder.remove();
+    } catch (err) {
+      try { pair.placeholder.remove(); } catch (e) {} // Silent cleanup
+    }
+  }
+
+  // Remove temp group and layer
+  try { tempGroup.remove(); } catch (err) {}
+  try { tempLayer.remove(); } catch (err) {}
+}
+
+/**
+ * Open a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+*/
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');
@@ -387,7 +595,28 @@ function openURL(url) {
   html.execute();
 }
 
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} - A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
+}
+
 // Run script
 try {
   main();
-} catch (e) {}
+} catch (err) {}

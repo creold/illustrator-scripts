@@ -575,7 +575,7 @@ function isCorrectEnv() {
       case /selection/g.test(arg):
         var rqdLen = parseFloat(arg.split(':')[1]);
         if (app.selection.length < rqdLen || selection.typename === 'TextRange') {
-          alert('Few objects are selected\nPlease select atleast ' + rqdLen + ' object and try again', 'Script error');
+          alert('Few objects are selected\nPlease select at least ' + rqdLen + ' object and try again', 'Script error');
           return false;
         }
         break;

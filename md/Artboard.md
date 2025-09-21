@@ -2,7 +2,7 @@
 
 # Artboard | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-112k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Downloads-120k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -15,7 +15,7 @@
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
 * [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
-* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `v1.5 — upd, 21.01.2024`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `v1.6 — upd, 17.09.2025`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
@@ -43,29 +43,38 @@ Writes artboard names to a text file or applies from it. Actions occur in the ra
 ## BatchRenamer
 [![Direct](https://img.shields.io/badge/Direct%20Link-BatchRenamer.jsx-FF6900.svg)](https://link.aiscripts.ru/batchren) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Batch renames Artboards, top-level Layers and selected objects in the document. Adds a common prefix and suffix to names. "Find & Replace" replaces matching strings in current names.
+Batch renames multiple artboards, top-level Layers and selected objects all at once.   
+**What it does:**
 
-**Placeholders** 
+* It adds a common prefix and/or suffix to their names
+* It finds and replaces text in the current names (using Find & Replace)
+* It changes the names to a consistent case (upper case, lower case, etc.)
 
-* {w} - the width of the artboard or selected object in units of the document
-* {h} - the height of the artboard or selected object
-* {u} - document units (Document Setup > Units) 
-* {nu:0} - ascending auto-numbering from the entered value
-* {nd:0} - descending auto-numbering from the entered value
-* {c} - document color model (RGB or CMYK)
-* {d} - current date (YYYYMMDD)
-* {fn} - filename without extension
-* {n} - the current name to be replaced in "Find & Replace"
+**Placeholders (Smart Tags)** 
 
-The Find & Replace supports [regular expression symbols](https://cheatography.com/davechild/cheat-sheets/regular-expressions/). Example: to remove numbers in names, enter `\d` in Find and keep Replace blank. To replace spaces with another character: enter `\s+` in Find and the your symbol in Replace.
+* {w} — The width of the artboard or object
+* {h} — The height of the artboard or object
+* {u} — The document's units (like mm, cm, inches)
+* {nu:1} — Auto-numbering, counting up from the number you type (e.g., 1, 2, 3...)
+* {nd:5} — Auto-numbering, counting down from the number you type (e.g., 5, 4, 3...)
+* {c} — The document's color mode (RGB or CMYK)
+* {dmy} — Today's date (DD/MM/YYYY)
+* {mdy} — Today's date (MM/DD/YYYY)
+* {ymd} — Today's date (YYYY/MM/DD)
+* {t} — The current time (HH:MM)
+* {f} — The document's filename
+
+The Find & Replace supports [regular expression](https://cheatography.com/davechild/cheat-sheets/regular-expressions/). Example: to remove numbers in names, enter `\d` in Find and keep Replace blank. To replace spaces with another character: enter `\s+` in Find and the your symbol in Replace.
 
 > [!TIP]   
-> If you want to change the number of rows, change the CFG `rows: 5` in the script file and the same value in `listHeight: 5 * 32`. In `precision: 0` sets the number of decimal places for height and width of artboards and objects.   
+> You can open the script file in a text editor to change these settings: `rows: 5` - Change this number to make the script's window taller or shorter. `precision: 0` — How many decimal places to use for width and height (e.g., 2 for 10.25). `decimal: ','` — The symbol to use as a decimal point (e.g., ',' or '.'). `isShowIndex: true` — Set to `false` to hide the temporary numbers shown next to each artboard when the script starts.   
+
+[More about script](https://ais.sergosokin.ru/artboard/batch-renamer/)   
 
 > [!NOTE]   
 > Vote on [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43575576-bulk-re-naming-of-layers), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39925396-find-and-replace-text-in-object-name-in-the-layers), [Uservoice #3](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35567803-advanced-rename-tools-for-artboards-with-find-re) to add this feature to Illustrator.
 
-![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)
+![BatchRenamer](https://i.ibb.co/DP7YDGmK/Batch-Renamer.gif)
 
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Direct%20Link-DuplicateArtboardsLight.jsx-FF6900.svg)](https://link.aiscripts.ru/dupabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

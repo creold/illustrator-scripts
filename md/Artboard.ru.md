@@ -2,7 +2,7 @@
 
 # Artboard | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Скачивания-112k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+![Downloads](https://img.shields.io/badge/Скачивания-120k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -15,7 +15,7 @@
 ## Scripts
 * [ArtboardsFinder](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsfinder) `v0.1.5 — upd, 09.02.2024`
 * [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
-* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `v1.5 — upd, 21.01.2024`
+* [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `v1.6 — upd, 17.09.2025`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
 * [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
@@ -43,29 +43,33 @@
 ## BatchRenamer
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-BatchRenamer.jsx-FF6900.svg)](https://link.aiscripts.ru/batchren) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Массово переименовывает в документе артборды, слои верхнего уровня и выбранные объекты. Добавляет общий префикс и суффикс к имени. Через Find & Replace заменяется строка в текущих именах.
+Массово переименовывает в документе артборды, слои верхнего уровня и выбранные объекты. Добавляет общий префикс и суффикс к имени. Через Find & Replace заменяется строка в текущих именах. Приводит имена к единому регистру на выбор из девяти вариантов в выпадающем списке.
 
 **Плейсхолдеры** 
 
-* {w} - ширина артборда или выбранного объекта в единицах документа
-* {h} - высота артборда или выбранного объекта
-* {u} - единицы измерения документа (Document Setup > Units) 
-* {nu:0} - автоматическая нумерация от введённого числа и выше
-* {nd:0} - нумерация от введённого числа и ниже
-* {c} - цветовая модель документа (RGB или CMYK)
-* {d} - текущая дата в формате ГГГГММДД
-* {fn} - имя файла без расширения
-* {n} - текущее имя для замены в Find & Replace
+* {w} — ширина артборда или выбранного объекта в единицах документа
+* {h} — высота артборда или выбранного объекта
+* {u} — единицы измерения документа (Document Setup > Units)
+* {nu:1} — Автоматическая нумерация, отсчет ведется от введенного вами числа (например, 1, 2, 3...)
+* {nd:5} — Автоматическая нумерация, обратный отсчет от введенного вами числа (например, 5, 4, 3...)
+* {с} — цветовая модель документа RGB или CMYK
+* {dmy} — текущая дата в формате ДД/ММ/ГГГГ
+* {mdy} — дата в формате ММ/ДД/ГГГГ
+* {ymd} — дата в формате ГГГГ/ММ/ДД
+* {t} — время в формате ЧЧ:ММ
+* {f} — имя файла без расширения
 
 Поле замены поддерживает [символы регулярных выражений](https://proglib.io/p/shpargalka-po-regulyarnym-vyrazheniyam-v-javascript-2022-07-17). Пример: чтобы удалить числа в именах, введите в поле Find `\d` без кавычек, а Replace оставьте пустым. Для замены пробелов на другой символ: в Find введите `\s+`, а в Replace нужный вам символ.
 
 > [!TIP]   
-> Если хотите изменить количество строк в высоту, то откройте файл скрипта текстовым редактором и поменяйте CFG `rows: 5` на другое число и его же в `listHeight: 5 * 32`. В CFG `precision: 0` задаётся число десятичных знаков для высоты и ширины артбордов и объектов.   
+> Если хотите изменить количество строк в высоту, то откройте файл скрипта текстовым редактором и поменяйте CFG `rows: 5` на другое число. `precision: 0` — число десятичных знаков для высоты и ширины. `decimal: ','` — символ-разделитель в дробных числах высоты и ширины. `isShowIndex: true` — показывать (true) или нет (false) временные индексы артбордов в документе при запуске скрипта.   
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/artboard/batch-renamer/)   
 
 > [!NOTE]   
 > Проголосуйте на [Uservoice #1](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/43575576-bulk-re-naming-of-layers), [Uservoice #2](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39925396-find-and-replace-text-in-object-name-in-the-layers), [Uservoice #3](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/35567803-advanced-rename-tools-for-artboards-with-find-re) за внедрение этой функции в Иллюстратор.
 
-![BatchRenamer](https://i.ibb.co/p2VXbY9/Batch-Renamer.gif)
+![BatchRenamer](https://i.ibb.co/DP7YDGmK/Batch-Renamer.gif)
 
 ## DuplicateArtboardsLight
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DuplicateArtboardsLight.jsx-FF6900.svg)](https://link.aiscripts.ru/dupabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

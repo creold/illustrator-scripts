@@ -3,7 +3,7 @@
   Description: Script for batch renaming artboards, layers & selected items manually or by placeholders.
   Find & Replace supports regular expressions.
   Date: January, 2022
-  Modification date: January, 2024
+  Modification date: September, 2025
 
   Original idea by Qwertyfly:
   https://community.adobe.com/t5/illustrator-discussions/is-there-a-way-to-batch-rename-artboards-in-illustrator-cc/m-p/7243667#M153618
@@ -13,25 +13,29 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
   
   Release notes:
+  1.6 The placeholders have been replaced with a selectable dropdown list.
+      Prefixes and suffixes are set by index range, and checkboxes have been removed.
+      Added case conversion modes.
+      Minor improvements
+  1.5 Added custom range for Find and Replace. Minor improvements
+  1.4 Added import names from txt and export names into txt from active tab
+  1.3.3 Added display symbol object names
+  1.3.2 Fixed rename bug
+  1.3.1 Added display of text frame content as name if it is empty
+  1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
+  1.2.4a Fixed problem launching through LAScripts extension
+  1.2.4 Added {f} placeholder to insert a filename
+  1.2.3 Added new units API for CC 2023 v27.1.1
+  1.2.2 Added size correction in large canvas mode
+  1.2.1 Added custom RGB color (idxColor) for artboard indexes
+  1.2 Added more units (yards, meters, etc.) support if the document is saved
+  1.1.1 Fixed load user settings
+  1.1 Minor improvements
   1.0 Fixed variables, scrollbar in original script by Qwertyfly
       Added tabs for batch rename Artboards, Layers, Paths
       Added 'Select all' checkboxes, 'Find and Replace' algorithm
       Addedd save and load user settings
       Added placeholders for batch rename 
-  1.1 Minor improvements
-  1.1.1 Fixed load user settings
-  1.2 Added more units (yards, meters, etc.) support if the document is saved
-  1.2.1 Added custom RGB color (idxColor) for artboard indexes
-  1.2.2 Added size correction in large canvas mode
-  1.2.3 Added new units API for CC 2023 v27.1.1
-  1.2.4 Added {fn} placeholder to insert a filename
-  1.2.4a Fixed problem launching through LAScripts extension
-  1.3 Info about number of artboards, layers, selected document objects added to {nu}, {nd} placeholder text. Minor improvements
-  1.3.1 Added display of text frame content as name if it is empty
-  1.3.2 Fixed rename bug
-  1.3.3 Added display symbol object names
-  1.4 Added import names from txt and export names into txt from active tab
-  1.5 Added custom range for Find and Replace. Minor improvements
   
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -62,104 +66,112 @@ function main() {
     return;
   }
 
-  if (!documents.length) {
+  if (!app.documents.length) {
     alert('No documents\nOpen a document and try again', 'Script error');
     return;
   }
+
+  var SCRIPT = {
+        name:     'Batch Renamer',
+        version:  'v1.6'
+      };
+
+  // CONFIG
+  var CFG = {
+        rows:         7, // Enter amount of visible rows
+        precision:    2, // Decimal places. Rounding object width and height
+        decimal:      ',', // Decimal separator for width and height
+        isShowIndex:  true, // Show (true) or not (false) temporary artboard indexes
+        indexColor:   [255, 0, 0], // Color for temporary artboard indexes
+        tmpLayer:     'ARTBOARD_INDEX', // Layer for temporary artboard indexes
+        isFind:       false, // Default Find and Replace state
+        sf:           app.activeDocument.scaleFactor ? app.activeDocument.scaleFactor : 1, // Scale factor for Large Canvas mode
+        isUndo:       false,
+        uiOpacity:    .97, // UI window opacity. Range 0-1
+      };
+
+  // Calculate height of list of names
+  CFG.listHeight = CFG.rows * 32;
 
   var doc = app.activeDocument;
   var absLength = doc.artboards.length;
   var lyrsLength = doc.layers.length;
   var selLength = app.selection.length;
 
-  var SCRIPT = {
-        name:     'Batch Renamer',
-        version:  'v.1.5'
-      };
-  var CFG = {
-        listHeight: 6 * 32,
-        rows:       6, // Amount of visible rows
-        precision:  2, // Rounding the artboard or the path width and height to decimal places
-        decimal:    ',', // Decimal separator point or comma for width and height
-        defTab:     0, // Default tab. 0 - Artboard, 1 - Layer, 2 - Path
-        idxColor:   [255, 0, 0], // Artboard index color
-        isFind:     false, // Default Find and Replace state
-        isMac:      /mac/i.test($.os),
-        aiVers:     parseInt(app.version),
-        sf:         activeDocument.scaleFactor ? activeDocument.scaleFactor : 1, // Scale factor for Large Canvas mode
-        tmpLyr:     'ARTBOARD_INDEX',
-        uiOpacity:  .97, // UI window opacity. Range 0-1
-      };
-  var PH = { // Placeholders
+  // PLACEHOLDERS
+  var PH = {
         color:    '{c}',
         date:     '{d}',
-        fName:    '{fn}',
+        time:     '{t}',
+        file:     '{f}',
         height:   '{h}',
-        name:     '{n}',
+        dateDMY:  '{dmy}',
+        dateMDY:  '{mdy}',
+        dateYMD:  '{ymd}',
         numDown:  '{nd:0}',
         numUp:    '{nu:0}',
         units:    '{u}',
         width:    '{w}',
       };
+
+  // PLACEHOLDERS MAP
+  var PH_MAP = [
+        { placeholder: '', description: '@', isAllTab: true }, // Dummy top item
+        { placeholder: PH.width, description: PH.width + ' - Width', isAllTab: false }, // Not used for layers tab
+        { placeholder: PH.height, description: PH.height + ' - Height', isAllTab: false }, // Not used for layers tab
+        { placeholder: PH.units, description: PH.units + ' - Ruler Units', isAllTab: false }, // Not used for layers tab
+        { placeholder: PH.numUp.replace(/\d+/g, absLength), description: PH.numUp + ' - Auto-Number Up', isAllTab: true },
+        { placeholder: PH.numDown.replace(/\d+/g, absLength), description: PH.numDown + ' - Auto-Number Down', isAllTab: true },
+        { placeholder: PH.color, description: PH.color + ' - Color Space', isAllTab: true },
+        { placeholder: PH.dateDMY, description: PH.dateDMY + ' - Date ' + getCurrentDate(PH.dateDMY), isAllTab: true },
+        { placeholder: PH.dateMDY, description: PH.dateMDY + ' - Date ' + getCurrentDate(PH.dateMDY), isAllTab: true },
+        { placeholder: PH.dateYMD, description: PH.dateYMD + ' - Date ' + getCurrentDate(PH.dateYMD), isAllTab: true },
+        { placeholder: PH.time, description: PH.time + ' - Time HH:MM', isAllTab: true },
+        { placeholder: PH.file, description: PH.file + ' - File Name', isAllTab: true },
+      ];
+
   var MSG = {
-        all:          'All elements',
-        cancel:       'Cancel',
-        copyright:    'Visit Github',
-        empty:        'No paths are selected',
-        enable:       'Enable',
-        ex:           'Export',
-        exDlg:        'Choose a folder to export TXT...',
-        exHint:       'Export names from active tab\ninto a TXT file',
-        exSuccess:    'Your file * has been created successfull',
-        find:         'Find',
-        findHint:     'Support regular expressions',
-        findTitle:    'Find and Replace',
-        im:           'Import',
-        imDlg:        'Choose TXT file...',
-        imHint:       'Import names to active tab\nfrom a TXT file. Start each name\non a new line',
-        imSuccess:    'Your file * has been imported successfully into the active tab',
-        nameAb:       'Artboard name',
-        nameLyr:      'Layer name',
-        namePath:     'Object name',
-        ok:           'OK',
-        ph:           'Placeholder: ' + PH.name + ' - current name',
-        prefix:       'Prefix',
-        prvw:         'Preview',
-        prvwOn:       'PREVIEW ON',
-        range:        'Range',
-        rplc:         'Replace',
-        suffix:       'Suffix',
-        tabAb:        'ARTBOARDS',
-        tabLyr:       'LAYERS',
-        tabPath:      'OBJECTS',
-        preSuffAb:    'Placeholders:\n' +
-                      PH.width + ' - artboard width, ' +
-                      PH.height + ' - artboard height, ' +
-                      PH.units + ' - ruler units, ' +
-                      PH.numUp.replace(/\d/g, absLength) + ' - auto-number up with start from, ' + // Ascending
-                      PH.numDown.replace(/\d/g, absLength) + ' - number down, ' + // Descending
-                      PH.color + ' - file color space, ' + 
-                      PH.date + ' - current date as YYYYMMDD, ' +
-                      PH.fName + ' - filename',
-        preSuffLyr:   'Placeholders:\n' +
-                      PH.numUp.replace(/\d/g, lyrsLength) + ' - auto-number up with start from, ' + // Ascending
-                      PH.numDown.replace(/\d/g, lyrsLength) + ' - auto-number down with start from, ' + // Descending
-                      PH.fName + ' - filename',
-        preSuffPath:  'Placeholders:\n' +
-                      PH.numUp.replace(/\d/g, selLength) + ' - auto-number up with start from, ' + // Ascending
-                      PH.numDown.replace(/\d/g, selLength) + ' - number down, ' + // Descending
-                      PH.width + ' - object width, ' +
-                      PH.height + ' - object height, ' +
-                      PH.units + ' - ruler units',
+        all:           'All Names',
+        cancel:        'Cancel',
+        caseTitle:     'Name Case Conversion',
+        copyright:     'Visit Github',
+        empty:         'No Objects Are Selected',
+        enable:        'Enable',
+        exportBtn:     'Export',
+        exportTitle:   'Choose a folder to export TXT file...',
+        exportHint:    'Export names from active tab\ninto a TXT file',
+        exportSuccess: 'Your file @ has been saved successfully',
+        find:          'Find:',
+        findHint:      'Tip: Find Supports RegExp. Example: ^.*$ - Find Full Name',
+        findTitle:     'Find and Replace',
+        importBtn:     'Import',
+        importTitle:   'Choose TXT file...',
+        importHint:    'Import names to active tab\nfrom a TXT file. Start each name\non a new line',
+        importSuccess: 'Your file * has been imported successfully into the active tab',
+        nameAb:        'Artboard Names',
+        nameLyr:       'Layer Names',
+        namePath:      'Object Names',
+        ok:            'OK',
+        prefix:        'Prefix:',
+        previewBtn:    'Preview',
+        previewOn:     'PREVIEW ON',
+        range:         'Range:',
+        rangeEg:       'E.g. "1, 3-5, 9" > 1, 3, 4, 5, 9',
+        replace:       'Replace With:',
+        suffix:        'Suffix:',
+        tabAb:         'ARTBOARDS',
+        tabLyr:        'LAYERS',
+        tabPath:       'OBJECTS',
       };
+
   var SETTINGS = {
         name:   SCRIPT.name.replace(/\s/g, '_') + '_data.json',
         folder: Folder.myDocuments + '/Adobe Scripts/'
       };
 
-  var abs = initObject(CFG.isFind); // Artboards
-  var lyrs = initObject(CFG.isFind); // Layers
-  var paths = initObject(CFG.isFind); // Selected objects
+  var abs = initObject(CFG.isFind, 'artboards'); // Artboards
+  var lyrs = initObject(CFG.isFind, 'layers'); // Layers
+  var paths = initObject(CFG.isFind, 'selection'); // Selected objects
 
   var absPH = initPlaceholders('artboards', PH); // Artboard placeholders
   var lyrsPH = initPlaceholders('layers', PH); // Layers placeholders
@@ -167,20 +179,24 @@ function main() {
 
   var rowItem = []; // List rows
 
-  // Init prefix, index, name and suffix
-  initData(doc.artboards, abs.state);
-  initData(doc.layers, lyrs.state);
-  initData(app.selection, paths.state);
+  // Init prefix, index, original name and suffix
+  abs.state = initData(doc.artboards);
+  lyrs.state = initData(doc.layers);
+  paths.state = initData(app.selection);
 
-  // SHOW DIALOG
+  // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.orientation = 'row';
+      win.alignChildren = ['fill', 'fill'];
       win.opacity = CFG.uiOpacity;
 
-  var wrapper = win.add('group');
+  // LEFT WRAPPER FOR MAIN CONTROLS
+  var lWrapper = win.add('group');
+      lWrapper.orientation = 'column';
+      lWrapper.alignChildren = ['fill', 'top'];
 
-  // Tabs and properties
-  var tabPnl = wrapper.add('tabbedpanel');
+  // TABS
+  var tabPnl = lWrapper.add('tabbedpanel');
       tabPnl.alignChildren = ['fill', 'top'];
 
   var absTab = tabPnl.add('tab', undefined, MSG.tabAb); // Artboard
@@ -188,76 +204,99 @@ function main() {
   var pathsTab = tabPnl.add('tab', undefined, MSG.tabPath);  // Path
 
   absTab.margins = lyrsTab.margins = pathsTab.margins = [10, 20, 0, 5];
-  tabPnl.selection = CFG.defTab;
+  tabPnl.selection = 0;
 
-  var absTabData = addTabContent(absTab, abs, MSG, MSG.nameAb, MSG.preSuffAb);
-  var lyrsTabData = addTabContent(lyrsTab, lyrs, MSG, MSG.nameLyr, MSG.preSuffLyr);
-  var pathsTabData = addTabContent(pathsTab, paths, MSG, MSG.namePath, MSG.preSuffPath);
-  
-  var btns = win.add('group');
-      btns.orientation = 'column';
-      btns.spacing = 20;
-      btns.alignment = 'top';
+  // FILL TABS CONTENT
+  var absTabData = addTabContent(absTab, abs, MSG, MSG.nameAb, PH_MAP);
+  var lyrsTabData = addTabContent(lyrsTab, lyrs, MSG, MSG.nameLyr, PH_MAP);
+  var pathsTabData = addTabContent(pathsTab, paths, MSG, MSG.namePath, PH_MAP);
 
-  var b1 = btns.add('group');
-      b1.orientation = 'column';
+  // RIGHT WRAPPER FOR BUTTONS AND INFO
+  var rWrapper = win.add('group');
+      rWrapper.orientation = 'column';
+      rWrapper.spacing = 20;
+      rWrapper.alignChildren = ['fill', 'fill'];
 
-  var ok = b1.add('button', undefined, MSG.ok, { name: 'ok' });
-  var cancel = b1.add('button', undefined, MSG.cancel, { name: 'cancel' });
+  var btns1 = rWrapper.add('group');
+      btns1.orientation = 'column';
+      btns1.alignment = ['fill', 'top'];
 
-  var b2 = btns.add('group');
-      b2.orientation = 'column';
+  var ok = btns1.add('button', undefined, MSG.ok, { name: 'ok' });
+  var cancel = btns1.add('button', undefined, MSG.cancel, { name: 'cancel' });
 
-  var preview = b2.add('button', undefined, MSG.prvw);
-  var importBtn = b2.add('button', undefined, MSG.im);
-      importBtn.helpTip = MSG.imHint;
-  var exportBtn = b2.add('button', undefined, MSG.ex);
-      exportBtn.helpTip = MSG.exHint;
+  var btns2 = rWrapper.add('group');
+      btns2.orientation = 'column';
+      btns2.alignment = ['fill', 'top'];
 
-  var copyright = btns.add('statictext', undefined, MSG.copyright);
+  var previewBtn = btns2.add('button', undefined, MSG.previewBtn);
+  var importBtn = btns2.add('button', undefined, MSG.importBtn);
+      importBtn.helpTip = MSG.importHint;
+  var exportBtn = btns2.add('button', undefined, MSG.exportBtn);
+      exportBtn.helpTip = MSG.exportHint;
+
+  var copyright = rWrapper.add('statictext', undefined, MSG.copyright);
       copyright.justify = 'center';
+      copyright.alignment = ['fill', 'bottom'];
 
-  loadSettings();
+  // DIALOG EVENTS
+  loadSettings(SETTINGS);
 
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
   // DIALOG LOCAL FUNCTIONS
-
   win.onShow = function () {
-    showAbIndex(CFG.tmpLyr, CFG.idxColor);
-    var delta = 20;
-    setScrollMax(absTabData, delta);
-    setScrollMax(lyrsTabData, delta);
-    setScrollMax(pathsTabData, delta);
+    if (CFG.isShowIndex) {
+      showArboardIndex(CFG.tmpLayer, CFG.indexColor);
+    }
+    adjustScrollMax(absTabData, 20);
+    adjustScrollMax(lyrsTabData, 20);
+    adjustScrollMax(pathsTabData, 20);
   }
 
-  // Import names from txt file
+  win.onClose = function () {
+    try {
+      if (CFG.isUndo) app.undo();
+    } catch (err) {}
+    isUndo = false;
+  }
+
+  /**
+   * Open a dialog to select a text file, parses its contents, and updates the selected objects
+   */
   importBtn.onClick = function() {
+    // Determine the file type filter based on the operating system
     var type = ($.os.match('Windows')) ? '*.txt;' : function(f) {
       return f instanceof Folder || (f instanceof File && f.name.match(/(.txt)$/));
     };
-    var f = File.openDialog(MSG.imDlg, type, false);
-    var txtArr = parseFromText(f);
 
+    var f = File.openDialog(MSG.importTitle, type, false); // Open a dialog to select a file
+    var txtArr = parseFromText(f); // Parse the selected file into an array of text lines
+
+    // Determine the object to update based on the current selection
     var obj = tabPnl.selection.text.match(MSG.tabAb) ? abs : (tabPnl.selection.text.match(MSG.tabLyr) ? lyrs : paths);
     var min = Math.min(txtArr.length, obj.names.length);
+
+    // Iterate over the text array and updates the object names
     for (var i = 0; i < min; i++) {
       var str = txtArr[i];
       if (isEmpty(str)) continue;
       obj.names[i].text = str;
-      obj.state[i][1] = str;
+      obj.state[i].customName = str;
     }
 
-    alert( MSG.imSuccess.replace(/\*/, decodeURIComponent(f.name)) );
+    alert( MSG.importSuccess.replace(/\*/, decodeURIComponent(f.name)) );
   }
 
-  // Export names from txt file
+  /**
+   * Prompts the user to select a folder, processes the selected items, and exports the result as a text file
+   */
   exportBtn.onClick = function() {
-    var fol = Folder.selectDialog(MSG.exDlg);
-    if (fol == null) return;
+    var path = Folder.selectDialog(MSG.exportTitle);
+    if (path == null) return;
+
     var type = tabPnl.selection.text.replace(/\s+.+/g, '').toLowerCase();
-    var f = new File(fol + '/' + doc.name.replace(/\.[^\.]+$/, '') + '_' + type + '.txt');
+    var f = new File(path + '/' + doc.name.replace(/\.[^\.]+$/, '') + '_' + type + '.txt');
 
     var txtArr = [];
     if (tabPnl.selection.text.match(MSG.tabAb)) {
@@ -270,24 +309,57 @@ function main() {
 
     if (txtArr.length) {
       writeToText(txtArr.join('\n'), f);
-      alert( MSG.exSuccess.replace(/\*/, decodeURIComponent(f.name)) );
+      alert( MSG.exportSuccess.replace(/\@/, decodeURIComponent(f.name)) );
     }
   }
 
-  // Preview new item names in the tabs
-  preview.onClick = function () {
-    absTabData.prvwTitle.text = lyrsTabData.prvwTitle.text = MSG.prvwOn;
+  /**
+   * Update the preview title text and triggers preview names for artboards, layers, and selected items
+   */
+  previewBtn.onClick = function () {
+    this.active = true;
+    this.active = false;
+
+    // Update the preview title text for different tabs
+    absTabData.prvwTitle.text = lyrsTabData.prvwTitle.text = MSG.previewOn;
+    // Check if paths tab has preview title and update it
     if (pathsTabData.hasOwnProperty('prvwTitle')) {
-      pathsTabData.prvwTitle.text = MSG.prvwOn;
+      pathsTabData.prvwTitle.text = MSG.previewOn;
     }
 
+    // Trigger preview names for artboards, layers, and selected paths
     previewNames(doc.artboards, CFG, PH, abs, absPH);
     previewNames(doc.layers, CFG, PH, lyrs, lyrsPH);
     previewNames(app.selection, CFG, PH, paths, pathsPH);
+
+    try {
+      if (CFG.isUndo) {
+        doc.swatches.add().remove();
+        app.undo();
+      }
+      renameObjects(doc.artboards, CFG, PH, abs, absPH);
+      renameObjects(doc.layers, CFG, PH, lyrs, lyrsPH);
+      renameObjects(app.selection, CFG, PH, paths, pathsPH);
+      var tempPath = doc.layers[0].pathItems.rectangle(0, 0, 1, 1);
+      tempPath.stroked = false;
+      tempPath.filled = false;
+      tempPath.hidden = true;
+      tempPath.hidden = false;
+      app.redraw();
+      CFG.isUndo = true;
+    } catch (err) {}
   }
 
-  // Add elements to tab
-  function addTabContent(tab, data, txt, name, placeholder) {
+  /**
+   * Add content to a specified tab in the UI
+   * @param {Object} tab - The tab object to which content will be added
+   * @param {Object} data - The data object containing state information
+   * @param {Object} txt - The text object containing UI text elements
+   * @param {string} name - The name of the tab
+   * @param {Array} phMap - The placeholder map for dropdown lists
+   * @returns {Object} An object containing references to UI elements
+   */
+  function addTabContent(tab, data, txt, name, phMap) {
     // Paths tab when nothing is selected
     if (tab.text === txt.tabPath && !selLength) {
       var pathList = tab.add('group');
@@ -300,67 +372,42 @@ function main() {
     var tabList = tab.add('group');
         tabList.orientation = 'column';
 
-    // Title
+    // TITLE
     var header = tabList.add('group');
         header.alignment = 'left';
 
-    var preHeader = header.add('group');
-        preHeader.margins = [(CFG.isMac || CFG.aiVers == 16) ? 12 : 12, 0, 0, 0];
-    var p = preHeader.add('statictext', undefined, txt.prefix);
+    header.add('statictext', undefined, name);
 
-    var nameHeader = header.add('group');
-        nameHeader.margins = [(CFG.isMac || CFG.aiVers == 16) ? 90 : 130, 0, 0, 0];
-    var n = nameHeader.add('statictext', undefined, name);
-        n.characters = 16;
+    var prvwTitle = header.add('statictext', undefined, '');
+        prvwTitle.preferredSize.width = 100;
 
-    var suffHeader = header.add('group');
-        suffHeader.margins = [CFG.isMac ? 22 : (CFG.aiVers == 16 ? 46 : 30), 0, 0, 0];
-    var s = suffHeader.add('statictext', undefined, txt.suffix);
-
-    var selector = tabList.add('group');
-        selector.orientation = 'row';
-        selector.alignment = 'left';
-  
-    var headerAllPre = selector.add('group');
-        headerAllPre.margins = [(CFG.isMac || CFG.aiVers == 16) ? 20 : 20, 0, 0, -6];
-    var chkAllPre = headerAllPre.add('checkbox');
-    
-    var headerPrvw = selector.add('group');
-        headerPrvw.margins = [CFG.isMac ? 106 : (CFG.aiVers == 16 ? 100 : 140), 0, 0, 0];
-    var prvwTitle = headerPrvw.add('statictext', undefined, '');
-        prvwTitle.characters = 17;
-  
-    var headerAllSuff = selector.add('group');
-        headerAllSuff.margins = [CFG.isMac ? 20 : (CFG.aiVers == 16 ? 44 : 28), 0, 0, -6];
-    var chkAllSuff = headerAllSuff.add('checkbox');
-
-    // Item rows
+    // ITEM ROWS
     var scrollWin = tabList.add('group');
         scrollWin.alignChildren = 'fill';
     var pageListPanel = scrollWin.add('panel');
         pageListPanel.alignChildren = 'left';
 
-    // Generate list
+    // GENERATE LIST
     if (data.state.length <= CFG.rows) { // Without scroll
       for (var i = 0, osLen = data.state.length; i < osLen; i++) {
         rowItem = pageListPanel.add('group');
-        rowItem.margins = [3, 0, 0, 0];
-        addNewRow(tab, i, rowItem, data, chkAllPre, chkAllSuff, CFG.isMac, CFG.aiVers);
+        // rowItem.margins = [3, 0, 0, 0];
+        addNewRow(tab, i, rowItem, data);
       }
     } else { // With scroll
       pageListPanel.maximumSize.height = CFG.listHeight;
       var smallList = pageListPanel.add('group');
           smallList.orientation = 'column';
           smallList.alignment = 'left';
-          smallList.maximumSize.height = data.state.length * 100;
+          smallList.maximumSize.height = data.state.length * 200;
 
       var scroll = scrollWin.add('scrollbar');
           scroll.stepdelta = 30;
-          scroll.preferredSize.width = 16;
+          scroll.preferredSize.width = 12;
           scroll.maximumSize.height = pageListPanel.maximumSize.height;
       for (var i = 0, osLen = data.state.length; i < osLen; i++) {
         rowItem = smallList.add('group');
-        addNewRow(tab, i, rowItem, data, chkAllPre, chkAllSuff, CFG.isMac, CFG.aiVers);
+        addNewRow(tab, i, rowItem, data);
       }
 
       scroll.onChanging = function() {
@@ -368,151 +415,271 @@ function main() {
       }
     }
 
+    // PLACEHOLDER DROPDOWN
+    var phDescrList = [];
+    var phKeyList = [];
+    for (var i = 0; i < phMap.length; i++) {
+      if (tab.text === txt.tabLyr && !phMap[i].isAllTab) continue;
+      phDescrList.push(phMap[i].description);
+      phKeyList.push(phMap[i].placeholder);
+    }
+
+    // PREFIX AND SUFFIX
     var extra = tab.add('group');
         extra.orientation = 'column';
         extra.alignChildren = ['fill', 'top'];
-        extra.margins = [0, 20, 0, 0];
-
-    var extraInpSize = [0, 0, (CFG.isMac || CFG.aiVers == 16) ? 108 : 140, 20];
+        extra.margins = [5, 20, 5, 0];
 
     var preSuffGrp = extra.add('group');
         preSuffGrp.orientation = 'column';
         preSuffGrp.alignChildren = ['fill', 'top'];
         preSuffGrp.margins = [0, 0, 0, 10];
 
-    var preSuffInp = preSuffGrp.add('group');
-        preSuffInp.orientation = 'row';
-        preSuffInp.alignChildren = ['left', 'top'];
+    var prefixGrp = preSuffGrp.add('group');
+        prefixGrp.orientation = 'row';
+        prefixGrp.alignChildren = ['fill', 'center'];
 
-    var preTitle = preSuffInp.add('statictext', undefined, txt.prefix);
-    var pre = preSuffInp.add('edittext', extraInpSize, '');
+    prefixGrp.add('statictext', undefined, txt.prefix);
+    var prefixInp = prefixGrp.add('edittext', undefined, '');
+        prefixInp.preferredSize.width = 139;
 
-    var suffTitle = preSuffInp.add('statictext', undefined, txt.suffix);
-    var suff = preSuffInp.add('edittext', extraInpSize, '');
+    var prefixPhDdl = prefixGrp.add('dropdownlist', undefined, phDescrList);
+        prefixPhDdl.maximumSize.width = 40;
+        prefixPhDdl.selection = 0;
 
-    var preSuffNote = preSuffGrp.add('statictext', undefined, placeholder, { multiline: true });
-        preSuffNote.characters = 40;
-        preSuffNote.alignment = 'fill';
+    prefixGrp.add('statictext', undefined, txt.range);
+    var prefixRangeInp = prefixGrp.add('edittext', undefined, '1-' + data.state.length);
+        prefixRangeInp.preferredSize.width = 90;
+        prefixRangeInp.helpTip = txt.rangeEg;
 
-    // Add find and replace
+    var suffixGrp = preSuffGrp.add('group');
+        suffixGrp.orientation = 'row';
+        suffixGrp.alignChildren = ['fill', 'center'];
+
+    suffixGrp.add('statictext', undefined, txt.suffix);
+    var suffixInp = suffixGrp.add('edittext', undefined, '');
+        suffixInp.preferredSize.width = 140;
+
+    var suffixPhDdl = suffixGrp.add('dropdownlist', undefined, phDescrList);
+        suffixPhDdl.maximumSize.width = 40;
+        suffixPhDdl.selection = 0;
+
+    suffixGrp.add('statictext', undefined, txt.range);
+    var suffixRangeInp = suffixGrp.add('edittext', undefined, '1-' + data.state.length);
+        suffixRangeInp.preferredSize.width = 90;
+        suffixRangeInp.helpTip = txt.rangeEg;
+
+    // FIND AND REPLACE
     var findRplcPnl = extra.add('panel', undefined, txt.findTitle);
         findRplcPnl.alignChildren = ['fill', 'top'];
         findRplcPnl.margins = [10, 15, 10, 10];
 
-    var findRplcOn = findRplcPnl.add('checkbox', undefined, txt.enable);
-        findRplcOn.value = CFG.isFind;
+    var isFindRplc = findRplcPnl.add('checkbox', undefined, txt.enable);
+        isFindRplc.value = CFG.isFind;
+
+    var findStrGrp = findRplcPnl.add('group');
+        findStrGrp.orientation = 'row';
+        findStrGrp.alignChildren = ['fill', 'top'];
+
+    var findGrp = findStrGrp.add('group');
+    findGrp.add('statictext', undefined, txt.find);
+    var findInp = findGrp.add('edittext', undefined, '');
+        findInp.preferredSize.width = 110;
+        findInp.enabled = CFG.isFind;
+
+    var rplcGrp = findStrGrp.add('group');
+    rplcGrp.add('statictext', undefined, txt.replace);
+    var replaceInp = rplcGrp.add('edittext', undefined, '');
+        replaceInp.preferredSize.width = 110;
+        replaceInp.enabled = CFG.isFind;
+
+    var findHint = findRplcPnl.add('statictext', undefined, txt.findHint);
+    findHint.addEventListener('mousedown', function () {
+      if (!isFindRplc.value) return;
+      findInp.active = true;
+      findInp.textselection = findInp.text + '^.*$';
+    });
 
     var rangeStrGrp = findRplcPnl.add('group');
+        rangeStrGrp.margins = [0, 10, 0, 0];
 
     var rangeRadioGrp = rangeStrGrp.add('group');
         rangeRadioGrp.enabled = CFG.isFind;
-    var allRange = rangeRadioGrp.add('radiobutton', undefined, txt.all);
-        allRange.value = true;
-    var cstmRange = rangeRadioGrp.add('radiobutton', undefined, txt.range);
+    var findAllRange = rangeRadioGrp.add('radiobutton', undefined, txt.all);
+        findAllRange.value = true;
+    var findCstmRange = rangeRadioGrp.add('radiobutton', undefined, txt.range);
 
-    var range = rangeRadioGrp.add('edittext', extraInpSize, '1, 3-5, 7');
-        range.enabled = CFG.isFind;
+    var findRangeInp = rangeRadioGrp.add('edittext', undefined, '1-' + data.state.length);
+        findRangeInp.preferredSize.width = 205;
+        findRangeInp.helpTip = txt.rangeEg;
+        findRangeInp.enabled = CFG.isFind;
 
-    var findStrGrp = findRplcPnl.add('group');
+    // CASE CONVERTER
+    var casePnl = extra.add('panel', undefined, txt.caseTitle);
+        casePnl.orientation = 'row';
+        casePnl.alignChildren = ['fill', 'center'];
+        casePnl.margins = [10, 15, 10, 10];
 
-    var findGrp = findStrGrp.add('group');
-    var findTitle = findGrp.add('statictext', undefined, txt.find);
-    var find = findGrp.add('edittext', extraInpSize, '');
-        find.helpTip = txt.findHint;
-        find.enabled = CFG.isFind;
+    var caseList = [
+      'Original', 'lower case', 'UPPER CASE', 
+      'Title Case', 'Sentence case', 'camelCase', 
+      'PascalCase', 'snake_case', 'kebab-case', 'CONSTANT_CASE'];
 
-    var rplcGrp = findStrGrp.add('group');
-    var rplcTitle = rplcGrp.add('statictext', undefined, txt.rplc);
-    var rplc = rplcGrp.add('edittext', extraInpSize, '');
-        rplc.enabled = CFG.isFind;
+    var caseDdl = casePnl.add('dropdownlist', undefined, caseList);
+        caseDdl.preferredSize.width = 210;
+        caseDdl.selection = 0;
 
-    var findRplcNote = findRplcPnl.add('statictext', undefined, txt.ph);
+    casePnl.add('statictext', undefined, txt.range);
+    var caseRangeInp = casePnl.add('edittext', undefined, '1-' + data.state.length);
+        caseRangeInp.preferredSize.width = 90;
+        caseRangeInp.helpTip = txt.rangeEg;
+
+    // DEFAULT DATA
+    data.prefixRange = '1-' + data.state.length;
+    data.suffixRange = '1-' + data.state.length;
+    data.caseRange = '1-' + data.state.length;
+    data.caseStyle = caseList[0];
 
     // TAB EVENTS
-
-    // Select all prefixes
-    chkAllPre.onClick = function () {
-      for (var i = 0, osLen = data.state.length; i < osLen; i++) {
-        data.isPre[i].value = this.value;
-        data.state[i][0] = this.value;
-      }
+    isFindRplc.onClick = function () {
       changeTabName(tab);
-    }
-
-    // Select all suffixes
-    chkAllSuff.onClick = function () {
-      for (var i = 0, osLen = data.state.length; i < osLen; i++) {
-        data.isSuff[i].value = this.value;
-        data.state[i][2] = this.value;
-      }
-      changeTabName(tab);
-    }
-
-    findRplcOn.onClick = function () {
-      changeTabName(tab);
-      find.enabled = rplc.enabled = this.value;
+      findInp.enabled = replaceInp.enabled = this.value;
       data.isFind = this.value;
       rangeRadioGrp.enabled = this.value;
-      data.range = '1-' + data.state.length;
+      data.findRange = '1-' + data.state.length;
     }
 
-    pre.onChange = function() {
-      data.pre = this.text;
+    // Set prefix
+    prefixInp.onChange = function() {
+      data.prefix = this.text;
       changeTabName(tab);
     }
 
-    suff.onChange = function() {
-      data.suff = suff.text;
+    prefixPhDdl.onChange = function () {
+      this.active = true;
+      if (this.children.length > 1 && this.selection === null) {
+        this.selection = 0;
+      }
+
+      if (this.selection.index > 0) {
+        prefixInp.active = true;
+        prefixInp.textselection = prefixInp.text + phKeyList[this.selection.index];
+        this.selection = 0;
+        prefixInp.active = true;
+      }
+    }
+
+    prefixRangeInp.onChange = function() {
+      data.prefixRange = this.text;
       changeTabName(tab);
     }
 
-    find.onChange = function() {
+    // Set suffix
+    suffixInp.onChange = function() {
+      data.suffix = suffixInp.text;
+      changeTabName(tab);
+    }
+
+    suffixPhDdl.onChange = function () {
+      this.active = true;
+      if (this.children.length > 1 && this.selection === null) {
+        this.selection = 0;
+      }
+
+      if (this.selection.index > 0) {
+        suffixInp.active = true;
+        suffixInp.textselection = suffixInp.text + phKeyList[this.selection.index];
+        this.selection = 0;
+        suffixInp.active = true;
+      }
+    }
+
+    suffixRangeInp.onChange = function() {
+      data.suffixRange = this.text;
+      changeTabName(tab);
+    }
+
+    // Find and replace
+    findInp.onChange = function() {
       data.find = this.text;
       changeTabName(tab);
     }
 
-    rplc.onChange = function() {
-      data.rplc = this.text;
+    replaceInp.onChange = function() {
+      data.replace = this.text;
       changeTabName(tab);
     }
 
-    allRange.onClick = function () {
-      range.enabled = false;
-      data.range = '1-' + data.state.length;
+    findAllRange.onClick = function () {
+      findRangeInp.enabled = false;
+      data.findRange = '1-' + data.state.length;
     }
 
-    cstmRange.onClick = function () {
-      range.enabled = true;
-      data.range = range.text;
+    findCstmRange.onClick = function () {
+      findRangeInp.enabled = true;
+      data.findRange = findRangeInp.text;
     }
 
-    range.onChange = function() {
+    findRangeInp.onChange = function() {
       this.text = this.text.replace(/;/g, ',')
-      data.range = this.text;
+      data.findRange = this.text;
       changeTabName(tab);
     }
 
+    // Change Case
+    caseDdl.onChange = function () {
+      this.active = true;
+      if (this.children.length > 1 && this.selection === null) {
+        this.selection = 0;
+      }
+      data.caseStyle = this.selection.text;
+      changeTabName(tab);
+    }
+
+    caseRangeInp.onChange = function() {
+      this.text = this.text.replace(/;/g, ',')
+      data.caseRange = this.text;
+      changeTabName(tab);
+    }
+
+    // Name inputs handler
     var parent = (data.state.length <= CFG.rows) ? pageListPanel : smallList;
-    
     for (var i = 0, pcLen = parent.children.length; i < pcLen; i++) {
-      goToNextPrevName(data, i, pre, scroll, parent);
+      // Use the keyboard to navigate between fields
+      goToNextPrevName(data, i, prefixInp, scroll, parent);
+
       // Reset preview when activating name field [2]
-      parent.children[i].children[2].onActivate = function() {
+      parent.children[i].children[1].onActivate = function() {
         if (!isEmpty(prvwTitle.text)) {
           for (var j = 0, nLen = data.names.length; j < nLen; j++) {
-            data.names[j].text = data.state[j][1]; // Restore original name
+            data.names[j].text = data.state[j].customName; // Restore original name
           }
         }
         prvwTitle.text = '';
+        // Restore original names in document
+        if (CFG.isUndo) {
+          app.undo();
+          var tempPath = doc.layers[0].pathItems.rectangle(0, 0, 1, 1);
+          tempPath.stroked = false;
+          tempPath.filled = false;
+          tempPath.hidden = true;
+          tempPath.hidden = false;
+          tempPath.remove();
+          app.redraw();
+          CFG.isUndo = false;
+        }
       }
     }
 
     var obj = {
-      pre:            extra     ? pre : undefined,
-      suff:           extra     ? suff : undefined,
-      find:           extra     ? find : undefined,
-      rplc:           extra     ? rplc : undefined,
-      range:          extra     ? range : undefined,
+      prefix:         extra     ? prefixInp : undefined,
+      prefixRange:    extra     ? prefixRangeInp : undefined,
+      suffix:         extra     ? suffixInp : undefined,
+      suffixRange:    extra     ? suffixRangeInp : undefined,
+      find:           extra     ? findInp : undefined,
+      replace:        extra     ? replaceInp : undefined,
+      findRange:      extra     ? findRangeInp : undefined,
+      caseRange:      extra     ? caseRangeInp : undefined,
       prvwTitle:      prvwTitle ? prvwTitle : undefined,
       scroll:         scroll    ? scroll : undefined,
       smallList:      scroll    ? smallList : undefined,
@@ -522,53 +689,49 @@ function main() {
     return obj;
   }
 
-  // Add row with prefix checkbox, name and suffix checkbox
-  function addNewRow(tab, idx, row, obj, allPre, allSuff, isMac, aiVers) {
-    var dummyPre = row.add('group');
-        dummyPre.margins = [0, (!isMac && aiVers == 16) ? 0 : 5, 0, 0]; // Vertical align
-    obj.isPre[idx] = dummyPre.add('checkbox');
-    obj.isPre[idx].value = obj.state[idx][0];
-
-    obj.isPre[idx].onClick = function() {
-      obj.state[idx][0] = !obj.state[idx][0];
-      if (!obj.isPre[idx].value) allPre.value = false;
-      changeTabName(tab);
-    }
+  /**
+   * Add a new row to the specified tab with object name
+   * @param {Object} tab - The tab object to which the row will be added
+   * @param {number} idx - The index of the row
+   * @param {Object} row - The row object to be added
+   * @param {Object} obj - The object containing state information
+   */
+  function addNewRow(tab, idx, row, obj) {
+    var isMac = /mac/i.test($.os);
 
     // Add order number
     var order = row.add('statictext');
-    order.text = padZero(idx + 1, obj.state.length.toString().length);
+    order.text = padZero(idx + 1, Math.max(3, obj.state.length.toString().length));
     
-    obj.names[idx] = row.add('edittext', [0, 0, isMac ? 244 : (aiVers > 16 ? 320 : 230), 20]);
-    obj.names[idx].text = obj.state[idx][1];
+    obj.names[idx] = row.add('edittext', [0, 0, isMac ? 310 : 320, 20]);
+    obj.names[idx].text = obj.state[idx].origName;
     obj.names[idx].onChange = function () {
       if (isEmpty(this.text)) {
-        this.text = obj.state[idx][1];
+        this.text = obj.state[idx].origName;
       } else {
-        obj.state[idx][1] = this.text;
+        obj.state[idx].customName = this.text;
       }
-      changeTabName(tab);
-    }
-
-    var dummySuff = row.add('group');
-        dummySuff.margins = [0, (!isMac && aiVers == 16) ? 0 : 5, 0, 0]; // Vertical align
-    obj.isSuff[idx] = dummySuff.add('checkbox');
-    obj.isSuff[idx].value = obj.state[idx][2];
-
-    obj.isSuff[idx].onClick = function() {
-      obj.state[idx][2] = !obj.state[idx][2];
-      if (!obj.isSuff[idx].value) allSuff.value = false;
       changeTabName(tab);
     }
   }
 
-  // Change tab name after any action
+  /**
+   * Change the tab name to indicate changes
+   * @param {Object} tab - The tab object whose name will be changed
+   */
   function changeTabName(tab) {
     if (!/\*/g.test(tab.text)) tab.text += ' *';
   }
 
-  // Moves to the next and previous name using the Up and Down keys
-  function goToNextPrevName(obj, idx, pre, scroll, scrollList) {
+  /**
+   * Set up event listeners for navigating through names using Up and Down arrow keys
+   * @param {Object} obj - The object containing names and other related properties
+   * @param {number} idx - The current index in the names array
+   * @param {Object} prefix - The prefix object to focus on when navigating past the last name
+   * @param {Object} scroll - The scrollbar object associated with the list
+   * @param {Object} scrollList - The list object that is being scrolled
+   */
+  function goToNextPrevName(obj, idx, prefix, scroll, scrollList) {
     var length = obj.names.length;
     obj.names[idx].addEventListener('keydown', function (kd) {
       // Go to next name
@@ -578,7 +741,6 @@ function main() {
           scroll.value = (idx + 1) * (scroll.maxvalue / length);
           scrollList.location.y += -1 * scroll.stepdelta;
         }
-        obj.isPre[idx].active = true;
         obj.names[idx + 1].active = true;
         win.update();
         kd.preventDefault();
@@ -591,7 +753,6 @@ function main() {
           scroll.value = (idx - 1) * (scroll.maxvalue / length);
           scrollList.location.y += 1 * scroll.stepdelta;
         }
-        obj.isPre[idx].active.active = true;
         obj.names[idx - 1].active = true;
         win.update();
         kd.preventDefault();
@@ -599,17 +760,15 @@ function main() {
 
       // Go to prefix after last name
       if (kd.keyName == 'Down' && (idx + 1) == length) {
-        obj.isPre[idx].active = true;
-        pre.active = true;
+        prefix.active = true;
         win.update();
         kd.preventDefault();
       }
     });
 
-    pre.addEventListener('keydown', function (kd) {
+    prefix.addEventListener('keydown', function (kd) {
       // Go to last name from prefix
       if (kd.keyName == 'Up') {
-        obj.isPre[obj.names.length - 1].active = true;
         obj.names[obj.names.length - 1].active = true;
         win.update();
         kd.preventDefault();
@@ -617,192 +776,342 @@ function main() {
     });
   }
 
-  // Fix scrollbar size for the dialog
-  function setScrollMax(obj, delta) {
-    if (obj.hasOwnProperty('scroll')) {
+  /**
+   * Adjust the maximum scroll value for a given object's scrollbar
+   * This function is used to fix the scrollbar size
+   * @param {Object} obj - The object containing the scrollbar properties
+   * @param {number} delta - The additional offset to adjust the scrollbar size
+   */
+  function adjustScrollMax(obj, delta) {
+    if (obj.scroll !== undefined && obj.scroll.hasOwnProperty('maxvalue')) {
       obj.scroll.maxvalue = obj.smallList.size.height - obj.pageListPanel.size.height + delta;
     }
   }
 
-  // Copyright link
+  /**
+   * Event listener for the copyright link click
+   * Opens the GitHub URL when the copyright link is clicked
+   */
   copyright.addEventListener('mousedown', function () {
     openURL('https://github.com/creold/');
   });
 
-  // Save prefix, suffix, find and replace values
-  function saveSettings() {
-    if(!Folder(SETTINGS.folder).exists) Folder(SETTINGS.folder).create();
-    var $file = new File(SETTINGS.folder + SETTINGS.name),
-        absPrefs = setSettingsString(abs),
-        lyrsPrefs = setSettingsString(lyrs),
-        pathsPrefs = setSettingsString(paths),
-        activeTab = 0;
+  /**
+   * Save UI options to a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function saveSettings(prefs) {
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
+    var f = new File(SETTINGS.folder + SETTINGS.name);
+    f.encoding = 'UTF-8';
+    f.open('w');
+
+    var absPrefs = setSettingsString(abs);
+    var lyrsPrefs = setSettingsString(lyrs);
+    var pathsPrefs = setSettingsString(paths);
+    var activeTab = 0;
 
     if (tabPnl.selection.text.match(MSG.tabLyr)) activeTab = 1;
     if (tabPnl.selection.text.match(MSG.tabPath)) activeTab = 2;
 
-    $file.encoding = 'UTF-8';
-    $file.open('w');
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.abs = absPrefs;
+    data.layers = lyrsPrefs;
+    data.paths = pathsPrefs;
+    data.tab = activeTab;
 
-    var pref = {};
-    pref.abs = absPrefs;
-    pref.layers = lyrsPrefs;
-    pref.paths = pathsPrefs;
-    pref.tab = activeTab;
-
-    var data = pref.toSource();
-    $file.write(data);
-    $file.close();
+    f.write( stringify(data) );
+    f.close();
   }
 
+  /**
+   * Convert an object's properties to a string
+   * @param {Object} obj - The object containing settings
+   * @returns {string} A string representation of the object's properties
+   */
   function setSettingsString(obj) {
-    return [obj.pre, obj.suff, obj.find, obj.rplc, obj.range].join(';');
+    return [
+      obj.prefix,
+      obj.prefixRange,
+      obj.suffix,
+      obj.suffixRange,
+      obj.find,
+      obj.replace,
+      obj.findRange,
+      obj.caseRange
+    ].join(';');
   }
-  
-  // Load prefix, suffix, find and replace values
-  function loadSettings() {
-    var $file = File(SETTINGS.folder + SETTINGS.name);
-    if ($file.exists) {
-      try {
-        $file.encoding = 'UTF-8';
-        $file.open('r');
-        var json = $file.readln();
-        var pref = new Function('return ' + json)();
-        $file.close();
-        if (typeof pref != 'undefined') {
-          loadSettingsString(abs, absTabData, pref.abs.split(';'));
-          loadSettingsString(lyrs, lyrsTabData, pref.layers.split(';'));
-          loadSettingsString(paths, pathsTabData, pref.paths.split(';'));
-          tabPnl.selection = isNaN(pref.tab) ? 0 : pref.tab * 1;
-        }
-      } catch (e) {}
+
+  /**
+   * Load options from a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function loadSettings(prefs) {
+    var f = File(prefs.folder + prefs.name);
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x && !isNaN(parseInt(data.win_x)) ? parseInt(data.win_x) : 300,
+          data.win_y && !isNaN(parseInt(data.win_y)) ? parseInt(data.win_y) : 300
+        ];
+        loadSettingsString(abs, absTabData, data.abs.split(';'));
+        loadSettingsString(lyrs, lyrsTabData, data.layers.split(';'));
+        loadSettingsString(paths, pathsTabData, data.paths.split(';'));
+        tabPnl.selection = isNaN(data.tab) ? 0 : data.tab * 1;
+      }
+    } catch (err) {
+      return;
     }
   }
 
+  /**
+   * Load settings from a string into an object and updates the UI
+   * @param {Object} obj - The object to load settings into
+   * @param {Object} tabData - The UI data object
+   * @param {Array} arr - The array of settings to load
+   */
   function loadSettingsString(obj, tabData, arr) {
-    if (tabData.hasOwnProperty('pre')) {
-      if (arr[0]) obj.pre  = tabData.pre.text  = arr[0];
-      if (arr[1]) obj.suff = tabData.suff.text = arr[1];
-      if (arr[2]) obj.find = tabData.find.text = arr[2];
-      if (arr[3]) obj.rplc = tabData.rplc.text = arr[3];
-      if (arr[4]) obj.range = tabData.range.text = arr[4];
+    if (arr.length < 7) return; // Stop load for old script
+
+    if (tabData.hasOwnProperty('prefix')) {
+      if (arr[0]) obj.prefix  = tabData.prefix.text = arr[0];
+      if (arr[1]) obj.prefixRange = tabData.prefixRange.text = arr[1];
+      if (arr[2]) obj.suffix = tabData.suffix.text = arr[2];
+      if (arr[3]) obj.suffixRange = tabData.suffixRange.text = arr[3];
+      if (arr[4]) obj.find = tabData.find.text = arr[4];
+      if (arr[5]) obj.replace = tabData.replace.text = arr[5];
+      if (arr[6]) obj.findRange = tabData.findRange.text = arr[6];
+      if (arr[7]) obj.caseRange = tabData.caseRange.text = arr[7];
     }
   }
 
+  /**
+   * Handle the OK button click event
+   * Rename objects based on current settings and save them
+   */
   function okClick() {
+    if (CFG.isUndo) {
+      app.undo();
+      CFG.isUndo = false;
+    }
     renameObjects(doc.artboards, CFG, PH, abs, absPH);
     renameObjects(doc.layers, CFG, PH, lyrs, lyrsPH);
     renameObjects(app.selection, CFG, PH, paths, pathsPH);
-    saveSettings();
+    saveSettings(SETTINGS);
     win.close();
   }
 
-  win.center();
   win.show();
 }
 
 // GLOBAL FUNCTIONS
 
-// Initialize an object to store data
-function initObject(isFind) {
-  var obj = {
-    find: '',
+/**
+ * Initialize an object to store data
+ * @param {boolean} isFind - A flag indicating is enabled Find and Replace
+ * @param {string} type - Adobe Illustrator document collection type
+ * @returns {Object} An object containing properties for renaming
+ */
+function initObject(isFind, type) {
+  return {
     isFind: isFind,
-    isPre: [],
-    isSuff: [],
+    find: '',
+    replace: '',
+    findRange: '',
+    prefix: '',
+    prefixRange: '',
+    suffix: '',
+    suffixRange: '',
+    caseStyle: '',
+    caseRange: '',
     names: [],
-    pre: '',
-    range: '',
-    rplc: '',
     state: [],
-    suff: '',
+    type: type
   };
-
-  return obj;
 }
 
-// Initialize an object to store placeholders
+/**
+ * Initialize placeholders for a specific type of element
+ * @param {string} type - The type of element
+ * @param {Object} ph - The placeholder object containing element properties
+ * @returns {Object} An object containing the initialized placeholders
+ */
 function initPlaceholders(type, ph) {
   var obj = {
-    nd: ph.numDown,
-    nu: ph.numUp,
+    numDown: ph.numDown,
+    numUp: ph.numUp,
+    color: ph.color,
+    dateDMY: ph.dateDMY,
+    dateMDY: ph.dateMDY,
+    dateYMD: ph.dateYMD,
+    time: ph.time,
+    file: ph.file,
   };
 
-  if (type === 'artboards') {
-    obj.c   = ph.color;
-    obj.d   = ph.date;
-    obj.fn  = ph.fName;
-    obj.h   = ph.height;
-    obj.u   = ph.units;
-    obj.w   = ph.width;
-  } else if (type === 'layers') {
-    obj.fn  = ph.fName;
-  } else if (type === 'paths') {
-    obj.h   = ph.height;
-    obj.u   = ph.units;
-    obj.w   = ph.width;
+  if (type === 'artboards' || type === 'paths') {
+    obj.height = ph.height;
+    obj.width = ph.width;
+    obj.units = ph.units;
   }
 
   return obj;
 }
 
-// Collect prefix, object name, suffix, and index
-function initData(src, result) {
-  for (var i = 0, len = src.length; i < len; i++) {
-    var name = getName(src[i]);
-    result.push([false, name, false, i]);
+/**
+ * Initialize data by collecting prefix, object name, suffix, and index
+ * @param {Array} coll - The collection of objects to process
+ * @returns {Array} resultData - An array of arrays, each containing object name and index
+ */
+function initData(coll) {
+  var resultData = [];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    var name = getName(coll[i]);
+    resultData.push({ origName: name, customName: name, index: i});
   }
+  return resultData;
 }
 
-// Get item name of different types
+/**
+* Get the name of an item, considering its type
+* @param {Object} item - The item for which to get the name
+* @returns {string} str - The name of the item
+*/
 function getName(item) {
-  var str = '';
+  if (!item || !item.typename) return item.name || '';
 
-  if (item.typename === 'TextFrame' && isEmpty(item.name) && !isEmpty(item.contents)) {
-    str = item.contents;
-  } else if (item.typename === 'SymbolItem' && isEmpty(item.name)) {
-    str = item.symbol.name;
-  } else {
-    str = item.name;
+  // If part of a compound path, set item
+  var compound = getCompound(item);
+  if (compound) item = compound;
+
+  // If item has a direct name, return it
+  if (!isEmpty(item.name)) {
+    return item.name;
   }
 
-  return str;
+  // Special cases for derived names
+  if (item.typename === 'TextFrame' && !isEmpty(item.contents)) {
+    return item.contents.replace(/\n|\r|\r\n/g,'');
+  }
+
+  if (item.typename === 'SymbolItem') {
+    return item.symbol.name;
+  }
+
+  if (item.typename === 'PlacedItem') {
+    return item.file && item.file.name ? item.file.name : '<Linked File>';
+  }
+
+  // Default system names for unnamed objects
+  switch (item.typename) {
+    case 'PathItem': return '<Path>';
+    case 'CompoundPathItem': return '<Compound Path>';
+    case 'GraphItem': return '<Graph>';
+    case 'GroupItem': return item.clipped ? '<Clipping Group>' : '<Group>';
+    case 'MeshItem': return '<Mesh>';
+    case 'NonNativeItem': return '<Non-Native Art>';
+    case 'RasterItem': return '<Image>';
+    case 'SymbolItem': return '<Symbol>';
+    case 'TextFrame': return '<Text>';
+    default:
+      if (isLegacyText(item)) return '<Legacy Text>';
+      return '<' + item.typename + '>';
+  }
 }
 
-// Check empty string
+/**
+ * Retrieve the compound path parent of an item
+ * @param {Object} item - The item to check for a compound path parent
+ * @returns {Object|null} The compound path item if found, otherwise null
+ */
+function getCompound(item) {
+  if (!item || !item.typename) return null;
+
+  // Skip top-level objects: layers, artboards, document
+  if (item.typename === 'Layer' || item.typename === 'Artboard' || item.typename === 'Document') {
+    return null;
+  }
+
+  while (item && item.parent) {
+    if (item.parent.typename === 'CompoundPathItem') {
+      return item.parent;
+    }
+    item = item.parent;
+  }
+
+  return null;
+}
+
+/**
+ * Check if an item is considered a legacy text item
+ * @param {Object} item - The item to check
+ * @returns {boolean} Returns true if the item is a legacy text item, false otherwise
+ */
+function isLegacyText(item) {
+  return item.typename === 'LegacyTextItem' || 
+        (item.typename === 'TextFrame' && (!item.hasOwnProperty('contents') ||
+        item.hasOwnProperty('converted')));
+}
+
+/**
+ * Check if a string is empty or contains only whitespace characters
+ * @param {string} str - The string to check for emptiness
+ * @returns {boolean} True if the string is empty, false otherwise
+ */
 function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
 }
 
-// Output artboard indexes as text
-function showAbIndex(layer, color) {
-  if (arguments.length == 1 || color == undefined) color = [0, 0, 0];
+/**
+ * Display the index of each artboard in the active document
+ * @param {string} name - The name of the temporary layer to create
+ * @param {Array} color - The RGB color array for the text. Defaults to black if not provided
+ */
+function showArboardIndex(name, color) {
+  if (arguments.length == 1 || color == undefined) {
+    color = [0, 0, 0];
+  }
 
-  var doc = activeDocument,
-      idxColor = setRGBColor(color),
-      tmpLayer;
+  var doc = activeDocument;
+  var rgbColor = setRGBColor(color);
+  var tmpLayer;
 
   try {
-    tmpLayer = doc.layers.getByName(layer);
-  } catch (e) {
+    tmpLayer = doc.layers.getByName(name);
+  } catch (err) {
     tmpLayer = doc.layers.add();
-    tmpLayer.name = layer;
+    tmpLayer.name = name;
   }
 
   for (var i = 0, len = doc.artboards.length; i < len; i++)  {
     doc.artboards.setActiveArtboardIndex(i);
-    var currAb = doc.artboards[i],
-        abWidth = currAb.artboardRect[2] - currAb.artboardRect[0],
-        abHeight = currAb.artboardRect[1] - currAb.artboardRect[3],
-        label = tmpLayer.textFrames.add(),
-        labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
+    var currAb = doc.artboards[i];
+    var abWidth = currAb.artboardRect[2] - currAb.artboardRect[0];
+    var abHeight = currAb.artboardRect[1] - currAb.artboardRect[3];
+    var label = tmpLayer.textFrames.add();
+    var labelSize = (abWidth >= abHeight) ? abHeight / 2 : abWidth / 2;
+
     label.contents = i + 1;
     // 1296 pt limit for font size in Illustrator
     label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
-    label.textRange.characterAttributes.fillColor = idxColor;
+    label.textRange.characterAttributes.fillColor = rgbColor;
     label.position = [currAb.artboardRect[0], currAb.artboardRect[1]];
   }
 
+  // Update screen
   if (parseInt(app.version) >= 16) {
     app.executeMenuCommand('artboard');
     app.executeMenuCommand('artboard');
@@ -813,97 +1122,148 @@ function showAbIndex(layer, color) {
   tmpLayer.remove();
 }
 
-// Generate solid RGB color
+/**
+ * Set the RGB color
+ * @param {Array} color - The RGB color array
+ * @returns {RGBColor} The RGB color object
+ */
 function setRGBColor(rgb) {
   var color = new RGBColor();
   color.red = rgb[0];
   color.green = rgb[1];
   color.blue = rgb[2];
-
   return color;
 }
 
-// Read text from a file
+/**
+ * Parse the contents of a text file into an array of lines
+ * @param {Object} f - The file to parse
+ * @returns {Array} An array of lines from the file
+ */
 function parseFromText(f) {
   f.open('r');
   var contents = f.read();
   var lines = contents.split(/\n|\r|\r\n/);
   f.close();
-
   return lines;
 }
 
-// Write text to a file
+/**
+ * Write a string to a text file
+ * @param {string} str - The string to write to the file
+ * @param {Object} f - The file object to write to
+ */
 function writeToText(str, f) {
   f.open('w');
   f.write(str);
   f.close();
 }
 
-// Preview new name in input field
-function previewNames(src, cfg, cfgPh, obj, objPh) {
-  var nameArr = generateNames(src, cfg, cfgPh, obj, objPh);
-
+/**
+ * Preview names for a collection of objects by updating the text property of names in the provided object
+ * @param {(Object|Array)} coll - Collection of objects to preview names for
+ * @param {Object} cfg - Global configuration
+ * @param {Array} allPlaceholders - Array of all placeholders to be used in name generation
+ * @param {Object} obj - Object containing names array to be modified
+ * @param {Array} objPlaceholders - Array of placeholders specific to the object
+ */
+function previewNames(coll, cfg, allPlaceholders, obj, objPlaceholders) {
+  var namesArr = generateNames(coll, cfg, allPlaceholders, obj, objPlaceholders);
   for (var i = 0, len = obj.names.length; i < len; i++) {
-    obj.names[i].text = nameArr[i];
+    obj.names[i].text = namesArr[i];
   }
 }
 
-// Rename objects in a collection
-function renameObjects(target, cfg, cfgPh, obj, objPh) {
-  if (!target.length) return;
+/**
+ * Rename objects in the collection based on generated names
+ * @param {(Object|Array)} coll - Collection of objects to rename
+ * @param {Object} cfg - Global configuration object
+ * @param {Array} allPlaceholders - Array of all placeholders to be used in name generation
+ * @param {Object} obj - Object containing names array to be modified
+ * @param {Array} objPlaceholders - Array of placeholders specific to the object
+ */
+function renameObjects(coll, cfg, allPlaceholders, obj, objPlaceholders) {
+  if (!coll.length) return;
+  var namesArr = generateNames(coll, cfg, allPlaceholders, obj, objPlaceholders);
 
-  var nameArr = generateNames(target, cfg, cfgPh, obj, objPh);
-  var currTarget, currName;
+  for (var i = 0, len = namesArr.length; i < len; i++) {
+    var currItem = coll[i];
+    var compound = getCompound(currItem);
+    currItem = compound || currItem;
+    var currName = obj.state[i].origName;
+    var newName = namesArr[i];
 
-  for (var i = 0, len = nameArr.length; i < len; i++) {
-    currTarget = target[i];
-    currName = nameArr[i];
-    if (isEmpty(currTarget.name) && currTarget.contents === currName) continue;
-    currTarget.name = currName; // Name is modified
+    if (isEmpty(currItem.name) && currItem.contents === newName) continue;
+    if (currName !== newName) currItem.name = newName; // Name is modified
   }
 }
 
-// Generate new name
-function generateNames(target, cfg, cfgPh, obj, objPh) {
-  var result = [];
-  var findList = parseAndFilterIndexes(obj.range, obj.state.length - 1);
+/**
+ * Generate names for a collection of objects based on given configurations and placeholders
+ * @param {(Object|Array)} coll - Collection of objects to generate names for
+ * @param {Object} cfg - Global configuration object
+ * @param {Array} allPlaceholders - Array of all placeholders to be used in name generation
+ * @param {Object} obj - Object containing names array to be modified
+ * @param {Array} objPlaceholders - Array of placeholders specific to the object
+ * @returns {Array} ResultNames - An array of generated names
+ */
+function generateNames(coll, cfg, allPlaceholders, obj, objPlaceholders) {
+  var resultNames = [];
 
-  var cnt = getStartingNum(cfgPh, obj, objPh);
-  var amountUp = Math.abs(cnt.up) + target.length;
-  var amountDown = Math.abs(cnt.down) + target.length;
+  var prefixIndexes = parseAndFilterIndexes(obj.prefixRange, obj.state.length - 1);
+  var suffixIndexes = parseAndFilterIndexes(obj.suffixRange, obj.state.length - 1);
+  var findIndexes = parseAndFilterIndexes(obj.findRange, obj.state.length - 1);
+  var caseIndexes = parseAndFilterIndexes(obj.caseRange, obj.state.length - 1);
 
-  var newName = '', isPre = false, isSuff = false;
-  var cntUp = '', cntDown = '' , tmpPre = '', tmpSuff = '';
+  var counter = getStartNum(allPlaceholders, obj, objPlaceholders);
+  var amountUp = Math.abs(counter.up) + coll.length;
+  var amountDown = Math.abs(counter.down) + coll.length;
+
+  var newName = '', isAddPrefix = false, isAddSuffix = false, isChangeCase = false;
+  var counterUp = '', counterDown = '' , tmpPrefix = '', tmpSuffix = '';
   var isInRange = false;
 
   for (var i = 0, len = obj.state.length; i < len; i++) {
-    isInRange = isIncludeNum(findList, i);
-    newName = findAndReplace(cfgPh, obj, i, isInRange);
-    isPre = obj.state[i][0];
-    isSuff = obj.state[i][2];
-    cntUp = padZero(cnt.up, amountUp.toString().length);
-    cntDown = padZero(cnt.down, amountDown.toString().length);
-    
-    if (isPre) {
-      tmpPre = rplcPlaceholder(obj.state[i], cntUp, cntDown, obj.pre, cfg, target, objPh);
+    isInRange = isInclude(findIndexes, i);
+    newName = findAndReplace(obj, i, isInRange);
+
+    isAddPrefix = isInclude(prefixIndexes, i);
+    isAddSuffix = isInclude(suffixIndexes, i);
+    isChangeCase = isInclude(caseIndexes, i);
+
+    counterUp = padZero(counter.up, amountUp.toString().length);
+    counterDown = padZero(counter.down, amountDown.toString().length);
+
+    if (isAddPrefix) {
+      tmpPrefix = replacePlaceholder(obj.state[i].index, counterUp, counterDown, obj.prefix, cfg, coll, objPlaceholders);
     }
 
-    if (isSuff) { 
-      tmpSuff = rplcPlaceholder(obj.state[i], cntUp, cntDown, obj.suff, cfg, target, objPh);
+    if (isAddSuffix) { 
+      tmpSuffix = replacePlaceholder(obj.state[i].index, counterUp, counterDown, obj.suffix, cfg, coll, objPlaceholders);
     }
 
-    cnt.up = changeCounter(cnt.up, obj.pre, obj.suff, objPh.nu, isPre, isSuff, true);
-    cnt.down = changeCounter(cnt.down, obj.pre, obj.suff, objPh.nd, isPre, isSuff, false);
+    counter.up = changeCounter(counter.up, obj.prefix, obj.suffix, objPlaceholders.numUp, isAddPrefix, isAddSuffix, true);
+    counter.down = changeCounter(counter.down, obj.prefix, obj.suffix, objPlaceholders.numDown, isAddPrefix, isAddSuffix, false);
 
-    result.push(tmpPre + newName + tmpSuff);
-    cntUp = '', cntDown = '' , tmpPre = '', tmpSuff = '';
+    newName = tmpPrefix + newName + tmpSuffix;
+
+    if (isChangeCase) {
+      newName = convertToCase(newName, obj.caseStyle);
+    }
+
+    resultNames.push(newName);
+    counterUp = '', counterDown = '' , tmpPrefix = '', tmpSuffix = '';
   }
 
-  return result;
+  return resultNames;
 }
 
-// Get an array of item indexes from a range string
+/**
+ * Parse and filter indexes from a string
+ * @param {string} str - The input string containing numbers and ranges
+ * @param {number} total - The maximum allowed index value
+ * @returns {Array} An array of filtered and parsed indexes
+ */
 function parseAndFilterIndexes(str, total) {
   var chunks = str.split(/[, ]+/);
   var length = chunks.length;
@@ -941,81 +1301,109 @@ function parseAndFilterIndexes(str, total) {
   return filteredNums;
 }
 
-// Find first placeholder with number
-function getStartingNum(cfgPh, obj, objPh) {
-  var tmpNumUp = cfgPh.numUp.substr(0, 4), // Part of the placeholder before number
-      tmpNumDown = cfgPh.numDown.substr(0, 4),
-      tmpPreSuff = (obj.pre + obj.suff).toLocaleLowerCase();
+/**
+ * Extract and parse numerical values from configuration and object placeholders
+ * @param {Object} cfgPlaceholders - All placeholders object containing numUp and numDown strings
+ * @param {Object} obj - Object containing prefix and suffix strings
+ * @param {Object} objPlaceholders - Object placeholder to store parsed numUp and numDown values
+ * @returns {Object} An object containing the parsed numerical values for 'up' and 'down'
+ */
+function getStartNum(cfgPlaceholders, obj, objPlaceholders) {
+  var tmpNumUp = cfgPlaceholders.numUp.substr(0, 4); // Part of the placeholder before number
+  var tmpNumDown = cfgPlaceholders.numDown.substr(0, 4);
+  var tmpPreSuff = (obj.prefix + obj.suffix).toLocaleLowerCase();
 
   // Parse number up from string
   var startIdxNumUp = tmpPreSuff.indexOf(tmpNumUp) + tmpNumUp.length,
       endIdxNumUp = tmpPreSuff.indexOf('}', startIdxNumUp);
   var cntUp = 1 * tmpPreSuff.substring(startIdxNumUp, endIdxNumUp);
   if (isNaN(cntUp)) cntUp = 0;
-  objPh.nu = tmpNumUp + cntUp + '}';
+  objPlaceholders.numUp = tmpNumUp + cntUp + '}';
   
   // Parse number down from string
-  var startIdxNumDown = tmpPreSuff.indexOf(tmpNumDown) + tmpNumUp.length,
-      endIdxNumDown = tmpPreSuff.indexOf('}', startIdxNumDown);
+  var startIdxNumDown = tmpPreSuff.indexOf(tmpNumDown) + tmpNumUp.length;
+  var endIdxNumDown = tmpPreSuff.indexOf('}', startIdxNumDown);
+
   var cntDown = 1 * tmpPreSuff.substring(startIdxNumDown, endIdxNumDown);
   if (isNaN(cntDown)) cntDown = 0;
-  objPh.nd = tmpNumDown + cntDown + '}';
+  objPlaceholders.numDown = tmpNumDown + cntDown + '}';
 
   return { 'up': cntUp, 'down': cntDown };
 }
 
-// Check for value in array
-function isIncludeNum(arr, value) {
+/**
+ * Checks if an array includes a specific numeric value
+ * @param {Array} arr - The array to search within
+ * @param {number} value - The value to search for
+ * @returns {boolean} Returns true if the value is found in the array, otherwise false
+ */
+function isInclude(arr, value) {
   for (var i = 0; i < arr.length; i++) {
-    if (arr[i] === value) {
-      return true;
-    }
+    if (arr[i] === value) return true;
   }
-
   return false;
 }
 
-// Find and replace in old name
-function findAndReplace(cfgPh, obj, idx, isInRange) {
-  var result = obj.state[idx][1];
+/**
+ * Find and replace text within a specified object based on given criteria
+ * @param {Object} obj - The object containing state and find/replace details
+ * @param {number} idx - The index of the item in the object's state array
+ * @param {boolean} isInRange - Determines if the index is within the desired range for replacement
+ * @returns {string} resultStr - The result after performing the find and replace operation, or the original string if conditions are not met
+ */
+function findAndReplace(obj, idx, isInRange) {
+  var resultStr = obj.state[idx].customName;
 
+  // Check if the object is set to find, if the index is in range, and if the find string is not empty
   if (obj.isFind && isInRange && (obj.find.length || !isEmpty(obj.find))) {
-    if (obj.find.match(cfgPh.name) != null) {
-      result = obj.rplc;
-    } else {
-      var regex = new RegExp(obj.find, 'gi');
-      result = result.replace(regex, obj.rplc);
-    }
+    var regex = new RegExp(obj.find, 'gi');
+    resultStr = resultStr.replace(regex, obj.replace);
   }
 
-  return result;
+  return resultStr;
 }
 
-// Add leading zero to number
-function padZero(number, size) {
-  var minus = (number < 0) ? '-' : '',
-      str = '00000000000' + Math.abs(number);
-
-  return minus + str.slice(str.length - size);
+/**
+ * Pad a number with leading zeros to ensure it reaches a specified length
+ * This function handles negative numbers by preserving the sign and padding the absolute value
+ * @param {number} num - The number to pad with zeros Can be positive or negative
+ * @param {number} length - The total length of the resulting string, including the sign for negative numbers
+ * @returns {string} The padded number as a string with leading zeros
+ */
+function padZero(num, length) {
+  var sign = num < 0 ? '-' : '';
+  var str = '00000000000' + Math.abs(num);
+  return sign + str.slice(-length);
 }
 
-// Replace placeholders in suffix or prefix with text
-function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
-  var name = activeDocument.name.replace(/\.[^\.]+$/, ''),
-      units = getUnits(),
-      width = height = 0,
-      color = /rgb/i.test(activeDocument.documentColorSpace) ? 'RGB' : 'CMYK';
+/**
+ * Replace placeholders in a string with specific values based on the document and configuration
+ * @param {Array} index - The object index
+ * @param {number} counterUp - The counter for upward numbering
+ * @param {number} counterDown - The counter for downward numbering
+ * @param {string} str - The string containing placeholders to be replaced
+ * @param {Object} cfg - Global configuration object
+ * @param {(Object|Array)} coll - Collection of objects to generate names for
+ * @param {Array} objPlaceholders - Array of placeholders specific to the object
+ * @returns {string} The string with placeholders replaced by actual values
+ */
+function replacePlaceholder(index, counterUp, counterDown, str, cfg, coll, objPlaceholders) {
+  var name = activeDocument.name.replace(/\.[^\.]+$/, '');
+  var units = getUnits();
+  var width = height = 0;
+  var color = /rgb/i.test(activeDocument.documentColorSpace) ? 'RGB' : 'CMYK';
 
-  switch (target[0].typename) {
+  // Determine width and height based on the type of collection item
+  switch (coll[0].typename) {
     case 'Artboard':
-      var currAb = activeDocument.artboards[row[3]];
+      var currAb = activeDocument.artboards[index];
       width = currAb.artboardRect[2] - currAb.artboardRect[0];
       height = currAb.artboardRect[1] - currAb.artboardRect[3];
       break;
     case 'Layer':
       break;
     default:
-      var item = app.selection[row[3]];
+      var item = app.selection[index];
       if (item.typename === 'GroupItem' && item.clipped) {
         item = getMaskPath(item);
       }
@@ -1024,39 +1412,50 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
       break;
   }
   
+  // Convert and format width and height
   width = ( cfg.sf * convertUnits(width, 'px', units) ).toFixed(cfg.precision);
   height = ( cfg.sf * convertUnits(height, 'px', units) ).toFixed(cfg.precision);
 
-  for (var prop in ph) {
+  // Replace placeholders in the string
+  for (var prop in objPlaceholders) {
     // Fix for LAScripts extension users
-    if (/function/i.test(ph[prop])) continue;
+    if (/function/i.test(objPlaceholders[prop])) continue;
 
-    var regex = new RegExp(ph[prop], 'gi');
+    var regex = new RegExp(objPlaceholders[prop], 'gi');
     if (str.match(regex)) {
       var val;
-      switch (ph[prop]) {
-        case ph.u:
+      switch (objPlaceholders[prop]) {
+        case objPlaceholders.units:
           val = units;
           break;
-        case ph.fn:
+        case objPlaceholders.file:
           val = name;
           break;
-        case ph.d:
-          val = getTodayDate();
+        case objPlaceholders.dateDMY:
+          val = getCurrentDate(objPlaceholders.dateDMY);
           break;
-        case ph.c:
+        case objPlaceholders.dateMDY:
+          val = getCurrentDate(objPlaceholders.dateMDY);
+          break;
+        case objPlaceholders.dateYMD:
+          val = getCurrentDate(objPlaceholders.dateYMD);
+          break;
+        case objPlaceholders.time:
+          val = getCurrentTime();
+          break;
+        case objPlaceholders.color:
           val = color;
           break;
-        case ph.nu:
-          val = cntUp;
+        case objPlaceholders.numUp:
+          val = counterUp;
           break;
-        case ph.nd:
-          val = cntDown;
+        case objPlaceholders.numDown:
+          val = counterDown;
           break;
-        case ph.h:
+        case objPlaceholders.height:
           val = height.replace('.', cfg.decimal);
           break;
-        case ph.w:
+        case objPlaceholders.width:
           val = width.replace('.', cfg.decimal);
           break;
       }
@@ -1068,42 +1467,88 @@ function rplcPlaceholder(row, cntUp, cntDown, str, cfg, target, ph) {
   return str;
 }
 
-// Change counter for active prefix or suffix
-function changeCounter(num, pre, suff, ph, isPre, isSuff, isUp) {
-  var regex = new RegExp(ph, 'gi');
-
-  if ((isPre && regex.test(pre)) || (isSuff && regex.test(suff))) {
-    num = isUp ? num + 1 : num - 1;
+/**
+ * Adjust a counter based on prefix and suffix conditions
+ * @param {number} num - The initial number to adjust
+ * @param {string} prefix - The prefix to check
+ * @param {string} suffix - The suffix to check
+ * @param {string} placeholder - The placeholder to test against prefix and suffix
+ * @param {boolean} isAddPrefix - Whether to consider the prefix
+ * @param {boolean} isAddSuffix - Whether to consider the suffix
+ * @param {boolean} isCounterUp - Whether to increment or decrement the number
+ * @returns {number} The adjusted number
+ */
+function changeCounter(num, prefix, suffix, placeholder, isAddPrefix, isAddSuffix, isCounterUp) {
+  var regex = new RegExp(placeholder, 'gi');
+  if ((isAddPrefix && regex.test(prefix)) || (isAddSuffix && regex.test(suffix))) {
+    num = isCounterUp ? num + 1 : num - 1;
   }
-
   return num;
 }
 
-// Get data as YYYYMMDD format
-function getTodayDate() {
-  var date = new Date(),
-      mm = date.getMonth() + 1,
-      dd = date.getDate();
+/**
+ * Return the current date formatted according to the specified format key
+ * dmy > DD/MM/YYYY
+ * mdy > MM/DD/YYYY
+ * ymd > YYYY/MM/DD
+ * @param {string} dateStyle - The target date style name
+ * @returns {string} The formatted date string
+ */
+function getCurrentDate(dateStyle) {
+  var date = new Date();
+  var year = date.getFullYear();
+  var month = date.getMonth() + 1;
+  var day = date.getDate();
+  
+  // Add a leading zero for months and days < 10
+  var mm = (month < 10) ? '0' + month : month;
+  var dd = (day < 10) ? '0' + day : day;
 
-  return [date.getFullYear(), (mm > 9 ? '' : '0') + mm,
-          (dd > 9 ? '' : '0') + dd].join('');
+  // Define the format based on the key
+  switch(true) {
+    case /ymd/i.test(dateStyle):
+      return year + '/' + mm + '/' + dd;
+    case /mdy/i.test(dateStyle):
+      return mm + '/' + dd + '/' + year;
+    case /dmy/i.test(dateStyle):
+    default:
+      return dd + '/' + mm + '/' + year;
+  }
 }
 
-// Get clipping mask
+/**
+ * Retrieve the current time in HH:MM format
+ * @returns {string} The current time as a formatted string
+ */
+function getCurrentTime() {
+  var date = new Date();
+  var hh = date.getHours();
+  var mm = date.getMinutes();
+
+  return [(hh > 9 ? '' : '0') + hh, 
+          (mm > 9 ? '' : '0') + mm].join(':');
+}
+
+/**
+ * Retrieve the clipping mask path from a group of items
+ * @param {Object} group - The group of items to search for a clipping mask
+ * @returns {Object} The clipping path item if found, otherwise the original group
+ */
 function getMaskPath(group) {
   for (var i = 0, len = group.pageItems.length; i < len; i++) {
     var currItem = group.pageItems[i];
-
-    if (isClippingPath(currItem)) {
-      return currItem;
-    }
+    if (isClippingPath(currItem)) return currItem;
   }
 
-  // Return if no clipping path is found
+  // Return the original group if no clipping path is found
   return group;
 }
 
-// Check clipping mask
+/**
+ * Check if an item is a clipping path
+ * @param {Object} item - The item to check
+ * @returns {boolean} True if the item is a clipping path, false otherwise
+ */
 function isClippingPath(item) {
   var clipText = (item.typename === 'TextFrame' &&
                   item.textRange.characterAttributes.fillColor == '[NoColor]' &&
@@ -1112,7 +1557,10 @@ function isClippingPath(item) {
           item.clipping || clipText;
 }
 
-// Get active document ruler units
+/**
+ * Get active document ruler units
+ * @returns {string} Shortened units
+ */
 function getUnits() {
   if (!documents.length) return '';
   var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
@@ -1144,12 +1592,128 @@ function getUnits() {
   }
 }
 
-// Convert units of measurement
+/**
+* Convert a value from one set of units to another
+* @param {string} value - The numeric value to be converted
+* @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
+* @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
+* @returns {number} The converted value in the specified units
+*/
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
 }
 
-// Open link in browser
+/**
+ * Convert a string to the specified case style
+ * @param {string} str - The original string to convert
+ * @param {string} caseStyle - The target case style name
+ * @returns {string} The converted string
+ */
+function convertToCase(str, caseStyle) {
+  if (/original/i.test(caseStyle)) {
+    return str;
+  }
+
+  // Get words array
+  try {
+    var words = splitIntoWords(str);
+  } catch (error) {
+    // alert(error);
+  }
+
+  // Convert based on case style
+  switch (true) {
+    case /lower/i.test(caseStyle):
+      return str.toLowerCase();
+    case /upper/i.test(caseStyle):
+      return str.toUpperCase();
+    case /title/i.test(caseStyle):
+      var titleResult = '';
+      for (var i = 0; i < words.length; i++) {
+          if (i > 0) titleResult += ' ';
+          titleResult += capitalize(words[i]);
+      }
+      return titleResult;
+    case /sentence/i.test(caseStyle):
+      var sentenceResult = words.join(' ').toLowerCase();
+      return sentenceResult.charAt(0).toUpperCase() + sentenceResult.slice(1);
+    case /camel/i.test(caseStyle):
+      if (words.length === 0) return str;
+      var camelResult = words[0].toLowerCase();
+      for (var i = 1; i < words.length; i++) {
+        camelResult += capitalize(words[i]);
+      }
+      return camelResult;
+    case /pascal/i.test(caseStyle):
+      var pascalResult = '';
+      for (var i = 0; i < words.length; i++) {
+        pascalResult += capitalize(words[i]);
+      }
+      return pascalResult;
+    case /snake/i.test(caseStyle):
+      return words.join('_').toLowerCase();
+    case /kebab/i.test(caseStyle):
+      return words.join('-').toLowerCase();
+    case /constant/i.test(caseStyle):
+      return words.join('_').toUpperCase();
+    default:
+      return str;
+  }
+}
+
+/**
+ * Split a string into words
+ * @param {string} str - The input string to split
+ * @returns {Array} filteredWords - An array of words
+ */
+function splitIntoWords(str) {
+  // Split by spaces, hyphens, underscores, and camelCase boundaries
+  var processed = str.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ');
+  var splitWords = processed.split(/\s+/);
+
+  var filteredWords = [];
+  for (var i = 0; i < splitWords.length; i++) {
+    if (splitWords[i].length > 0) filteredWords.push(splitWords[i]);
+  }
+
+  return filteredWords;
+}
+
+/**
+ * Capitalize the first letter of a word
+ * @param {string} word - The input word to capitalize
+ * @returns {string} The word with the first letter capitalized
+ */
+function capitalize(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+/**
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} - A JSON-like string representation of the object
+ */
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
+    }
+  }
+  return "{" + json.join(",") + "}";
+}
+
+/**
+ * Open a URL in the default web browser
+ * @param {string} url - The URL to open in the web browser
+ * @returns {void}
+ */
 function openURL(url) {
   var html = new File(Folder.temp.absoluteURI + '/aisLink.html');
   html.open('w');
@@ -1161,4 +1725,4 @@ function openURL(url) {
 
 try {
   main();
-} catch (e) {}
+} catch (err) {}
