@@ -17,7 +17,7 @@
 * [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#batchrenamer) `v1.6 — upd, 17.09.2025`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
-* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#fitartboardstoartwork) `v0.3 — upd, 18.10.2025`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardaslayer) `v0.3 — upd, 18.04.2025`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.md#renameartboardassize) `v0.5 — upd, 18.04.2025`
@@ -92,7 +92,7 @@ Script for copying the selected Artboard with his artwork. The Pro version with 
 
 Fit artboards by the visible unlocked content with custom margins.
 
-![FitArtboardsToArtwork](https://i.ibb.co/SJJh5Hc/Fit-Artboards-To-Artwork.gif)
+![FitArtboardsToArtwork](https://i.ibb.co/RGC6cRsh/Fit-Artboards-To-Artwork.gif)
 
 ## MoveArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-MoveArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/moveabs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

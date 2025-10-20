@@ -17,7 +17,7 @@
 * [ArtboardsRemapper](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#artboardsremapper) `v0.2.1 — upd, 12.06.2025`
 * [BatchRenamer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#batchrenamer) `v1.6 — upd, 17.09.2025`
 * [DuplicateArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#duplicateartboardslight) `v0.4.4 — upd, 09.02.2024`
-* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.2 — upd, 18.09.2023`
+* [FitArtboardsToArtwork](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#fitartboardstoartwork) `v0.3 — upd, 18.10.2025`
 * [MoveArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#moveartboards) `v0.2.6 — upd, 09.02.2024`
 * [RenameArtboardAsLayer](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardaslayer) `v0.3 — upd, 18.04.2025`
 * [RenameArtboardAsSize](https://github.com/creold/illustrator-scripts/blob/master/md/Artboard.ru.md#renameartboardassize) `v0.5 — upd, 18.04.2025`
@@ -87,7 +87,7 @@
 
 Масштабирует артборды по размеру видимого незаблокированного контента с отступами.
 
-![FitArtboardsToArtwork](https://i.ibb.co/SJJh5Hc/Fit-Artboards-To-Artwork.gif)
+![FitArtboardsToArtwork](https://i.ibb.co/RGC6cRsh/Fit-Artboards-To-Artwork.gif)
 
 ## MoveArtboards
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-MoveArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/moveabs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

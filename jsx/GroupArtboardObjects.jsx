@@ -138,7 +138,7 @@ function main() {
   copyright.justify = 'center';
 
   var prgGroup = win.add('group');
-  var progBar = prgGroup.add('progressbar', [20, 5, 230, 10], 0, 100);
+  var progBar = prgGroup.add('progressbar', [20, 5, 250, 10], 0, 100);
 
   loadSettings(SETTINGS);
 
