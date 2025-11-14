@@ -176,7 +176,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.4 — upd, 20.03.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#showobjectnames) `v0.5 — upd, 14.11.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ### [Layer](md/Layer.ru.md)  

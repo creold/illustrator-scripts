@@ -26,7 +26,7 @@
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
 * [RoundCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#roundcoordinates) `v0.4.2 — upd, 22.12.2022`
-* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.4 — upd, 20.03.2025`
+* [ShowObjectNames](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#showobjectnames) `v0.5 — upd, 14.11.2025`
 * [SwapObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.md#swapobjects) `v0.2 — upd, 24.03.2024`
 
 ## AlignToArtboards
@@ -177,7 +177,7 @@ The script rounds the coordinates of each selected object. The reference point g
 ## ShowObjectNames
 [![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames.jsx-FF6900.svg)](https://link.aiscripts.ru/shwobjnms) [![Direct](https://img.shields.io/badge/Direct%20Link-ShowObjectNames%20FontPicker.jsx-FF6900.svg)](https://link.aiscripts.ru/shwObjNmsFont) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Adds file names of placed or embedded images (PNG, JPG, TIFF, PSD, PDF and others) and names of other selected objects. If the source image file is not found in the folder, the script adds "Missing Image". For objects without a name, the caption is "Unnamed Object". In version 0.4, captions are created with the selected character style.      
+Adds file names of placed or embedded images (PNG, JPG, TIFF, PSD, PDF and others)  and the names of other selected objects, as well as artboards. If the source image file is not found in the folder, the script adds "Missing Image". For objects without a name, the caption is "Unnamed Object". In version 0.4, captions are created with the selected character style.      
 
 The ShowObjectNames-FontPicker modification includes font selection and font size. If you have thousands of fonts installed on your computer, this version of the script will be slower due to font processing.
 
@@ -188,7 +188,7 @@ Parameters in the code:
 * `fontSize: 14` — font size of the created character style
 * `Name: 'Object_Names'` — name of the new layer
 
-![ShowObjectNames](https://i.ibb.co/Tq4fLkNK/Show-Object-Names.jpg)
+![ShowObjectNames](https://i.ibb.co/PvQk8PTq/Show-Object-Names.gif)
 
 ## SwapObjects
 [![Direct](https://img.shields.io/badge/Direct%20Link-SwapObjects.jsx-FF6900.svg)](https://link.aiscripts.ru/swapobjs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

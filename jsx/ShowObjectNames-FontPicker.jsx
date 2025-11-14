@@ -2,12 +2,13 @@
   ShowObjectNames-FontPicker.jsx for Adobe Illustrator
   Description: Shows names of vector objects, linked or embedded raster images
   Date: June, 2023
-  Modicitaion Date: March, 2025
+  Modification Date: November, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.4 Added artboard name labels generation
   0.3.1 Minor fixes
   0.3 Added fonts, more positions, text justification, options to rotate text
   0.2 Added UI with options, support any objects
@@ -21,7 +22,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2025 (Mac/Win).
+  Tested with Adobe Illustrator CC 2019-2026 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -37,7 +38,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false);// Fix dra
 function main() {
   var SCRIPT = {
     name: 'Show Object Names',
-    version: 'v0.3.1'
+    version: 'v0.4'
   };
   
   var CFG = {
@@ -58,14 +59,16 @@ function main() {
     folder: Folder.myDocuments + '/Adobe Scripts/'
   };
 
-  if (!isCorrectEnv('selection:1')) return;
+  if (!isCorrectEnv()) return;
 
   var doc = app.activeDocument;
+  var docAbs = doc.artboards;
+
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
 
-  var items = get(app.selection);
-  var itemsData = getItemsData(items);
+  var docSel = get(app.selection);
+  var selData = getItemsData(docSel);
   var isUndo = false;
 
   // DIALOG
@@ -74,6 +77,24 @@ function main() {
       win.alignChildren = ['fill', 'top'];
       win.spacing = 10;
       win.opacity = CFG.uiOpacity;
+
+  // SOURCE
+  var targetPnl = win.add('panel', undefined, 'Target');
+      targetPnl.orientation = 'row';
+      targetPnl.alignChildren = ['fill', 'bottom'];
+      targetPnl.margins = CFG.uiMargins;
+
+  var isSelObj = targetPnl.add('radiobutton', undefined, 'Selection');
+      isSelObj.value = docSel.length > 0;
+      isSelObj.enabled = docSel.length > 0;
+
+  var isArtboard = targetPnl.add('radiobutton', undefined, 'Artboards:');
+      isArtboard.value = !isSelObj.value;
+
+  var absInp = targetPnl.add('edittext', undefined, 1 + '-' + docAbs.length);
+      absInp.helpTip = 'Active artboard: ' + 1 + '\nDocument artboards: ' + docAbs.length;
+      absInp.characters = 6;
+      absInp.enabled = isArtboard.value;
 
   // POSITION
   var posPnl = win.add('panel', undefined, 'Position');
@@ -169,7 +190,6 @@ function main() {
       fontDdl.preferredSize.width = 100;
       fontDdl.itemSize.width = CFG.fontWidth;
       fontDdl.selection = 0;
-      fontDdl.active = true;
 
   var fontGrp = fontPnl.add('group');
 
@@ -212,11 +232,13 @@ function main() {
       imgPnl.alignChildren = ['fill', 'top'];
       imgPnl.margins = CFG.uiMargins;
 
-  var isAddExtension = imgPnl.add("checkbox", undefined, 'Add Extension');
-  var isRenameImage = imgPnl.add("checkbox", undefined, 'Rename in Layer');
+  var isAddExtension = imgPnl.add('checkbox', undefined, 'Add Extension');
+      isAddExtension.enabled = isSelObj.value;
+  var isRenameImage = imgPnl.add('checkbox', undefined, 'Rename in Layer');
+      isRenameImage.enabled = isSelObj.value;
 
   var btns = win.add('group');
-      btns.alignChildren = ['left', 'center'];
+      btns.alignChildren = ['fill', 'center'];
 
   var isPreview = btns.add('checkbox', undefined, 'Preview');
       isPreview.value = false;
@@ -239,11 +261,43 @@ function main() {
   cancel.helpTip = 'Press Esc to Close';
   ok.helpTip = 'Press Enter to Run';
 
-  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
-      copyright.justify  = 'center';
+  var copyGrp = win.add('group');
+      copyGrp.orientation = 'row';
+      copyGrp.alignChildren = ['fill', 'center'];
+
+  var author = copyGrp.add('statictext', undefined, '\u00A9 Sergey Osokin');
+      author.justify = 'left';
+
+  var link = copyGrp.add('statictext', undefined, 'Visit GitHub');
+      link.justify = 'right';
 
   // EVENTS
   loadSettings(SETTINGS);
+  if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
+    isSelObj.active = isSelObj.value;
+    absInp.active = isArtboard.value;
+  }
+
+  isSelObj.onClick = function () {
+    absInp.enabled = false;
+    isAddExtension.enabled = true;
+    isRenameImage.enabled = true;
+    isCurrLay.enabled = true;
+    isNewGrp.enabled = true;
+    preview();
+  }
+
+  isArtboard.onClick = function () {
+    absInp.enabled = true;
+    isAddExtension.enabled = false;
+    isRenameImage.enabled = false;
+    isCurrLay.value = false;
+    isCurrLay.enabled = false;
+    isNewGrp.value = false;
+    isNewGrp.enabled = false;
+    isNewLay.value = true;
+    preview();
+  }
 
   // Selecting font in dropdown by name using the keyboard
   // Book: Beginning ScriptUI, author: Peter Kahrel, June 2019
@@ -269,12 +323,12 @@ function main() {
     }
   });
 
-  fontInp.onChange = preview;
+  absInp.onChange = fontInp.onChange = preview;
   xInp.onChange = yInp.onChange = preview;
 
-  shiftInputNumValue(fontInp);
-  shiftInputNumValue(xInp);
-  shiftInputNumValue(yInp);
+  bindStepperKeys(fontInp, 0.1, 1296);
+  bindStepperKeys(xInp);
+  bindStepperKeys(yInp);
 
   if (isPreview.value) preview();
 
@@ -306,13 +360,18 @@ function main() {
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  copyright.addEventListener('mousedown', function () {
-    openURL('https://github.com/creold/');
+  setTextHandler(link, function () {
+    openURL('https://github.com/creold')
   });
 
   win.onClose = function () {
     try {
       if (isUndo) app.undo();
+      isUndo = false;
+    } catch (err) {}
+    try {
+      var tmpLay = doc.layers.getByName('REMOVE_THIS');
+      tmpLay.remove();
     } catch (err) {}
   }
 
@@ -367,17 +426,34 @@ function main() {
       isExtension: isAddExtension.value,
       isRename: isRenameImage.value,
       fontSize: convertUnits( strToNum(fontInp.text, 14), CFG.fontUnits, 'px' ) / CFG.sf,
-      fontFamily: app.textFonts.getByName(fontDdl.selection.text)
+      fontFamily: app.textFonts.getByName(fontDdl.selection.text),
+      layer: doc.layers.add()
     };
+    labelParams.layer.name = 'REMOVE_THIS';
 
     if (labelParams.fontSize <= 0) {
       labelParams.fontSize = 14;
       fontInp.text = 14;
     }
 
+    // Prepare the processed items
+    var items = [];
+    var itemsData = [];
+    if (isSelObj.value && docSel.length) {
+      items = [].concat(docSel);
+      itemsData = [].concat(selData);
+    } else {
+      if (isEmpty(absInp.text)) absInp.text = '1-' + docAbs.length;
+      var absIdx = parseAndFilterIndexes(absInp.text, docAbs.length - 1);
+      for (var a = 0; a < absIdx.length; a++) {
+        items.push(docAbs[absIdx[a]]);
+      }
+      itemsData = getItemsData(items);
+    }
+
     var labels = []; // Array to store created text frames
 
-    // Process each selected item
+    // Process each item
     for (var i = 0, len = items.length; i < len; i++) {
       var itemLabel = addNameLabel(items[i], itemsData[i], labelParams);
       labels.push(itemLabel);
@@ -386,13 +462,16 @@ function main() {
     return labels;
   }
 
+  /**
+   * Handle the click event for the OK button
+   */
   function okClick() {
+    saveSettings(SETTINGS);
+
     if (isPreview.value && isUndo) {
       app.undo();
     }
     isUndo = false;
-
-    saveSettings(SETTINGS);
 
     var labels = process();
 
@@ -414,9 +493,13 @@ function main() {
       for (var j = 0, len = labels.length; j < len; j++) {
         var group = labels[j].layer.groupItems.add();
         group.name = labels[j].contents;
-        group.move(items[j], ElementPlacement.PLACEBEFORE);
+        group.move(docSel[j], ElementPlacement.PLACEBEFORE);
         labels[j].move(group, ElementPlacement.PLACEATEND);
-        items[j].move(group, ElementPlacement.PLACEATEND);
+        docSel[j].move(group, ElementPlacement.PLACEATEND);
+      }
+    } else {
+      for (var k = 0, len = labels.length; k < len; k++) {
+        labels[k].move(docSel[k], ElementPlacement.PLACEBEFORE);
       }
     }
 
@@ -426,21 +509,54 @@ function main() {
   }
 
   /**
-  * Handle keyboard input to shift numerical values
-  * @param {Object} item - The input element to which the event listener will be attached
-  * @returns {void}
-  */
-  function shiftInputNumValue(item) {
-    item.addEventListener('keydown', function (kd) {
+   * Set up a clickable text handler with hover effects and callback execution
+   * @param {Object} text - The statictext object to attach handlers to
+   * @param {Function} callback - The function to execute on click
+   */
+  function setTextHandler(text, callback) {
+    var isDarkUI = app.preferences.getRealPreference('uiBrightness') <= 0.5;
+    var gfx = text.graphics;
+    var colNormal = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.8, 0.8, 0.8] : [0.3, 0.3, 0.3], 1); // Black
+    var colHover = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.27, 0.62, 0.96] : [0.08, 0.45, 0.9], 1); // Blue
+
+    gfx.foregroundColor = colNormal;
+
+    // Hover effect: change color on mouseover
+    text.addEventListener('mouseover', function () {
+      gfx.foregroundColor = colHover;
+      text.notify('onDraw');
+    });
+
+    // Revert color to normal
+    text.addEventListener('mouseout', function () {
+      gfx.foregroundColor = colNormal;
+      text.notify('onDraw');
+    });
+
+    // Execute callback on click if provided
+    text.addEventListener('mousedown', function () {
+      if (typeof callback === 'function') callback(text);
+    });
+  }
+
+  /**
+   * Handle keyboard input to shift numerical values
+   * @param {Object} input - The input element to which the event listener will be attached
+   * @param {number} min - The minimum allowed value for the numerical input
+   * @param {number} max - The maximum allowed value for the numerical input
+   * @returns {void}
+   */
+  function bindStepperKeys(input, min, max) {
+    input.addEventListener('keydown', function (kd) {
       var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
-      var num = Number(this.text);
+      var num = parseFloat(this.text) || 0;
       if (kd.keyName == 'Down' || kd.keyName == 'LeftBracket') {
-        this.text = num - step;
+        this.text = (typeof min !== 'undefined' && (num - step) < min) ? min : num - step;
         kd.preventDefault();
         preview();
       }
       if (kd.keyName == 'Up' || kd.keyName == 'RightBracket') {
-        this.text = num + step;
+        this.text = (typeof max !== 'undefined' && (num + step) > max) ? max : num + step;
         kd.preventDefault();
         preview();
       }
@@ -460,20 +576,23 @@ function main() {
     f.encoding = 'UTF-8';
     f.open('w');
 
-    var pref = {};
-    pref.fontFamily = fontDdl.selection.index;
-    pref.fontSize = fontInp.text;
-    pref.offsetX = xInp.text;
-    pref.offsetY = yInp.text;
-    pref.direction = isOutPos.value ? 0 : 1;
-    pref.pos = posDdl.selection.index;
-    pref.angle = angleDdl.selection.index;
-    pref.justification = isAlignL.value ? 0 : (isAlignC.value ? 1 : 2);
-    pref.container = isCurrLay.value ? 0 : (isNewGrp.value ? 1 : 2);
-    pref.extension = isAddExtension.value;
-    pref.rename = isRenameImage.value;
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.selection = isSelObj.value;
+    data.fontFamily = fontDdl.selection.index;
+    data.fontSize = fontInp.text;
+    data.offsetX = xInp.text;
+    data.offsetY = yInp.text;
+    data.direction = isOutPos.value ? 0 : 1;
+    data.pos = posDdl.selection.index;
+    data.angle = angleDdl.selection.index;
+    data.justification = isAlignL.value ? 0 : (isAlignC.value ? 1 : 2);
+    data.container = isCurrLay.value ? 0 : (isNewGrp.value ? 1 : 2);
+    data.extension = isAddExtension.value;
+    data.rename = isRenameImage.value;
 
-    f.write( stringify(pref) );
+    f.write( stringify(data) );
     f.close();
   }
 
@@ -489,38 +608,59 @@ function main() {
       f.encoding = 'UTF-8';
       f.open('r');
       var json = f.readln();
-      try { var pref = new Function('return (' + json + ')')(); }
+      try { var data = new Function('return (' + json + ')')(); }
       catch (err) { return; }
       f.close();
 
-      if (typeof pref != 'undefined') {
-        if (fontDdl && fontInp && pref.fontFamily) {
-          fontDdl.selection = pref.fontFamily;
-          fontInp.text = pref.fontSize ? pref.fontSize : 14;
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x && !isNaN(parseInt(data.win_x)) ? parseInt(data.win_x) : 300,
+          data.win_y && !isNaN(parseInt(data.win_y)) ? parseInt(data.win_y) : 300
+        ];
+
+        isSelObj.value = data.selection === 'true' && app.selection.length;
+        isArtboard.value = !isSelObj.value;
+        absInp.enabled = isArtboard.value;
+
+        if (fontDdl && fontInp && data.fontFamily) {
+          fontDdl.selection = data.fontFamily;
+          fontInp.text = data.fontSize ? data.fontSize : 14;
         }
-        xInp.text = pref.offsetX;
-        yInp.text = pref.offsetY;
-        posGrp.children[pref.direction].value = true;
-        if (pref.direction == 1) updateDropdown(posDdl, inPosList);
-        posDdl.selection = pref.pos;
-        angleDdl.selection = pref.angle;
-        alignPnl.children[pref.justification].value = true;
-        layPnl.children[pref.container].value = true;
-        isAddExtension.value = pref.extension === 'true';
-        isRenameImage.value = pref.rename === 'true';
+
+        xInp.text = data.offsetX;
+        yInp.text = data.offsetY;
+
+        posGrp.children[data.direction].value = true;
+        if (data.direction == 1) updateDropdown(posDdl, inPosList);
+        posDdl.selection = data.pos;
+        angleDdl.selection = data.angle;
+
+        alignPnl.children[parseInt(data.justification) || 0].value = true;
+        layPnl.children[parseInt(data.container) || 0].value = true;
+        if (isArtboard.value) {
+          isCurrLay.value = false;
+          isCurrLay.enabled = false;
+          isNewGrp.value = false;
+          isNewGrp.enabled = false;
+          isNewLay.value = true;
+        }
+
+        isAddExtension.value = data.extension === 'true';
+        isAddExtension.enabled = !isArtboard.value;
+        isRenameImage.value = data.rename === 'true';
+        isRenameImage.enabled = !isArtboard.value;
       }
     } catch (err) {
       return;
     }
   }
 
-  win.center();
   win.show();
 }
 
 /**
  * Get active document ruler units
- * @returns {string} - Shortened units
+ * @returns {string} Shortened units
  */
 function getUnits() {
   if (!documents.length) return '';
@@ -555,7 +695,7 @@ function getUnits() {
 
 /**
  * Get the type measurement units based on the application's preference
- * @returns {string} - The unit of measurement for text
+ * @returns {string} The unit of measurement for text
  */
 function getTypeUnits() {
   var code = app.preferences.getIntegerPreference('text/units');
@@ -576,7 +716,7 @@ function getTypeUnits() {
  * @param {string} value - The numeric value to be converted
  * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
  * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
- * @returns {number} - The converted value in the specified units
+ * @returns {number} The converted value in the specified units
  */
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
@@ -585,7 +725,7 @@ function convertUnits(value, currUnits, newUnits) {
 /**
  * Check the script environment
  * @param {string} List of initial data for verification
- * @returns {boolean} - Continue or abort script
+ * @returns {boolean} Continue or abort script
  */
 function isCorrectEnv() {
   var args = ['app', 'document'];
@@ -630,7 +770,7 @@ function isCorrectEnv() {
  * Convert a collection into a standard Array
  * @param {Object} coll - The collection to be converted
  * @param {string} prop - The property name to extract from each object (optional)
- * @returns {Array} - A new array with either the extracted properties or the original elements
+ * @returns {Array} A new array with either the extracted properties or the original elements
  */
 function get(coll, prop) {
   var arr = [];
@@ -645,15 +785,21 @@ function get(coll, prop) {
 /**
  * Get data for a collection of items, including their bounds, dimensions, and names
  * @param {(Object|Array)} coll - The collection of items to process
- * @returns {Array} - An array of objects
+ * @returns {Array} An array of objects
  */
 function getItemsData(coll) {
+  if (!coll.length) return [];
+
   var data = [];
 
   for (var i = 0, len = coll.length; i < len; i++) {
-    var bnds = getVisibleBounds(coll[i], 'geometricBounds');
-    var name = getName(coll[i]);
-    if (!name.length) name = 'Unnamed Object';
+    var item = coll[i];
+    var isArtboard = /artboard/i.test(item.typename);
+    var bnds = isArtboard ? item.artboardRect : getVisibleBounds(item, 'geometricBounds');
+    var name = isArtboard ? item.name : getName(item);
+    if (!name.length) {
+      name = isArtboard ? 'Unnamed Artboard' : 'Unnamed Object';
+    }
 
     data.push({
       bounds: bnds,
@@ -671,7 +817,7 @@ function getItemsData(coll) {
  * https://github.com/joshbduncan/illustrator-scripts/blob/main/jsx/DrawVisibleBounds.jsx
  * @param {Object} obj - The target object
  * @param {string} type - The object bounds type
- * @returns {Array} - An array representing the actual bounds
+ * @returns {Array} An array representing the actual bounds
  */
 function getVisibleBounds(obj, type) {
   if (arguments.length == 1 || type == undefined) type = 'geometricBounds';
@@ -741,27 +887,132 @@ function getVisibleBounds(obj, type) {
 /**
  * Get the name of an item, considering its type
  * @param {Object} item - The item for which to get the name
- * @returns {string} - The name of the item
+ * @returns {string} str - The name of the item
  */
 function getName(item) {
-  var str = '';
-  if (item.typename === 'TextFrame' && isEmpty(item.name) && !isEmpty(item.contents)) {
-    str = item.contents;
-  } else if (item.typename === 'SymbolItem' && isEmpty(item.name)) {
-    str = item.symbol.name;
-  } else {
-    str = item.name;
+  if (!item || !item.typename) return item.name || '';
+
+  // If part of a compound path with a name, return that
+  var compound = getCompound(item);
+  if (compound && !isEmpty(compound.name)) {
+    return compound.name;
   }
-  return str;
+
+  // If item has a direct name, return it
+  if (!isEmpty(item.name)) {
+    return item.name;
+  }
+
+  // Special cases for derived names
+  if (item.typename === 'TextFrame' && !isEmpty(item.contents)) {
+    return item.contents;
+  }
+
+  if (item.typename === 'SymbolItem') {
+    return item.symbol.name;
+  }
+
+  if (item.typename === 'PlacedItem') {
+    return item.file && item.file.name ? item.file.name : '<Linked File>';
+  }
+
+  return item.name || '';
+}
+
+/**
+ * Retrieve the compound path parent of an item
+ * @param {Object} item - The item to check for a compound path parent
+ * @returns {Object|null} The compound path item if found, otherwise null
+ */
+function getCompound(item) {
+  if (!item || !item.typename) return null;
+
+  // Skip top-level objects: layers, artboards, document
+  if (item.typename === 'Layer' || item.typename === 'Artboard' || item.typename === 'Document') {
+    return null;
+  }
+
+  while (item && item.parent) {
+    if (item.parent.typename === 'CompoundPathItem') {
+      return item.parent;
+    }
+    item = item.parent;
+  }
+
+  return null;
 }
 
 /**
  * Check if a string is empty or contains only whitespace characters
  * @param {string} str - The string to check for emptiness
- * @returns {boolean} - True if the string is empty, false otherwise
+ * @returns {boolean} True if the string is empty, false otherwise
  */
 function isEmpty(str) {
   return str.replace(/\s/g, '').length == 0;
+}
+
+/**
+ * Parse a string representing a list of indexes and filters them based on a total count
+ * @param {string} str - The input string containing the indexes
+ * @param {number} total - The maximum allowed number (exclusive)
+ * @returns {Array} An array of valid indexes
+ */
+function parseAndFilterIndexes(str, givenNumber) {
+  var parsedNums = [];
+  var chunks = str.split(/[,; ]+/);
+  var length = chunks.length;
+
+  for (var i = 0; i < length; i++) {
+    var chunk = chunks[i];
+    var range = chunk.split('-');
+
+    if (range.length === 2) {
+      var start = parseInt(range[0], 10);
+      var end = parseInt(range[1], 10);
+
+      for (var j = start; j <= end; j++) {
+        parsedNums.push(j);
+      }
+    } else {
+      var num = parseInt(chunk, 10);
+      if (!isNaN(num)) {
+        parsedNums.push(num);
+      }
+    }
+  }
+
+  var filteredNums = [];
+  length = parsedNums.length;
+
+  for (var k = 0; k < length; k++) {
+    var num = parsedNums[k] - 1;
+
+    if (num >= 0 && num <= givenNumber) {
+      filteredNums.push(num);
+    }
+  }
+
+  // Remove duplicates and sort
+  filteredNums = getUnique(filteredNums);
+  filteredNums.sort(function (a, b) {
+    return a - b;
+  });
+
+  return filteredNums;
+}
+
+/**
+ * Remove duplicate elements from an array
+ * @param {Array} arr - The input array
+ * @returns {Array} An array with duplicate elements removed
+ */
+function getUnique(arr) {
+  var obj = {};
+  var i, l = arr.length;
+  var unique = [];
+  for (i = 0; i < l; i++) obj[arr[i]] = arr[i];
+  for (i in obj) unique.push(obj[i]);
+  return unique;
 }
 
 /**
@@ -769,18 +1020,7 @@ function isEmpty(str) {
  * @param {Object} item - The Illustrator item to label. Can be a placed, raster, or other object type
  * @param {Object} itemData - Contains item properties like name, width, height, and bounds
  * @param {Object} params - Labeling parameters including font size, justification, position, and offsets
- * @param {number} params.fonFamily - The font family for the label text
- * @param {number} params.fontSize - The font size for the label text
- * @param {string} params.justification - Text justification
- * @param {number} params.angle - The rotation angle for the label
- * @param {boolean} params.isExtension - Whether to include the file extension in the label
- * @param {boolean} params.isRename - Whether to rename the item to match the label
- * @param {boolean} params.isOutside - Whether to place the label outside the item's bounds
- * @param {number} params.offsetX - Horizontal offset for label positioning
- * @param {number} params.offsetY - Vertical offset for label positioning
- * @param {string} params.position - The label's position relative to the item
- * 
- * @returns {Object} - The created text frame containing the label
+ * @returns {Object} The created text frame containing the label
  */
 function addNameLabel(item, itemData, params) {
   var f;
@@ -799,7 +1039,7 @@ function addNameLabel(item, itemData, params) {
     nameStr = itemData.name;
   }
 
-  var tf = item.layer.textFrames.add();
+  var tf = params.layer.textFrames.add();
   tf.contents = decodeURI(nameStr);
   tf.textRange.characterAttributes.textFont = params.fontFamily;
   tf.textRange.characterAttributes.size = params.fontSize;
@@ -883,8 +1123,6 @@ function addNameLabel(item, itemData, params) {
       break;
   }
 
-  tf.move(item, ElementPlacement.PLACEBEFORE);
-
   return tf;
 }
 
@@ -892,7 +1130,7 @@ function addNameLabel(item, itemData, params) {
  * Convert string to number
  * @param {string} str - The string to convert to a number
  * @param {number} def - The default value to return if the conversion fails
- * @returns {number} - The converted number
+ * @returns {number} The converted number
  */
 function strToNum(str, def) {
   if (arguments.length == 1 || def == undefined) def = 1;
@@ -921,7 +1159,7 @@ function openURL(url) {
 /**
  * Serialize a JavaScript plain object into a JSON-like string
  * @param {Object} obj - The object to serialize
- * @returns {string} - A JSON-like string representation of the object
+ * @returns {string} A JSON-like string representation of the object
  */
 function stringify(obj) {
   var json = [];
