@@ -56,11 +56,12 @@ You can use them to create macros to run scripts with hotkeys.
 > To run scripts via the F1-F15 hotkeys, users add them to the Actions panel. If another action is running inside the script, Illustrator will freeze. How do you check it? Open the script in a text editor, if you find `app.doScript()` in the code, it is using an action. This is in all versions from CS6 to CC 2025 on Mac and Windows.
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
@@ -68,7 +69,11 @@ Many scripts are free to download thanks to user support. Help me to develop new
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
   <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
@@ -208,8 +213,8 @@ Click the category name to learn more about the scripts in the selected category
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#maketrappingstroke) `v0.1.1 — upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#opacitymaskclip) `v0.3 — upd, 05.03.2024`
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#randomstrokewidth) `v0.1.2 — upd, 14.10.2022`
-* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `v0.3 — upd, 23.07.2024`
-* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `v0.3 — upd, 23.07.2024`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `v0.4 — upd, 23.11.2025`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.md#strokesweight) `v0.4 — upd, 23.11.2025`
 
 ### [Text](md/Text.md)  
 

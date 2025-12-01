@@ -56,11 +56,12 @@
 > Чтобы запускать скрипты через горячие клавиши F1-F15, их добавляют в панель Actions (Операции). Если внутри скрипта выполняется другой экшен, то Иллюстратор зависнет. Как проверить? Откройте в текстовом редакторе скрипт, если в коде найдете `app.doScript()`, то он использует экшен. Это во всех версиях с CS6 по CC 2025 на Мак и Виндовс.
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
@@ -68,7 +69,11 @@
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
   <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
@@ -218,8 +223,8 @@
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#maketrappingstroke) `v0.1.1 — upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#opacitymaskclip) `v0.3 — upd, 05.03.2024`
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#randomstrokewidth) `v0.1.2 — upd, 14.10.2022`
-* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.3 — upd, 23.07.2024`
-* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.3 — upd, 23.07.2024`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.4 — upd, 23.11.2025`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.4 — upd, 23.11.2025`
 
 ### [Text](md/Text.ru.md)  
 Скрипты для работы с текстовыми объектами

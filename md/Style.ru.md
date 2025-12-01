@@ -19,8 +19,8 @@
 * [MakeTrappingStroke](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#maketrappingstroke) `v0.1.1 — upd, 09.02.2024`
 * [OpacityMaskClip](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#opacitymaskclip) `v0.3 — upd, 05.03.2024`
 * [RandomStrokeWidth](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#randomstrokewidth) `v0.1.2 — upd, 14.10.2022`
-* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.3 — upd, 23.07.2024`
-* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.3 — upd, 23.07.2024`
+* [StrokesWeightUp](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.4 — upd, 23.11.2025`
+* [StrokesWeightDown](https://github.com/creold/illustrator-scripts/blob/master/md/Style.ru.md#strokesweight) `v0.4 — upd, 23.11.2025`
 
 ## AverageStrokesWidth
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageStrokesWidth.jsx-FF6900.svg)](https://link.aiscripts.ru/avgstrwd) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -41,6 +41,8 @@
 3) Случайное распределение Гаусса
 
 Apply to Objects Inside Groups — изменять прозрачность вложенных объектов в группах. 
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/style/change-opacity/)
 
 ![ChangeOpacity](https://i.ibb.co/B5bc2NnT/Change-Opacity.gif)
 
@@ -86,29 +88,35 @@ Apply to Objects Inside Groups — изменять прозрачность в�
 ## StrokesWeight
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightDown.jsx-FF6900.svg)](https://link.aiscripts.ru/strwtdn) [![Direct](https://img.shields.io/badge/Прямая%20ссылка-StrokesWeightUp.jsx-FF6900.svg)](https://link.aiscripts.ru/strwtup) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-* StrokesWeightDown.jsx
-* StrokesWeightUp.jsx
-
-Набор из двух отдельных скриптов, которые меняют толщину обводок относительно текущих у выбранных путей. Для округления толщин установите переменную `isRound: true` иначе `isRound: false`. Для добавления обводок, если их не было у объекта, в скрипте StrokesWeightUp.jsx `isAddStroke: true`
+Набор из двух скриптов, которые меняют толщину обводок относительно текущих у выбранных путей. Скрипт StrokesWeightDown уменьшает, а StrokesWeightUp увеличивает при запуске все обводки выбранных объектов на фиксированное значение в текущих единицах из Preferences → Units → Stroke:
 
 * +/- 0,01 единиц, если толщина < 0,1
 * +/- 0.2, если < 1
 * +/- 0.5, если < 5
 * +/- 1, если >= 5
 
-Удерживайте <kbd>Alt</kbd> при запуске этих скриптов, чтобы открылся диалог изменения толщин в процентах или на точную величину > 0 или < 0.
+Для округления толщин установите переменную `isRound: true` иначе `isRound: false`. Для добавления обводок, если их не было у объекта `isAddStroke: true`.
+
+Удерживайте <kbd>Alt</kbd> при запуске этих скриптов, чтобы открылся диалог с дополнительными режимами: 
+
+* масштабирование в процентах
+* абсолютные значения и арифметические операции
+* случайные толщины в диапазоне
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/style/strokes-weight/)
 
 > [!NOTE]   
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/37981045-change-a-group-of-vector-s-stroke-size-relative-to) за внедрение этой функции в Иллюстратор.
 
-![StrokesWeight](https://i.ibb.co/PwsgB7Q/Strokes-Weight.gif)
+![StrokesWeight](https://i.ibb.co/Xx3yD9bB/Strokes-Weight.gif)
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
@@ -116,7 +124,11 @@ Apply to Objects Inside Groups — изменять прозрачность в�
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
   <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 

@@ -121,16 +121,25 @@
 ![RenameArtboardAsTopObj](https://i.ibb.co/3mfd4bFV/Rename-Artboard-As-Top-Obj.gif)
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [Tinkoff] `RUB`, [ЮMoney] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
 <a href="https://www.buymeacoffee.com/aiscripts">
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
+</a>
+
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
+  <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
 <a href="https://yoomoney.ru/to/410011149615582">

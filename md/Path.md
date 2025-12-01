@@ -83,11 +83,12 @@ Removes the ends of open paths up to their intersection points. It's an alternat
 ![TrimOpenEnds](https://i.ibb.co/J3ct3KN/Trim-Open-Ends.gif)
 
 ## Donate
-Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
+Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
@@ -95,7 +96,11 @@ Many scripts are free to download thanks to user support. Help me to develop new
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
   <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 

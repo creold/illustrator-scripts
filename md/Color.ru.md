@@ -204,11 +204,12 @@
 ![StrokeColorFromFill](https://i.ibb.co/dkW64ZV/Stroke-Color-From-Fill.gif)
 
 ## Поддержка
-Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
+Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   
 
 [Buymeacoffee]: https://www.buymeacoffee.com/aiscripts
 [ЮMoney]: https://yoomoney.ru/to/410011149615582
-[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/
+[CloudTips]: https://pay.cloudtips.ru/p/b81d370e
+[Tinkoff]: https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405
 [Donatty]: https://donatty.com/sergosokin
 [DonatePay]: https://new.donatepay.ru/@osokin
 
@@ -216,7 +217,11 @@
   <img width="111" height="40" src="https://i.ibb.co/0ssTJQ1/bmc-badge.png">
 </a>
 
-<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405/">
+<a href="https://pay.cloudtips.ru/p/b81d370e">
+  <img width="111" height="40" src="https://i.ibb.co/qLznXkNG/cloudtips-badge.png">
+</a>
+
+<a href="https://www.tinkoff.ru/rm/osokin.sergey127/SN67U9405">
   <img width="111" height="40" src="https://i.ibb.co/hRsbYnM/tinkoff-badge.png">
 </a>
 
