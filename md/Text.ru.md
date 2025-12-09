@@ -19,6 +19,7 @@
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#multiedittext) `v0.3.1 — upd, 18.07.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#replaceformattedtext) `v0.1 — 29.12.2022`
 * [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#textblock) `v0.2.1 — upd, 02.05.2025`
+* [ToggleTextStyles](https://github.com/creold/illustrator-scripts/blob/master/md/Text.ru.md#toggletextstyles) `v0.1 — new, 09.12.2025`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -97,6 +98,24 @@
 Смотрите также [версию для Adobe Photoshop](https://github.com/creold/photoshop-scripts/blob/master/README.ru.md#textblock) 
 
 ![TextBlock](https://i.ibb.co/twh4SMH0/Text-Block.gif)
+
+## ToggleTextStyles
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-ToggleTextStyles.zip-FF6900.svg)](https://link.aiscripts.ru/tgltxtstl) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)  
+
+В CC 2024 v28.3 и новее есть штатные горячие клавиши: 
+
+* Bold - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>B</kbd>,
+* Italic - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>I</kbd>,
+* Underline - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>U</kbd>
+
+Скрипты для переключения стилей текста:
+
+* ToggleTextBold.jsx — переключает полужирное начертание, находя в шрифтовом семействе тонкие (Regular, Light, Thin…) и жирные (Bold, Semibold, Medium, Black…) стили
+* ToggleTextItalic.jsx — переключает курсив (учитывает начертание: Thin → Thin Italic, Medium → Medium Italic и т.д)
+* ToggleTextUnderline.jsx — включает/выключает подчёркивание
+* ToggleTextStrikethrough.jsx — включает/выключает зачёркивание
+
+![ToggleTextStyles](https://i.ibb.co/DBshTHz/Toggle-Text-Styles.gif)
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   

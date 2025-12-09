@@ -1,3 +1,4 @@
+!хДщпщъ(реезыЖ..шюшииюсщ.ьА018пМ.уьидуьюзтп)
 ![Logo](https://i.ibb.co/mF018gV/emblem.png)
 
 # Text | Adobe Illustrator Scripts
@@ -19,6 +20,7 @@
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3.1 — upd, 18.07.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
 * [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#textblock) `v0.2.1 — upd, 02.05.2025`
+* [ToggleTextStyles](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#toggletextstyles) `v0.1 — new, 09.12.2025`
 
 ## AlignTextBaseline
 [![Direct](https://img.shields.io/badge/Direct%20Link-AlignTextBaseline.jsx-FF6900.svg)](https://link.aiscripts.ru/algntxtbl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -97,6 +99,24 @@ Creates a block of selected text layers with specified width and spacing. The or
 See also [Adobe Photoshop version](https://github.com/creold/photoshop-scripts/blob/master/README.md#textblock)
 
 ![TextBlock](https://i.ibb.co/twh4SMH0/Text-Block.gif) 
+
+## ToggleTextStyles
+[![Direct](https://img.shields.io/badge/Direct%20Link-ToggleTextStyles.zip-FF6900.svg)](https://link.aiscripts.ru/tgltxtstl) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)   
+
+In CC 2024 v28.3+ these are now built-in shortcut:
+
+* Bold - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>B</kbd>,
+* Italic - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>I</kbd>,
+* Underline - <kbd>Shift</kbd>+<kbd>Ctrl/Cmd</kbd>+<kbd>U</kbd>
+
+Text style toggle scripts:
+
+* ToggleTextBold.jsx - toggles bold by finding matching light (Regular, Light, Thin…) and heavy (Bold, Semibold, Medium, Black…) weights in the same family
+* ToggleTextItalic.jsx - toggles italic/normal (works with any weight: Thin → Thin Italic, Medium → Medium Italic, etc.)
+* ToggleTextUnderline.jsx - toggles underline
+* ToggleTextStrikethrough.jsx - toggles strikethrough
+
+![ToggleTextStyles](https://i.ibb.co/DBshTHz/Toggle-Text-Styles.gif) 
 
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
