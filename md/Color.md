@@ -2,7 +2,7 @@
 
 # Color | Adobe Illustrator Scripts
 
-![Downloads](https://img.shields.io/badge/Downloads-135k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Yotube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-167k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -14,7 +14,7 @@
 
 ## Scripts
 * [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `v0.1 — 27.03.2022`
-* [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#beautifyswatchnames) `v0.1 — new, 31.10.2024`
+* [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#beautifyswatchnames) `v0.1.1 — upd, 16.01.2026`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `v0.1 — 18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`
 * [ColorGroupReplacer](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorgroupreplacer) `v0.1 — 08.10.2023`
@@ -45,9 +45,9 @@ Modes change without editing the code if you hold down the <kbd>Alt</kbd> key wh
 
 Assigns unique names to selected colors in the Swatches panel. You can create associative palettes like those found in some corporate brandbooks. Using the script, you can get "Jasmine Green" instead of the default "R=122 G=201 B=67" or "Saffron Gold" instead of "C=0 M=50 Y=100 K=0".   
 
-* BeautifySwatchNames — 30,241 colors. For those who want to describe colors in as many ways as possible. The names can be unconventional: Midnight in Saigon, Black Dragon's Caldron, Shawarma, Worcestershire Sauce.
+* BeautifySwatchNames — 31,879 colors. For those who want to describe colors in as many ways as possible. The names can be unconventional: Midnight in Saigon, Black Dragon's Caldron, Shawarma, Worcestershire Sauce.
 
-* BeautifySwatchNames Lite — 4,506 colors. Works faster, but because of the reduced base, more similar colors get the same name.
+* BeautifySwatchNames Lite — 4,877 best names of colors. Works faster, but because of the reduced base, more similar colors get the same name.
 
 The script's color library was imported from [Color Names](https://github.com/meodai/color-names)
 
