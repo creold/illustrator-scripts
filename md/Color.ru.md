@@ -23,6 +23,7 @@
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclecolors) `v0.4.2 — upd, 09.02.2024`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#cyclegradient) `v0.1 — 10.2021`
 * [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#distributegradientstops) `v0.1 — 08.2021`
+* [HexToSwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#hextoswatches) `v0.1 — new, 23.01.2026`
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#reversegradientcolor) `v0.1 — 08.2020`
@@ -153,16 +154,6 @@
 
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
 
-## MatchColors
-[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MatchColors.jsx-FF6900.svg)](https://link.aiscripts.ru/matchclrs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
-
-Переносит цвета заливок с одной группы объектов на другую или на символы текстовых объектов без группировки. Может перекрасить выбранные объекты в выбранные образцы цветов в панели Swatches. Цвета определяются на путях, составных путях или текстах. Остальные объекты в группах будут пропущены.
-
-> [!WARNING]   
-> Скрипты не могут переносить угол поворота, длину градиента между объектами. Поэтому будет перенесён только градиентный цвет без его настроек. Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other) за исправление этого.   
-
-![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
-
 ## DistributeGradientStops
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DistributeGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/distgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
@@ -172,6 +163,37 @@
 > К сожалению, скопированные градиенты связаны друг с другом в Иллюстраторе. Вручную удалите связь, развернув градиент дважды кнопкой `Reverse Gradient`. Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) за исправление этого.   
 
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
+
+## HexToSwatches
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-HexToSwatches.jsx-FF6900.svg)](https://link.aiscripts.ru/hex2sw) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Работает как «умный буфер обмена»: вы вставляете в поле все HEX-коды или ссылку на сайты-генераторы (например, [Coolors](https://coolors.co/)), а он создаёт готовую палитру в Иллюстраторе. Скрипт распознаёт различные способы ввода со знаком # или без:
+
+* через запятую: fb8b24, e36414, 0f4c5c;
+* через точку с запятой: fb8b24; e36414; 0f4c5c;
+* через пробел: fb8b24 e36414 0f4c5c;
+* через дефис: fb8b24-e36414-0f4c5c;
+* сокращённые HEX: ebd, f52, 12fc, 0;
+* HEX-коды в несколько строк;
+* ссылки онлайн-генераторов Coolors: coolors.co/27187e-758bfd-aeb8fe-f1f2f6-ff8600;
+* Poolors URL: poolors.com/f78fe2-898415-2e3741;
+* HEX-коды, которые можно скопировать текстом с colorhunt.co, colordesigner.io, learnui.design;
+
+<a href="https://youtu.be/iUnUU0yJSTA">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
+![HexToSwatches](https://i.ibb.co/ZpHhyX92/Hex-To-Swatches.gif)
+
+## MatchColors
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-MatchColors.jsx-FF6900.svg)](https://link.aiscripts.ru/matchclrs) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Переносит цвета заливок с одной группы объектов на другую или на символы текстовых объектов без группировки. Может перекрасить выбранные объекты в выбранные образцы цветов в панели Swatches. Цвета определяются на путях, составных путях или текстах. Остальные объекты в группах будут пропущены.
+
+> [!WARNING]   
+> Скрипты не могут переносить угол поворота, длину градиента между объектами. Поэтому будет перенесён только градиентный цвет без его настроек. Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other) за исправление этого.   
+
+![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
 
 ## RemoveGradientStops
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-RemoveGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/rmvgradstops) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

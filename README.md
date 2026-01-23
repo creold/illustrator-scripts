@@ -132,6 +132,7 @@ Click the category name to learn more about the scripts in the selected category
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `v0.4.2 — upd, 09.02.2024`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient) `v0.1 — 10.2021`
 * [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops) `v0.1 — 08.2021`
+* [HexToSwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#hextoswatches) `v0.1 — new, 23.01.2026`
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor) `v0.1 — 08.2020`

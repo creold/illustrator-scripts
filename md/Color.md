@@ -23,6 +23,7 @@
 * [CycleColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclecolors) `v0.4.2 — upd, 09.02.2024`
 * [CycleGradient](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#cyclegradient) `v0.1 — 10.2021`
 * [DistributeGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#distributegradientstops) `v0.1 — 08.2021`
+* [HexToSwatches](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#hextoswatches) `v0.1 — new, 23.01.2026`
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor) `v0.1 — 08.2020`
@@ -153,16 +154,6 @@ A set of 4 scripts that change the color order of gradient stops. The position o
 
 ![CycleGradient](https://i.ibb.co/84GsCBK/cycle-Gradient.gif)
 
-## MatchColors
-[![Direct](https://img.shields.io/badge/Direct%20Link-MatchColors.jsx-FF6900.svg)](https://link.aiscripts.ru/matchclrs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
-
-Matches two groups of objects (paths, texts) or text objects characters by fill color. Can recolor selected objects in selected color swatches in the Swatches panel. Colors are defined on paths, compound paths, or text. Other objects in groups are skipped.
-
-> [!WARNING]   
-> Scripts cannot copy/paste gradient angle and length properties. For this reason, only the gradient color is copied without its properties. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other) to fix this.   
-
-![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
-
 ## DistributeGradientStops
 [![Direct](https://img.shields.io/badge/Direct%20Link-DistributeGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/distgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
@@ -172,6 +163,37 @@ Distributes uniform spacing between all the gradients stops without changing the
 > Unfortunately, the copied gradients are one swatch in the Illustrator. Manually break the link by changing the gradient twice with the `Reverse Gradient` button. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/44461230-adjusting-one-gradient-causes-changes-to-unrelated) to fix this.   
 
 ![DistributeGradientStops](https://i.ibb.co/6XNkFqS/Distribute-Gradient-Stops.gif)
+
+## HexToSwatches
+[![Direct](https://img.shields.io/badge/Direct%20Link-HexToSwatches.jsx-FF6900.svg)](https://link.aiscripts.ru/hex2sw) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Acts as a "smart clipboard": simply paste any HEX codes or a link from a color generator site (e.g., [Coolors](https://coolors.co/)) into the input field, and the script instantly creates a color palette in Illustrator. The script recognizes various input formats, with or without the # symbol:
+
+* Comma-separated: fb8b24, e36414, 0f4c5c;
+* Semicolon-separated: fb8b24; e36414; 0f4c5c;
+* Space-separated: fb8b24 e36414 0f4c5c;
+* Hyphen-separated: fb8b24-e36414-0f4c5c;
+* Shorthand HEX: ebd, f52, 12fc, 0;
+* Multi-line HEX codes;
+* Coolors URLs: coolors.co/27187e-758bfd-aeb8fe-f1f2f6-ff8600;
+* Poolors URLs: poolors.com/f78fe2-898415-2e3741;
+* Raw text copied from colorhunt.co, colordesigner.io, learnui.design.
+
+<a href="https://youtu.be/iUnUU0yJSTA">
+  <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
+</a>
+
+![HexToSwatches](https://i.ibb.co/ZpHhyX92/Hex-To-Swatches.gif)
+
+## MatchColors
+[![Direct](https://img.shields.io/badge/Direct%20Link-MatchColors.jsx-FF6900.svg)](https://link.aiscripts.ru/matchclrs) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Matches two groups of objects (paths, texts) or text objects characters by fill color. Can recolor selected objects in selected color swatches in the Swatches panel. Colors are defined on paths, compound paths, or text. Other objects in groups are skipped.
+
+> [!WARNING]   
+> Scripts cannot copy/paste gradient angle and length properties. For this reason, only the gradient color is copied without its properties. Vote on [Uservoice](https://illustrator.uservoice.com/forums/908050-illustrator-desktop-sdk-scripting-issues/suggestions/47572073-control-the-angle-length-of-gradients-and-other) to fix this.   
+
+![MatchColors](https://i.ibb.co/dPyHSgY/Match-Colors.gif)
 
 ## RemoveGradientStops
 [![Direct](https://img.shields.io/badge/Direct%20Link-RemoveGradientStops.jsx-FF6900.svg)](https://link.aiscripts.ru/rmvgradstops) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
