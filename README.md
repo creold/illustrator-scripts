@@ -136,7 +136,7 @@ Click the category name to learn more about the scripts in the selected category
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor) `v0.1 — 08.2020`
-* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `v0.4.1 — upd, 12.02.2024`
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `v0.5 — upd, 08.02.2026`
 
 ### [Draw](md/Draw.md) 
 

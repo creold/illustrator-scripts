@@ -27,7 +27,7 @@
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#reversegradientcolor) `v0.1 — 08.2020`
-* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#strokecolorfromfill) `v0.4.1 — upd, 12.02.2024`
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#strokecolorfromfill) `v0.5 — upd, 08.02.2026`
 
 ## AverageColors
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageColors.jsx-FF6900.svg)](https://link.aiscripts.ru/avgcols) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -220,10 +220,7 @@
 
 Применяет к обводке (Stroke) каждого выбранного объекта цвет из его сплошной или градиентной заливки. Если заливка градиентная, то цвета всех стопов градиента усредняются для цвета обводки.   
 
-> [!WARNING]   
-> Не добавляйте этот скрипт в панель операций (Action) для быстрого запуска. Это приведёт к зависанию Иллюстратора.
-
-![StrokeColorFromFill](https://i.ibb.co/dkW64ZV/Stroke-Color-From-Fill.gif)
+![StrokeColorFromFill](https://i.ibb.co/SwBF5d8x/Stroke-Color-From-Fill.gif)
 
 ## Поддержка
 Многие скрипты бесплатны для скачивания благодаря поддержке пользователей. Помогите продолжать разработку новых и обновление текущих скриптов, поддержав мою работу любой суммой через [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, Donatty] `RUB`, [DonatePay] `RUB`. Спасибо.   

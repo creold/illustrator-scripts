@@ -27,7 +27,7 @@
 * [MatchColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#matchcolors) `v0.2.1 — upd, 20.05.2024`
 * [RemoveGradientStops](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#removegradientstops) `v0.1 — 09.2021`
 * [ReverseGradientColor](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#reversegradientcolor) `v0.1 — 08.2020`
-* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `v0.4.1 — upd, 12.02.2024`
+* [StrokeColorFromFill](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#strokecolorfromfill) `v0.5 — upd, 08.02.2026`
 
 ## AverageColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-AverageColors.jsx-FF6900.svg)](https://link.aiscripts.ru/avgcols) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -220,10 +220,7 @@ Reverse the order of gradient colors and their opacity. Does not reverse the loc
 
 Applies a color from its solid or gradient fill to the stroke of each selected path. If the fill is a gradient, the colors of all gradient stops are averaged for the stroke color.    
 
-> [!WARNING]   
-> Don't put this script in the action slot for a quick run. It will freeze Illustrator.
-
-![StrokeColorFromFill](https://i.ibb.co/dkW64ZV/Stroke-Color-From-Fill.gif)
+![StrokeColorFromFill](https://i.ibb.co/SwBF5d8x/Stroke-Color-From-Fill.gif)
 
 ## Donate
 Many scripts are free to download thanks to user support. Help me to develop new scripts and update existing ones by supporting my work with any amount via [Buymeacoffee] `USD`, [CloudTips] `RUB`, [ЮMoney] `RUB`, [Tinkoff] `RUB`, [Donatty] `RUB`, [DonatePay] `RUB`. Thank you.
@@ -270,4 +267,4 @@ Telegram [@sergosokin](https://t.me/sergosokin)
 ### 📝 License
 
 All scripts is licensed under the MIT licence.  
-See the included LICENSE file for more details.
+See the included LICENSE file for more details. 

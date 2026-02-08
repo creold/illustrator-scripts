@@ -2,16 +2,13 @@
   StrokeColorFromFill.jsx for Adobe Illustrator
   Description: Sets a stroke color of an object based on an its solid or gradient fill.
   Date: August, 2020
-  Modification date: February, 2024
+  Modification date: February, 2026
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
-  *************************************************************************************************
-  * WARNING: Don't put this script in the action slot for a quick run. It will freeze Illustrator *
-  *************************************************************************************************
-
   Release notes:
+  0.5 Added overprint, cap, and corner options, save/load settings
   0.4.1 Shifting lightness to white keeps spot swatches
   0.4 Changed color shift method. Spot conversion always.
       Fixed bug with strokes on Mac OS. Added weight input for new strokes.
@@ -31,7 +28,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2025 (Mac/Win).
+  Tested with Adobe Illustrator CC 2019-2026 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -47,13 +44,13 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Stroke Color From Fill',
-        version: 'v0.4.1'
-      },
-      CFG = {
+        version: 'v0.5'
+      };
+
+  var CFG = {
         aiVers: parseFloat(app.version),
         isMac: /mac/i.test($.os),
         strokeUnits: getUnits('strokeUnits'),
-        uiOpacity: .97, // UI window opacity. Range 0-1
         preview: false,
         addStroke: false,
         max: 100, // Color shift range -100...100
@@ -61,13 +58,19 @@ function main() {
         maxStroke: 1000, // Maximum system value, pt
         minStroke: 0.01, // Minimum system value, pt
         shift: -30, // Default color shift value
-        note: '%fromfill'
+        uiOpacity: .98, // UI window opacity. Range 0-1
+        uiMargins: [10, 15, 10, 8]
       };
-    
+
+  var SETTINGS = {
+    name:   SCRIPT.name.replace(/\s/g, '_') + '_data.json',
+    folder: Folder.myDocuments + '/Adobe Scripts/'
+  };
+
   if (!isCorrectEnv('selection')) return;
 
   var doc = app.activeDocument,
-      docSel = app.selection,
+      docSel = get(app.selection),
       selPaths = getPaths(docSel),
       hasStroke = hasStrokedPath(selPaths),
       isUndo = false; // For preview
@@ -81,8 +84,6 @@ function main() {
   ['red', 'green', 'blue'] : 
   ['cyan', 'magenta', 'yellow', 'black'];
 
-  removeNote(docSel, CFG.note);
-
   if (CFG.isMac) {
     app.selection = null;
     app.redraw();
@@ -94,38 +95,87 @@ function main() {
       win.alignChildren = ['fill', 'center'];
       win.opacity = CFG.uiOpacity;
 
-  // Lightness
+  // LIGHTNESS
   var shiftPnl = win.add('panel', undefined, 'Shift Ligthness');
       shiftPnl.orientation = 'row';
       shiftPnl.alignChildren = ['left', 'center'];
-      shiftPnl.margins = [10, 15, 10, 8];
+      shiftPnl.margins = CFG.uiMargins;
 
   shiftPnl.add('statictext', undefined, -CFG.max);
 
   var shiftSlider = shiftPnl.add('slider', undefined, CFG.shift, -CFG.max, CFG.max);
-      shiftSlider.preferredSize.width = 120;
+      shiftSlider.preferredSize.width = 100;
 
   shiftPnl.add('statictext', undefined, CFG.max);
 
   var shiftInp = shiftPnl.add('edittext', undefined, CFG.shift);
-      shiftInp.characters = 5;
+      shiftInp.characters = 4;
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     shiftInp.active = true;
   }
 
-  // Stroke
+  // OVERPRINT
+  var overprintPnl = win.add('panel', undefined, 'Overprint Stroke');
+      overprintPnl.orientation = 'row';
+      overprintPnl.alignChildren = ['left', 'center'];
+      overprintPnl.margins = CFG.uiMargins;
+
+  var isOverprintOriginal = overprintPnl.add('radiobutton', undefined, 'Original');
+      isOverprintOriginal.helpTip = 'Keep original attribute';
+      isOverprintOriginal.value = true;
+  var isOverprintON = overprintPnl.add('radiobutton', undefined, 'On');
+      isOverprintON.helpTip = 'Enable overprint attribute';
+  var isOverprintOFF = overprintPnl.add('radiobutton', undefined, 'Off');
+      isOverprintOFF.helpTip = 'Disable overprint attribute';
+
+  var styleWrapper = win.add('group');
+      styleWrapper.alignChildren = ['fill', 'fill'];
+
+  // STROKE CAP (LINE ENDS)
+  var capPnl = styleWrapper.add('panel', undefined, 'Stroke Cap');
+      capPnl.orientation = 'column';
+      capPnl.alignChildren = ['left', 'center'];
+      capPnl.margins = CFG.uiMargins;
+
+  var isCapOriginal = capPnl.add('radiobutton', undefined, 'Original');
+      isCapOriginal.helpTip = 'Keep original cap';
+      isCapOriginal.value = true;
+  var isCapButt = capPnl.add('radiobutton', undefined, 'Butt');
+      isCapButt.helpTip = 'Butt cap';
+  var isCapRound = capPnl.add('radiobutton', undefined, 'Round');
+      isCapRound.helpTip = 'Round cap';
+  var isCapProjecting = capPnl.add('radiobutton', undefined, 'Projecting');
+      isCapProjecting.helpTip = 'Projecting cap';
+
+  // STROKE CORNER (LINE JOINS)
+  var cornerPnl = styleWrapper.add('panel', undefined, 'Stroke Corner');
+      cornerPnl.orientation = 'column';
+      cornerPnl.alignChildren = ['left', 'center'];
+      cornerPnl.margins = CFG.uiMargins;
+
+  var isCornerOriginal = cornerPnl.add('radiobutton', undefined, 'Original');
+      isCornerOriginal.helpTip = 'Keep original corner';
+      isCornerOriginal.value = true;
+  var isCornerMiter = cornerPnl.add('radiobutton', undefined, 'Miter');
+      isCornerMiter.helpTip = 'Miter join';
+  var isCornerRound = cornerPnl.add('radiobutton', undefined, 'Round');
+      isCornerRound.helpTip = 'Round join';
+  var isCornerBevel = cornerPnl.add('radiobutton', undefined, 'Bevel');
+      isCornerBevel.helpTip = 'Bevel join';
+
+  // STROKE WIDTH
   var strokeGrp = win.add('group');
       strokeGrp.alignChildren = ['left', 'center'];
 
-  var isAddStroke = strokeGrp.add('checkbox', undefined, "Add stroke if doesn't exist");
+  var isAddStroke = strokeGrp.add('checkbox', undefined, "Add stroke if doesn't exist:");
       isAddStroke.value = CFG.addStroke;
 
   var weightInp = strokeGrp.add('edittext', undefined, CFG.weight);
-      weightInp.characters = 6;
+      weightInp.characters = 4;
 
   strokeGrp.add('statictext', undefined, CFG.strokeUnits);
 
-  // Buttons
+  // BUTTONS
   var btns = win.add('group');
       btns.orientation = 'row';
       btns.alignChildren = ['fill', 'center'];
@@ -144,14 +194,19 @@ function main() {
   cancel.helpTip = 'Press Esc to Close';
   ok.helpTip = 'Press Enter to Run';
 
-  var copyright = win.add('statictext', undefined, '\u00A9 Sergey Osokin. Visit Github');
-      copyright.justify = 'center';
+  var copyGrp = win.add('group');
+      copyGrp.orientation = 'row';
+      copyGrp.alignChildren = ['fill', 'center'];
 
-  copyright.addEventListener('mousedown', function () {
-    openURL('https://github.com/creold');
-  });
+  var author = copyGrp.add('statictext', undefined, '\u00A9 Sergey Osokin');
+      author.justify = 'left';
 
-  // Run preview
+  var link = copyGrp.add('statictext', undefined, 'Visit GitHub');
+      link.justify = 'right';
+
+  // EVENTS
+  loadSettings(SETTINGS);
+
   if (isPreview.value) preview();
   isPreview.onClick = isAddStroke.onClick = shiftSlider.onChange = preview;
   
@@ -166,18 +221,33 @@ function main() {
     preview();
   }
 
+  isOverprintOriginal.onClick = isOverprintON.onClick = isOverprintOFF.onClick = preview;
+
+  isCapButt.onClick = isCapRound.onClick = isCapProjecting.onClick = preview;
+
+  isCornerMiter.onClick = isCornerRound.onClick = isCornerBevel.onClick = preview;
+
   weightInp.onChange = function () {
     var weightVal = strToNum(this.text, CFG.weight);
     this.text = clamp(weightVal, CFG.minStroke, CFG.maxStroke);
     preview();
   }
 
-  // Use Up / Down arrow keys (+ Shift) for change color shift
-  shiftInputNumValue(shiftInp, -CFG.max, CFG.max);
-  shiftInputNumValue(weightInp, CFG.minStroke, CFG.maxStroke);
+  /**
+   * Use Up / Down arrow keys (+ Shift) to change value
+   */
+  bindStepperKeys(shiftInp, -CFG.max, CFG.max);
+  bindStepperKeys(weightInp, CFG.minStroke, CFG.maxStroke);
+
+  setTextHandler(link, function () {
+    openURL('https://github.com/creold')
+  });
 
   ok.onClick = okClick;
 
+  /**
+   * Handle the preview functionality with undo support
+   */
   function preview() {
     if (isPreview.value && (hasStroke || isAddStroke.value)) {
       start();
@@ -194,13 +264,20 @@ function main() {
     }
   }
 
+  /**
+   * Handle the click event for the OK button
+   */
   function okClick() {
+    saveSettings(SETTINGS);
     start();
     win.close();
   }
 
-  // Process
+  /**
+   * Process target items based on selected mode
+   */
   function start() {
+    var styles = getStrokeStyles();
     var shiftVal = strToNum(shiftInp.text, 0);
     var weightVal = convertUnits(strToNum(weightInp.text, CFG.weight), CFG.strokeUnits, 'pt') / CFG.sf;
     var item, color;
@@ -222,6 +299,45 @@ function main() {
       }
 
       item.strokeColor = color;
+
+      switch (styles.cap) {
+        case 'butt':
+          item.strokeCap = StrokeCap.BUTTENDCAP;
+          break;
+        case 'round':
+          item.strokeCap = StrokeCap.ROUNDENDCAP;
+          break;
+        case 'projecting':
+          item.strokeCap = StrokeCap.PROJECTINGENDCAP;
+          break;
+        default:
+          break;
+      }
+
+      switch (styles.corner) {
+        case 'miter':
+          item.strokeJoin = StrokeJoin.MITERENDJOIN;
+          break;
+        case 'round':
+          item.strokeJoin = StrokeJoin.ROUNDENDJOIN;
+          break;
+        case 'bevel':
+          item.strokeJoin = StrokeJoin.BEVELENDJOIN;
+          break;
+        default:
+          break;
+      }
+
+      switch (styles.overprint) {
+        case 'true':
+          item.strokeOverprint = true;
+          break;
+        case 'false':
+          item.strokeOverprint = false;
+          break;
+        default:
+          break;
+      }
     }
   }
 
@@ -229,60 +345,169 @@ function main() {
 
   win.onClose = function () {
     if (CFG.isMac) {
-      if (docSel.length <= 30) {
+      if (docSel.length <= 25) {
         app.selection = docSel;
       } else {
-        addNote(docSel, CFG.note);
-        selectByNote(CFG.note);
+        selectItems(docSel);
       }
     }
-    removeNote(app.selection, CFG.note);
     isUndo = false;
   }
 
   /**
    * Handle keyboard input to shift numerical values
-   * @param {Object} item - The input element to which the event listener will be attached
+   * @param {Object} input - The input element to which the event listener will be attached
    * @param {number} min - The minimum allowed value for the numerical input
    * @param {number} max - The maximum allowed value for the numerical input
    * @returns {void}
    */
-  function shiftInputNumValue(item, min, max) {
-    item.addEventListener('keydown', function (kd) {
+  function bindStepperKeys(input, min, max) {
+    input.addEventListener('keydown', function (kd) {
       var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
-      var num = Number(this.text);
-      if (kd.keyName == 'Down') {
-        if (num >= min + step) {
-          this.text = num - step;
-          kd.preventDefault();
-        } else {
-          this.text = min;
-        }
+      var num = parseFloat(this.text) || 0;
+      if (kd.keyName == 'Down' || kd.keyName == 'LeftBracket') {
+        this.text = (typeof min !== 'undefined' && (num - step) < min) ? min : num - step;
+        kd.preventDefault();
         shiftSlider.value = parseFloat(this.text);
         preview();
       }
-
-      if (kd.keyName == 'Up') {
-        if (num <= max - step) {
-          this.text = num + step;
-          kd.preventDefault();
-        } else {
-          this.text = max;
-        }
+      if (kd.keyName == 'Up' || kd.keyName == 'RightBracket') {
+        this.text = (typeof max !== 'undefined' && (num + step) > max) ? max : num + step;
+        kd.preventDefault();
         shiftSlider.value = parseFloat(this.text);
         preview();
       }
     });
   }
 
-  win.center();
+  /**
+   * Set up a clickable text handler with hover effects and callback execution
+   * @param {Object} text - The statictext object to attach handlers to
+   * @param {Function} callback - The function to execute on click
+   */
+  function setTextHandler(text, callback) {
+    var isDarkUI = app.preferences.getRealPreference('uiBrightness') <= 0.5;
+    var gfx = text.graphics;
+    var colNormal = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.7, 0.7, 0.7] : [0.3, 0.3, 0.3], 1); // Black
+    var colHover = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.27, 0.62, 0.96] : [0.08, 0.45, 0.9], 1); // Blue
+
+    gfx.foregroundColor = colNormal;
+
+    // Hover effect: change color on mouseover
+    text.addEventListener('mouseover', function () {
+      gfx.foregroundColor = colHover;
+      text.notify('onDraw');
+    });
+
+    // Revert color to normal
+    text.addEventListener('mouseout', function () {
+      gfx.foregroundColor = colNormal;
+      text.notify('onDraw');
+    });
+
+    // Execute callback on click if provided
+    text.addEventListener('mousedown', function () {
+      if (typeof callback === 'function') callback(text);
+    });
+  }
+
+  /**
+   * Retrieve the stroke style properties based on UI radio button values
+   * @returns {Object} An object containing the stroke style properties
+   */
+  function getStrokeStyles() {
+    var capType = 'original';
+    if (isCapButt.value) capType = 'butt';
+    else if (isCapRound.value) capType = 'round';
+    else if (isCapProjecting.value) capType = 'projecting';
+    
+    var cornerType = 'original';
+    if (isCornerMiter.value) cornerType = 'miter';
+    else if (isCornerRound.value) cornerType = 'round';
+    else if (isCornerBevel.value) cornerType = 'bevel';
+
+    var overprintType = 'original';
+    if (isOverprintON.value) overprintType = 'true';
+    else if (isOverprintOFF.value) overprintType = 'false';
+
+    return {
+      cap: capType,
+      corner: cornerType,
+      overprint: overprintType
+    };
+  }
+
+  /**
+   * Save UI options to a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function saveSettings(prefs) {
+    if (!Folder(prefs.folder).exists) {
+      Folder(prefs.folder).create();
+    }
+
+    var f = new File(prefs.folder + prefs.name);
+    f.encoding = 'UTF-8';
+    f.open('w');
+
+    var data = {};
+    data.win_x = win.location.x;
+    data.win_y = win.location.y;
+    data.shift = shiftInp.text;
+    data.overprint = isOverprintOriginal.value ? 0 : (isOverprintON.value ? 1 : 2);
+    data.cap = isCapOriginal.value ? 0 : (isCapButt.value ? 1 : (isCapRound.value ? 2 : 3));
+    data.corner = isCornerOriginal.value ? 0 : (isCornerMiter.value ? 1 : (isCornerRound.value ? 2 : 3));
+    data.isAddStroke = isAddStroke.value;
+    data.weight = strToNum(weightInp.text, 0);
+    data.isPreview = isPreview.value;
+
+    f.write( stringify(data) );
+    f.close();
+  }
+
+  /**
+   * Load options from a file
+   * @param {object} prefs - Object containing preferences
+   */
+  function loadSettings(prefs) {
+    var f = File(prefs.folder + prefs.name);
+    if (!f.exists) return;
+
+    try {
+      f.encoding = 'UTF-8';
+      f.open('r');
+      var json = f.readln();
+      try { var data = new Function('return (' + json + ')')(); }
+      catch (err) { return; }
+      f.close();
+
+      if (typeof data != 'undefined') {
+        win.location = [
+          data.win_x && !isNaN(parseInt(data.win_x)) ? parseInt(data.win_x) : 300,
+          data.win_y && !isNaN(parseInt(data.win_y)) ? parseInt(data.win_y) : 300
+        ];
+        var shiftVal = strToNum(data.shift, 0);
+        shiftInp.text = clamp(shiftVal, -CFG.max, CFG.max);
+        shiftSlider.value = parseFloat(shiftInp.text);
+        overprintPnl.children[parseInt(data.overprint) || 0].value = true;
+        capPnl.children[parseInt(data.cap) || 0].value = true;
+        cornerPnl.children[parseInt(data.corner) || 0].value = true;
+        isAddStroke.value = data.isAddStroke === 'true';
+        weightInp.text = parseFloat(data.weight) || 1;
+        isPreview.value = data.isPreview === 'true';
+      }
+    } catch (err) {
+      return;
+    }
+  }
+
   win.show();
 }
 
 /**
  * Get the stroke width units from Preferences > Units > Stroke
- * @param {string} key - The key corresponding to the preference setting.
- * @returns {string} - The units for stroke width (e.g., 'in', 'mm', 'pt').
+ * @param {string} key - The key corresponding to the preference setting
+ * @returns {string} The units for stroke width (e.g., 'in', 'mm', 'pt')
  */
 function getUnits(key) {
   var code = app.preferences.getIntegerPreference(key);
@@ -309,7 +534,7 @@ function getUnits(key) {
 /**
  * Check the script environment
  * @param {string} List of initial data for verification
- * @returns {boolean}  Returns true if the script environment is correct; otherwise, displays an alert and returns false
+ * @returns {boolean} Returns true if the script environment is correct; otherwise, displays an alert and returns false
  */
 function isCorrectEnv() {
   var args = ['app', 'document'];
@@ -347,6 +572,19 @@ function isCorrectEnv() {
   }
 
   return true;
+}
+
+/**
+ * Convert a collection into a standard Array
+ * @param {Object} coll - The collection to be converted
+ * @returns {Array} A new array containing the elements
+ */
+function get(coll) {
+  var results = [];
+  for (var i = 0, len = coll.length; i < len; i++) {
+    results.push(coll[i]);
+  }
+  return results;
 }
 
 /**
@@ -397,29 +635,6 @@ function hasStrokedPath(arr) {
     if (arr[i].stroked) return true;
   }
   return false;
-}
-
-/**
- * Add a specified string to the 'note' property of each item in the collection
- * @param {(Object|Array)} coll - The collection of Illustrator PageItems
- * @param {string} str - The string to be added to the 'note' property
- */
-function addNote(coll, str) {
-  for (var i = 0; i < coll.length; i++) {
-    coll[i].note += str;
-  }
-}
-
-/**
- * Remove occurrences of a specified string from the 'note' property of each item in the collection
- * @param {(Object|Array)} coll - The collection of Illustrator PageItems
- * @param {string} str - The string to be removed from the 'note' property
- */
-function removeNote(coll, str) {
-  var regex = new RegExp(str, 'gi');
-  for (var i = 0; i < coll.length; i++) {
-    coll[i].note = coll[i].note.replace(regex, '');
-  }
 }
 
 /**
@@ -707,9 +922,9 @@ function clamp(n, min, max) {
 
 /**
  * Adjust the lightness of an HSL color
- * @param {Array} hsl - An array representing the HSL values [hue, saturation, lightness].
+ * @param {Array} hsl - An array representing the HSL values [hue, saturation, lightness]
  * @param {number} value - The adjustment value for lightness. Positive values lighten the color, negative values darken it
- * @returns {Array} - The adjusted HSL values.
+ * @returns {Array} The adjusted HSL values
  */
 function lightenDarkenHSLColor(hsl, value) {
   if (arguments.length == 1 || value == undefined) value = 100;
@@ -747,11 +962,59 @@ function strToNum(str, def) {
  * @param {string} value - The numeric value to be converted
  * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
  * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
- * @returns {number} - The converted value in the specified units
+ * @returns {number} The converted value in the specified units
  */
 function convertUnits(value, currUnits, newUnits) {
   var convertedVal = UnitValue(value, currUnits).as(newUnits);
   return convertedVal;
+}
+
+/**
+ * Fast select an array of Illustrator items by temporarily grouping them
+ * @param {Array} arr - Array of items to select
+ * @returns {void}
+ */
+function selectItems(arr) {
+  // Validate input
+  if (!arr || Object.prototype.toString.call(arr) !== '[object Array]' || !arr.length) return;
+
+  // Create temp layer and group
+  var tempLayer = app.activeDocument.layers.add();
+  tempLayer.name = '__tempSelectionLayer__';
+  var tempGroup = tempLayer.groupItems.add();
+
+  // Store pairs of placeholder and original items
+  var pairs = [];
+  for (var i = 0; i < arr.length; i++) {
+    try {
+      var tempItem = tempLayer.pathItems.add();
+      tempItem.move(arr[i], ElementPlacement.PLACEBEFORE);
+      arr[i].move(tempGroup, ElementPlacement.PLACEATEND);
+      pairs.push({ placeholder: tempItem, original: arr[i] });
+    } catch (err) {
+      if (tempItem) tempItem.remove(); // Cleanup on error
+    }
+  }
+
+  // Select the group
+  try { 
+    tempGroup.selected = true;
+  } catch (err) {}
+
+  // Restore original positions and cleanup
+  for (var j = pairs.length - 1; j >= 0; j--) {
+    var pair = pairs[j];
+    try {
+      pair.original.move(pair.placeholder, ElementPlacement.PLACEBEFORE);
+      pair.placeholder.remove();
+    } catch (err) {
+      try { pair.placeholder.remove(); } catch (e) {} // Silent cleanup
+    }
+  }
+
+  // Remove temp group and layer
+  try { tempGroup.remove(); } catch (err) {}
+  try { tempLayer.remove(); } catch (err) {}
 }
 
 /**
@@ -769,93 +1032,24 @@ function openURL(url) {
 }
 
 /**
- * Generate an action for selecting objects based on the provided note
- * @param {string} str - The note used for selecting objects in the generated action
+ * Serialize a JavaScript plain object into a JSON-like string
+ * @param {Object} obj - The object to serialize
+ * @returns {string} - A JSON-like string representation of the object
  */
-function selectByNote(str) {
-  var set = 'StrokeColorFromFill',
-      name = 'Select-objects',
-      path = Folder.myDocuments + '/Adobe Scripts/';
-
-  if (!Folder(path).exists) Folder(path).create();
-
-  var actionCode = '''/version 3
-  /name [ ''' + set.length + '''
-    ''' + ascii2Hex(set) + '''
-  ]
-  /isOpen 1
-  /actionCount 1
-  /action-1 {
-    /name [ ''' + name.length + '''
-      ''' + ascii2Hex(name) + '''
-    ]
-    /keyIndex 0
-    /colorIndex 0
-    /isOpen 1
-    /eventCount 1
-    /event-1 {
-      /useRulersIn1stQuadrant 0
-      /internalName (adobe_setSelection)
-      /localizedName [ 13
-        5365742053656c656374696f6e
-      ]
-      /isOpen 0
-      /isOn 1
-      /hasDialog 0
-      /parameterCount 3
-      /parameter-1 {
-        /key 1952807028
-        /showInPalette 4294967295
-        /type (ustring)
-        /value [ ''' + str.length + '''
-          ''' + ascii2Hex(str) + '''
-        ]
-      }
-      /parameter-2 {
-        /key 2003792484
-        /showInPalette 4294967295
-        /type (boolean)
-        /value 0
-      }
-      /parameter-3 {
-        /key 1667330917
-        /showInPalette 4294967295
-        /type (boolean)
-        /value 0
-      }
+function stringify(obj) {
+  var json = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      var value = obj[key].toString();
+      value = value
+        .replace(/\t/g, "\t")
+        .replace(/\r/g, "\r")
+        .replace(/\n/g, "\n")
+        .replace(/"/g, '\"');
+      json.push('"' + key + '":"' + value + '"');
     }
-  }''';
-
-  try { app.unloadAction(set, ''); } catch (err) {}
-  createAction(actionCode, set, path);
-  app.doScript(name, set);
-  try { app.unloadAction(set, ''); } catch (err) {}
-}
-
-/**
- * Create an Adobe Illustrator action from the given action code
- * @param {string} str - The action code to be used for creating the action
- * @param {string} set - The name of the action set
- * @param {string} path - The path where the action file will be saved
- */
-function createAction (str, set, path) {
-  var f = new File('' + path + '/' + set + '.aia');
-  f.open('w');
-  f.write(str);
-  f.close();
-  app.loadAction(f);
-  f.remove();
-}
-
-/**
- * Convert ASCII characters to their corresponding hexadecimal representation
- * @param {string} hex - The ASCII string to be converted to hexadecimal.
- * @returns {string} The hexadecimal representation of the input ASCII string.
- */
-function ascii2Hex(hex) {
-  return hex.replace(/./g, function(a) {
-    return a.charCodeAt(0).toString(16)
-  });
+  }
+  return "{" + json.join(",") + "}";
 }
 
 // Run script
