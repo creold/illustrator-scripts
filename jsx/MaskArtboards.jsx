@@ -2,12 +2,13 @@
   MaskArtboards.jsx for Adobe Illustrator
   Description: Adds visible unlocked objects on artboards to clipping masks by artboard size
   Date: July, 2024
-  Modification date: June, 2025
+  Modification date: February, 2025
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.3 Added mask rectangles preview and optional display of artboard indexes
   0.2 Added percentage-based clippin mask sizing, settings persistence
   0.1.1 Added active artboard index to custom range option
   0.1.0 Initial version
@@ -15,12 +16,13 @@
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
   - via Buymeacoffee: https://www.buymeacoffee.com/aiscripts
+  - via CloudTips: https://pay.cloudtips.ru/p/b81d370e
   - via Donatty https://donatty.com/sergosokin
   - via DonatePay https://new.donatepay.ru/en/@osokin
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2018-2024 (Mac), 2024 (Win).
+  Tested with Adobe Illustrator CC 2019-2026 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -36,12 +38,17 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Mask Artboards',
-        version: 'v0.2'
+        version: 'v0.3'
       };
 
   var CFG = {
         bleed: getBleed(), // Default document bleed
         isEqual: true,
+        layer: 'Temp_Masks', // Layer for temporary masks
+        rectColor: [255, 0, 0], // RGB color of mask stroke for preview
+        isShowIndex: true, // Show (true) or not (false) temporary artboard indexes
+        indexColor: [255, 0, 0], // RGB color for temporary artboard indexes
+        indexLayer: 'ARTBOARD_INDEX', // Layer for temporary artboard indexes
         aiVers: parseFloat(app.version),
         units: getUnits(),
         isMac: /mac/i.test($.os),
@@ -73,6 +80,11 @@ function main() {
   var docAbs = doc.artboards;
   var currIdx = docAbs.getActiveArtboardIndex();
 
+  // Create rectangles color
+  var rectColor = setRGBColor(CFG.rectColor);
+
+  var isUndo = false;
+
   // DIALOG
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.alignChildren = ['fill', 'top'];
@@ -90,7 +102,7 @@ function main() {
   var isCstmAb = srcPnl.add("radiobutton", undefined, 'Custom:');
       isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
-  var rangeInp = srcPnl.add('edittext', undefined, (currIdx + 1) + '-' + docAbs.length);
+  var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
       rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
       rangeInp.characters = 13;
       rangeInp.enabled = isCstmAb.value;
@@ -170,8 +182,7 @@ function main() {
       btns.orientation = 'row';
       btns.alignChildren = ['fill', 'center'];
 
-  var copyright = btns.add('statictext', undefined, 'Visit Github');
-      copyright.justify = 'center';
+  var isPreview = btns.add('checkbox', undefined, 'Preview');
 
   var cancel, ok;
   if (CFG.isMac) {
@@ -182,87 +193,208 @@ function main() {
     cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
 
+  var copyright = win.add('group');
+      copyright.orientation = 'row';
+      copyright.alignChildren = ['fill', 'center'];
+
+  var author = copyright.add('statictext', undefined, '\u00A9 Sergey Osokin');
+      author.justify = 'left';
+
+  var link = copyright.add('statictext', undefined, 'Visit GitHub');
+      link.justify = 'right';
+
   // EVENTS
   loadSettings(SETTINGS);
+
+  isCurrAb.onClick = function () {
+    rangeInp.enabled = false;
+    preview();
+  }
+
+  isCstmAb.onClick = function () {
+    rangeInp.enabled = true;
+    preview();
+  }
+
+  rangeInp.onChange = isFixBleed.onClick = isRelBleed.onClick = preview;
 
   bindStepperKeys(topInp);
   bindStepperKeys(bottomInp);
   bindStepperKeys(leftInp);
   bindStepperKeys(rightInp);
 
-  isCurrAb.onClick = function () {
-    rangeInp.enabled = false;
-  }
-
-  isCstmAb.onClick = function () {
-    rangeInp.enabled = true;
+  topInp.onChange = bottomInp.onChange = leftInp.onChange = rightInp.onChange = function () {
+    if (isRelBleed.value) {
+      var val = strToNum(this.text, 100);
+      if (val <= -50) this.text = -49;
+    }
+    preview();
   }
 
   isEqual.onClick = function () {
     bottomInp.enabled = !this.value;
     leftInp.enabled = !this.value;
     rightInp.enabled = !this.value;
+    preview();
   }
 
-  // Fix unfocus bug when arrow keys not working
-  win.onShow = function () {
-    isCurrAb.active = true;
-  }
+  isPreview.onClick = preview;
 
   cancel.onClick = win.close;
   ok.onClick = okClick;
 
-  copyright.addEventListener('mousedown', function () {
-    openURL('https://github.com/creold/');
+  setTextHandler(link, function () {
+    openURL('https://github.com/creold');
   });
 
-  function okClick() {
-    saveSettings(SETTINGS);
-
-    var params = {};
-    params.isFixed = isFixBleed.value;
-    if (isFixBleed.value) {
-      params.top = convertUnits( strToNum(topInp.text, CFG.bleed), CFG.units, 'px' ) / CFG.sf;
-      params.bottom = isEqual.value ? params.top : convertUnits( strToNum(bottomInp.text, CFG.bleed), CFG.units, 'px' ) / CFG.sf;
-      params.left = isEqual.value ? params.top : convertUnits( strToNum(leftInp.text, CFG.bleed), CFG.units, 'px' ) / CFG.sf;
-      params.right = isEqual.value ? params.top : convertUnits( strToNum(rightInp.text, CFG.bleed), CFG.units, 'px' ) / CFG.sf;
-    } else {
-      params.top = strToNum(topInp.text, 100);
-      params.bottom = isEqual.value ? params.top : strToNum(bottomInp.text, 100);
-      params.left = isEqual.value ? params.top : strToNum(leftInp.text, 100);
-      params.right = isEqual.value ? params.top : strToNum(rightInp.text, 100);
+  // Fix unfocus bug when arrow keys not working
+  win.onShow = function () {
+    if (CFG.isShowIndex && docAbs.length > 1) {
+      showArboardIndex(CFG.indexLayer, CFG.indexColor);
     }
+    isCurrAb.active = true;
+  }
 
-    // Check relative bleeds size
-    if (isRelBleed.value) {
-      var invalidVal = [];
+  win.onClose = function () {
+    try {
+      if (isUndo) app.undo();
+    } catch (err) {}
+    isUndo = false;
+    try {
+      var tmpLayer = doc.layers.getByName(CFG.indexLayer);
+      tmpLayer.remove();
+    } catch (err) {}
+  }
 
-      if (params.top <= -50) invalidVal.push('Top' );
-      if (params.bottom <= -50) invalidVal.push('Bottom');
-      if (params.left <= -50) invalidVal.push('Left');
-      if (params.right <= -50) invalidVal.push('Right');
-      
-      if (invalidVal.length > 0) {
-        alert('Invalid bleed\n' + invalidVal.join(', ') + 
-              '\n\nPlease enter relative values greater than -50%');
+  /**
+   * Handle the preview functionality with undo support
+   */
+  function preview() {
+    try {
+      if (!isPreview.value) {
+        if (isUndo) {
+          app.undo();
+          app.redraw();
+          isUndo = false;
+        }
         return;
       }
-    }
 
-    app.selection = null;
-
-    if (isCurrAb.value) {
-      maskArtboard(doc, currIdx, params);
-    } else {
-      var range = parseAndFilterIndexes(rangeInp.text, docAbs.length);
-      for (i = 0; i < range.length; i++) {
-        var idx = range[i];
-        maskArtboard(doc, idx, params);
+      if (isUndo) {
+        doc.swatches.add().remove();
+        app.undo();
       }
+
+      showMasks();
+
+      doc.swatches.add().remove();
+      app.redraw();
+
+      isUndo = true;
+    } catch (err) {}
+  }
+
+  /**
+   * Show masks for selected artboards
+   */
+  function showMasks() {
+    var params = getRectParams();
+
+    // Create or retrieve target layer
+    var tgtLayer;
+    try {
+      tgtLayer = doc.layers.getByName(CFG.layer);
+    } catch (err) {
+      tgtLayer = doc.layers.add();
+      tgtLayer.name = CFG.layer;
     }
 
+    processArtboards(function(idx) {
+      drawArtboardRect(tgtLayer, docAbs[idx], params);
+    });
+  }
+
+  /**
+   * Handle the OK button click event.
+   * Save settings, process the document, and clean up
+   */
+  function okClick() {
+    if (isPreview.value && isUndo) app.undo();
+
+    var params = getRectParams();
+
     app.selection = null;
+
+    try {
+      processArtboards(function(idx) {
+        maskArtboard(doc, idx, params);
+      });
+    } catch (err) {}
+
+    saveSettings(SETTINGS);
+    app.selection = null;
+    isUndo = false;
     win.close();
+  }
+
+  /**
+   * Process artboards based on the provided callback function
+   * @param {Function} callback - The function to execute for each artboard index
+   */
+  function processArtboards(callback) {
+    if (isCurrAb.value) {
+      callback(currIdx);
+      return;
+    }
+
+    var range = parseAndFilterIndexes(rangeInp.text, docAbs.length);
+    // Default to the first artboard if no range is specified
+    if (!range.length) range = [0];
+
+    for (var i = 0; i < range.length; i++) callback(range[i]);
+  }
+
+  /**
+   * Retrieve rectangle parameters for mask creation
+   * @returns {Object} - An object containing rectangle parameters
+   */
+  function getRectParams() {
+    var isFixed = isFixBleed.value;
+    var params = {
+      isFixed: isFixed,
+      color: rectColor
+    };
+
+    var topVal = getSideValue(topInp, isFixed);
+    params.top = topVal;
+
+    // Use topVal for all sides if 'isEqual' is true, otherwise calculate individually
+    params.bottom = isEqual.value ? topVal : getSideValue(bottomInp, isFixed);
+    params.left   = isEqual.value ? topVal : getSideValue(leftInp, isFixed);
+    params.right  = isEqual.value ? topVal : getSideValue(rightInp, isFixed);
+
+    // Enforce minimum value if relative bleed is enabled
+    if (isRelBleed.value) {
+      var minVal = -49;
+      if (params.top <= -50) params.top = topInp.text = minVal;
+      if (params.bottom <= -50) params.bottom = bottomInp.text = minVal;
+      if (params.left <= -50) params.left = leftInp.text = minVal;
+      if (params.right <= -50) params.right = rightInp.text = minVal;
+    };
+
+    return params;
+  }
+
+  /**
+   * Calculate the value for a specific side (top, bottom, left, right)
+   * @param {Object} input - The input object containing the text value
+   * @param {boolean} isFixed - Whether the bleed is fixed or relative
+   * @returns {number} - The calculated side value
+   */
+  function getSideValue(input, isFixed) {
+    var val = strToNum(input.text, isFixed ? CFG.bleed : 100);
+    if (isFixed) val = convertUnits(val, CFG.units, 'px') / CFG.sf;
+    return val;
   }
 
   /**
@@ -279,10 +411,12 @@ function main() {
       if (kd.keyName == 'Down' || kd.keyName == 'LeftBracket') {
         this.text = (typeof min !== 'undefined' && (num - step) < min) ? min : num - step;
         kd.preventDefault();
+        preview();
       }
       if (kd.keyName == 'Up' || kd.keyName == 'RightBracket') {
         this.text = (typeof max !== 'undefined' && (num + step) > max) ? max : num + step;
         kd.preventDefault();
+        preview();
       }
     });
   }
@@ -359,42 +493,38 @@ function main() {
     }
   }
 
-  win.show();
-}
+  /**
+   * Set up a clickable text handler with hover effects and callback execution
+   * @param {Object} text - The statictext object to attach handlers to
+   * @param {Function} callback - The function to execute on click
+   */
+  function setTextHandler(text, callback) {
+    var isDarkUI = app.preferences.getRealPreference('uiBrightness') <= 0.5;
+    var gfx = text.graphics;
+    var colNormal = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.8, 0.8, 0.8] : [0.3, 0.3, 0.3], 1); // Black
+    var colHover = gfx.newPen(gfx.PenType.SOLID_COLOR, isDarkUI ? [0.27, 0.62, 0.96] : [0.08, 0.45, 0.9], 1); // Blue
 
-/**
- * Get active document ruler units
- * @returns {string} - Shortened units
- */
-function getUnits() {
-  if (!documents.length) return '';
-  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
-  switch (key) {
-    case 'Pixels': return 'px';
-    case 'Points': return 'pt';
-    case 'Picas': return 'pc';
-    case 'Inches': return 'in';
-    case 'Millimeters': return 'mm';
-    case 'Centimeters': return 'cm';
-    // Added in CC 2023 v27.1.1
-    case 'Meters': return 'm';
-    case 'Feet': return 'ft';
-    case 'FeetInches': return 'ft';
-    case 'Yards': return 'yd';
-    // Parse new units in CC 2020-2023 if a document is saved
-    case 'Unknown':
-      var xmp = activeDocument.XMPString;
-      if (/stDim:unit/i.test(xmp)) {
-        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
-        if (units == 'Meters') return 'm';
-        if (units == 'Feet') return 'ft';
-        if (units == 'FeetInches') return 'ft';
-        if (units == 'Yards') return 'yd';
-        return 'px';
-      }
-      break;
-    default: return 'px';
+    gfx.foregroundColor = colNormal;
+
+    // Hover effect: change color on mouseover
+    text.addEventListener('mouseover', function () {
+      gfx.foregroundColor = colHover;
+      text.notify('onDraw');
+    });
+
+    // Revert color to normal
+    text.addEventListener('mouseout', function () {
+      gfx.foregroundColor = colNormal;
+      text.notify('onDraw');
+    });
+
+    // Execute callback on click if provided
+    text.addEventListener('mousedown', function () {
+      if (typeof callback === 'function') callback(text);
+    });
   }
+
+  win.show();
 }
 
 /**
@@ -443,6 +573,111 @@ function getBleed(doc) {
 }
 
 /**
+ * Get active document ruler units
+ * @returns {string} - Shortened units
+ */
+function getUnits() {
+  if (!documents.length) return '';
+  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  switch (key) {
+    case 'Pixels': return 'px';
+    case 'Points': return 'pt';
+    case 'Picas': return 'pc';
+    case 'Inches': return 'in';
+    case 'Millimeters': return 'mm';
+    case 'Centimeters': return 'cm';
+    // Added in CC 2023 v27.1.1
+    case 'Meters': return 'm';
+    case 'Feet': return 'ft';
+    case 'FeetInches': return 'ft';
+    case 'Yards': return 'yd';
+    // Parse new units in CC 2020-2023 if a document is saved
+    case 'Unknown':
+      var xmp = activeDocument.XMPString;
+      if (/stDim:unit/i.test(xmp)) {
+        var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
+        if (units == 'Meters') return 'm';
+        if (units == 'Feet') return 'ft';
+        if (units == 'FeetInches') return 'ft';
+        if (units == 'Yards') return 'yd';
+        return 'px';
+      }
+      break;
+    default: return 'px';
+  }
+}
+
+/**
+ * Display the index of each artboard in the active document
+ * @param {string} name - The name of the temporary layer to create
+ * @param {Array} color - The RGB color array for the text. Defaults to black if not provided
+ */
+function showArboardIndex(name, color) {
+  if (arguments.length == 1 || color == undefined) {
+    color = [255, 0, 0];
+  }
+
+  var doc = app.activeDocument;
+  var color = setRGBColor(color);
+
+  var tmpLayer;
+  try {
+    tmpLayer = doc.layers.getByName(name);
+  } catch (err) {
+    tmpLayer = doc.layers.add();
+    tmpLayer.name = name;
+  }
+  tmpLayer.visible = true;
+  tmpLayer.locked = false;
+
+  for (var i = 0, len = doc.artboards.length; i < len; i++)  {
+    doc.artboards.setActiveArtboardIndex(i);
+    var currAb = doc.artboards[i];
+    var abWidth = currAb.artboardRect[2] - currAb.artboardRect[0];
+    var abHeight = currAb.artboardRect[1] - currAb.artboardRect[3];
+    var label = tmpLayer.textFrames.add();
+    var labelSize = (abWidth >= abHeight) ? abHeight / 3 : abWidth / 3;
+
+    label.contents = i + 1;
+    // 1296 pt limit for font size in Illustrator
+    label.textRange.characterAttributes.size = (labelSize > 1296) ? 1296 : labelSize;
+    label.textRange.characterAttributes.fillColor = color;
+    label.position = [
+      currAb.artboardRect[0] + (abWidth) / 2 - label.width / 2,
+      currAb.artboardRect[1] - (abHeight) / 2 + label.height / 2
+    ];
+    label.locked = true;
+  }
+
+  // Update screen
+  app.redraw();
+}
+
+/**
+ * Create a RGB object with validated RGB values
+ * @param {Array} rgb - An array of three numbers representing RGB values
+ * @returns {Object} A RGB color with validated and clamped RGB values
+ */
+function setRGBColor(rgb) {
+  var defaultRGB = [255, 0, 0];
+
+  // Validate and clamp each CMYK value
+  for (var i = 0; i < 4; i++) {
+    if (rgb[i] !== undefined && typeof rgb[i] === 'number') {
+      defaultRGB[i] = Math.max(0, Math.min(255, rgb[i]));
+    }
+  }
+
+  // Create and return a new CMYKColor object
+  var color = new RGBColor();
+  color.red = defaultRGB[0];
+  color.green = defaultRGB[1];
+  color.blue = defaultRGB[2];
+
+  return color;
+}
+
+/**
  * Truncate a string to a specific length and add an ellipsis ('...') if it exceeds that length
  * @param {string} str - The string to truncate
  * @param {number} n - The maximum length of the truncated string including the ellipsis
@@ -475,6 +710,35 @@ function roundNum(num, decimals) {
 }
 
 /**
+ * Draw an artboard-sized rectangle with bleed
+ * @param {Object} container - The target container to draw the rectangle on
+ * @param {Object} artboard - The artboard object to base the rectangle dimensions on
+ * @param {Object} params - An object containing the rectangle settings
+ */
+function drawArtboardRect(container, artboard, params) {
+  var abData = getArtboardData(artboard);
+  var rectData = calculateRect(abData, params);
+
+  if (rectData.width <= 0 || rectData.height <= 0) return;
+
+  var zoom = 1.0;
+  try { zoom = app.activeDocument.views[0].zoom; } catch (err) {}
+
+  var rect = container.pathItems.rectangle(
+    rectData.top,
+    rectData.left,
+    rectData.width,
+    rectData.height
+  );
+
+  rect.fillColor = new NoColor();
+  rect.stroked = true;
+  rect.strokeColor = params.color;
+  rect.strokeWidth = 0.5 + (1.5 / zoom);
+  rect.strokeDashes = [6 / zoom, 4 / zoom];
+}
+
+/**
  * Mask the content of an artboard with a rectangle that includes a specified bleed
  * @param {Object} doc - The Illustrator document containing the artboard
  * @param {number} idx - The index of the artboard to clipping mask
@@ -490,35 +754,25 @@ function maskArtboard(doc, idx, params) {
 
   var abObjs = app.selection;
   var abData = getArtboardData(doc.artboards[idx]);
-  var rectTop, rectLeft, rectWidth, rectHeight;
+  var rectData = calculateRect(abData, params);
 
-  if (params.isFixed) { // Fixed bleeds
-    rectWidth = abData.width + params.left + params.right;
-    rectHeight = abData.height + params.top + params.bottom;
-    rectTop = abData.top + params.top;
-    rectLeft = abData.left - params.left;
-  } else { // Relative size
-    var min = Math.min(abData.width, abData.height);
-    var padLeft = min * params.left / 100;
-    var padRight = min * params.right / 100;
-    var padTop = min * params.top / 100;
-    var padBottom = min * params.bottom / 100;
-
-    rectWidth = abData.width + padLeft + padRight;
-    rectHeight = abData.height + padTop + padBottom;
-    rectTop = abData.top + padTop;
-    rectLeft = abData.left - padLeft;
-  }
-
-  if (rectWidth <= 0 || rectHeight <= 0) return;
+  if (rectData.width <= 0 || rectData.height <= 0) return;
 
   // Create clipping group
-  var clipGroup = abObjs[0].layer.groupItems.add();
+  var tgtLayer = abObjs[0].layer;
+  var clipGroup = tgtLayer.groupItems.add();
   clipGroup.name = doc.artboards[idx].name;
-  
+
   // Create clipping mask
-  var clipRect = abObjs[0].layer.pathItems.rectangle(rectTop, rectLeft, rectWidth, rectHeight);
-  clipRect.fillColor = clipRect.strokeColor = new NoColor();
+  var clipRect = tgtLayer.pathItems.rectangle(
+    rectData.top,
+    rectData.left,
+    rectData.width,
+    rectData.height
+  );
+
+  clipRect.fillColor = new NoColor();
+  clipRect.strokeColor = new NoColor();
 
   // Move all objects to group
   for (var i = 0; i < abObjs.length; i++) {
@@ -546,6 +800,37 @@ function getArtboardData(ab) {
     width: Math.abs(abRect[2] - abRect[0]),
     height: Math.abs(abRect[1] - abRect[3])
   };
+}
+
+/**
+ * Calculate the rectangle dimensions and position based on artboard data and parameters
+ * @param {Object} abData - Artboard data (width, height, top, left)
+ * @param {Object} params - Rectangle parameters (isFixed, top, bottom, left, right)
+ * @returns {Object} - The calculated rectangle (width, height, top, left)
+ */
+function calculateRect(abData, params) {
+  var rect = {};
+
+  if (params.isFixed) {
+    rect.width  = abData.width + params.left + params.right;
+    rect.height = abData.height + params.top + params.bottom;
+    rect.top    = abData.top + params.top;
+    rect.left   = abData.left - params.left;
+  } else {
+    var min = Math.min(abData.width, abData.height);
+
+    var padLeft   = min * params.left / 100;
+    var padRight  = min * params.right / 100;
+    var padTop    = min * params.top / 100;
+    var padBottom = min * params.bottom / 100;
+
+    rect.width  = abData.width + padLeft + padRight;
+    rect.height = abData.height + padTop + padBottom;
+    rect.top    = abData.top + padTop;
+    rect.left   = abData.left - padLeft;
+  }
+
+  return rect;
 }
 
 /**
