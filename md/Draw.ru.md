@@ -2,7 +2,7 @@
 
 # Draw | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-167k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-190k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -14,6 +14,7 @@
 
 ## Scripts
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
+* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpolyline) `v0.1 — new, 31.03.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.4 — upd, 19.02.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
@@ -27,6 +28,36 @@
 Параметр в коде `isClose` — замыкать многоугольник (true) или оставлять первую и последнюю точку (false).
 
 ![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
+
+## DrawPolyline
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawPolyline.jsx-FF6900.svg)](https://link.aiscripts.ru/drawpline) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Создаёт полилинии из прямолинейных и дуговых сегментов. Закрывает базовые потребности для рисования технических схем, архитектурных планов и развёрток упаковки.   
+
+* **Режим Line:** создаёт новые прямолинейные сегменты по длине, углу наклона или смещению по осям X, Y.
+* **Режим Arc:** создаёт дуги по радиусу, хорде, длине и другим параметрам.
+
+**Как это работает**
+
+1. Выделите крайнюю точку контура или несколько. Если ничего не выбрано, то новая линия появится в центре окна Иллюстратора.
+2. Введите нужные параметры в окне скрипта.
+3. Нажимайте **Add** — сегменты будут добавляться один за другим.
+
+```javascript
+// Preset custom angles for buttons 
+var ANGLE_PRESETS = [
+  [90, 180, 270, 360],
+  [45, 90, 135, 180],
+  [30, 60, 90, 120],
+  [15, 30, 45, 60],
+  [10, 20, 30, 40],
+  [5, 10, 15, 20],
+];
+```
+
+[Подробнее о скрипте](https://ais.sergosokin.ru/draw/draw-polyline/)   
+
+![DrawPolyline](https://i.ibb.co/kshGjc8Z/Draw-Polyline.gif)
 
 ## DrawRectanglesByArtboards
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/drawrectbyab) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

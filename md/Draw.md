@@ -2,7 +2,7 @@
 
 # Draw | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-167k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-190k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -14,6 +14,7 @@
 
 ## Scripts
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
+* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpolyline) `v0.1 — new, 31.03.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.4 — upd, 19.02.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
@@ -27,6 +28,36 @@ Draws a polygon based on the selected points. To avoid self-intersections, the s
 The parameter in the `isClose' code is used to close the polygon (true) or keep the first and last point (false).
 
 ![DrawPathBySelectedPoints](https://i.ibb.co/3CqGhj7/Draw-Path-By-Selected-Points.gif)
+
+## DrawPolyline
+[![Direct](https://img.shields.io/badge/Direct%20Link-DrawPolyline.jsx-FF6900.svg)](https://link.aiscripts.ru/drawpline) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Creates polylines using straight and arc segments. Covers the basic needs for drawing technical diagrams, architectural plans, and packaging die-line.   
+
+* **Line mode:** creates straight segments based on length, angle, or X/Y offset.
+* **Arc mode:** creates arcs based on radius, chord, length, and other parameters.
+
+**How it works**
+
+1. Select an endpoint of a path, or multiple points. If nothing is selected, a new line will appear at the center of the Illustrator window.
+2. Enter the desired parameters in the script window.
+3. Click **Add** — segments will be added one after another.
+
+```javascript
+// Preset custom angles for buttons 
+var ANGLE_PRESETS = [
+  [90, 180, 270, 360],
+  [45, 90, 135, 180],
+  [30, 60, 90, 120],
+  [15, 30, 45, 60],
+  [10, 20, 30, 40],
+  [5, 10, 15, 20],
+];
+```
+
+[More about script](https://ais.sergosokin.ru/draw/draw-polyline/)   
+
+![DrawPolyline](https://i.ibb.co/kshGjc8Z/Draw-Polyline.gif)
 
 ## DrawRectanglesByArtboards
 [![Direct](https://img.shields.io/badge/Direct%20Link-DrawRectanglesByArtboards.jsx-FF6900.svg)](https://link.aiscripts.ru/drawrectbyab) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
