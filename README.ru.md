@@ -2,7 +2,7 @@
 
 # Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-190k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-197k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md)*
 
@@ -44,7 +44,8 @@
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
 #### Вариант 4 — Утилиты
-С их помощью можно запрограммировать макросы запуска скриптов по горячим клавишам.
+С их помощью можно запрограммировать макросы запуска скриптов по горячим клавишам. В статье "[Как назначить горячие клавиши на скрипты в Иллюстраторе](https://ais.sergosokin.ru/set-hotkeys-for-illustrator-scripts/)" описаны способы настройки предложенных утилит.
+
 
 1. [SPAi](https://tama-san.com/spai/) (Mac OS, бесплатно)
 2. [Hammerspoon](https://www.hammerspoon.org/) (Mac OS, бесплатно)
@@ -178,7 +179,7 @@
 * [MirrorMove](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#mirrormove) `v0.1.1 — upd, 07.08.2024`
 * [OffsetObjects](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#offsetobjects) `v0.1.4 — upd, 08.09.2025`
 * [PlaceSymbols](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#placesymbols) `v0.1 — new, 16.08.2024`
-* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `v1.8 — upd, 08.08.2025`
+* [RenameItems](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#renameitems) `v2.0 — upd, 30.04.2026`
 * [Rescale](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#rescale) `v0.3.4 — upd, 09.02.2024`
 * [ResizeOnLargerSide](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizeonlargerside) `v0.2.2 — upd, 22.12.2022`
 * [ResizeToSize](https://github.com/creold/illustrator-scripts/blob/master/md/Item.ru.md#resizetosize) `v0.9.1 — upd, 09.02.2024`
