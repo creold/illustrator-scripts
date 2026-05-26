@@ -193,6 +193,7 @@ Click the category name to learn more about the scripts in the selected category
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `v0.4.5 — upd, 09.02.2024`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `v1.3.1 — upd, 09.02.2024`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `v0.2 — 03.04.2022`
+* [TransformPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#transformpoints) `v0.1 — new, 25.05.2026`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
 
 ### [Select](md/Select.md)  

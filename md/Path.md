@@ -18,6 +18,7 @@
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `v0.4.5 — upd, 09.02.2024`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `v1.3.1 — upd, 09.02.2024`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `v0.2 — 03.04.2022`
+* [TransformPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#transformpoints) `v0.1 — new, 25.05.2026`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
 
 ## DivideBottomPath
@@ -74,6 +75,15 @@ Subtracts the top selected shape from all the shapes below it. Pathfinder panel 
 > Align Stroke to Inside / Outside doesn't work correctly. Apply `Object > Path > Outline Stroke` before running the script.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
+
+## TransformPoints
+[![Direct](https://img.shields.io/badge/Direct%20Link-TransformPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/trnspts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Unlike the standard Transform panel, Scale tool, or Free Transform tool, this script lets you enter exact dimensions (Width + Height) based on the bounding box of selected path points — similar to how Affinity works. If two points are selected, you can also control the line's length and angle.   
+
+Supports: alignment to 9 points, live preview, constrain proportions, and arithmetic expressions in input fields.
+
+![TransformPoints](https://i.ibb.co/4RJ4cY8K/Transform-Points.gif)
 
 ## TrimOpenEnds
 [![Direct](https://img.shields.io/badge/Direct%20Link-TrimOpenEnds.jsx-FF6900.svg)](https://link.aiscripts.ru/trimends) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

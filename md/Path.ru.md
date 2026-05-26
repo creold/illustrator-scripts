@@ -18,6 +18,7 @@
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#points-move-random) `v0.4.5 — upd, 09.02.2024`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `v1.3.1 — upd, 09.02.2024`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `v0.2 — 03.04.2022`
+* [TransformPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#transformpoints) `v0.1 — new, 25.05.2026`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
 
 ## DivideBottomPath
@@ -54,7 +55,7 @@
 ## SplitPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SplitPath.jsx-FF6900.svg)](https://link.aiscripts.ru/splpath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Скрипт для фигурного разрезания незамкнутых линий. Стандартная панель Pathfinder в Illustrator пока не умеет этого.   
+Скрипт для фигурного разрезания незамкнутых линий. Стандартная панель Pathfinder в Иллюстраторе пока не умеет этого.   
 
 > [!NOTE]   
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39843490-cut-trim-or-divide-open-paths-lines) за внедрение этой функции в Иллюстратор.
@@ -68,12 +69,21 @@
 ## SubtractTopPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SubtractTopPath.jsx-FF6900.svg)](https://link.aiscripts.ru/subtoppath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Вырезает верхнюю выбранную фигуру из лежащих под ней. Стандартная панель Pathfinder в Illustrator пока не умеет этого. Поменяйте значение `isRmvTop` на `false`, чтобы после вырезания объект не удалился. `isUseFS: true` ускоряет обработку при большом количестве объектов. 
+Вырезает верхнюю выбранную фигуру из лежащих под ней. Стандартная панель Pathfinder в Иллюстраторе пока не умеет этого. Поменяйте значение `isRmvTop` на `false`, чтобы после вырезания объект не удалился. `isUseFS: true` ускоряет обработку при большом количестве объектов. 
 
 > [!WARNING]   
 > Некорректно работает с обводками внутрь и наружу (Align Stroke to Inside /  Outside). К таким объектам примените `Object → Path → Outline Stroke` перед запуском скрипта.
 
 ![SubtractTopPath](https://i.ibb.co/B3QL4k2/Subtract-Top-Path.gif)
+
+## TransformPoints
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-TransformPoints.jsx-FF6900.svg)](https://link.aiscripts.ru/trnspts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+В отличие от стандартной панели Transform, инструментов Scale, Free Transform, этот скрипт позволяет вам вводить точные размеры (Ш+В) по ограничительной рамке выбранных точек путей, как у Аффинити. Если выбраны две точки, то дополнительно можно управлять длиной и углом наклона отрезка.   
+
+Поддерживает выравнивание по 9 точкам, предпросмотр, фиксацию пропорций, арифметические выражения в полях ввода.
+
+![TransformPoints](https://i.ibb.co/4RJ4cY8K/Transform-Points.gif)
 
 ## TrimOpenEnds
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-TrimOpenEnds.jsx-FF6900.svg)](https://link.aiscripts.ru/trimends) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
