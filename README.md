@@ -32,18 +32,26 @@ The descriptions for each file can be found in the file’s header text. Test en
 
 [Download archive]: https://bit.ly/2M0j95N
 
-#### Variant 2 — Drag & Drop
+#### Variant 2 — Install with [Homebrew](https://brew.sh)
+Easily install via the command-line, from [homebrew-adobe](https://github.com/danielbayley/homebrew-adobe#readme):
+
+``` sh
+brew tap danielbayley/adobe
+brew install adobe-illustrator-scripts-sergey-osokin
+```
+
+#### Variant 3 — Drag & Drop
 Drag and drop the script file (JS or JSX) onto the tabs of Illustrator documents. If you drag it to the area of the open document, the script may not work correctly (Adobe bug).  
 
 ![Drag-n-drop to AI](https://i.ibb.co/WP9S7Lh/drag-n-drop-area.jpg)
 
-#### Variant 3 — Use extensions
+#### Variant 4 — Use extensions
 I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify which folder your script files are stored in.
 
 [Scripshon Trees]: https://exchange.adobe.com/creativecloud.details.15873.scripshon-trees.html
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
-#### Variant 4 — Utilities
+#### Variant 5 — Utilities
 You can use them to create macros to run scripts with hotkeys.
 
 1. [SPAi](https://tama-san.com/spai/) (Mac OS, free)
