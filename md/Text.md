@@ -16,7 +16,7 @@
 ## Scripts
 * [AlignTextBaseline](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#aligntextbaseline) `v0.1.1 — upd, 09.02.2024`
 * [InsertText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#inserttext) `v0.1 — new, 11.07.2025`
-* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5.1 — upd, 02.06.2026`
+* [MakeNumbersSequence](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#makenumberssequence) `v0.5.2 — upd, 03.06.2026`
 * [MultiEditText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#multiedittext) `v0.3.1 — upd, 18.07.2025`
 * [ReplaceFormattedText](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#replaceformattedtext) `v0.1 — 29.12.2022`
 * [TextBlock](https://github.com/creold/illustrator-scripts/blob/master/md/Text.md#textblock) `v0.2.1 — upd, 02.05.2025`
@@ -60,7 +60,7 @@ Fills a range of selected text items with numbers incremented based on the input
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![MakeNumbersSequence](https://i.ibb.co/VgqTcKw/Make-Numbers-Sequence.gif)
+![MakeNumbersSequence](https://i.ibb.co/M59pkdtN/Make-Numbers-Sequence.gif)
 
 ## MultiEditText
 [![Direct](https://img.shields.io/badge/Direct%20Link-MultiEditText.jsx-FF6900.svg)](https://link.aiscripts.ru/metxt) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

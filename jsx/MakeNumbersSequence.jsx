@@ -9,6 +9,7 @@
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.5.2 Added trailing zeros formatting for decimal numbers
   0.5.1 Minor improvements. Arrow keys now control number inputs.
   0.5.0 Added input of a fixed number of digits to control leading zeros
   0.4.2 Removed input activation on Windows OS below CC v26.4
@@ -47,7 +48,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Make Numbers Sequence',
-        version: 'v0.5.1'
+        version: 'v0.5.2'
       };
 
   var CFG = {
@@ -71,7 +72,7 @@ function main() {
     return;
   }
 
-  var inc = 0, start = 0, end = 0, strLen = 0;
+  var inc = 0, start = 0, end = 0, leadLen = 0, trailLen = 0;
 
   // ==========================================
   // DIALOG
@@ -101,7 +102,7 @@ function main() {
 
   startGrp.add('statictext', undefined, 'Start:');
   var startInp = startGrp.add('edittext', undefined, 1);
-      startInp.preferredSize.width = 48;
+      startInp.preferredSize.width = 58;
   if (CFG.isMac || CFG.aiVers >= 26.4 || CFG.aiVers <= 17) {
     startInp.active = true;
   }
@@ -111,14 +112,14 @@ function main() {
 
   endGrp.add('statictext', undefined, 'End:');
   var endInp = endGrp.add('edittext', undefined, 50);
-      endInp.preferredSize.width = 48;
+      endInp.preferredSize.width = 58;
 
   // INCREMENT
   var incGrp = inpWrapper.add('group');
 
   incGrp.add('statictext', undefined, 'Increment:');
   var incInp = incGrp.add('edittext', undefined, 5);
-      incInp.preferredSize.width = 48;
+      incInp.preferredSize.width = 58;
 
   var numOptWrapper = numPnl.add('group');
       numOptWrapper.alignChildren = ['left', 'top'];
@@ -139,11 +140,19 @@ function main() {
   // OPTIONS. COLUMN #2
   var numOpt_2 = numOptWrapper.add('group');
       numOpt_2.orientation = 'column';
-      numOpt_2.alignChildren = 'left';
+      numOpt_2.alignChildren = ['fill', 'fill'];
 
-  var isPadZero = numOpt_2.add('checkbox', undefined, 'Add Leading Zeros');
-      isPadZero.helpTip = 'E.g. 01, 02, 006, 00005';
-      isPadZero.value = true;
+  var zeroOpt = numOpt_2.add('group');
+      zeroOpt.orientation = 'row';
+      zeroOpt.alignChildren = ['fill', 'top'];
+
+  zeroOpt.add('statictext', undefined, 'Zeros:');
+  var isLeadZero = zeroOpt.add('checkbox', undefined, 'Leading');
+      isLeadZero.helpTip = 'E.g. 01, 02, 006, 00005';
+      isLeadZero.value = true;
+  var isTrailZero = zeroOpt.add('checkbox', undefined, 'Trailing');
+      isTrailZero.helpTip = 'E.g. 1.000, 2.050, 13.025, 25.375';
+
   var isAutoZero = numOpt_2.add('radiobutton', undefined, 'Auto Number of Digits');
       isAutoZero.value = true;
 
@@ -221,13 +230,13 @@ function main() {
 
   startInp.onChange = endInp.onChange = incInp.onChange = updatePreviewList;
   isFullRplc.onClick = isNumRplc.onClick = isPhRplc.onClick = updatePreviewList;
-  zeroInp.onChange = isShuffle.onClick = updatePreviewList;
+  zeroInp.onChange = isShuffle.onClick = isTrailZero.onClick = updatePreviewList;
 
   bindStepperKeys(startInp, -Infinity, Infinity);
   bindStepperKeys(endInp, -Infinity, Infinity);
   bindStepperKeys(incInp, -Infinity, Infinity);
 
-  isPadZero.onClick = function () {
+  isLeadZero.onClick = function () {
     isAutoZero.enabled = this.value;
     zeroOpt.enabled = this.value;
     updatePreviewList();
@@ -347,7 +356,8 @@ function main() {
    */
   function updatePreviewList() {
     var tmpTFs = [].concat(tfs);
-    var isPad = isPadZero.value;
+    var isLeadPad = isLeadZero.value;
+    var isTrailPad = isTrailZero.value;
     var tmpZero = Math.max(1, strToNum(zeroInp.text, 0)); // Total number length
 
     // Calculate number range and string length for padding
@@ -359,7 +369,7 @@ function main() {
     if (start > end && inc > 0) incInp.text = -inc;
 
     // Determine max string length for padding (custom or default)
-    strLen = getMaxNumLength(start, end, (isPad && isCstmZero.value ? Math.pow(10, tmpZero - 1) : 1));
+    leadLen = getMaxNumLength(start, end, (isLeadPad && isCstmZero.value ? Math.pow(10, tmpZero - 1) : 1));
 
     // Filter text frames: numeric or placeholder-based
     if (isNumRplc.value) {
@@ -372,11 +382,18 @@ function main() {
     var nums = calcNumbers(inc, start, end, tmpTFs.length);
     if (isShuffle.value) shuffle(nums);
 
-    // Apply zero-padding to non-negative numbers
+    if (isTrailPad) {
+      trailLen = getMaxDecimalLength(nums);
+    }
+
+    // Apply zero-padding to non-negative numbers and trailing zeros
     var i = 0, len = nums.length;
     while (i < len) {
-      if (isPad && nums[i] >= 0) {
-        nums[i] = padZero(nums[i], strLen);
+      if (isLeadPad && nums[i] >= 0) {
+        nums[i] = padLeadZero(nums[i], leadLen);
+      }
+      if (isTrailPad && trailLen > 0) {
+        nums[i] = padTrailZero(nums[i], trailLen);
       }
       i++;
     }
@@ -391,7 +408,8 @@ function main() {
   function okClick() {
     saveSettings(SETTINGS);
 
-    var isPad = isPadZero.value; // Add zeros
+    var isLeadPad = isLeadZero.value; // Add zeros
+    var isTrailPad = isTrailZero.value; // Add zeros
     var isNum = isNumRplc.value; // Numbers in text
     var isPh = isPhRplc.value; // Only placeholder
 
@@ -413,13 +431,18 @@ function main() {
     var nums = calcNumbers(inc, start, end, tfs.length);
     if (isShuffle.value) shuffle(nums);
 
+    if (isTrailPad) {
+      trailLen = getMaxDecimalLength(nums);
+    }
+
     // Replacement
     var regex = new RegExp(isNum ? '(\\d+([.,]\\d+)*)' : CFG.placeholder, 'gi');
     var i = 0;
     var curNum = 0;
 
     while (i < nums.length) {
-      curNum = isPad && nums[i] >= 0 ? padZero(nums[i], strLen) : nums[i];
+      curNum = isLeadPad && nums[i] >= 0 ? padLeadZero(nums[i], leadLen) : nums[i];
+      if (isTrailPad && trailLen > 0) curNum = padTrailZero(curNum, trailLen);
       tfs[i].contents = (isPh || isNum) ? tfs[i].contents.replace(regex, curNum) : curNum;
       i++;
     }
@@ -517,7 +540,8 @@ function main() {
     data.all = isUseAll.value;
     data.rndm = isShuffle.value;
     data.rmv = isRmvTf.value;
-    data.zero = isPadZero.value;
+    data.lZero = isLeadZero.value;
+    data.tZero = isTrailZero.value;
     data.auto = isAutoZero.value;
     data.total = zeroInp.text;
     data.sort = isOrder.value ? 0 : (isRows.value ? 1 : 2);
@@ -557,14 +581,15 @@ function main() {
         isShuffle.value = data.rndm === 'true';
         isRmvTf.value = data.rmv === 'true';
 
-        isPadZero.value = data.zero === 'true';
+        isLeadZero.value = data.lZero === 'true';
+        isTrailZero.value = data.tZero === 'true';
         isAutoZero.value = data.auto === 'true';
-        isAutoZero.enabled = isPadZero.value;
+        isAutoZero.enabled = isLeadZero.value;
         isCstmZero.value = !isAutoZero.value;
         zeroInp.text = parseInt(data.total) || 0;
-        zeroOpt.enabled = isPadZero.value && isCstmZero.value;
-        isCstmZero.enabled = isPadZero.value && isCstmZero.value;
-        zeroInp.enabled = isPadZero.value && isCstmZero.value;
+        zeroOpt.enabled = isLeadZero.value;
+        isCstmZero.enabled = isLeadZero.value;
+        zeroInp.enabled = isLeadZero.value && isCstmZero.value;
 
         sortPnl.children[parseInt(data.sort) || 0].value = true;
         rplcPnl.children[parseInt(data.ph) || 0].value = true;
@@ -666,7 +691,6 @@ function strToNum(str, def) {
  */
 function getMaxNumLength() {
   var max = 0;
-
   for (var i = 0, len = arguments.length; i < len; i++) {
     var arg = arguments[i];
     if (typeof arg === 'number' && !isNaN(arg)) {
@@ -675,7 +699,22 @@ function getMaxNumLength() {
       if (numLength > max) max = numLength;
     }
   }
+  return max;
+}
 
+/**
+ * Get maximum length of decimal part among the provided array of numbers
+ * @param {Array} arr - The array of numbers to check
+ * @returns {number} max - The maximum length of decimal part
+ */
+function getMaxDecimalLength(arr) {
+  var max = 0;
+  for (var i = 0, len = arr.length; i < len; i++) {
+    var parts = arr[i].toString().split('.');
+    if (parts.length > 1 && parts[1].length > max) {
+      max = parts[1].length;
+    }
+  }
   return max;
 }
 
@@ -764,9 +803,9 @@ function shuffle(arr) {
  * Add leading zeros to a number to make it of a specified length
  * @param {number} num - The number to pad with leading zeros
  * @param {number} len - The desired length of the resulting padded number
- * @returns {string} num - The number with leading zeros
+ * @returns {string} The number with leading zeros
  */
-function padZero(num, len) {
+function padLeadZero(num, len) {
   var parts = num.toString().split('.');
   var intPart = parts[0];
   var decPart = parts[1];
@@ -778,6 +817,25 @@ function padZero(num, len) {
   if (decPart !== undefined) return intPart + '.' + decPart;
 
   return intPart;
+}
+
+/**
+ * Add trailing zeros to a number's decimal part to make it of a specified length
+ * @param {number|string} num - The number to pad with trailing zeros
+ * @param {number} len - The desired length of the decimal part
+ * @returns {string} The number with trailing zeros
+ */
+function padTrailZero(num, len) {
+  if (len === 0) return num.toString();
+  var parts = num.toString().split('.');
+  var intPart = parts[0];
+  var decPart = parts[1] || '';
+
+  while (decPart.length < len) {
+    decPart += '0';
+  }
+
+  return intPart + '.' + decPart;
 }
 
 /**
