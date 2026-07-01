@@ -2,7 +2,7 @@
 
 # Color | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-205k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-212k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -13,7 +13,7 @@
 4. Если при сохранении видите в имени «.jsx.txt», удалите последнюю часть «.txt»
 
 ## Scripts
-* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `v0.1 — 27.03.2022`
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `v0.3 — upd, 30.06.2026`
 * [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#beautifyswatchnames) `v0.1.1 — upd, 16.01.2026`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `v0.1 — 18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`
@@ -32,14 +32,14 @@
 ## AverageColors
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-AverageColors.jsx-FF6900.svg)](https://link.aiscripts.ru/avgcols) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Усредняет цвета выбранных объектов, отдельных групп или градиентов. Скрипт пропускает объекты без цвета или с паттерном. Если ничего не выбрано, скрипт предложит обработать все группы в документе. Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`.   
+Усредняет цвета выбранных объектов, отдельных групп или градиентов. Скрипт пропускает объекты без цвета или с паттерном. Существует два режима: тихий запуск и диалоговый. Меняется в `CFG.showUI`.   
 
 Эти режимы меняются без правки кода, если удерживать клавишу Alt при запуске:
 
 * <kbd>Alt</kbd> + `CFG.showUI: false` — появится диалог
 * <kbd>Alt</kbd> + `CFG.showUI: true` — скрипт сработает с последними использованными опциями
 
-![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif)
+![AverageColors](https://i.ibb.co/ymx0zF5c/Average-Colors-v0-3.gif)
 
 ## BeautifySwatchNames
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames.jsx-FF6900.svg)](https://link.aiscripts.ru/bswn) [![Direct2](https://img.shields.io/badge/Прямая%20ссылка-BeautifySwatchNames%20Lite.jsx-48C794.svg)](https://link.aiscripts.ru/bswnlite) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -128,7 +128,7 @@
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
+![ConvertToGradient](https://i.ibb.co/0RsWjj5Y/Convert-To-Gradient.gif)
 
 ## CycleColors
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-CycleColors.jsx-FF6900.svg)](https://link.aiscripts.ru/cyclecol) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

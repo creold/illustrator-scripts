@@ -2,7 +2,7 @@
 
 # Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-205k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-212k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 *Инструкция на других языках: [English](README.md)*
 
@@ -92,6 +92,7 @@
 
 ## Платные скрипты
 * [AddObjectGuides](https://aiscripts.robo.market/) — генерирует направляющие для объектов: горизонтальные, вертикальные, диагональные, а также для центров объектов.
+* [AddSnakeCutline](https://aiscripts.robo.market/) — создаёт один непрерывный контур для плоттерной резки.
 * [BentoGrid](https://aiscripts.robo.market/) — генерирует случайные сетки в стиле Bento UI с ячейками разных пропорций.
 * [RandomColors](https://aiscripts.robo.market/) — генерирует случайные цвета для заливок и обводок выбранных объектов или текстов.
 * [ExportSequence](https://aiscripts.robo.market/) - переключает пронумерованные объекты в выбранных группах и экспортирует активный артборд в виде последовательных PNG или JPG файлов
@@ -125,7 +126,7 @@
 ### [Color](md/Color.ru.md)  
 Скрипты для работы с цветом объектов
 
-* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `v0.1 — 27.03.2022`
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#averagecolors) `v0.3 — upd, 30.06.2026`
 * [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#beautifyswatchnames) `v0.1.1 — upd, 16.01.2026`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorblindsimulator) `v0.1 — 18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.ru.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`

@@ -2,7 +2,7 @@
 
 # Color | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-205k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-212k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -13,7 +13,7 @@
 4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## Scripts
-* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `v0.1 — 27.03.2022`
+* [AverageColors](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#averagecolors) `v0.3 — upd, 30.06.2026`
 * [BeautifySwatchNames](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#beautifyswatchnames) `v0.1.1 — upd, 16.01.2026`
 * [ColorBlindSimulator](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorblindsimulator) `v0.1 — 18.04.2022`
 * [ColorCorrector](https://github.com/creold/illustrator-scripts/blob/master/md/Color.md#colorcorrector) `v0.1.2 — upd, 14.02.2025`
@@ -32,14 +32,14 @@
 ## AverageColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-AverageColors.jsx-FF6900.svg)](https://link.aiscripts.ru/avgcols) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Averages the colors of selected objects or separately inside groups or gradients. The script skips objects without color or with a pattern. If nothing is selected, the script process all groups in the document. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
+Averages the colors of selected objects or separately inside groups or gradients. The script skips objects without color or with a pattern. It has two modes: silent and dialog. Changing in `CFG.showUI`.   
 
 Modes change without editing the code if you hold down the <kbd>Alt</kbd> key when running the script:
 
 * <kbd>Alt</kbd> + `CFG.showUI: false` the dialog will be shown
 * <kbd>Alt</kbd> + `CFG.showUI: true` silent mode with the latest options
 
-![AverageColors](https://i.ibb.co/6bjPmLh/average-colors.gif) 
+![AverageColors](https://i.ibb.co/ymx0zF5c/Average-Colors-v0-3.gif) 
 
 ## BeautifySwatchNames
 [![Direct](https://img.shields.io/badge/Direct%20Link-BeautifySwatchNames.jsx-FF6900.svg)](https://link.aiscripts.ru/bswn) [![Direct2](https://img.shields.io/badge/Direct%20Link-BeautifySwatchNames%20Lite.jsx-48C794.svg)](https://link.aiscripts.ru/bswnlite) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -128,7 +128,7 @@ The Pro version with more options is available at [Buymeacoffee](https://buymeac
   <img width="122" height="47" src="https://i.ibb.co/fqdwXL6/youtube-badge.png">
 </a>
 
-![ConvertToGradient](https://i.ibb.co/44tG9JP/demo-Convert-To-Gradient.gif)
+![ConvertToGradient](https://i.ibb.co/0RsWjj5Y/Convert-To-Gradient.gif)
 
 ## CycleColors
 [![Direct](https://img.shields.io/badge/Direct%20Link-CycleColors.jsx-FF6900.svg)](https://link.aiscripts.ru/cyclecol) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
