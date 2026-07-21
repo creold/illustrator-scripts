@@ -48,7 +48,7 @@
 
 
 1. [SPAi](https://tama-san.com/spai/) (Mac OS, бесплатно)
-2. [Hammerspoon](https://www.hammerspoon.org/) (Mac OS, бесплатно)
+2. [Hammerspoon](https://github.com/creold/hammerspoon-illustrator-scripts) (Mac OS, бесплатно)
 3. [Keyboard Maestro](https://www.keyboardmaestro.com/main/) (Mac OS, платно)
 4. [BetterTouchTool](https://folivora.ai/) (Mac OS, платно)
 5. [AutoHotkey](https://www.autohotkey.com/) (Windows, бесплатно)
@@ -146,7 +146,7 @@
 Скрипты, которые что-либо рисуют
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpolyline) `v0.1 — new, 31.03.2026`
+* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpolyline) `v0.2 — upd, 21.07.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.4 — upd, 19.02.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`

@@ -44,10 +44,10 @@ I recommend the [Scripshon Trees] or [LAScripts] panel. In it you can specify wh
 [LAScripts]: https://ladyginpro.ru/products/lascripts/
 
 #### Variant 4 — Utilities
-You can use them to create macros to run scripts with hotkeys.
+You can use them to create macros to run scripts with hotkeys. The article "[How to Set Up Keyboard Shortcuts for Scripts in Adobe Illustrator](https://aiscripts.medium.com/how-to-set-up-keyboard-shortcuts-for-scripts-in-adobe-illustrator-98e0748dda8c)" describes ways to configure the suggested utilities.
 
 1. [SPAi](https://tama-san.com/spai/) (Mac OS, free)
-2. [Hammerspoon](https://www.hammerspoon.org/) (Mac OS, free)
+2. [Hammerspoon](https://github.com/creold/hammerspoon-illustrator-scripts) (Mac OS, free)
 3. [Keyboard Maestro](https://www.keyboardmaestro.com/main/) (Mac OS, paid)
 4. [BetterTouchTool](https://folivora.ai/) (Mac OS, paid)
 5. [AutoHotkey](https://www.autohotkey.com/) (Windows, free)
@@ -142,7 +142,7 @@ Click the category name to learn more about the scripts in the selected category
 ### [Draw](md/Draw.md) 
 
 * [DrawPathBySelectedPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpathbyselectedpoints) `v0.1 — 10.03.2023`
-* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpolyline) `v0.1 — new, 31.03.2026`
+* [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpolyline) `v0.2 — upd, 21.07.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.4 — upd, 19.02.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
 * [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`

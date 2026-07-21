@@ -2,11 +2,13 @@
   DrawPolyline.jsx for Adobe Illustrator
   Description: Extends open path ends by adding a segment of given length and angle from selected endpoints
   Date: March, 2026
+  Modification date: July, 2026
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
+  0.2 Added support negative length, chord, height (flips line angle or arc sweep)
   0.1 Initial version
 
   Donate (optional):
@@ -45,7 +47,7 @@ function main() {
 
   var SCRIPT = {
         name: 'Draw Polyline',
-        version: 'v0.1'
+        version: 'v0.2'
       };
 
   var CFG = {
@@ -324,22 +326,21 @@ function main() {
     preview();
   };
 
-  bindStepperKeys(xInp, -16000, 16000, syncPolar);
-  bindStepperKeys(yInp, -16000, 16000, syncPolar);
+  bindStepperKeys(xInp, -Infinity, Infinity, syncPolar);
+  bindStepperKeys(yInp, -Infinity, Infinity, syncPolar);
 
-  bindStepperKeys(radiusInp, 0.001, 10000, function() { syncArc('radius'); });
+  bindStepperKeys(radiusInp, 0, Infinity, function() { syncArc('radius'); });
 
-  bindStepperKeys(lengthInp, 0.001, 10000, function() {
-    if (rbLine.value) updateCoordinates();
-    else syncArc('length');
+  bindStepperKeys(lengthInp, -Infinity, Infinity, function() {
+    lengthInp.onChange();
   });
 
   bindStepperKeys(angleInp, -720, 720, function() {
     if (rbLine.value) updateCoordinates();
   });
 
-  bindStepperKeys(chordInp, 0.001, 10000, function() { syncArc('chord'); });
-  bindStepperKeys(heightInp, 0.001, 10000, function() { syncArc('height'); });
+  bindStepperKeys(chordInp, -Infinity, Infinity, function() { syncArc('chord'); });
+  bindStepperKeys(heightInp, -Infinity, Infinity, function() { syncArc('height'); });
   bindStepperKeys(sweepInp, -360, 360, function() { syncArc('sweep'); });
 
   xInp.onChange = yInp.onChange = function () {
@@ -349,7 +350,7 @@ function main() {
   };
 
   lengthInp.onChange = function () {
-    this.text = Math.abs(evalMath(this.text, 10));
+    this.text = evalMath(this.text, 10);
     if (rbLine.value) updateCoordinates();
     else syncArc('length');
     preview();
@@ -369,13 +370,13 @@ function main() {
   };
 
   chordInp.onChange = function () {
-    this.text = Math.abs(evalMath(this.text, 0));
+    this.text = evalMath(this.text, 0);
     syncArc('chord');
     preview();
   };
 
   heightInp.onChange = function () {
-    this.text = Math.abs(evalMath(this.text, 0));
+    this.text = evalMath(this.text, 0);
     syncArc('height');
     preview();
   };
@@ -544,16 +545,17 @@ function main() {
   function applyAll() {
     var isArcMode = rbArc.value;
 
-    var length = Math.abs(parseFloat(lengthInp.text));
+    var length = parseFloat(lengthInp.text);
     length = convertUnits(length, CFG.units, 'px') / CFG.sf;
 
-    var radius = Math.abs(parseFloat(radiusInp.text));
+    var radius = parseFloat(radiusInp.text);
     radius = convertUnits(radius, CFG.units, 'px') / CFG.sf;
 
     var angle = parseFloat(angleInp.text);
     var sweep = isArcMode ? (parseFloat(sweepInp.text) || 0) : 0;
 
     if (isNaN(length) || isNaN(angle) || length === 0) return false;
+    if (isArcMode && (radius === 0 || sweep == 0)) return false;
 
     if (!states.length) {
       doc.activeLayer.visible = true;
@@ -727,11 +729,27 @@ function main() {
     var dY = convertUnits(parseFloat(yInp.text), CFG.units, 'px') / CFG.sf;
     if (CFG.isFlipY) dY *= -1;
 
-    var length = Math.sqrt(dX * dX + dY * dY);
-    var angle = Math.atan2(dY, dX) * 180 / Math.PI;
+    var geomLength = Math.sqrt(dX * dX + dY * dY);
+    var geomAngle = Math.atan2(dY, dX) * 180 / Math.PI;
 
-    lengthInp.text = round(convertUnits(length * CFG.sf, 'px', CFG.units));
-    angleInp.text = round(angle);
+    var currLength = parseFloat(lengthInp.text) || 0;
+    var currAngle = parseFloat(angleInp.text) || 0;
+
+    var fnlLength = geomLength;
+    var fnlAngle = geomAngle;
+
+    if (currLength < 0) {
+      var diff = Math.abs((geomAngle - currAngle + 180) % 360);
+      if (diff > 180) diff = 360 - diff;
+
+      if (diff < 1.0) {
+        fnlLength = -geomLength;
+        fnlAngle = currAngle;
+      }
+    }
+
+    lengthInp.text = round(convertUnits(fnlLength * CFG.sf, 'px', CFG.units));
+    angleInp.text = round(fnlAngle);
   }
 
   /**
@@ -784,7 +802,7 @@ function main() {
   function updateArcLength() {
     var radius = convertUnits(parseFloat(radiusInp.text), CFG.units, 'px') / CFG.sf;
     var sweep = parseFloat(sweepInp.text) || 180;
-    var arcLength = (2 * Math.PI * radius * Math.abs(sweep)) / 360;
+    var arcLength = (2 * Math.PI * radius * sweep) / 360;
     lengthInp.text = round(convertUnits(arcLength * CFG.sf, 'px', CFG.units));
   }
 
@@ -796,6 +814,7 @@ function main() {
     var radius = convertUnits(parseFloat(radiusInp.text), CFG.units, 'px') / CFG.sf;
     var sweep = parseFloat(sweepInp.text) || 180;
     var chord = 2 * radius * Math.sin((Math.abs(sweep) / 2) * Math.PI / 180);
+    if (sweep < 0) chord *= -1;
     chordInp.text = round(convertUnits(chord * CFG.sf, 'px', CFG.units));
   }
 
@@ -807,6 +826,7 @@ function main() {
     var radius = convertUnits(parseFloat(radiusInp.text), CFG.units, 'px') / CFG.sf;
     var sweep = parseFloat(sweepInp.text) || 0;
     var height = radius * (1 - Math.cos((Math.abs(sweep) / 2) * Math.PI / 180));
+    if (sweep < 0) height *= -1;
     heightInp.text = round(convertUnits(height * CFG.sf, 'px', CFG.units));
   }
 
@@ -824,28 +844,35 @@ function main() {
     if (radius === 0) return;
 
     var sweep = 0;
-    var currSign = parseFloat(sweepInp.text) < 0 ? -1 : 1;
+    var sign = 1;
+    if (source === 'length' && length < 0) sign = -1;
+    if (source === 'chord' && chord < 0) sign = -1;
+    if (source === 'height' && height < 0) sign = -1;
+
+    var absLength = Math.abs(length);
+    var absChord = Math.abs(chord);
+    var absHeight = Math.abs(height);
 
     if (source === 'length') {
       // Calculate sweep from arc length
-      sweep = (length * 360) / (2 * Math.PI * radius);
+      sweep = (absLength * 360) / (2 * Math.PI * radius);
     } else if (source === 'chord') {
-      if (chord > 2 * radius) {
-        chord = 2 * radius;
-        chordInp.text = round(convertUnits(chord * CFG.sf, 'px', CFG.units));
+      if (absChord > 2 * radius) {
+        absChord = 2 * radius;
+        chordInp.text = round(convertUnits(absChord * sign * CFG.sf, 'px', CFG.units));
       }
       // Calculate sweep from chord length
-      sweep = 2 * Math.asin(chord / (2 * radius)) * 180 / Math.PI;
+      sweep = 2 * Math.asin(absChord / (2 * radius)) * 180 / Math.PI;
     } else if (source === 'height') {
-      if (height > 2 * radius) {
-        height = 2 * radius;
-        heightInp.text = round(convertUnits(height * CFG.sf, 'px', CFG.units));
+      if (absHeight > 2 * radius) {
+        absHeight = 2 * radius;
+        heightInp.text = round(convertUnits(absHeight * sign * CFG.sf, 'px', CFG.units));
       }
       // Calculate sweep from height (saggita) length
-      sweep = 2 * Math.acos(1 - (height / radius)) * 180 / Math.PI;
+      sweep = 2 * Math.acos(1 - (absHeight / radius)) * 180 / Math.PI;
     }
 
-    sweepInp.text = round(sweep * currSign);
+    sweepInp.text = round(sweep * sign);
   }
 
   /**
@@ -947,14 +974,14 @@ function main() {
         rbLine.value = (data.mode !== 'arc');
         rbArc.value = !rbLine.value;
 
-        defaultData.line.length = Math.abs(evalMath(data.line_len, 10)) || 10;
-        defaultData.line.angle = Math.abs(evalMath(data.line_ang, 0)) || 0;
+        defaultData.line.length = evalMath(data.line_len, 10) || 10;
+        defaultData.line.angle = evalMath(data.line_ang, 0) || 0;
         defaultData.arc.radius = Math.abs(evalMath(data.arc_rad, 10)) || 10;
-        defaultData.arc.length = Math.abs(evalMath(data.arc_len, 31.416)) || 31.416;
-        defaultData.arc.chord = Math.abs(evalMath(data.arc_chord, 20)) || 20;
-        defaultData.arc.height = Math.abs(evalMath(data.arc_hgt, 2.67)) || 2.67;
-        defaultData.arc.sweep = Math.abs(evalMath(data.arc_swp, 180)) || 180;
-        defaultData.arc.angle = Math.abs(evalMath(data.arc_ang, 180)) || 180;
+        defaultData.arc.length = evalMath(data.arc_len, 31.416) || 31.416;
+        defaultData.arc.chord = evalMath(data.arc_chord, 20) || 20;
+        defaultData.arc.height = evalMath(data.arc_hgt, 2.67) || 2.67;
+        defaultData.arc.sweep = evalMath(data.arc_swp, 180) || 180;
+        defaultData.arc.angle = evalMath(data.arc_ang, 180) || 180;
 
         for (var key in defaultData) {
           for (var prop in defaultData[key]) {
