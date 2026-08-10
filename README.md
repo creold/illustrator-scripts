@@ -104,6 +104,9 @@ Many scripts are free to download thanks to user support. Help me to develop new
 * [HighlightText](https://www.buymeacoffee.com/aiscripts/e/231626) — script for adding highlighting strokes based on text lines.
 * [ImportImagesByName](https://www.buymeacoffee.com/aiscripts/e/231629) — script for imports images from the specified folder by names from the contents of the selected text objects.
 
+## Community Scripts
+* [StockVector Exporter Free](https://github.com/NiL4gh/StockVector-Exporter-Free) — powerful batch exporter script for EPS10, SVG, PNG, PDF with microstock preflight and auto-zip built in.
+
 ## Categories
 Click the category name to learn more about the scripts in the selected category.   
 
