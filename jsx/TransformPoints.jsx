@@ -1,13 +1,14 @@
 /*
   TransformPoints.jsx for Adobe Illustrator
   Description: Unlike Illustrator's native tools, this script allows you to enter exact dimensions for any selection of anchor points
-  Date: May, 2026
   Author: Sergey Osokin, email: hi@sergosokin.ru
+  Created: May, 2026
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.1 Initial version
+  0.1.1 (2026-08-21) Fixed line segment behavior when modifying width or height fields
+  0.1.0 (2026-05-22) Initial version
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -35,7 +36,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Transform Points',
-        version: 'v0.1'
+        version: 'v0.1.1'
       };
 
   var CFG = {
@@ -242,10 +243,12 @@ function main() {
   // EVENTS
   // ==========================================
   var lastInp = (initW === 0) ? 'height' : 'width';
+  var trfMode = 'bbox'; // 'bbox' or 'line'
 
   wInp.onChange = function() {
     this.text = evalMath(this.text, 0);
     lastInp = 'width';
+    trfMode = 'bbox';
     syncFromBBox();
     preview();
   };
@@ -253,6 +256,7 @@ function main() {
   hInp.onChange = function() {
     this.text = evalMath(this.text, 0);
     lastInp = 'height';
+    trfMode = 'bbox';
     syncFromBBox();
     preview();
   };
@@ -264,6 +268,7 @@ function main() {
     lInp.onChange = function () {
       var newL = evalMath(this.text, 0);
       this.text = Math.max(-16000, Math.min(16000, newL));
+      trfMode = 'line';
       syncFromLine();
       preview();
     };
@@ -271,6 +276,7 @@ function main() {
     aInp.onChange = function () {
       var newA = evalMath(this.text, 0);
       this.text = Math.max(-360, Math.min(360, newA));
+      trfMode = 'line';
       syncFromLine();
       preview();
     };
@@ -427,7 +433,7 @@ function main() {
    * Apply scale to selected points
    */
   function applyTransform() {
-    if (lineMode) {
+    if (lineMode && trfMode === 'line') {
       var newL = parseFloat(lInp.text);
       var newA = parseFloat(aInp.text);
       if (isNaN(newL)) newL = lInp.text = initL;
@@ -456,7 +462,7 @@ function main() {
 
       var refCoords = getRefPointCoords(bbox, selRefIdx);
 
-      scalePoints(selPts, bbox, newW, newH, refCoords, isScaleHandles.value);
+      scalePoints(selPts, bbox, newW, newH, refCoords, isScaleHandles ? isScaleHandles.value : true);
     }
   }
 
