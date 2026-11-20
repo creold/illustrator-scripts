@@ -17,7 +17,7 @@
 * [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawpolyline) `v0.2 — upd, 21.07.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#drawrectanglesbyartboards) `v0.4.1 — upd, 17.11.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
-* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#randomscribble) `v0.2 — upd, 20.11.2026`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.ru.md#trianglemaker) `v0.2 — new, 31.03.2025`
 
 ## DrawPathBySelectedPoints
@@ -83,7 +83,7 @@ var ANGLE_PRESETS = [
 
 Создаёт случайные пути с заданным количеством точек. Это могут быть случайные отрезки из 2 точек или сложные фигуры, имитирующие каракули. Точки не выходят за границы активного артборда. Если в документе сначала выделили несколько фигур, то скрипт сгенерирует отдельные пути с точками, лежащими в пределах их границ (bounding box).
 
-![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
+![RandomScribble](https://i.ibb.co/kg2q44Dm/Random-Scribble.gif)
 
 ## TriangleMaker
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-TriangleMaker.jsx-FF6900.svg)](https://link.aiscripts.ru/trimkr) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

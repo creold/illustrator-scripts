@@ -27,7 +27,7 @@
 
 Averages the coordinates of selected path points by group and optionally joins adjacent endpoints into a single path. In Illustrator, the Object → Path → Average... command calculates the average [x, y] position of all selected points. This script instead clusters nearby points into groups, where points within a specified distance of each other belong to the same group. It then averages the coordinates of each group separately. 
 
-![AveragePoints](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
+![AveragePoints](https://i.ibb.co/mKxSKwK/Average-Points.gif)
 
 ## DivideBottomPath
 [![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://link.aiscripts.ru/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

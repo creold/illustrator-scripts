@@ -17,7 +17,7 @@
 * [DrawPolyline](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawpolyline) `v0.2 — upd, 21.07.2026`
 * [DrawRectanglesByArtboards](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#drawrectanglesbyartboards) `v0.4.1 — upd, 17.11.2026`
 * [NumeratesPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#numeratespoints) `v0.3.3 — upd, 22.12.2022`
-* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.1.3 — upd, 09.02.2024`
+* [RandomScribble](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#randomscribble) `v0.2 — upd, 20.11.2026`
 * [TriangleMaker](https://github.com/creold/illustrator-scripts/blob/master/md/Draw.md#trianglemaker) `v0.2 — new, 31.03.2025`
 
 ## DrawPathBySelectedPoints
@@ -83,7 +83,7 @@ Numerates selected points and marks them with colored circles.
 
 Creates random paths with a specified number of points. These can be random straight lines from 2 points or complex shapes that imitate scribbles. The points do not go beyond the bounds of the active artboard. If many shapes are first selected in the document, the script will generate individual paths with points into their bounding box.
 
-![RandomScribble](https://i.ibb.co/b6FftPk/Random-Scribble.gif)
+![RandomScribble](https://i.ibb.co/kg2q44Dm/Random-Scribble.gif)
 
 ## TriangleMaker
 [![Direct](https://img.shields.io/badge/Direct%20Link-TriangleMaker.jsx-FF6900.svg)](https://link.aiscripts.ru/trimkr) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

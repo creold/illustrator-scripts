@@ -27,7 +27,7 @@
 
 Усредняет координаты выбранных точек объектов по группам и опционально соединяет соседние концы в единый путь. В Иллюстраторе команда Object → Path → Average... вычисляет среднюю позицию [x, y] для всех выбранных точек. Скрипт же разделяет близко расположенные точки на группы, где точки между собой находятся в пределах заданного расстояния. Дальше скрипт усредняет координаты отдельно у каждой группы.  
 
-![AveragePoints](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
+![AveragePoints](https://i.ibb.co/mKxSKwK/Average-Points.gif)
 
 ## DivideBottomPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DivideBottomPath.jsx-FF6900.svg)](https://link.aiscripts.ru/divbottp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
