@@ -2,7 +2,7 @@
 
 # Path | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-212k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Downloads-240k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram%20Channel-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [Back to homepage](../README.md)
 
@@ -13,13 +13,21 @@
 4. If you see ".jsx.txt" in the name when saving, delete ".txt"
 
 ## Scripts
+* [AveragePoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#averagepoints) `v0.2 — new, 02.11.2026`
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#dividebottompath) `v0.1 — 22.02.2023`
-* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `v0.1.1 — upd, 09.02.2024`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#points-move-random) `v0.4.5 — upd, 09.02.2024`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#setpointscoordinates) `v0.2 — upd, 02.11.2026`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#splitpath) `v1.3.1 — upd, 09.02.2024`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#subtracttoppath) `v0.2 — 03.04.2022`
 * [TransformPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#transformpoints) `v0.1.1 — upd, 21.08.2026`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
+
+## AveragePoints
+[![Direct](https://img.shields.io/badge/Direct%20Link-AveragePoints.jsx-FF6900.svg)](https://link.aiscripts.ru/avgpts) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Averages the coordinates of selected path points by group and optionally joins adjacent endpoints into a single path. In Illustrator, the Object → Path → Average... command calculates the average [x, y] position of all selected points. This script instead clusters nearby points into groups, where points within a specified distance of each other belong to the same group. It then averages the coordinates of each group separately. 
+
+![AveragePoints](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
 
 ## DivideBottomPath
 [![Direct](https://img.shields.io/badge/Direct%20Link-DivideBottomPath.jsx-FF6900.svg)](https://link.aiscripts.ru/divbottp) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -45,12 +53,12 @@ The script moves randomly in numeric ranges horizontally and vertically selected
 ## SetPointsCoordinates
 [![Direct](https://img.shields.io/badge/Direct%20Link-SetPointsCoordinates.jsx-FF6900.svg)](https://link.aiscripts.ru/setptscrds) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Sets the same X, Y coordinates for the selected points. In the native Transform panel, after you type X, Y, the shape moves, not the selected points. The script works with artboard rulers or global rulers toggled in the `View → Rulers` menu. To move points by a delta, use the double signs `--` or `++` in front of the number. If the points have a common coordinate, it is displayed in the input. Illustrator has coordinate inaccuracies, so you can set the `CFG.tolerance' in the script code to make the coordinates of the points appear the same in the dialog box.
+Sets the same X, Y coordinates for the selected points. In the native Transform panel, after you type X, Y, the shape moves, not the selected points. The script works with artboard rulers or global rulers toggled in the `View → Rulers` menu. To move points by a delta, use the double signs `--` or `++` in front of the number. If the points have a common coordinate, it is displayed in the input. You can set the `CFG.tolerance' in the script code to make the coordinates of the points appear the same in the dialog box.
 
 > [!NOTE]   
 > Vote on [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39140836-move-selected-anchors-by-coordinates) to add this feature to Illustrator.
 
-![SetPointsCoordinates](https://i.ibb.co/KmR2gSS/Set-Points-Coordinates.gif)
+![SetPointsCoordinates](https://i.ibb.co/BVPCWdC4/Set-Points-Coordinates.gif)
 
 ## SplitPath
 [![Direct](https://img.shields.io/badge/Direct%20Link-SplitPath.jsx-FF6900.svg)](https://link.aiscripts.ru/splpath) [![Download](https://img.shields.io/badge/Download%20All-Zip%20archive-0088CC.svg)](https://bit.ly/2M0j95N)

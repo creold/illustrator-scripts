@@ -2,7 +2,7 @@
 
 # Path | Adobe Illustrator Scripts
 
-[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-212k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
+[![GitHub stars](https://img.shields.io/github/stars/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts) [![GitHub forks](https://img.shields.io/github/forks/creold/illustrator-scripts.svg)](https://github.com/creold/illustrator-scripts/forks) ![Downloads](https://img.shields.io/badge/Скачивания-240k-27CF7D.svg) [![Telegram](https://img.shields.io/badge/Telegram--канал-%40aiscripts-0088CC.svg)](https://t.me/aiscripts) [![Сайт](https://img.shields.io/badge/Сайт-ais.sergosoikn.ru-FF7548.svg)](https://ais.sergosokin.ru) [![Youtube](https://img.shields.io/badge/Youtube-%40SergOsokinArt-FF0000.svg)](https://www.youtube.com/c/SergOsokinArt/videos)
 
 [На главную](../README.ru.md)
 
@@ -13,13 +13,21 @@
 4. Если при сохранении видите в имени «.jsx.txt», удалите последнюю часть «.txt»
 
 ## Scripts
+* [AveragePoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#averagepoints) `v0.2 — new, 02.11.2026`
 * [DivideBottomPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#dividebottompath) `v0.1 — 22.02.2023`
-* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#setpointscoordinates) `v0.1.1 — upd, 09.02.2024`
 * [PointsMoveRandom](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#points-move-random) `v0.4.5 — upd, 09.02.2024`
+* [SetPointsCoordinates](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#setpointscoordinates) `v0.2 — upd, 02.11.2026`
 * [SplitPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#splitpath) `v1.3.1 — upd, 09.02.2024`
 * [SubtractTopPath](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#subtracttoppath) `v0.2 — 03.04.2022`
 * [TransformPoints](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#transformpoints) `v0.1.1 — upd, 21.08.2026`
 * [TrimOpenEnds](https://github.com/creold/illustrator-scripts/blob/master/md/Path.ru.md#trimopenends) `v0.1.1 — upd, 22.02.2023`
+
+## AveragePoints
+[![Direct](https://img.shields.io/badge/Прямая%20ссылка-AveragePoints.jsx-FF6900.svg)](https://link.aiscripts.ru/avgpts) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
+
+Усредняет координаты выбранных точек объектов по группам и опционально соединяет соседние концы в единый путь. В Иллюстраторе команда Object → Path → Average... вычисляет среднюю позицию [x, y] для всех выбранных точек. Скрипт же разделяет близко расположенные точки на группы, где точки между собой находятся в пределах заданного расстояния. Дальше скрипт усредняет координаты отдельно у каждой группы.  
+
+![AveragePoints](https://i.ibb.co/LrKDtTz/Divide-Bottom-Path.gif)
 
 ## DivideBottomPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-DivideBottomPath.jsx-FF6900.svg)](https://link.aiscripts.ru/divbottp) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
@@ -45,12 +53,12 @@
 ## SetPointsCoordinates
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SetPointsCoordinates.jsx-FF6900.svg)](https://link.aiscripts.ru/setptscrds) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)
 
-Устанавливает общие координаты X, Y для выбранных точек. В панели Transform в Иллюстраторе после ввода числа в поля X, Y перемещается фигура, а не выбранные точки. Скрипт работает с линейками артборда или глобальными, которые переключаются в меню `View → Rulers`. Для перемещения точек на дельту используйте двойные символы `--` или `++` перед числом. Если у точек общая координата, то поле ввода будет предзаполнено. У Иллюстратора бывают погрешности координат, поэтому в коде можно скрипта задать величину погрешности `CFG.tolerance`, чтобы в её пределах показать координаты точек одинаковыми в диалоге.
+Устанавливает общие координаты X, Y для выбранных точек. В панели Transform в Иллюстраторе после ввода числа в поля X, Y перемещается фигура, а не выбранные точки. Скрипт работает с линейками артборда или глобальными, которые переключаются в меню `View → Rulers`. Для перемещения точек на дельту используйте двойные символы `--` или `++` перед числом. Если у точек общая координата, то поле ввода будет предзаполнено. В коде можно задать величину погрешности `CFG.tolerance`, чтобы в её пределах показать координаты точек одинаковыми в диалоге.
 
 > [!NOTE]   
 > Проголосуйте на [Uservoice](https://illustrator.uservoice.com/forums/333657-illustrator-desktop-feature-requests/suggestions/39140836-move-selected-anchors-by-coordinates) за внедрение этой функции в Иллюстратор.
 
-![SetPointsCoordinates](https://i.ibb.co/KmR2gSS/Set-Points-Coordinates.gif)
+![SetPointsCoordinates](https://i.ibb.co/BVPCWdC4/Set-Points-Coordinates.gif)
 
 ## SplitPath
 [![Direct](https://img.shields.io/badge/Прямая%20ссылка-SplitPath.jsx-FF6900.svg)](https://link.aiscripts.ru/splpath) [![Download](https://img.shields.io/badge/Скачать%20все-Zip--архив-0088CC.svg)](https://bit.ly/2M0j95N)

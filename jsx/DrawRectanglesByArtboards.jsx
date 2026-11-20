@@ -1,18 +1,19 @@
 /*
   DrawRectanglesByArtboards.jsx for Adobe Illustrator
   Description: Draws rectangles to match the size of each artboard, including any specified bleed
-  Date: July, 2024
+  Created: July, 2024
   Modification date: February, 2026
   Author: Sergey Osokin, email: hi@sergosokin.ru
 
   Installation: https://github.com/creold/illustrator-scripts#how-to-run-scripts
 
   Release notes:
-  0.4 Added rectangles preview and optional display of artboard indexes
-  0.3 Added percentage-based rectangle sizing, settings persistence
-  0.2.1 Added active artboard index to custom range option
-  0.2.0 Added UI with many options
-  0.1 Initial version (thanks for Egor Chistyakov, https://t.me/@egrch)
+  0.4.1 (2026-11-17) Added support for Illustrator isolation mode
+  0.4.0 (2026-02-24) Added rectangles preview and optional display of artboard indexes
+  0.3.0 (2025-07-03) Added percentage-based rectangle sizing, settings persistence
+  0.2.1 (2025-06-12) Added active artboard index to custom range option
+  0.2.0 (2025-06-12) Added UI with many options
+  0.1.0 (2024-07-29) Initial version (thanks for Egor Chistyakov, https://t.me/@egrch)
 
   Donate (optional):
   If you find this script helpful, you can buy me a coffee
@@ -23,7 +24,7 @@
   - via YooMoney https://yoomoney.ru/to/410011149615582
 
   NOTICE:
-  Tested with Adobe Illustrator CC 2019-2026 (Mac/Win).
+  Tested with Adobe Illustrator CC 2019-2027 (Mac/Win).
   This script is provided "as is" without warranty of any kind.
   Free to use, not for sale
 
@@ -39,7 +40,7 @@ app.preferences.setBooleanPreference('ShowExternalJSXWarning', false); // Fix dr
 function main() {
   var SCRIPT = {
         name: 'Draw Rectangles By Artboards',
-        version: 'v0.4'
+        version: 'v0.4.1'
       };
 
   var CFG = {
@@ -74,138 +75,157 @@ function main() {
   }
 
   var doc = app.activeDocument;
+  var docAbs = doc.artboards;
+  var currIdx = docAbs.getActiveArtboardIndex();
+  var actLayer = doc.activeLayer;
+  var rectColor = setRGBColor(CFG.rectColor); // Create rectangles color
+  var createdRects = [];
+  var isUndo = false;
 
   // Scale factor for Large Canvas mode
   CFG.sf = doc.scaleFactor ? doc.scaleFactor : 1;
   CFG.bleed = roundNum( convertUnits(CFG.bleed, 'pt', CFG.units) * CFG.sf, 4);
 
-  var docAbs = doc.artboards;
-  var currIdx = docAbs.getActiveArtboardIndex();
-  var actLayer = doc.activeLayer;
+  CFG.inIsolation = isIsolationMode();
+  var isolContainer = null;
+  if (CFG.inIsolation) {
+    CFG.isShowIndex = false;
+    var topIsolItem = actLayer.pageItems[actLayer.pageItems.length - 1];
+    if (topIsolItem.typename === 'GroupItem') isolContainer = topIsolItem;
+  }
 
-  // Create rectangles color
-  var rectColor = setRGBColor(CFG.rectColor);
 
-  var isUndo = false;
-
-  // DIALOG
+  // ==========================================
+  //  DIALOG
+  // ==========================================
   var win = new Window('dialog', SCRIPT.name + ' ' + SCRIPT.version);
       win.alignChildren = ['fill', 'top'];
       win.opacity = CFG.dlgOpacity;
 
-  // SOURCE
-  var srcPnl = win.add('panel', undefined, 'Artboards');
-      srcPnl.orientation = 'row';
-      srcPnl.alignChildren = ['left', 'bottom'];
-      srcPnl.margins = CFG.mgns;
+  // ==========================================
+  //  ARTBOARDS RANGE
+  // ==========================================
+  var pnlScope = win.add('panel', undefined, 'Artboards');
+      pnlScope.orientation = 'row';
+      pnlScope.alignChildren = ['left', 'bottom'];
+      pnlScope.margins = CFG.mgns;
 
-  var isCurrAb = srcPnl.add('radiobutton', undefined, 'Active #' + (currIdx + 1));
-      isCurrAb.value = true;
+  var rbCurrAb = pnlScope.add('radiobutton', undefined, 'Active #' + (currIdx + 1));
+      rbCurrAb.value = true;
 
-  var isCstmAb = srcPnl.add('radiobutton', undefined, 'Custom:');
-      isCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
+  var rbCstmAb = pnlScope.add('radiobutton', undefined, 'Custom:');
+      rbCstmAb.helpTip = 'Total arboards: ' + docAbs.length;
 
-  var rangeInp = srcPnl.add('edittext', undefined, '1-' + docAbs.length);
-      rangeInp.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
-      rangeInp.characters = 13;
-      rangeInp.enabled = isCstmAb.value;
+  var etRange = pnlScope.add('edittext', undefined, '1-' + docAbs.length);
+      etRange.helpTip = 'E.g. "1, 3-5" > 1, 3, 4, 5';
+      etRange.characters = 13;
+      etRange.enabled = rbCstmAb.value;
 
+  // ==========================================
   // RECTANGLE SIZE
-  var sizePnl = win.add('panel', undefined, 'Bleed Size');
-      sizePnl.orientation = 'column';
-      sizePnl.alignChildren = ['left', 'bottom'];
-      sizePnl.margins = CFG.mgns;
+  // ==========================================
+  var pnlSize = win.add('panel', undefined, 'Bleed Size');
+      pnlSize.orientation = 'column';
+      pnlSize.alignChildren = ['left', 'bottom'];
+      pnlSize.margins = CFG.mgns;
 
-  var modeGrp = sizePnl.add('group');
-      modeGrp.orientation = 'row';
-      modeGrp.alignChildren = ['left', 'bottom'];
+  var grpMode = pnlSize.add('group');
+      grpMode.orientation = 'row';
+      grpMode.alignChildren = ['left', 'bottom'];
 
-  var isFixBleed = modeGrp.add('radiobutton', undefined, 'Absolute (' + CFG.units + ')');
-      isFixBleed.helpTip = 'Set bleeds in absolute units\n(px, mm, etc.)';
-      isFixBleed.value = true;
+  var rbFixBleed = grpMode.add('radiobutton', undefined, 'Absolute (' + CFG.units + ')');
+      rbFixBleed.helpTip = 'Set bleeds in absolute units\n(px, mm, etc.)';
+      rbFixBleed.value = true;
 
-  var isRelBleed = modeGrp.add('radiobutton', undefined, 'Relative by Short Side (%)');
-      isRelBleed.helpTip = 'Set bleeds as a percentage\nof short side of artboard';
+  var rbRelBleed = grpMode.add('radiobutton', undefined, 'Relative by Short Side (%)');
+      rbRelBleed.helpTip = 'Set bleeds as a percentage\nof short side of artboard';
 
+  // ==========================================
   // BLEED * FIXED
-  var fixGrp = sizePnl.add('group');
-      fixGrp.orientation = 'row';
-      fixGrp.alignChildren = ['left', 'bottom'];
+  // ==========================================
+  var grpFix = pnlSize.add('group');
+      grpFix.orientation = 'row';
+      grpFix.alignChildren = ['left', 'bottom'];
 
   // TOP
-  var top = fixGrp.add('group');
+  var top = grpFix.add('group');
       top.orientation = 'column';
       top.alignChildren = ['fill', 'center'];
       top.spacing = 5;
 
   top.add('statictext', undefined, 'Top');
-  var topInp = top.add('edittext', undefined, CFG.bleed);
-      topInp.preferredSize.width = 45;
+  var etTop = top.add('edittext', undefined, CFG.bleed);
+      etTop.preferredSize.width = 45;
 
   // BOTTOM
-  var bottom = fixGrp.add('group');
+  var bottom = grpFix.add('group');
       bottom.orientation = 'column';
       bottom.alignChildren = ['fill', 'center'];
       bottom.spacing = 5;
 
   bottom.add('statictext', undefined, 'Bottom');
-  var bottomInp = bottom.add('edittext', undefined, CFG.bleed);
-      bottomInp.preferredSize.width = 45;
+  var etBottom = bottom.add('edittext', undefined, CFG.bleed);
+      etBottom.preferredSize.width = 45;
 
   // LEFT
-  var left = fixGrp.add('group');
+  var left = grpFix.add('group');
       left.orientation = 'column';
       left.alignChildren = ['fill', 'center'];
       left.spacing = 5;
 
   left.add('statictext', undefined, 'Left');
-  var leftInp = left.add('edittext', undefined, CFG.bleed);
-      leftInp.preferredSize.width = 45;
+  var etLeft = left.add('edittext', undefined, CFG.bleed);
+      etLeft.preferredSize.width = 45;
 
   // RIGHT
-  var right = fixGrp.add('group');
+  var right = grpFix.add('group');
       right.orientation = 'column';
       right.alignChildren = ['fill', 'center'];
       right.spacing = 5;
 
   right.add('statictext', undefined, 'Right');
-  var rightInp = right.add('edittext', undefined, CFG.bleed);
-      rightInp.preferredSize.width = 45;
+  var etRight = right.add('edittext', undefined, CFG.bleed);
+      etRight.preferredSize.width = 45;
 
-  var isEqual = fixGrp.add('checkbox', undefined, 'Same');
-      isEqual.helpTip = 'Make all settings\nthe same';
-      isEqual.value = CFG.isEqual;
+  var chkEqual = grpFix.add('checkbox', undefined, 'Same');
+      chkEqual.helpTip = 'Make all settings\nthe same';
+      chkEqual.value = CFG.isEqual;
 
-  bottomInp.enabled = !isEqual.value;
-  leftInp.enabled = !isEqual.value;
-  rightInp.enabled = !isEqual.value;
+  etBottom.enabled = !chkEqual.value;
+  etLeft.enabled = !chkEqual.value;
+  etRight.enabled = !chkEqual.value;
 
+  // ==========================================
   // TARGET
-  var tgtPnl = win.add('panel', undefined, 'Move Rectangles To');
-      tgtPnl.orientation = 'row';
-      tgtPnl.alignChildren = ['left', 'top'];
-      tgtPnl.margins = CFG.mgns;
+  // ==========================================
+  var pnlTarget = win.add('panel', undefined, 'Move Rectangles To');
+      pnlTarget.orientation = 'row';
+      pnlTarget.alignChildren = ['left', 'top'];
+      pnlTarget.margins = CFG.mgns;
 
-  var isCurrLay = tgtPnl.add("radiobutton", undefined, 'Active Layer: \u0022' + truncate(actLayer.name, 12) + '\u0022');
-      isCurrLay.value = true;
+  var rbCurrLay = pnlTarget.add("radiobutton", undefined, 'Active Layer: \u0022' + truncate(actLayer.name, 12) + '\u0022');
+      rbCurrLay.value = true;
 
-  var isNewLay = tgtPnl.add('radiobutton', undefined, 'New Layer');
-      isNewLay.helpTip = 'New Layer \u0022' + CFG.layer + '\u0022\nCan be changed in CFG.layer';
+  var rbNewLay = pnlTarget.add('radiobutton', undefined, 'New Layer');
+      rbNewLay.helpTip = 'New Layer \u0022' + CFG.layer + '\u0022\nCan be changed in CFG.layer';
+      rbNewLay.enabled = !CFG.inIsolation;
 
-  // BUTTONS
-  var btns = win.add('group');
-      btns.orientation = 'row';
-      btns.alignChildren = ['fill', 'center'];
+  // ==========================================
+  // TARGET
+  // ==========================================
+  var grpBtns = win.add('group');
+      grpBtns.orientation = 'row';
+      grpBtns.alignChildren = ['fill', 'center'];
 
-  var isPreview = btns.add('checkbox', undefined, 'Preview');
+  var chkPreview = grpBtns.add('checkbox', undefined, 'Preview');
 
   var cancel, ok;
   if (CFG.isMac) {
-    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
-    ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
+    cancel = grpBtns.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = grpBtns.add('button', undefined, 'Ok', { name: 'ok' });
   } else {
-    ok = btns.add('button', undefined, 'Ok', { name: 'ok' });
-    cancel = btns.add('button', undefined, 'Cancel', { name: 'cancel' });
+    ok = grpBtns.add('button', undefined, 'Ok', { name: 'ok' });
+    cancel = grpBtns.add('button', undefined, 'Cancel', { name: 'cancel' });
   }
 
   var copyright = win.add('group');
@@ -218,42 +238,44 @@ function main() {
   var link = copyright.add('statictext', undefined, 'Visit GitHub');
       link.justify = 'right';
 
+  // ==========================================
   // EVENTS
+  // ==========================================
   loadSettings(SETTINGS);
 
-  isCurrAb.onClick = function () {
-    rangeInp.enabled = false;
+  rbCurrAb.onClick = function () {
+    etRange.enabled = false;
     preview();
   }
 
-  isCstmAb.onClick = function () {
-    rangeInp.enabled = true;
+  rbCstmAb.onClick = function () {
+    etRange.enabled = true;
     preview();
   }
 
-  rangeInp.onChange = isFixBleed.onClick = isRelBleed.onClick = preview;
+  etRange.onChange = rbFixBleed.onClick = rbRelBleed.onClick = preview;
 
-  bindStepperKeys(topInp);
-  bindStepperKeys(bottomInp);
-  bindStepperKeys(leftInp);
-  bindStepperKeys(rightInp);
+  bindStepperKeys(etTop);
+  bindStepperKeys(etBottom);
+  bindStepperKeys(etLeft);
+  bindStepperKeys(etRight);
 
-  topInp.onChange = bottomInp.onChange = leftInp.onChange = rightInp.onChange = function () {
-    if (isRelBleed.value) {
+  etTop.onChange = etBottom.onChange = etLeft.onChange = etRight.onChange = function () {
+    if (rbRelBleed.value) {
       var val = strToNum(this.text, 100);
       if (val <= -50) this.text = -49;
     }
     preview();
   }
 
-  isEqual.onClick = function () {
-    bottomInp.enabled = !this.value;
-    leftInp.enabled = !this.value;
-    rightInp.enabled = !this.value;
+  chkEqual.onClick = function () {
+    etBottom.enabled = !this.value;
+    etLeft.enabled = !this.value;
+    etRight.enabled = !this.value;
     preview();
   }
 
-  isPreview.onClick = preview;
+  chkPreview.onClick = preview;
 
   cancel.onClick = win.close;
   ok.onClick = okClick;
@@ -267,7 +289,7 @@ function main() {
     if (CFG.isShowIndex && docAbs.length > 1) {
       showArboardIndex(CFG.indexLayer, CFG.indexColor);
     }
-    isCurrAb.active = true;
+    rbCurrAb.active = true;
   }
 
   win.onClose = function () {
@@ -285,8 +307,9 @@ function main() {
    * Handle the preview functionality with undo support
    */
   function preview() {
+    if (!chkPreview.enabled) return;
     try {
-      if (!isPreview.value) {
+      if (!chkPreview.value) {
         if (isUndo) {
           app.undo();
           app.redraw();
@@ -314,41 +337,10 @@ function main() {
    * Save settings, process the document, and clean up
    */
   function okClick() {
-    if (isPreview.value && isUndo) app.undo();
+    if (chkPreview.value && isUndo) app.undo();
 
     process();
-
-    try {
-      var tmpLayer = doc.layers.getByName(CFG.layer);
-      var items = tmpLayer.pathItems;
-
-      // Set layer order if required
-      if (CFG.isLower) tmpLayer.zOrder(ZOrderMethod.SENDTOBACK);
-
-      // Select all generated rectangles fast
-      tmpLayer.hasSelectedArtwork = true;
-
-      var tgtLayer;
-      if (isCurrLay.value) {
-        tgtLayer = actLayer;
-        tgtLayer.locked = false;
-        tgtLayer.visible = true;
-      }
-
-      for (var i = items.length - 1; i >= 0; i--) {
-        var currItem = items[i];
-        currItem.filled = false;
-        currItem.stroked = false;
-
-        if (tgtLayer) {
-          currItem.move(actLayer, ElementPlacement.PLACEATEND);
-        }
-      }
-
-      if (tgtLayer && tmpLayer !== tgtLayer) tmpLayer.remove();
-    } catch (err) {
-      // temp layer may not exist
-    }
+    finalize();
 
     saveSettings(SETTINGS);
     isUndo = false;
@@ -363,18 +355,24 @@ function main() {
     var params = getRectParams();
 
     // Create or retrieve target layer
-    var tgtLayer;
+    var tgtLayer = null;
     try {
       tgtLayer = doc.layers.getByName(CFG.layer);
     } catch (err) {
-      tgtLayer = doc.layers.add();
-      tgtLayer.name = CFG.layer;
+      try {
+        tgtLayer = doc.layers.add();
+        tgtLayer.name = CFG.layer;
+      } catch (err2) {}
+    } finally {
+      // Check isolation mode
+      if (!tgtLayer) tgtLayer = doc.activeLayer;
+      createdRects = [];
+      // Draw artboard rectangles
+      processArtboards(function(idx) {
+        var rect = drawArtboardRect(tgtLayer, docAbs[idx], params);
+        if (rect !== null) createdRects.push(rect);
+      });
     }
-
-    // Draw artboard rectangles
-    processArtboards(function(idx) {
-      drawArtboardRect(tgtLayer, docAbs[idx], params);
-    });
   }
 
   /**
@@ -382,12 +380,12 @@ function main() {
    * @param {Function} callback - The function to execute for each artboard index
    */
   function processArtboards(callback) {
-    if (isCurrAb.value) {
+    if (rbCurrAb.value) {
       callback(currIdx);
       return;
     }
 
-    var range = parseAndFilterIndexes(rangeInp.text, docAbs.length);
+    var range = parseAndFilterIndexes(etRange.text, docAbs.length);
     // Default to the first artboard if no range is specified
     if (!range.length) range = [0];
 
@@ -396,30 +394,30 @@ function main() {
 
   /**
    * Retrieve rectangle parameters for mask creation
-   * @returns {Object} - An object containing rectangle parameters
+   * @returns {Object} An object containing rectangle parameters
    */
   function getRectParams() {
-    var isFixed = isFixBleed.value;
+    var isFixed = rbFixBleed.value;
     var params = {
       isFixed: isFixed,
       color: rectColor
     };
 
-    var topVal = getSideValue(topInp, isFixed);
+    var topVal = getSideValue(etTop, isFixed);
     params.top = topVal;
 
     // Use topVal for all sides if 'isEqual' is true, otherwise calculate individually
-    params.bottom = isEqual.value ? topVal : getSideValue(bottomInp, isFixed);
-    params.left   = isEqual.value ? topVal : getSideValue(leftInp, isFixed);
-    params.right  = isEqual.value ? topVal : getSideValue(rightInp, isFixed);
+    params.bottom = chkEqual.value ? topVal : getSideValue(etBottom, isFixed);
+    params.left   = chkEqual.value ? topVal : getSideValue(etLeft, isFixed);
+    params.right  = chkEqual.value ? topVal : getSideValue(etRight, isFixed);
 
     // Enforce minimum value if relative bleed is enabled
-    if (isRelBleed.value) {
+    if (rbRelBleed.value) {
       var minVal = -49;
-      if (params.top <= -50) params.top = topInp.text = minVal;
-      if (params.bottom <= -50) params.bottom = bottomInp.text = minVal;
-      if (params.left <= -50) params.left = leftInp.text = minVal;
-      if (params.right <= -50) params.right = rightInp.text = minVal;
+      if (params.top <= -50) params.top = etTop.text = minVal;
+      if (params.bottom <= -50) params.bottom = etBottom.text = minVal;
+      if (params.left <= -50) params.left = etLeft.text = minVal;
+      if (params.right <= -50) params.right = etRight.text = minVal;
     };
 
     return params;
@@ -429,7 +427,7 @@ function main() {
    * Calculate the value for a specific side (top, bottom, left, right)
    * @param {Object} input - The input object containing the text value
    * @param {boolean} isFixed - Whether the bleed is fixed or relative
-   * @returns {number} - The calculated side value
+   * @returns {number} The calculated side value
    */
   function getSideValue(input, isFixed) {
     var val = strToNum(input.text, isFixed ? CFG.bleed : 100);
@@ -438,16 +436,65 @@ function main() {
   }
 
   /**
+   * Finalize the generated rectangles: remove fill/stroke, place them into the target container
+   */
+  function finalize() {
+    var container = null;
+    var placement = null;
+    var isRemoveTmp = false;
+
+    app.selection = null;
+
+    if (CFG.inIsolation) {
+      container = isolContainer !== null ? isolContainer : actLayer;
+      placement = ElementPlacement.INSIDE;
+    } else if (rbCurrLay.value) {
+      actLayer.locked = false;
+      actLayer.visible = true;
+      container = actLayer;
+      placement = CFG.isLower ? ElementPlacement.PLACEATEND : ElementPlacement.PLACEATBEGINNING;
+      isRemoveTmp = true;
+    }
+
+    for (var i = createdRects.length - 1; i >= 0; i--) {
+      var rect = createdRects[i];
+      try {
+        if (container) rect.move(container, placement);
+        rect.filled = false;
+        rect.stroked = false;
+        if (CFG.inIsolation) {
+          rect.zOrder(CFG.isLower ? ZOrderMethod.SENDTOBACK : ZOrderMethod.BRINGTOFRONT);
+        }
+        rect.selected = true;
+      } catch (err) {}
+    }
+
+    createdRects = [];
+
+    if (!CFG.inIsolation) {
+      try {
+        var tmpLayer = doc.layers.getByName(CFG.layer);
+        if (isRemoveTmp) {
+          tmpLayer.remove();
+        } else if (CFG.isLower) {
+          tmpLayer.zOrder(ZOrderMethod.SENDTOBACK);
+        }
+      } catch (err) {}
+    }
+  }
+
+  /**
    * Handle keyboard input to shift numerical values
-   * @param {Object} input - The input element to which the event listener will be attached
+   * @param {EditText} input - The input element to which the event listener will be attached
    * @param {number} min - The minimum allowed value for the numerical input
    * @param {number} max - The maximum allowed value for the numerical input
    * @returns {void}
    */
   function bindStepperKeys(input, min, max) {
     input.addEventListener('keydown', function (kd) {
-      var step = ScriptUI.environment.keyboardState['shiftKey'] ? 10 : 1;
-      var num = parseFloat(this.text);
+      var keyState = ScriptUI.environment.keyboardState;
+      var step = keyState['shiftKey'] ? 10 : (keyState['altKey'] ? 0.1 : 1);
+      var num = parseFloat(this.text) || 0;
       if (kd.keyName == 'Down' || kd.keyName == 'LeftBracket') {
         this.text = (typeof min !== 'undefined' && (num - step) < min) ? min : num - step;
         kd.preventDefault();
@@ -477,14 +524,14 @@ function main() {
     var data = {};
     data.win_x = win.location.x;
     data.win_y = win.location.y;
-    data.artboard = isCurrAb.value ? 0 : 1;
-    data.isFixBleed = isFixBleed.value ? 0 : 1;
-    data.top = topInp.text;
-    data.bottom = bottomInp.text;
-    data.left = leftInp.text;
-    data.right = rightInp.text;
-    data.equal = isEqual.value;
-    data.layer = isCurrLay.value ? 0 : 1;
+    data.artboard = rbCurrAb.value ? 0 : 1;
+    data.isFixBleed = rbFixBleed.value ? 0 : 1;
+    data.top = etTop.text;
+    data.bottom = etBottom.text;
+    data.left = etLeft.text;
+    data.right = etRight.text;
+    data.equal = chkEqual.value;
+    data.layer = rbCurrLay.value ? 0 : 1;
 
     f.write( stringify(data) );
     f.close();
@@ -511,26 +558,26 @@ function main() {
           data.win_x ? parseInt(data.win_x) : 100,
           data.win_y ? parseInt(data.win_y) : 100
         ];
-        isCurrAb.value = data.artboard === '0';
-        isCstmAb.value = !isCurrAb.value;
-        rangeInp.enabled = isCstmAb.value;
-        rangeInp.active = isCstmAb.value;
+        rbCurrAb.value = data.artboard === '0';
+        rbCstmAb.value = !rbCurrAb.value;
+        etRange.enabled = rbCstmAb.value;
+        etRange.active = rbCstmAb.value;
 
-        isFixBleed.value = data.isFixBleed === '0';
-        isRelBleed.value = !isFixBleed.value;
+        rbFixBleed.value = data.isFixBleed === '0';
+        rbRelBleed.value = !rbFixBleed.value;
 
-        topInp.text = data.top;
-        bottomInp.text = data.bottom;
-        leftInp.text = data.left;
-        rightInp.text = data.right;
+        etTop.text = data.top;
+        etBottom.text = data.bottom;
+        etLeft.text = data.left;
+        etRight.text = data.right;
 
-        isEqual.value = data.equal === 'true';
-        bottomInp.enabled = !isEqual.value;
-        leftInp.enabled = !isEqual.value;
-        rightInp.enabled = !isEqual.value;
+        chkEqual.value = data.equal === 'true';
+        etBottom.enabled = !chkEqual.value;
+        etLeft.enabled = !chkEqual.value;
+        etRight.enabled = !chkEqual.value;
 
-        isCurrLay.value = data.layer === '0';
-        isNewLay.value = !isCurrLay.value;
+        rbCurrLay.value = data.layer === '0' || CFG.inIsolation;
+        rbNewLay.value = !rbCurrLay.value;
       }
     } catch (err) {
       return;
@@ -574,7 +621,7 @@ function main() {
 /**
  * Get document bleed settings
  * @param {Object} [doc] - The document to read the bleed settings from
- * @returns {number} - The bleed setting in points
+ * @returns {number} The bleed setting in points
  */
 function getBleed(doc) {
   if (doc == undefined) {
@@ -618,11 +665,11 @@ function getBleed(doc) {
 
 /**
  * Get active document ruler units
- * @returns {string} - Shortened units
+ * @returns {string} Shortened units
  */
 function getUnits() {
-  if (!documents.length) return '';
-  var key = activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
+  if (!app.documents.length) return 'px';
+  var key = app.activeDocument.rulerUnits.toString().replace('RulerUnits.', '');
   switch (key) {
     case 'Pixels': return 'px';
     case 'Points': return 'pt';
@@ -637,18 +684,31 @@ function getUnits() {
     case 'Yards': return 'yd';
     // Parse new units in CC 2020-2023 if a document is saved
     case 'Unknown':
-      var xmp = activeDocument.XMPString;
+      var xmp = app.activeDocument.XMPString;
       if (/stDim:unit/i.test(xmp)) {
         var units = /<stDim:unit>(.*?)<\/stDim:unit>/g.exec(xmp)[1];
         if (units == 'Meters') return 'm';
         if (units == 'Feet') return 'ft';
         if (units == 'FeetInches') return 'ft';
         if (units == 'Yards') return 'yd';
-        return 'px';
       }
-      break;
+      return 'px';
     default: return 'px';
   }
+}
+
+/**
+ * Determine whether Illustrator is currently in isolation mode
+ * @returns {boolean} True if the active document is in isolation mode
+ */
+function isIsolationMode() {
+  try {
+    var tmpLayer = app.activeDocument.layers.add();
+    tmpLayer.remove();
+  } catch (err) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -725,7 +785,7 @@ function setRGBColor(rgb) {
  * Truncate a string to a specific length and add an ellipsis ('...') if it exceeds that length
  * @param {string} str - The string to truncate
  * @param {number} n - The maximum length of the truncated string including the ellipsis
- * @returns {string} - The truncated string with an ellipsis if it was truncated, otherwise the original string
+ * @returns {string} The truncated string with an ellipsis if it was truncated, otherwise the original string
  */
 function truncate(str, n) {
   return str.length > n ? str.slice(0, n - 1) + '...' : str;
@@ -736,7 +796,7 @@ function truncate(str, n) {
  * @param {string} value - The numeric value to be converted
  * @param {string} currUnits - The current units of the value (e.g., 'in', 'mm', 'pt')
  * @param {string} newUnits - The desired units for the converted value (e.g., 'in', 'mm', 'pt')
- * @returns {number} - The converted value in the specified units
+ * @returns {number} The converted value in the specified units
  */
 function convertUnits(value, currUnits, newUnits) {
   return UnitValue(value, currUnits).as(newUnits);
@@ -746,7 +806,7 @@ function convertUnits(value, currUnits, newUnits) {
  * Round a number to a specified number of decimal places
  * @param {number} num - The number to be rounded
  * @param {number} decimals - The number of decimal places to round to
- * @returns {number} - The rounded number
+ * @returns {number} The rounded number
  */
 function roundNum(num, decimals) {
   var pow = Math.pow(10, decimals);
@@ -758,13 +818,13 @@ function roundNum(num, decimals) {
  * @param {Object} container - The target container to draw the rectangle on
  * @param {Object} artboard - The artboard object to base the rectangle dimensions on
  * @param {Object} params - An object containing the rectangle settings
- * @param {boolean} isLower - Determines whether to place created rectangles below or above other objects
+ * @returns {Object|null} The created path item, or null if skipped
  */
-function drawArtboardRect(container, artboard, params, isLower) {
+function drawArtboardRect(container, artboard, params) {
   var abData = getArtboardData(artboard);
   var rectData = calculateRect(abData, params);
 
-  if (rectData.width <= 0 || rectData.height <= 0) return;
+  if (rectData.width <= 0 || rectData.height <= 0) return null;
 
   var zoom = 1.0;
   try { zoom = app.activeDocument.views[0].zoom; } catch (err) {}
@@ -782,13 +842,13 @@ function drawArtboardRect(container, artboard, params, isLower) {
   rect.strokeWidth = 0.5 + (1.5 / zoom);
   rect.strokeDashes = [6 / zoom, 4 / zoom];
 
-  rect.zOrder(isLower ? ZOrderMethod.SENDTOBACK : ZOrderMethod.BRINGTOFRONT);
+  return rect;
 }
 
 /**
  * Get data for an artboard
  * @param {object} ab - The artboard object to retrieve data from
- * @returns {object} - An object containing the artboard's boundaries and dimensions
+ * @returns {object} An object containing the artboard's boundaries and dimensions
  */
 function getArtboardData(ab) {
   var abRect = ab.artboardRect;
@@ -806,7 +866,7 @@ function getArtboardData(ab) {
  * Calculate the rectangle dimensions and position based on artboard data and parameters
  * @param {Object} abData - Artboard data (width, height, top, left)
  * @param {Object} params - Rectangle parameters (isFixed, top, bottom, left, right)
- * @returns {Object} - The calculated rectangle (width, height, top, left)
+ * @returns {Object} The calculated rectangle (width, height, top, left)
  */
 function calculateRect(abData, params) {
   var rect = {};
@@ -837,7 +897,7 @@ function calculateRect(abData, params) {
  *  Parse a string representing a list of indexes and filters them based on a total count
  * @param {string} str - The input string containing the indexes
  * @param {number} total - The maximum allowed number (exclusive)
- * @returns {Array} - An array of valid indexes
+ * @returns {Array} An array of valid indexes
  */
 function parseAndFilterIndexes(str, total) {
   var parsedNums = [];
@@ -881,7 +941,7 @@ function parseAndFilterIndexes(str, total) {
  * Convert string to number
  * @param {string} str - The string to convert to a number
  * @param {number} def - The default value to return if the conversion fails
- * @returns {number} - The converted number
+ * @returns {number} The converted number
  */
 function strToNum(str, def) {
   if (arguments.length == 1 || def == undefined) def = 1;
@@ -910,7 +970,7 @@ function openURL(url) {
 /**
  * Serialize a JavaScript plain object into a JSON-like string
  * @param {Object} obj - The object to serialize
- * @returns {string} - A JSON-like string representation of the object
+ * @returns {string} A JSON-like string representation of the object
  */
 function stringify(obj) {
   var json = [];
